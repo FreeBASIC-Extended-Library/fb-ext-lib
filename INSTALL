@@ -1,0 +1,17 @@
+[Linux]
+Use make install as directed in the README file.
+
+[Windows: With GNU Make (MSYS)]
+"make install" from within the MSYS shell should properly install
+the library if you installed FreeBASIC to the default directory.
+If you did not use the default directory you will need to pass:
+	INSTALLDIR=/c/freebasic
+or what ever path you installed FreeBASIC to in MSYS style.
+
+[Windows: Without GNU Make]
+Copy the inc and lib directories and paste them into the root
+of your FreeBASIC directory (by default its C:\Program Files\FreeBASIC).
+They will not overwrite any files included with FreeBASIC. You 
+should copy the contents of the bin directory to C:\WINDOWS\System32
+for maximum compatibility. They can also be located in your project's
+directory. You must remember to distribute any dlls you use with your project.

@@ -1,0 +1,320 @@
+Format: 1.4
+
+
+Title: FreeBASIC Extended Library
+SubTitle: API Reference SVN ###
+
+Footer: Copyright (c) 2010 FreeBASIC Extended Library Development Group and Contributors
+Timestamp: Generated on month day, year
+#   m     - One or two digit month.  January is "1"
+#   mm    - Always two digit month.  January is "01"
+#   mon   - Short month word.  January is "Jan"
+#   month - Long month word.  January is "January"
+#   d     - One or two digit day.  1 is "1"
+#   dd    - Always two digit day.  1 is "01"
+#   day   - Day with letter extension.  1 is "1st"
+#   yy    - Two digit year.  2006 is "06"
+#   yyyy  - Four digit year.  2006 is "2006"
+#   year  - Four digit year.  2006 is "2006"
+
+# These are indexes you deleted, so Natural Docs will not add them again
+# unless you remove them from this line.
+
+Don't Index: Files
+
+
+# --------------------------------------------------------------------------
+# 
+# Cut and paste the lines below to change the order in which your files
+# appear on the menu.  Don't worry about adding or removing files, Natural
+# Docs will take care of that.
+# 
+# You can further organize the menu by grouping the entries.  Add a
+# "Group: [name] {" line to start a group, and add a "}" to end it.
+# 
+# You can add text and web links to the menu by adding "Text: [text]" and
+# "Link: [name] ([URL])" lines, respectively.
+# 
+# The formatting and comments are auto-generated, so don't worry about
+# neatness when editing the file.  Natural Docs will clean it up the next
+# time it is run.  When working with groups, just deal with the braces and
+# forget about the indentation and comments.
+# 
+# --------------------------------------------------------------------------
+
+
+Link: [Documentation License]  (http://www.gnu.org/copyleft/fdl.html)
+Link: Wiki Documentation  (http://ext.freebasic.net/wiki/)
+
+Group: Documentation  {
+
+   File: Home  (ext/ext.bi)
+   File: List of Interfaces  (ext/Interfaces.bi)
+   File: Data Conversion  (no auto-title, ext/conversion/base64.bi)
+   File: Debugging  (no auto-title, ext/debug.bi)
+   File: Common Functionality  (no auto-title, ext/detail/common.bi)
+   File: Handling Errors  (no auto-title, ext/error.bi)
+   File: Detecting Memory Leaks  (no auto-title, ext/fbmld.bi)
+   File: Memory functions  (no auto-title, ext/memory.bi)
+   File: Miscellaneous Features  (no auto-title, ext/misc.bi)
+   File: Commandline Option Parsing  (no auto-title, ext/options.bi)
+   File: PHP String Functions  (no auto-title, ext/php/strings.bi)
+   File: Templates  (no auto-title, ext/templates.bi)
+   File: Unit Testing  (no auto-title, ext/testly.bi)
+   File: XML  (no auto-title, ext/xml.bi)
+   File: xString  (no auto-title, ext/xstring.bi)
+
+   Group: Algorithms  {
+
+      File: algorithms/adjacentfind.bi  (ext/algorithms/adjacentfind.bi)
+      File: algorithms/copy.bi  (ext/algorithms/copy.bi)
+      File: algorithms/copybackward.bi  (ext/algorithms/copybackward.bi)
+      File: algorithms/count.bi  (ext/algorithms/count.bi)
+      File: algorithms/countif.bi  (ext/algorithms/countif.bi)
+      File: algorithms/detail/common.bi  (ext/algorithms/detail/common.bi)
+      File: algorithms/equal.bi  (ext/algorithms/equal.bi)
+      File: algorithms/fill.bi  (ext/algorithms/fill.bi)
+      File: algorithms/filln.bi  (ext/algorithms/filln.bi)
+      File: algorithms/find.bi  (ext/algorithms/find.bi)
+      File: algorithms/findfirstof.bi  (ext/algorithms/findfirstof.bi)
+      File: algorithms/findif.bi  (ext/algorithms/findif.bi)
+      File: algorithms/foreach.bi  (ext/algorithms/foreach.bi)
+      File: algorithms/gnomesort.bi  (ext/algorithms/gnomesort.bi)
+      File: algorithms/maxelement.bi  (ext/algorithms/maxelement.bi)
+      File: algorithms/minelement.bi  (ext/algorithms/minelement.bi)
+      File: algorithms/quicksort.bi  (ext/algorithms/quicksort.bi)
+      File: algorithms/replace.bi  (ext/algorithms/replace.bi)
+      File: algorithms/replacecopy.bi  (ext/algorithms/replacecopy.bi)
+      File: algorithms/replacecopyif.bi  (ext/algorithms/replacecopyif.bi)
+      File: algorithms/replaceif.bi  (ext/algorithms/replaceif.bi)
+      File: algorithms/transform.bi  (ext/algorithms/transform.bi)
+      File: algorithms/uninitializedcopy.bi  (ext/algorithms/uninitializedcopy.bi)
+      File: algorithms/uninitializedfilln.bi  (ext/algorithms/uninitializedfilln.bi)
+      }  # Group: Algorithms
+
+   Group: Containers  {
+
+      File: containers/bitarray.bi  (ext/containers/bitarray.bi)
+      File: containers/hashtable.bi  (ext/containers/hashtable.bi)
+      File: containers/pair.bi  (ext/containers/pair.bi)
+      File: containers/queue.bi  (ext/containers/queue.bi)
+      File: containers/trees.bi  (ext/containers/trees.bi)
+      File: ext/containers/array.bi  (ext/containers/array.bi)
+      File: ext/containers/awtree.bi  (ext/containers/awtree.bi)
+      File: ext/containers/list.bi  (ext/containers/list.bi)
+      File: ext/containers/stack.bi  (ext/containers/stack.bi)
+      }  # Group: Containers
+
+   Group: Database  {
+
+      File: database/database.bi  (ext/database/database.bi)
+      File: database/driver.bi  (ext/database/driver.bi)
+      File: database/drivers/sqlite3driver.bi  (ext/database/drivers/sqlite3driver.bi)
+      }  # Group: Database
+
+   Group: File  {
+
+      File: common.bi  (ext/file/detail/common.bi)
+      File: file/console.bi  (ext/file/console.bi)
+      File: file/file.bi  (ext/file/file.bi)
+      }  # Group: File
+
+   Group: Graphics  {
+
+      File: graphics/bmp.bi  (ext/graphics/bmp.bi)
+      File: graphics/collision.bi  (ext/graphics/collision.bi)
+      File: graphics/colors.bi  (ext/graphics/colors.bi)
+      File: graphics/detail/common.bi  (ext/graphics/detail/common.bi)
+      File: graphics/font.bi  (ext/graphics/font.bi)
+      File: graphics/image.bi  (ext/graphics/image.bi)
+      File: graphics/img_load.bi  (ext/graphics/img_load.bi)
+      File: graphics/jpg.bi  (ext/graphics/jpg.bi)
+      File: graphics/manip.bi  (ext/graphics/manip.bi)
+      File: graphics/png.bi  (ext/graphics/png.bi)
+      File: graphics/primitives.bi  (ext/graphics/primitives.bi)
+      File: graphics/sprite.bi  (ext/graphics/sprite.bi)
+      File: graphics/tga.bi  (ext/graphics/tga.bi)
+      }  # Group: Graphics
+
+   Group: Hash  {
+
+      File: adler32.bi  (ext/hash/adler32.bi)
+      File: crc32.bi  (ext/hash/crc32.bi)
+      File: joaat.bi  (ext/hash/joaat.bi)
+      File: md5.bi  (ext/hash/md5.bi)
+      File: sha2.bi  (ext/hash/sha2.bi)
+      }  # Group: Hash
+
+   Group: Math  {
+
+      File: common.bi  (ext/math/detail/common.bi)
+      File: math/factorial.bi  (ext/math/factorial.bi)
+      File: math/intersects.bi  (ext/math/intersects.bi)
+      File: math/line2.bi  (ext/math/line2.bi)
+      File: math/matrix.bi  (ext/math/matrix.bi)
+      File: math/ncr.bi  (ext/math/ncr.bi)
+      File: math/npr.bi  (ext/math/npr.bi)
+      File: math/pow2.bi  (ext/math/pow2.bi)
+      File: math/projections.bi  (ext/math/projections.bi)
+      File: math/random.bi  (ext/math/random.bi)
+      File: math/reflections.bi  (ext/math/reflections.bi)
+      File: math/vector2.bi  (ext/math/vector2.bi)
+      File: math/vector3.bi  (ext/math/vector3.bi)
+      File: math/vectors.bi  (ext/math/vectors.bi)
+      }  # Group: Math
+
+   Group: Memory  {
+
+      File: allocate.bi  (ext/memory/allocate.bi)
+      File: allocator.bi  (ext/memory/allocator.bi)
+      File: arrays.bi  (ext/memory/arrays.bi)
+      File: construct.bi  (ext/memory/construct.bi)
+      File: scopedptr.bi  (ext/memory/scopedptr.bi)
+      File: scopedptrarray.bi  (ext/memory/scopedptrarray.bi)
+      File: sharedarray.bi  (ext/memory/sharedarray.bi)
+      File: sharedptr.bi  (ext/memory/sharedptr.bi)
+      }  # Group: Memory
+
+   Group: Preprocessor  {
+
+      Group: Arithmetic  {
+
+         File: add.bi  (ext/preprocessor/arithmetic/add.bi)
+         File: dec.bi  (ext/preprocessor/arithmetic/dec.bi)
+         File: inc.bi  (ext/preprocessor/arithmetic/inc.bi)
+         File: mul.bi  (ext/preprocessor/arithmetic/mul.bi)
+         File: sub.bi  (ext/preprocessor/arithmetic/sub.bi)
+         }  # Group: Arithmetic
+
+      Group: Array  {
+
+         File: ext/preprocessor/array/data.bi  (ext/preprocessor/array/replace.bi)
+         File: ext/preprocessor/array/data.bi  (ext/preprocessor/array/data.bi)
+         File: ext/preprocessor/array/elem.bi  (ext/preprocessor/array/elem.bi)
+         File: ext/preprocessor/array/pushback.bi  (ext/preprocessor/array/pushback.bi)
+         File: ext/preprocessor/array/pushfront.bi  (ext/preprocessor/array/pushfront.bi)
+         File: ext/preprocessor/array/reverse.bi  (ext/preprocessor/array/reverse.bi)
+         File: ext/preprocessor/array/size.bi  (ext/preprocessor/array/size.bi)
+         }  # Group: Array
+
+      Group: Comparison  {
+
+         File: equal.bi  (ext/preprocessor/comparison/equal.bi)
+         File: greaterthan.bi  (ext/preprocessor/comparison/greaterthan.bi)
+         File: greaterthanorequal.bi  (ext/preprocessor/comparison/greaterthanorequal.bi)
+         File: lessthan.bi  (ext/preprocessor/comparison/lessthan.bi)
+         File: lessthanorequal.bi  (ext/preprocessor/comparison/lessthanorequal.bi)
+         File: notequal.bi  (ext/preprocessor/comparison/notequal.bi)
+         }  # Group: Comparison
+
+      Group: Control  {
+
+         File: exprif.bi  (ext/preprocessor/control/exprif.bi)
+         File: expriif.bi  (ext/preprocessor/control/expriif.bi)
+         File: if.bi  (ext/preprocessor/control/if.bi)
+         File: iif.bi  (ext/preprocessor/control/iif.bi)
+         File: while.bi  (ext/preprocessor/control/while.bi)
+         }  # Group: Control
+
+      File: ext/preprocessor/arithmetic.bi  (ext/preprocessor/arithmetic.bi)
+      File: ext/preprocessor/array.bi  (ext/preprocessor/array.bi)
+      File: ext/preprocessor/cat.bi  (ext/preprocessor/cat.bi)
+      File: ext/preprocessor/comparison.bi  (ext/preprocessor/comparison.bi)
+      File: ext/preprocessor/control.bi  (ext/preprocessor/control.bi)
+      File: ext/preprocessor/facilities.bi  (ext/preprocessor/facilities.bi)
+      File: ext/preprocessor/facilities/empty.bi  (ext/preprocessor/facilities/empty.bi)
+      File: ext/preprocessor/facilities/expand.bi  (ext/preprocessor/facilities/expand.bi)
+      File: ext/preprocessor/logical.bi  (ext/preprocessor/logical.bi)
+      File: ext/preprocessor/punctuation.bi  (ext/preprocessor/punctuation.bi)
+      File: ext/preprocessor/punctuation/comma.bi  (ext/preprocessor/punctuation/comma.bi)
+      File: ext/preprocessor/punctuation/commaif.bi  (ext/preprocessor/punctuation/commaif.bi)
+      File: ext/preprocessor/repetition.bi  (ext/preprocessor/repetition.bi)
+      File: ext/preprocessor/repetition/for.bi  (ext/preprocessor/repetition/for.bi)
+      File: ext/preprocessor/repetition/repeat.bi  (ext/preprocessor/repetition/repeat.bi)
+      File: ext/preprocessor/seq.bi  (ext/preprocessor/seq.bi)
+      File: ext/preprocessor/stringize.bi  (ext/preprocessor/stringize.bi)
+      File: ext/preprocessor/struct.bi  (ext/preprocessor/struct.bi)
+      File: ext/preprocessor/tuple.bi  (ext/preprocessor/tuple.bi)
+
+      Group: Logical  {
+
+         File: ext/preprocessor/logical/and.bi  (ext/preprocessor/logical/and.bi)
+         File: ext/preprocessor/logical/bitand.bi  (ext/preprocessor/logical/bitand.bi)
+         File: ext/preprocessor/logical/bitor.bi  (ext/preprocessor/logical/bitor.bi)
+         File: ext/preprocessor/logical/bitor.bi  (ext/preprocessor/logical/bitnot.bi)
+         File: ext/preprocessor/logical/bitxor.bi  (ext/preprocessor/logical/bitxor.bi)
+         File: ext/preprocessor/logical/bool.bi  (ext/preprocessor/logical/bool.bi)
+         File: ext/preprocessor/logical/not.bi  (ext/preprocessor/logical/not.bi)
+         File: ext/preprocessor/logical/or.bi  (ext/preprocessor/logical/or.bi)
+         File: ext/preprocessor/logical/xor.bi  (ext/preprocessor/logical/xor.bi)
+         }  # Group: Logical
+
+      Group: Seq  {
+
+         File: cat.bi  (ext/preprocessor/seq/cat.bi)
+         File: elem.bi  (ext/preprocessor/seq/elem.bi)
+         File: enum.bi  (ext/preprocessor/seq/enum.bi)
+         File: firstn.bi  (ext/preprocessor/seq/firstn.bi)
+         File: foldleft.bi  (ext/preprocessor/seq/foldleft.bi)
+         File: foldright.bi  (ext/preprocessor/seq/foldright.bi)
+         File: foreach.bi  (ext/preprocessor/seq/foreach.bi)
+         File: foreachi.bi  (ext/preprocessor/seq/foreachi.bi)
+         File: fromvalue.bi  (ext/preprocessor/seq/fromvalue.bi)
+         File: head.bi  (ext/preprocessor/seq/head.bi)
+         File: insert.bi  (ext/preprocessor/seq/insert.bi)
+         File: popback.bi  (ext/preprocessor/seq/popback.bi)
+         File: popfront.bi  (ext/preprocessor/seq/popfront.bi)
+         File: pushback.bi  (ext/preprocessor/seq/pushback.bi)
+         File: pushfront.bi  (ext/preprocessor/seq/pushfront.bi)
+         File: replace.bi  (ext/preprocessor/seq/replace.bi)
+         File: restn.bi  (ext/preprocessor/seq/restn.bi)
+         File: reverse.bi  (ext/preprocessor/seq/reverse.bi)
+         File: size.bi  (ext/preprocessor/seq/size.bi)
+         File: split.bi  (ext/preprocessor/seq/split.bi)
+         File: tail.bi  (ext/preprocessor/seq/tail.bi)
+         File: totuple.bi  (ext/preprocessor/seq/totuple.bi)
+         File: transform.bi  (ext/preprocessor/seq/transform.bi)
+         }  # Group: Seq
+
+      Group: Tuple  {
+
+         File: ext/preprocessor/tuple/eat.bi  (ext/preprocessor/tuple/eat.bi)
+         File: ext/preprocessor/tuple/elem.bi  (ext/preprocessor/tuple/elem.bi)
+         File: ext/preprocessor/tuple/foreach.bi  (ext/preprocessor/tuple/foreach.bi)
+         File: ext/preprocessor/tuple/foreachi.bi  (ext/preprocessor/tuple/foreachi.bi)
+         File: ext/preprocessor/tuple/fromvalue.bi  (ext/preprocessor/tuple/fromvalue.bi)
+         File: ext/preprocessor/tuple/remove.bi  (ext/preprocessor/tuple/remove.bi)
+         File: ext/preprocessor/tuple/remparens.bi  (ext/preprocessor/tuple/enum.bi)
+         File: ext/preprocessor/tuple/remparens.bi  (ext/preprocessor/tuple/remparens.bi)
+         File: ext/preprocessor/tuple/replace.bi  (ext/preprocessor/tuple/replace.bi)
+         File: ext/preprocessor/tuple/reverse.bi  (ext/preprocessor/tuple/reverse.bi)
+         File: ext/preprocessor/tuple/toseq.bi  (ext/preprocessor/tuple/toseq.bi)
+         }  # Group: Tuple
+
+      }  # Group: Preprocessor
+
+   Group: Strings  {
+
+      File: strings/detail/common.bi  (ext/strings/detail/common.bi)
+      File: strings/strmanip.bi  (ext/strings/strmanip.bi)
+      File: strings/strmisc.bi  (ext/strings/strmisc.bi)
+      File: strings/strsplit.bi  (ext/strings/strsplit.bi)
+      File: strings/substr.bi  (ext/strings/substr.bi)
+      }  # Group: Strings
+
+   File: About the Review Section  (ext/review/review.bi)
+   }  # Group: Documentation
+
+Group: Index  {
+
+   Class Index: Classes and Namespaces
+   Function Index: Functions
+   Property Index: Properties
+   Constant Index: Constants
+   Variable Index: Variables
+   Type Index: Enums and Generic Types
+   Macro Index: Macros
+   Index: Index
+   Example Index: Examples
+   }  # Group: Index
+

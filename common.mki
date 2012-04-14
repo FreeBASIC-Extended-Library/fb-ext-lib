@@ -1,0 +1,136 @@
+export
+ifndef VERBOSE
+	VERBOSE := 1
+endif
+
+ifeq ($(VERBOSE),0)
+	MAKEFLAGS += -s
+endif
+
+
+# try and detect host OS..
+HOST :=
+ifeq ($(OS),DOS)
+	HOST := dos
+else
+	ifeq ($(OS),Windows_NT)
+   		HOST := win32
+	else
+   		ifdef WINDIR
+   			HOST := win32
+		else
+       		ifdef windir
+       			HOST := win32
+		else
+		ifdef HOME
+			HOST := linux
+		endif
+       		endif
+   		endif
+	endif
+endif
+
+# infer target OS from host OS..
+ifndef TARGET
+	ifndef HOST
+		CHECKHOST_MSG := $(error error: TARGET not defined and HOST couldn't be guessed)
+	else
+		CHECKHOST_MSG :=
+	endif
+	TARGET := $(HOST)
+endif
+
+# get command names and install paths..
+ifeq ($(TARGET),linux)
+    EXEEXT :=
+    RM := rm -rf
+    EXE_PFX := ./
+    CP := cp -r
+
+    # get installation paths.
+    FBC_STANDALONE := $(shell fbc -version | grep standalone)
+    ifeq (,$(FBC_STANDALONE))
+        ifndef INSTALL_DIR
+            FBC_PREFIX := $(shell fbc -version\
+                                  | grep prefix\
+                                  | sed "s/Configured with prefix //")
+            INSTALL_DIR := $(FBC_PREFIX)
+        endif
+        INC_INSTALL_DIR := $(INSTALL_DIR)/include/freebasic
+        LIB_INSTALL_DIR := $(INSTALL_DIR)/lib/freebasic/linux
+        # confirm this..
+        DOC_INSTALL_DIR := $(INSTALL_DIR)/doc/libext
+    else
+        ifndef INSTALL_DIR
+            INSTALL_DIR := /usr/share
+        endif
+        INC_INSTALL_DIR := $(INSTALL_DIR)/freebasic/inc
+        LIB_INSTALL_DIR := $(INSTALL_DIR)/freebasic/lib/linux
+        DOC_INSTALL_DIR := $(INSTALL_DIR)/doc/libext
+    endif
+
+else
+    # using MSYS ?
+    ifeq (msys,$(findstring msys,$(shell sh --version 2>NULL)))
+        EXE_PFX := ./
+        RM := rm
+        CP := cp -r
+
+        ifndef INSTALL_DIR
+            INSTALL_DIR := /c/Program\ Files/FreeBASIC
+        endif
+        INC_INSTALL_DIR := $(INSTALL_DIR)/inc
+        LIB_INSTALL_DIR := $(INSTALL_DIR)/lib
+
+    # using cmd.exe (or similar) ?
+    else
+        RM := del
+        CP := xcopy
+        ifndef INSTALL_DIR
+            INSTALL_DIR := "C:\Program Files\FreeBASIC"
+        endif
+    endif
+    EXE_EXT := .exe
+
+endif
+
+MD := mkdir -p
+CD := cd
+
+ifeq ($(VERBOSE),0)
+FBC := @fbc$(EXE_EXT)
+else
+FBC := fbc$(EXE_EXT)
+endif
+
+INCLUDE_DIR := inc
+SOURCE_DIR := src
+LIBRARY_DIR := lib/$(TARGET)
+BINARY_DIR := bin
+TESTS_DIR := tests
+DOCS_DIR := docs
+EXAMPLES_DIR := examples
+
+ifndef INCPREFIX
+	ifndef STANDALONE
+		INCPREFIX := include/freebasic
+	else
+		INCPREFIX := inc
+	endif
+endif
+
+ifndef LIBPREFIX
+	ifndef STANDALONE
+		LIBPREFIX := lib/$(TARGET)
+	else
+		LIBPREFIX := lib/freebasic/$(TARGET)
+	endif
+endif
+
+ifndef DOCPREFIX
+	ifndef STANDALONE
+		DOCPREFIX := doc/ext
+	else
+		DOCPREFIX := share/doc/libext
+	endif
+endif

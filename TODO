@@ -1,0 +1,53 @@
+Things to complete before v0.4.0:
+    ext/Containers
+        Deque
+            [ ] Implement.
+        Set/MultiSet/Map/MultiMap
+            [ ] Implement.
+        Array
+            [ ] Finish c++stdlib APIs
+                [ ] Add .constructor(alloc).
+                [ ] Add .Assign(first,last) member proc.
+                [ ] Add .Assign(n,value) member proc.
+                [ ] Add .At(offset) member proc (checked .Index).
+                [ ] Add ext.Swap_(list,list).
+                [ ] ? Add member procs that require elements to be comparable ?
+                    [ ] Add operator=(array,array). (requires = comparable)
+                    [ ] Add operator<>(array,array). (requires = comparable)
+                    [ ] Add operator<(array,array). (requires the algorithm ext.lexicographical_compare)
+                    [ ] Add operator<=(array,array). (requires the algorithm ext.lexicographical_compare)
+                    [ ] Add operator>(array,array). (requires the algorithm ext.lexicographical_compare)
+                    [ ] Add operator>=(array,array). (requires the algorithm ext.lexicographical_compare)
+        List
+            [ ] Finish c++stdlib APIs
+                [ ] Add .constructor(alloc).
+                [ ] Add .constructor(n).
+                [ ] Add .constructor(n,value).
+                [ ] Add .constructor(n,value,alloc).
+                [ ] Add .constructor(first,last,alloc).
+                [ ] Add .Resize(n).
+                [ ] Add .Resize(n,value).
+                [ ] Add .Reverse().
+                [ ] Add .Swap_(list).
+                [ ] Add .Merge(list,pred).
+                [ ] Add .Sort(pred).
+                [ ] Add .Splice(pos,list).
+                [ ] Add .Splice(pos,list,first).
+                [ ] Add .Splice(pos,list,first,last).
+                [ ] Add .Splice(pos,list,first,last).
+                [ ] Add .Unique(pred).
+                [ ] Add ext.Swap_(list,list).
+                [ ] ? Add member procs that require elements to be comparable ?
+                    [ ] Add .Merge(list).
+                    [ ] Add .Remove().
+                    [ ] Add .Sort().
+                    [ ] Add .Unique().
+                    [ ] Add operator=(list,list). (requires = comparable)
+                    [ ] Add operator<>(list,list). (requires = comparable)
+                    [ ] Add operator<(list,list). (requires the algorithm ext.lexicographical_compare)
+                    [ ] Add operator<=(list,list). (requires the algorithm ext.lexicographical_compare)
+                    [ ] Add operator>(list,list). (requires the algorithm ext.lexicographical_compare)
+                    [ ] Add operator>=(list,list). (requires the algorithm ext.lexicographical_compare)
+'
+
+

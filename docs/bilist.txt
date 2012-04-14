@@ -1,0 +1,85 @@
+ext/ext.bi - Main header, includes all others.
+ext/detail/common.bi - Included by all headers, contains common types/defines
+ext/misc.bi - Miscellaneous functions that don't fit elsewhere
+ext/error.bi - Contains functions to ease dealing with errors
+ext/fbmld.bi - FreeBASIC Memory Leak Detector, enable by defining FBEXT_USE_MLD
+ext/debug.bi - Useful functions for debugging
+ext/xml.bi - The built-in XML library
+
+ext/graphics.bi - The main Graphics header, includes all graphics headers
+  ext/graphics/colors.bi - Contains a list of colors by names
+  ext/graphics/png.bi - Contains functions for loading and saving pngs
+  ext/graphics/font.bi - Contains functions for dealing with fonts
+  ext/graphics/manip.bi - Functions that manipulate graphics buffers
+  ext/graphics/bmp.bi - Load and save bitmap images
+
+ext/hash.bi - The main Hash header, includes all hash headers
+  ext/hash/joaat.bi - Implements the Jenkins one at a time hash function
+  ext/hash/Adler32.bi - Functions to perform an Adler 32 bit hash
+  ext/hash/crc32.bi - Functions to perform the crc 32 bit hash
+
+ext/math.bi - The main Math header, includes all math headers
+  ext/math/pow2.bi - Contains useful functions for powers of two
+  ext/math/factorial.bi - Factorial functions
+  ext/math/vectors.bi - Contains types and functions for vectors
+
+ext/bits.bi - Bits main header, includes all bits headers
+  ext/bits/holder.bi - Contains a "holder" for a arbitrarily long bit field
+
+ext/sort.bi - Main Sort header, includes all sort headers
+  ext/sort/bubble.bi - Contains functions to perform a bubble sort on arrays of all types
+  ext/sort/qsort.bi - Contains functions to perform a qsort on arrays of all types
+  ext/sort/gnome.bi - Contains functions to perform a gnome sort on arrays of all types
+
+ext/conversion.bi - Conversions header, includes all conversion headers
+  ext/conversion/base64.bi - Includes functions for decoding base64
+
+ext/strings.bi - Includes all string headers
+  ext/strings/split.bi - Functions for splitting a string or array of strings
+  ext/strings/repeat.bi - Functions for repeating yourself
+  ext/strings/replace.bi - Procedures to search and replace in strings
+  ext/strings/join.bi - Contains functions to join strings
+  ext/strings/reverse.bi - Functions to reverse strings or string arrays
+  ext/strings/levenshtein.bi - Function to calculate the levenshtein distance of two strings
+  ext/strings/explode.bi - Similar to split
+
+ext/containers.bi - Includes all containers headers
+  ext/containers/stacks.bi - Contains ready to use stacks and queues
+  ext/containers/trees.bi - Contains types for use in tree implementations
+  ext/containers/llist.bi - Contains generic types for linked list implementations
+
+ext/preprocessor.bi
+  ext/preprocessor/types.bi
+  ext/preprocessor/cat.bi
+  ext/preprocessor/stringize.bi
+  ext/preprocessor/seq.bi
+    ext/preprocessor/seq/split.bi
+    ext/preprocessor/seq/head.bi
+    ext/preprocessor/seq/popfront.bi
+    ext/preprocessor/seq/tail.bi
+    ext/preprocessor/seq/pushback.bi
+    ext/preprocessor/seq/size.bi
+    ext/preprocessor/seq/restn.bi
+    ext/preprocessor/seq/pushfront.bi
+    ext/preprocessor/seq/foreach.bi
+    ext/preprocessor/seq/totuple.bi
+    ext/preprocessor/seq/firstn.bi
+    ext/preprocessor/seq/popback.bi
+    ext/preprocessor/seq/elem.bi
+    ext/preprocessor/seq/insert.bi
+  ext/preprocessor/arithmetic.bi
+    ext/preprocessor/arithmetic/dec.bi
+    ext/preprocessor/arithmetic/inc.bi
+  ext/preprocessor/tuple.bi
+    ext/preprocessor/tuple/reverse.bi
+    ext/preprocessor/tuple/foreach.bi
+    ext/preprocessor/tuple/remove.bi
+    ext/preprocessor/tuple/remparens.bi
+    ext/preprocessor/tuple/elem.bi
+  ext/preprocessor/array.bi
+    ext/preprocessor/array/data.bi
+    ext/preprocessor/array/pushback.bi
+    ext/preprocessor/array/reverse.bi
+    ext/preprocessor/array/size.bi
+    ext/preprocessor/array/pushfront.bi
+    ext/preprocessor/array/elem.bi

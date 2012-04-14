@@ -1,0 +1,144 @@
+Contents:
+[Building the libraries from source]
+[Building the examples]
+[Building the documentation]
+[Uninstalling the libraries]
+[Dependencies]
+[Getting help]
+
+
+[Building the libraries from source]
+
+To build and install the library, you must have a GNU Make-compatible program.
+DOS users can use the DJGPP development system, which can be found here,
+
+	http://www.delorie.com/djgpp/
+
+Windows users can use MSYS, which can be found here,
+
+	http://mingw.org
+
+Linux users typically have GNU Make-compatible program already on the system.
+Also, development packages of some external libraries may be needed to build
+the FreeBASIC Extended Library on Linux (see [Dependencies] below).
+
+To build the libraries, enter the root dir--the one containing this file--and
+type the following commands,
+
+	make
+	make MT=1
+
+This will build two static libraries: a single- and a multi- threaded version.
+The multi-threaded version of the library need not be built if the library is
+not going to be used in a multi-threaded application.
+
+To install the libraries, enter the root dir and type,
+
+	make install
+
+Linux users may need to run the command with root privilages. This will install
+the libraries and header files in the default FreeBASIC installation directory.
+If you wish to install to a different directory, type,
+
+	make install INSTALLDIR=path
+
+If your Linux build is set up as standalone you will need to install using this
+command:
+
+	make install INSTALLDIR=/prefix STANDALONE=1
+
+In either case, the libraries will be installed under lib/<target>, where
+<target> is one of dos, win32 or linux, and the header files will be placed in
+inc/ext.
+
+NOTE: path must be an absolute path. By default msys mounts drive C: at /c, so
+the directory C:\mydir must be specified as /c/mydir.
+
+Other options available to the makefile are:
+
+	NDEBUG - use NDEBUG=1 to build the non-debug version of the library
+	VERBOSE - VERBOSE=0 produces little output, VERBOSE=2 produces extra
+		output, the default is VERBOSE=1.
+	TARGET - not required on Linux or Windows, use TARGET=dos on DOS.
+	PROFILE - use PROFILE=1 to add profiling information to the library.
+	EXX - use EXX=1 to add null pointer and out of bounds checking.
+	OPT - use OPT="other fbc options" to add options to the compilers
+		command line.
+
+[Building the examples]
+
+After the libraries are built, you may wish to build the example programs
+included in the package. Enter the root directory and type,
+
+	make examples
+
+This will build the example programs under <root>/examples.
+
+
+[Building the documentation]
+
+The FreeBASIC Extended Library uses NaturalDocs to build its documentation,
+which can be found here:
+
+	http://www.naturaldocs.org/
+
+Building the documentation should not be necessary, as up-to-date online
+documentation can be found at
+
+	Looking for a host...
+
+but should you decide to do so, the process is familiar: enter the root
+directory and type,
+
+	make docs
+	make install-docs
+
+This will build and install HTML documentation under <path>/doc/ext/HTML, where
+path is the default FreeBASIC installation directory. Again, to install to a
+different directory, use the INSTALLDIR make option.
+
+
+[Uninstalling the libraries]
+
+To uninstall the FreeBASIC Extended Library, enter the root directory and type,
+
+	make uninstall
+
+If you installed the library in a different location using the INSTALLDIR
+make option, then you must use the same option here, like,
+
+	make uninstall INSTALLDIR=path
+
+This will remove all of the installed files, but none of the directories
+created under <path>.
+
+
+[Dependencies]
+
+Some portions of the FreeBASIC Extended Library may depend on external
+libraries in order to link properly. At this time, these libraries are:
+
+	the FreeType Project (http://www.freetype.org/)
+	zlib (http://www.zlib.net/)
+	jpeg (http://www.ijg.org/)
+	sqlite3 (http://www.sqlite.org/)
+
+Windows shared libraries (DLLs) are included in the package and can be found
+under <root>/bin/*.dll. These shared libraries must be placed either in a
+known path, or in the directory in which your appplication is located.
+
+Linux users will need to acquire the following packages (and their development
+packages, when building the FreeBASIC Extended Library):
+
+	libfreetype6
+	libz1
+	jpeg6
+	sqlite3
+
+
+[Getting help]
+
+Official website - http://ext.freebasic.net
+Documentation - http://ext.freebasic.net/docs/ and http://ext.freebasic.net/wiki/
+IRC - #freebasic-ext on irc.freenode.net
+Mailing List: fb-ext-lib@googlegroups.com
