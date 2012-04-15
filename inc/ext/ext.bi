@@ -95,7 +95,7 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ''
-#print "Warning: ext/ext.bi is being deprecated. You should include the specific headers you want instead."
+#error "Warning: ext/ext.bi is being deprecated. You should include the specific headers you want instead."
 # pragma once
 # ifndef FBEXT_EXT_BI__
 # define FBEXT_EXT_BI__ -1
