@@ -34,8 +34,8 @@ namespace ext.tests.xml
 
     private sub register constructor
         ext.testly.addSuite("ext-xml-dom-parse")
-        ext.testly.addTest("test_xml_dom_parse", @test_xml_parse)
-        ext.testly.addTest("test_xml_dom_text_parse", @test_xml_text_parse)
+        ext.testly.addTest("test_xml_dom_parse", @test_xml_dom_parse)
+        ext.testly.addTest("test_xml_dom_text_parse", @test_xml_dom_text_parse)
     end sub
 
 end namespace
