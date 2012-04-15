@@ -1,7 +1,7 @@
 ''Title: options.bi
 ''
 ''About: License
-''Copyright (c) 2007-2011, FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2012, FreeBASIC Extended Library Development Group
 ''
 ''Contains code contributed and Copyright (c) 2007, mr_cha0s: ruben.coder@gmail.com
 ''

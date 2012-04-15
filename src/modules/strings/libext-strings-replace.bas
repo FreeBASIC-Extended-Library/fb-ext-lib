@@ -1,4 +1,4 @@
-''Copyright (c) 2007-2011, FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2012, FreeBASIC Extended Library Development Group
 ''Contains code contributed and Copyright by John Milton
 ''
 ''All rights reserved.

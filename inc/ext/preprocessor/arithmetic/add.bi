@@ -1,7 +1,7 @@
 '' Title: preprocessor/arithmetic/add.bi
 ''
 '' About: License
-''  Copyright (c) 2007-2011, FreeBASIC Extended Library Development Group
+''  Copyright (c) 2007-2012, FreeBASIC Extended Library Development Group
 ''  Copyright (c) 2001, Housemarque Oy (http://www.housemarque.com)
 ''
 ''  Distributed under the Boost Software License, Version 1.0. See
