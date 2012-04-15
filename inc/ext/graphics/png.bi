@@ -16,16 +16,17 @@
 #ifndef FBEXT_NO_LIBZ
 
 #include once "ext/detail/common.bi"
+#include once "ext/graphics/detail/common.bi"
 #include once "fbgfx.bi"
 
 #Ifndef FBEXT_USE_ZLIB_DLL
 #Ifdef __FB_WIN32__
-	#inclib "ext-z-win32"
+    #inclib "ext-z-win32"
 #Else
-	#Inclib "z"
+    #Inclib "z"
 #EndIf
 #Else
-	#Inclib "z"
+    #Inclib "z"
 #endif
 
 ''Namespace: ext.gfx.png
@@ -42,9 +43,9 @@ namespace ext.gfx.png
 ''TARGET_OPENGL - use an OpenGL compatible buffer.
 ''
 enum target_e
-	TARGET_BAD
-	TARGET_FBNEW
-	TARGET_OPENGL
+    TARGET_BAD
+    TARGET_FBNEW
+    TARGET_OPENGL
 end enum
 
 ''Function: load
@@ -61,10 +62,10 @@ end enum
 ''When destroying an image created with TARGET_OPENGL you must use deallocate, not imagedestroy.
 ''
 declare function load cdecl alias "png_load" _
-	( _
-		byref filename as const string, _
-		byval target   as target_e = TARGET_FBNEW _
-	) as any ptr
+    ( _
+        byref filename as const string, _
+        byval target   as target_e = TARGET_FBNEW _
+    ) as any ptr
 
 ''Function: load_mem
 ''Loads a png file that has been located in memory.
@@ -78,11 +79,11 @@ declare function load cdecl alias "png_load" _
 ''Pointer to png image in memory.
 ''
 declare function load_mem cdecl alias "png_load_mem" _
-	( _
-		byval buffer     as any ptr, _
-		byval buffer_len as integer, _
-		byval target     as target_e _
-	) as any ptr
+    ( _
+        byval buffer     as any ptr, _
+        byval buffer_len as integer, _
+        byval target     as target_e _
+    ) as any ptr
 
 ''Function: save
 ''Saves a png image from a memory buffer.
@@ -95,10 +96,10 @@ declare function load_mem cdecl alias "png_load_mem" _
 ''Success.
 ''
 declare function save cdecl alias "png_save" _
-	( _
-		byref filename as const string, _
-		byval img      as const FB.IMAGE ptr _
-	) as integer
+    ( _
+        byref filename as const string, _
+        byval img      as const FB.IMAGE ptr _
+    ) as integer
 
 ''Sub: dimensions
 ''Gets the dimensions of a png image without loading it.
@@ -109,11 +110,11 @@ declare function save cdecl alias "png_save" _
 ''h - will contain the height of the image.
 ''
 declare sub dimensions cdecl alias "png_dimensions" _
-	( _
-		byref filename as const string, _
-		byref w        as uinteger, _
-		byref h        as uinteger _
-	)
+    ( _
+        byref filename as const string, _
+        byref w        as uinteger, _
+        byref h        as uinteger _
+    )
 
 ''Sub: dimensions_mem
 ''Gets the dimensions of a png file loaded in memory.
@@ -124,11 +125,11 @@ declare sub dimensions cdecl alias "png_dimensions" _
 ''h - will contain the height.
 ''
 declare sub dimensions_mem cdecl alias "png_dimensions_mem" _
-	( _
-		byval buffer as const any ptr, _
-		byref w      as uinteger, _
-		byref h      as uinteger _
-	)
+    ( _
+        byval buffer as const any ptr, _
+        byref w      as uinteger, _
+        byref h      as uinteger _
+    )
 end namespace 'ext.gfx.png
 
 #endif 'FBEXT_NO_LIBZ
