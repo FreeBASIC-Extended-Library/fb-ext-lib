@@ -5,9 +5,9 @@ namespace ext.tests.strings
 
     private sub test_insertinto
 
-        TESTLY_ASSERT_TRUE("Ext insert rocks!" = ext.strings.InsertInto(" insert", "Ext Rocks!", 3)
-        TESTLY_ASSERT_TRUE("You can even prepend strings!" = ext.strings.InsertInto("You can", " even prepend strings!", 0)
-        TESTLY_ASSERT_TRUE("Or even append them!" = ext.strings.InsertInfo(" append them!", "Or even", 6)
+        TESTLY_ASSERT_TRUE("Ext insert rocks!" = ext.strings.InsertInto(" insert", "Ext Rocks!", 3))
+        TESTLY_ASSERT_TRUE("You can even prepend strings!" = ext.strings.InsertInto("You can", " even prepend strings!", 0))
+        TESTLY_ASSERT_TRUE("Or even append them!" = ext.strings.InsertInto(" append them!", "Or even", 6)) 
 
     end sub
 
