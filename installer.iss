@@ -39,6 +39,14 @@ Source: "C:\Projects\ext\docs\zlib\*"; DestDir: "{app}\docs\ext\zlib"; Flags: ig
 Source: "C:\Projects\ext\docs\LICENSE.txt"; DestDir: "{app}\docs\ext\"; Flags: ignoreversion 
 Source: "C:\Projects\ext\examples\*.bas"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Projects\ext\examples\*.bi"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Projects\ext\examples\*.db"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Projects\ext\examples\*.bmp"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Projects\ext\examples\*.jpg"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Projects\ext\examples\*.png"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Projects\ext\examples\*.tga"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Projects\ext\examples\*.ttf"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Projects\ext\examples\*.txt"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
+
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
