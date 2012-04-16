@@ -21,7 +21,7 @@ AllowNoIcons=yes
 LicenseFile=C:\Projects\ext\COPYING
 InfoBeforeFile=C:\Projects\ext\WIN32-installer.txt
 OutputDir=C:\Users\Ebben\Desktop
-OutputBaseFilename=setup
+OutputBaseFilename=setup-ext-0-3-1
 Compression=lzma2
 SolidCompression=yes
 
@@ -32,9 +32,15 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Source: "C:\Projects\ext\inc\*"; DestDir: "{app}\inc"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Projects\ext\lib\*"; DestDir: "{app}\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Projects\ext\bin\*"; DestDir: "{app}\ext-bin"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Projects\ext\docs\FramedHTML\*"; DestDir: "{app}\docs\ext\html"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Projects\ext\docs\freetype\*"; DestDir: "{app}\docs\ext\freetype"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Projects\ext\docs\jpeg\*"; DestDir: "{app}\docs\ext\jpeg"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Projects\ext\docs\zlib\*"; DestDir: "{app}\docs\ext\zlib"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Projects\ext\docs\LICENSE.txt"; DestDir: "{app}\docs\ext\"; Flags: ignoreversion 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
 Name: "{group}\{cm:ProgramOnTheWeb,FreeBASIC Extended Library}"; Filename: "http://ext.freebasic.net"
 Name: "{group}\{cm:UninstallProgram,FreeBASIC Extended Library}"; Filename: "{uninstallexe}"
+Name: "{group}\API Reference"; Filename: "{app}\docs\ext\html\index.html"
 
