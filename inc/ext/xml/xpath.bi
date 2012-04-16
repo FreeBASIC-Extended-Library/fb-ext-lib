@@ -1,5 +1,8 @@
 ''Title: xml/xpath.bi
 ''
+''Notice:
+''This submodule is not complete and will result in a compile error if included.
+''
 ''About: License
 ''Copyright (c) 2007-2012, FreeBASIC Extended Library Development Group
 ''
