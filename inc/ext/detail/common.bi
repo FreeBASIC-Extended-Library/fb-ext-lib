@@ -66,7 +66,7 @@ namespace ext
 
 	'' Constant: FBEXT_PATCH_VERSION
 	''The patch (x.x.0) version of the library.
-	const FBEXT_PATCH_VERSION = 1
+	const FBEXT_PATCH_VERSION = 2
 
 	'' Constant: FBEXT_VERSION
 	''Integer representation of the library version.
