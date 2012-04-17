@@ -1,4 +1,6 @@
 syntax: glob
+*.exe
+*.zip
 *.o
 *.a
 *.dll

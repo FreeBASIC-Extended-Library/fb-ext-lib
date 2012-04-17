@@ -433,7 +433,11 @@ namespace ext.xml
                     current->removeChild(current->m_children -1)
                     else
                     'invalid tag
-                        current->removeChild(current->m_children -1)
+
+                        if FBEXT_XML_IS_WHITESPACE(temptext[0]) = false then
+                            current->removeChild(current->m_children -1)
+                            ext.setError(128,"XML Invalid Tag:'" & current->tag & "'")
+                        end if
                     end if
 
                     deallocate(temptext)
