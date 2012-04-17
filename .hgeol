@@ -1,0 +1,4 @@
+[patterns]
+**.bas = native
+**.bi = native
+**.txt = native

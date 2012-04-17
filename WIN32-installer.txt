@@ -4,7 +4,9 @@ FreeBASIC install directory is located.
 
 For example:
 If FreeBASIC is installed in C:\FreeBASIC,
-you would provide C:\
+you would provide C:\FreeBASIC or
+if FreeBASIC is installed in P:\llamas
+you would provide P:\llamas
 
 It is recommended you uninstall any previous
 versions of the Extended Library before
