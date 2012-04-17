@@ -49,5 +49,5 @@ Things to complete before v0.4.0:
                     [ ] Add operator>(list,list). (requires the algorithm ext.lexicographical_compare)
                     [ ] Add operator>=(list,list). (requires the algorithm ext.lexicographical_compare)
 '
-
+Examples need to be updated for current state of library.
 
