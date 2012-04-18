@@ -175,6 +175,13 @@ Group: Documentation  {
       File: sharedptr.bi  (ext/memory/sharedptr.bi)
       }  # Group: Memory
 
+   Group: Net {
+     
+	 File: socket.bi (ext/net/socket.bi)
+	 File: ports.bi (ext/net/ports.bi)
+	 File: detail/common.bi (ext/net/detail/common.bi)
+	 }
+	  
    Group: Preprocessor  {
 
       Group: Arithmetic  {
