@@ -29,7 +29,7 @@ namespace ext.net
 function socket.putdata _
     ( _
     byval data_ as any ptr, _
-    byval size as integer _
+    byval size as sizetype _
     ) as integer
 
     if( size <= 0 ) then

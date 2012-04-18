@@ -74,7 +74,7 @@ namespace ext.net
     function socket.listen _
         ( _
         byref timeout as double _
-        ) as integer
+        ) as bool
         function = TCP_server_accept( p_socket, timeout, cast(sockaddr_in ptr, @cnx_info), p_listener )
     end function
 
@@ -82,7 +82,7 @@ namespace ext.net
         ( _
         byref listener as socket, _
         byval timeout as double _
-        ) as integer
+        ) as bool
         function = TCP_server_accept( p_socket, timeout, cast(sockaddr_in ptr, @cnx_info), listener.p_listener )
     end function
 

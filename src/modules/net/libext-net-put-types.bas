@@ -30,10 +30,10 @@ function socket.put _
     byref data_ as fbext_TypeName(t), _
     byref elems as integer, _
     byval time_out as integer _
-    ) as integer
+    ) as bool
 
     if( isclosed( ) ) then
-        exit function
+        return false
     end if
 
     dim as integer chunk_ = elems*len(fbext_TypeName(t)), piece
@@ -53,10 +53,10 @@ namespace ext.net
         byref data_ as string, _
         byref elems as integer, _
         byval time_out as integer _
-        ) as integer
+        ) as bool
 
         if( isclosed( ) ) then
-            exit function
+            return false
         end if
 
         dim as double delay, t
@@ -70,14 +70,14 @@ namespace ext.net
             this.put( len(*current), 1, iif(no_block, ONLY_ONCE, iif(ok_time, cint(delay * 1000), 0)) )
             delay -= timer-t
             if( (delay < 0) and ok_time ) then
-                exit function
+                return false
             end if
 
             t = timer
             this.put( (*current)[0], len(*current), iif(no_block, ONLY_ONCE, iif(ok_time, cint(delay * 1000), 0)) )
             delay -= timer-t
             if( (delay < 0) and ok_time ) then
-                exit function
+                return false
             end if
 
             current += 1

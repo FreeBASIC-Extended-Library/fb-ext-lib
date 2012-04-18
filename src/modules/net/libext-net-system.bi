@@ -62,7 +62,7 @@ namespace ext.net
     byref timeout as double, _
     byref client_info as sockaddr_in ptr, _
     byval listener as uinteger _
-    ) as integer
+    ) as bool
 
     declare function server_core _
     ( _

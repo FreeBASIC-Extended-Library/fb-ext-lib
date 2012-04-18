@@ -29,9 +29,9 @@ namespace ext.net
     function socket.getdata _
         ( _
         byval data_ as any ptr, _
-        byval size as integer, _
-        byval peek_only as integer _
-        ) as integer
+        byval size as sizetype, _
+        byval peek_only as bool _
+        ) as sizetype
 
         if( size <= 0 ) then
             exit function
@@ -177,7 +177,7 @@ namespace ext.net
     function socket.dumpdata _
         ( _
         byval size as integer _
-        ) as integer
+        ) as bool
 
         dim as socket_lock lock_ = p_recv_lock
 
@@ -186,6 +186,8 @@ namespace ext.net
             p_recv_caret += size
             function = TRUE
         end if
+
+        function = false
 
     end function
 

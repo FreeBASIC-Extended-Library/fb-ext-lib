@@ -90,7 +90,7 @@ namespace ext.net
         byref result as uinteger, _
         byref client_info as sockaddr_in ptr, _
         byval listener as uinteger _
-        ) as integer
+        ) as bool
 
         dim as integer size = len(sockaddr_in)
         dim as sockaddr_in discard
@@ -103,7 +103,7 @@ namespace ext.net
             exit function
         end if
 
-        function = -1
+        function = true
 
     end function
 
@@ -113,11 +113,11 @@ namespace ext.net
         byref then_ as double, _
         byref client_info as sockaddr_in ptr, _
         byval listener as uinteger _
-        ) as integer
+        ) as bool
 
         dim as uinteger _socket
         dim as double now_ = timer
-        dim as integer func_res
+        dim as bool func_res
 
         if( listener ) then
             if( then_ = 0 ) then
@@ -138,9 +138,9 @@ namespace ext.net
             end if
         end if
 
-        if( func_res = -1 ) then
+        if( func_res = true ) then
             swap _socket, result
-            function = -1
+            function = true
         end if
 
     end function
