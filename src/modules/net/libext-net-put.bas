@@ -125,8 +125,7 @@ dim as integer first_slash = instr( temp_server, "/" )
         dim as string HTTPRequest
         HTTPRequest += method + " " + URI + " HTTP/1.0"                             + CR_LF + _
                        "Host: " + base_HTTP_path( ltrim( temp_server, "http://" ) ) + CR_LF + _
-                       "Accept: text/html"                                          + CR_LF + _
-                       "User-Agent: cha0tix .01. Have a nice day!"                  + CR_LF + _
+                       "User-Agent: libext-net 0.3.1. Have a nice day!"                  + CR_LF + _
                        "Connection: Close"                                          + CR_LF
 
         /' POST? Parse variables? '/

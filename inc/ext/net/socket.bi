@@ -1,4 +1,4 @@
-''Title: net/ports.bi
+''Title: net/socket.bi
 ''
 ''About: License
 ''Copyright (c) 2007-2012, FreeBASIC Extended Library Development Group
@@ -51,12 +51,6 @@ namespace ext.net
     ''Wrapper around system specific low level socket calls.
     type socket
         public:
-        enum ACCESS_METHOD
-
-        ONLY_ONCE = -1
-        BLOCK     = 0
-
-        end enum
 
         declare constructor( )
         declare destructor( )
@@ -193,15 +187,41 @@ namespace ext.net
         byval peek_only as bool = FALSE _
         ) as sizetype
 
+        ''Function: getLine
+        ''Get the next line from the input stream, seperated by CRLF (HTTP and other protocols).
+        ''
         declare function getLine _
         ( _
         ) as string
 
+        ''Function: getUntil
+        ''Fills the return string until the specified string is found in the input.
+        ''
+        ''Parameters:
+        ''target - when found in string the function will return everything up to that point.
+        ''
         declare function getUntil _
         ( _
         byref target as string _
         ) as string
 
+        enum ACCESS_METHOD
+            ONLY_ONCE = -1
+            BLOCK     = 0
+        end enum
+
+        ''Function: get
+        ''
+        ''Parameters:
+        ''t - any built-in type.
+        ''elems - specifies how many "t"s to retrieve (default 1).
+        ''time_out - can be ext.net.socket.ONLY_ONCE (only tries retriving one time before giving up), ext.net.socket.BLOCK (blocks forever until enough data is there to retrieve) or, any other number specifies the number of milliseconds to try before giving up.
+        ''peek_only - If false (default), the data is removed from the socket stream
+        ''
+        ''Returns:
+        ''Upon return "elems" contains the amount of "t"s that were
+        ''successfully recieved. Return value is the number of bytes returned in total.
+        ''
         #macro fbext_SocketGet_Declare(T_)
         declare function get overload _
             ( _
@@ -230,8 +250,8 @@ namespace ext.net
         ''Function: put
         ''Overloaded for all built-in types.
         ''"elems" specifies how many "t"s to put in the stream. "time_out" can be
-        ''"chi.socket.ONLY_ONCE" (only tries putting one time before giving up)
-        ''"chi.socket.BLOCK" (blocks forever until enough data can be put)
+        ''"ext.net.socket.ONLY_ONCE" (only tries putting one time before giving up)
+        ''"ext.net.socket.BLOCK" (blocks forever until enough data can be put)
         ''or, any other number specifies the number of milliseconds to try before
         ''giving up. Upon return "elems" contains the amount of "t"s that were
         ''successfully sent.
@@ -250,11 +270,27 @@ namespace ext.net
 
         fbext_InstanciateMulti(fbext_SocketPut, fbext_BuiltinTypes())
 
+        ''Function: putLine
+        ''Similiar to the FreeBASIC print function, place a line in the output stream
+        ''ending with the CRLF line ending. (Used by HTTP and other protocols.)
+        ''
+        ''Returns:
+        ''True if successful.
+        ''
         declare function putLine _
         ( _
         byref text as string _
         ) as integer
 
+        ''Function: putString
+        ''Similiar to the FreeBASIC print function with the ; line ending,
+        ''place the string in the output stream without adding the line
+        ''ending character sequence. Does not add leading length of string
+        ''like the put(string) function does.
+        ''
+        ''Returns:
+        ''True if successful.
+        ''
         declare function putString _
         ( _
         byref text as string _

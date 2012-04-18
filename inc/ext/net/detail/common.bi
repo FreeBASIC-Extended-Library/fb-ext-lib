@@ -34,18 +34,31 @@
 
 #undef opaque
 
+''namespace: ext.net
 namespace ext.net
 
     const as string CR_LF = chr(13, 10)
 
+    ''Macro: BUILD_IP
+    ''Builds an integer IP address from 4 octets.
+    ''
+    ''Example:
+    ''BUILD_IP(10,1,1,10) = 10.1.1.10
+    ''
     #define BUILD_IP( _1, _2, _3, _4 ) _
                     ( ( ( _4 and 255 ) shl 24 ) or _
                     ( ( _3 and 255 ) shl 16 ) or _
                     ( ( _2 and 255 ) shl  8 ) or _
                     ( ( _1 and 255 ) shl  0 ) )
 
+    ''Macro: BREAK_IP
+    ''Easy access to each octet of an integer IP address.
+    ''
     #define BREAK_IP( _octet, _addr ) ( ( _addr shr ( 8 * _octet ) ) and 255 )
 
+    ''Constant: LOCALHOST
+    ''Represents the integer IP address of the local host or 127.0.0.1
+    ''
     const as integer LOCALHOST = BUILD_IP( 127, 0, 0, 1 )
 
     #define SERIAL_UDT(x) *cast(ubyte ptr, @(x)), len(x)
