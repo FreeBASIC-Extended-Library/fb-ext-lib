@@ -1,4 +1,4 @@
-''Copyright (c) 2007-2012, FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2012-2012, FreeBASIC Extended Library Development Group
 ''
 ''All rights reserved.
 ''

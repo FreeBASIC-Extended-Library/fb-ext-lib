@@ -1,3 +1,12 @@
+''File: grayscale.bas
+''Description: Demonstration of ext.gfx.grayscale function.
+''
+''Copyright (c) 2007-2012 FreeBASIC Extended Library Development Group
+''
+''Distributed under the FreeBASIC Extended Library Group license. (See
+''accompanying file LICENSE.txt or copy at
+''http://code.google.com/p/fb-extended-lib/wiki/License)
+
 #include once "ext/graphics/manip.bi"
 #include once "ext/graphics/bmp.bi"
 #include once "fbgfx.bi"

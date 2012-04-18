@@ -2,7 +2,7 @@
 ''Description: Demonstration of 2d circle to line collision
 '' detection and response using the ext.math.vector*d library.
 ''
-''Copyright (c) 2007 FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2012 FreeBASIC Extended Library Development Group
 ''
 ''Distributed under the FreeBASIC Extended Library Group license. (See
 ''accompanying file LICENSE.txt or copy at

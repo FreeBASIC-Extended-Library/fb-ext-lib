@@ -1,13 +1,14 @@
 ''File: Scale2X.bas
 ''Description: Demonstration of ext.gfx.Scale2X function.
 ''
-''Copyright (c) 2007 FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2012 FreeBASIC Extended Library Development Group
 ''
 ''Distributed under the FreeBASIC Extended Library Group license. (See
 ''accompanying file LICENSE.txt or copy at
 ''http://code.google.com/p/fb-extended-lib/wiki/License)
 
-# include once "ext/graphics.bi"
+# include once "ext/graphics/img_load.bi"
+# include once "ext/graphics/manip.bi"
 # include once "fbgfx.bi"
 
 screenres 640, 480, 32

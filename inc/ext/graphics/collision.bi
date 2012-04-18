@@ -11,6 +11,7 @@
 #define FBEXT_GFX_COLLISION_BI__ -1
 
 #include once "ext/detail/common.bi"
+#include once "ext/graphics/detail/common.bi"
 #include once "fbgfx.bi"
 
 ''Namespace: ext.gfx
@@ -32,12 +33,12 @@ namespace ext.gfx
 ''ext.bool value, false means no collision, true is collision
 ''
 declare function collision_rect ( _
-		byval img1 as const FB.IMAGE ptr, _
-		byval x1 as integer, _
-		byval y1 as integer, _
-		byval img2 as const FB.IMAGE ptr, _
-		byval x2 as integer, _
-		byval y2 as integer _
+        byval img1 as const FB.IMAGE ptr, _
+        byval x1 as integer, _
+        byval y1 as integer, _
+        byval img2 as const FB.IMAGE ptr, _
+        byval x2 as integer, _
+        byval y2 as integer _
 ) as ext.bool
 
 end namespace 'ext.gfx
