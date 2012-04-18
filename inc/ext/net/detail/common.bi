@@ -63,6 +63,17 @@ namespace ext.net
 
     #define SERIAL_UDT(x) *cast(ubyte ptr, @(x)), len(x)
 
+    ''Function: resolve
+    ''Performs a name lookup on the specified host to get the IP address to connect to.
+    ''
+    ''Returns:
+    ''Integer representative of the IP address.
+    ''
+    declare function resolve _
+    ( _
+    byref host as string _
+    ) as UInteger
+
 end namespace
 
 #endif 'FBEXT_NET_DETAIL_COMMON_BI__

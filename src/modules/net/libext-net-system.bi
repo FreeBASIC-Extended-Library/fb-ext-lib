@@ -17,11 +17,6 @@ namespace ext.net
     byval err_code as SOCKET_ERRORS _
     ) as string
 
-    declare function resolve _
-    ( _
-    byref host as string _
-    ) as uinteger
-
     declare function TCP_client overload _
     ( _
     byref result as uinteger, _
