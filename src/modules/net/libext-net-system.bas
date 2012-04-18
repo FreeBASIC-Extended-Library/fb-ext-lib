@@ -45,6 +45,7 @@ function base_HTTP_path( byref thing as string ) as string
     if( res = 0 ) then
         function = thing
     else
+        print left( thing, res - 1 )
         function = left( thing, res - 1 )
     end if
 end function

@@ -46,7 +46,7 @@ end function
 
 namespace ext.net
 
-    fbext_InstanciateMulti(fbext_SocketGet, fbext_NumericTypes())
+    fbext_InstanciateMulti(fbext_SocketPut, fbext_NumericTypes())
 
     function socket.put _
         ( _

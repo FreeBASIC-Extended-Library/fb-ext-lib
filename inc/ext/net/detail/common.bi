@@ -16,7 +16,7 @@
 
 #define SO_SNDTIMEO &h1005
 
-#include "winsockets.bi"
+#include "ext/net/detail/winsockets.bi"
 #inclib "user32"
 
 #endif

@@ -107,10 +107,16 @@ end if
 
 dim as string temp_server = server_name, URI = "/"
 
-/' get first slash, everything past that is a path '/
-dim as integer first_slash = instr( temp_server, "/" )
 
-/' there's a path. '/
+
+        if left(temp_server,7) = "http://" then
+            temp_server = right(temp_server,len(temp_server)-7)
+        end if
+
+        /' get first slash, everything past that is a path '/
+        dim as integer first_slash = instr( temp_server, "/" )
+
+        /' there's a path. '/
         if first_slash > 0 then
 
             /' take everything past first slash '/
@@ -121,12 +127,12 @@ dim as integer first_slash = instr( temp_server, "/" )
 
         end if
 
-
         dim as string HTTPRequest
         HTTPRequest += method + " " + URI + " HTTP/1.0"                             + CR_LF + _
-                       "Host: " + base_HTTP_path( ltrim( temp_server, "http://" ) ) + CR_LF + _
-                       "User-Agent: libext-net 0.3.1. Have a nice day!"                  + CR_LF + _
-                       "Connection: Close"                                          + CR_LF
+                       "Host: " + base_HTTP_path( temp_server ) + CR_LF + _
+                       "User-Agent: libext-net/0.3.1. (+http://ext.freebasic.net)"  + CR_LF + _
+                       "Connection: Close"                                          + CR_LF + _
+                       "Accept-Charset: ISO-8859-1,UTF-8;q=0.7,*;q=0.7"             + CR_LF
 
         /' POST? Parse variables? '/
         if( method = "POST" ) then
