@@ -3,6 +3,7 @@
 ''About: License
 ''Copyright (c) 2007-2012, FreeBASIC Extended Library Development Group
 ''Contains code contributed and Copyright (c) 2007, Daniel Verkamp (DrV) http://drv.nu
+''Contains code contributed and Copyright (c) 2010, D.J. Peters <d.j.peters@web.de>
 ''
 ''Distributed under the FreeBASIC Extended Library Group license. See
 ''accompanying file LICENSE.txt or copy at
