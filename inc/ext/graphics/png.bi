@@ -36,17 +36,20 @@ namespace ext.gfx.png
 ''Enum: target_e
 ''Contains the valid destinations/locations for the png image.
 ''
-''TARGET_BAD - invalid
-''
 ''TARGET_FBNEW - use the new (.17 and up) style graphics buffer.
 ''
 ''TARGET_OPENGL - use an OpenGL compatible buffer.
 ''
 enum target_e
-    TARGET_BAD
     TARGET_FBNEW
     TARGET_OPENGL
 end enum
+
+''Type: gl_img
+''Contains height and width data for a image loaded for OpenGL by png.load
+type gl_img
+    as uinteger width, height
+end type
 
 ''Function: load
 ''Loads a png file.
@@ -130,6 +133,7 @@ declare sub dimensions_mem cdecl alias "png_dimensions_mem" _
         byref w      as uinteger, _
         byref h      as uinteger _
     )
+
 end namespace 'ext.gfx.png
 
 #endif 'FBEXT_NO_LIBZ
