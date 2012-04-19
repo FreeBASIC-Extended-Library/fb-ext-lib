@@ -36,14 +36,11 @@ namespace ext.gfx.png
 ''Enum: target_e
 ''Contains the valid destinations/locations for the png image.
 ''
-''TARGET_BAD - invalid
-''
 ''TARGET_FBNEW - use the new (.17 and up) style graphics buffer.
 ''
 ''TARGET_OPENGL - use an OpenGL compatible buffer.
 ''
 enum target_e
-    TARGET_BAD
     TARGET_FBNEW
     TARGET_OPENGL
 end enum
@@ -101,35 +98,6 @@ declare function save cdecl alias "png_save" _
         byval img      as const FB.IMAGE ptr _
     ) as integer
 
-''Sub: dimensions
-''Gets the dimensions of a png image without loading it.
-''
-''Parameters:
-''filename - the file to get the dimensions of.
-''w - will contain the width of the image.
-''h - will contain the height of the image.
-''
-declare sub dimensions cdecl alias "png_dimensions" _
-    ( _
-        byref filename as const string, _
-        byref w        as uinteger, _
-        byref h        as uinteger _
-    )
-
-''Sub: dimensions_mem
-''Gets the dimensions of a png file loaded in memory.
-''
-''Parameters:
-''buffer - pointer to the memory buffer holding the file.
-''w - will contain the width.
-''h - will contain the height.
-''
-declare sub dimensions_mem cdecl alias "png_dimensions_mem" _
-    ( _
-        byval buffer as const any ptr, _
-        byref w      as uinteger, _
-        byref h      as uinteger _
-    )
 end namespace 'ext.gfx.png
 
 #endif 'FBEXT_NO_LIBZ
