@@ -46,21 +46,23 @@ namespace ext.gfx.bmp
     end type
 
     ''Function: load
-    ''Attempts to load a bitmap to a FBGFX buffer.
+    ''Attempts to load a bitmap to an <ext.gfx.Image>.
     ''
     ''Parameters:
     ''filename - the bitmap file to load.
     ''
     ''Returns:
-    ''Pointer to FBGFX buffer or null.
+    ''Pointer to <ext.gfx.Image> or null.
     ''
     declare Function load ( byref filename As const String, byval t as target_e ) As any Ptr
 
+#ifndef FBEXT_BUILD_NO_GFX_LOADERS
     sub loadBMPdriver() constructor
     dim loader as GraphicsLoader
     loader.f = @load
     getDriver("bmp",@loader)
 end sub
+#endif
 
 end Namespace 'ext.gfx.bmp
 

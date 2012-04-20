@@ -20,6 +20,7 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#define FBEXT_BUILD_NO_GFX_LOADERS -1
 #include once "ext/graphics/image.bi"
 #include once "ext/graphics/manip.bi"
 
@@ -45,6 +46,10 @@ namespace ext.gfx
 
     sub Image.setImage( byval _x_ as FB.IMAGE ptr )
 
+        if m_isGL then
+            if m_gl <> 0 then deallocate m_gl
+        end if
+
         if m_img = 0 then
             m_img = _x_
         else
@@ -52,12 +57,23 @@ namespace ext.gfx
             m_img = _x_
         end if
 
+        m_isGL = false
+
     end sub
 
     constructor Image ( byref _x_ as Image )
 
-        this.m_img = _x_.m_img
-        _x_.m_img = 0
+        if _x_.m_isGL = false then
+            this.m_img = _x_.m_img
+            _x_.m_img = 0
+            m_isGL = false
+        else
+            m_w = _x_.m_w
+            m_h = _x_.m_h
+            this.m_gl = _x_.m_gl
+            _x_.m_gl = 0
+            m_isGL = true
+        end if
 
     end constructor
 
@@ -65,9 +81,20 @@ namespace ext.gfx
     'nop
     end constructor
 
+    constructor Image ( byval w_ as uinteger, byval h_ as uinteger, byval d_ as any ptr )
+        m_w = w_
+        m_h = h_
+        m_gl = d_
+        m_isGL = true
+    end constructor
+
     destructor Image ( )
 
-        if m_img <> 0 then imagedestroy( m_img )
+        if m_isGL = false then
+            if m_img <> 0 then imagedestroy( m_img )
+        else
+            if m_gl <> 0 then deallocate( m_gl )
+        end if
 
     end destructor
 
@@ -118,13 +145,21 @@ namespace ext.gfx
 
     function Image.height( ) as ext.SizeType
 
-        return iif(m_img,m_img->height,0)
+        if m_isGL = false then
+            return iif(m_img,m_img->height,0)
+        else
+            return m_h
+        end if
 
     end function
 
     function Image.width( ) as ext.SizeType
 
-        return iif(m_img,m_img->width,0)
+        if m_isGL = false then
+            return iif(m_img,m_img->width,0)
+        else
+            return m_w
+        end if
 
     end function
 
@@ -145,8 +180,13 @@ namespace ext.gfx
     end operator
 
     function Image.Pixels( byref num_pixels as uinteger = 0 ) as uinteger ptr
-        num_pixels = m_img->width * m_img->height
-        return FBEXT_FBGFX_PIXELPTR(uinteger,m_img)
+        if m_isGL = false then
+            num_pixels = m_img->width * m_img->height
+            return FBEXT_FBGFX_PIXELPTR(uinteger,m_img)
+        else
+            num_pixels = m_w * m_h
+            return m_gl
+        end if
     end function
 
 

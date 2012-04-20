@@ -20,6 +20,8 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#define FBEXT_BUILD_NO_GFX_LOADERS -1
+#include once "ext/graphics/image.bi"
 #include once "ext/graphics/tga.bi"
 #include once "ext/graphics/manip.bi"
 #include once "ext/file/file.bi"
@@ -117,10 +119,10 @@ function load_mem( byval src as any ptr, byval src_len as SizeType, byval t as t
         If ((tga_info->imagedescriptor And 32) Shr 5) = 0 Then
             var img2 = ext.gfx.flipVertical( img )
             imagedestroy img
-            return img2
+            return new ext.gfx.Image(img2)
         End If
 
-        Return img
+        Return new ext.gfx.Image(img)
 
 end function
 

@@ -23,21 +23,23 @@
 namespace ext.gfx.jpg
 
 ''Function: load
-''Loads a JPEG image to a FB.IMAGE buffer.
+''Loads a JPEG image to an <ext.gfx.Image>.
 ''
 ''Parameters:
 ''filename - the file to load.
 ''
 ''Returns:
-''FB.IMAGE ptr containing the jpg data. Does not work with grayscale images at this time.
+''<ext.gfx.Image> ptr containing the jpg data. Does not work with grayscale images at this time.
 ''
 declare function load ( byref filename as const string, byval t as target_e ) as any ptr
 
+#ifndef FBEXT_BUILD_NO_GFX_LOADERS
 sub loadJPGdriver() constructor
     dim loader as GraphicsLoader
     loader.f = @load
     getDriver("jpg",@loader)
 end sub
+#endif
 
 end namespace
 

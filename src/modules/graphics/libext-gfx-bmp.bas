@@ -20,7 +20,8 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
+#define FBEXT_BUILD_NO_GFX_LOADERS -1
+#include once "ext/graphics/image.bi"
 # include once "ext/graphics/bmp.bi"
 
 namespace ext.gfx.bmp
@@ -30,7 +31,7 @@ namespace ext.gfx.bmp
 
         dim as bmp_header bmh
         dim as integer ff = freefile
-        dim as any ptr buffer
+        dim as fb.image ptr buffer
 
         if open( filename, for binary access read, as #ff ) = null then
             get #ff, , bmh
@@ -48,7 +49,7 @@ namespace ext.gfx.bmp
 
         end if
 
-        return buffer
+        return new ext.gfx.Image(buffer)
 
     end function
 

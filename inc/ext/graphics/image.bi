@@ -18,10 +18,14 @@
 #include once "ext/detail/common.bi"
 #include once "ext/graphics/detail/common.bi"
 #include once "ext/math/vector2.bi"
+
+#ifndef FBEXT_BUILD_NO_GFX_LOADERS
 #include once "ext/graphics/jpg.bi"
 #include once "ext/graphics/bmp.bi"
 #include once "ext/graphics/png.bi"
 #include once "ext/graphics/tga.bi"
+#endif
+
 #include once "fbgfx.bi"
 
 #Ifdef image_bi_dnbii
@@ -176,13 +180,17 @@ end type
     ''Function: LoadImage
     ''Loads a image file from disk to a FBGFX buffer.
     ''
-    ''Supports TGA, JPG, BMP and PNG images.
+    ''Supports TGA, JPG, BMP and PNG images depending on allowed external libraries.
+    ''If you define: FBEXT_NO_LIBZ before this header then loading PNGs is not supported.
+    ''If you define: FBEXT_NO_LIBJPG before this header then loading JPGs is not supported.
+    ''If you define: FBEXT_NO_EXTERNAL_LIBS then only TGA and BMP images can be loaded.
     ''
     ''Parameters:
     ''filename - the file to load.
+    ''target - <target_e> (default TARGET_FBNEW) which format should the resulting image be?
     ''
     ''Returns:
-    ''Pointer to FBGFX buffer.
+    ''Pointer to <Image> with a FBGFX or OpenGL-compatible buffer, free with delete when done.
     ''
     declare function LoadImage ( byref filename as const string, byval t as target_e = TARGET_FBNEW ) as Image ptr
 

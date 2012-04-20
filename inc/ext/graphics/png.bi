@@ -47,10 +47,7 @@ end type
 ''target - (optional) the target from target_e to load to, defaults to New FB style Image buffer
 ''
 ''Returns:
-''Pointer to png image in memory.
-''
-''Notes:
-''When destroying an image created with TARGET_OPENGL you must use deallocate, not imagedestroy.
+''<ext.gfx.Image> Pointer to png image in memory.
 ''
 declare function load _
     ( _
@@ -67,7 +64,7 @@ declare function load _
 ''target - the target from target_e to load to.
 ''
 ''Returns:
-''Pointer to png image in memory.
+''<ext.gfx.Image> Pointer to png image in memory.
 ''
 declare function load_mem _
     ( _
@@ -92,42 +89,14 @@ declare function save cdecl alias "png_save" _
         byval img      as const FB.IMAGE ptr _
     ) as integer
 
-''Sub: dimensions
-''Gets the dimensions of a png image without loading it.
-''
-''Parameters:
-''filename - the file to get the dimensions of.
-''w - will contain the width of the image.
-''h - will contain the height of the image.
-''
-declare sub dimensions cdecl alias "png_dimensions" _
-    ( _
-        byref filename as const string, _
-        byref w        as uinteger, _
-        byref h        as uinteger _
-    )
-
-''Sub: dimensions_mem
-''Gets the dimensions of a png file loaded in memory.
-''
-''Parameters:
-''buffer - pointer to the memory buffer holding the file.
-''w - will contain the width.
-''h - will contain the height.
-''
-declare sub dimensions_mem cdecl alias "png_dimensions_mem" _
-    ( _
-        byval buffer as const any ptr, _
-        byref w      as uinteger, _
-        byref h      as uinteger _
-    )
-
+#ifndef FBEXT_BUILD_NO_GFX_LOADERS
 sub loadPNGdriver() constructor
     dim loader as GraphicsLoader
     loader.f = @load
     loader.fmem = @load_mem
     getDriver("png",@loader)
 end sub
+#ifndef FBEXT_BUILD_NO_GFX_LOADERS
 
 end namespace 'ext.gfx.png
 

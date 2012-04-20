@@ -43,18 +43,31 @@ namespace ext.gfx.tga
 ''filename - the tga image to load.
 ''
 ''Returns:
-''Pointer to tga image in memory.
+''<ext.gfx.Image> Pointer to tga image in memory.
 ''
     declare Function load ( byref filename As const String, byval t as target_e ) As any Ptr
 
+''Function: load_mem
+''Loads a tga file that has been located in memory.
+''
+''Parameters:
+''buffer - pointer to memory buffer holding the file.
+''buffer_len - the length of the buffer.
+''target - the target from target_e to load to.
+''
+''Returns:
+''<ext.gfx.Image> Pointer to tga image.
+''
 declare function load_mem( byval src as any ptr, byval src_len as SizeType, byval t as target_e ) as any ptr
 
+#ifndef FBEXT_BUILD_NO_GFX_LOADERS
 sub loadTGAdriver() constructor
     dim loader as GraphicsLoader
     loader.f = @load
     loader.fmem = @load_mem
     getDriver("tga",@loader)
 end sub
+#endif
 
 end namespace 'ext.gfx.tga
 
