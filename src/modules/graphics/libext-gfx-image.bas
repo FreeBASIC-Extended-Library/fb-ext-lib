@@ -100,7 +100,7 @@ namespace ext.gfx
 
     property Image.isEmpty( ) as ext.bool
 
-        return iif( m_img = 0, true, false )
+        return iif( m_img = 0 or m_gl = 0, true, false )
 
     end property
 
