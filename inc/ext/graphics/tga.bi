@@ -47,10 +47,12 @@ namespace ext.gfx.tga
 ''
     declare Function load ( byref filename As const String, byval t as target_e ) As any Ptr
 
+declare function load_mem( byval src as any ptr, byval src_len as SizeType, byval t as target_e ) as any ptr
 
 sub loadTGAdriver() constructor
     dim loader as GraphicsLoader
     loader.f = @load
+    loader.fmem = @load_mem
     getDriver("tga",@loader)
 end sub
 

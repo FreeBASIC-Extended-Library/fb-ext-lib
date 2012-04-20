@@ -57,47 +57,54 @@ Function load _
                 byval t as target_e _
         ) As any Ptr
 
-        Dim As FileHeader tga_info
         Dim As ext.FILE  hFile
-        Dim As Ubyte Ptr  tga_id
-        Dim As Ubyte Ptr  data_buf
+        dim as any ptr img
+        dim as ubyte ptr fbuf
+
+        if t <> TARGET_FBNEW ANDALSO t <> TARGET_OPENGL then return 0
 
         If hFile.open( file_name ) Then
                 'con.WriteLine("File not loaded")
                 Return NULL
         End If
 
-        hFile.get( , *cast(ubyte ptr, @tga_info), sizeof( FileHeader ))
-
-        Dim As Integer w = tga_info.width
-        Dim As Integer h = tga_info.height
-        Dim As Integer bpp = tga_info.bitsperpixel \ 8
-        Dim As Integer file_data_size
-
-        file_data_size = hFile.lof() - (sizeof(FileHeader) + tga_info.idlength)
-
-        data_buf = allocate( file_data_size )
-
-        if tga_info.idlength > 0 then
-            for n as integer = 0 to tga_info.idlength -1
-                dim idfiller as ubyte
-                hFile.get( , idfiller )
-            next
-        end if
-
-        hFile.get( , *data_buf, file_data_size )
-
+        var fsiz = hFile.toBuffer(fbuf)
         hFile.close()
 
-        Select Case As Const tga_info.datatypecode
+        img = load_mem(fbuf,fsiz,t)
+        delete[] fbuf
+
+        Return img
+
+End Function
+
+function load_mem( byval src as any ptr, byval src_len as SizeType, byval t as target_e ) as any ptr
+
+        Dim As FileHeader ptr tga_info
+        Dim As Ubyte Ptr  data_buf
+
+        If src = null orelse src_len < sizeof(FileHeader) Then
+                Return NULL
+        End If
+
+        tga_info = cast(FileHeader ptr, src)
+
+        Dim As Integer w = tga_info->width
+        Dim As Integer h = tga_info->height
+        Dim As Integer bpp = tga_info->bitsperpixel \ 8
+        Dim As Integer file_data_size
+
+        file_data_size = src_len - (sizeof(FileHeader) + tga_info->idlength)
+
+        data_buf = cast(ubyte ptr, src)+sizeof(FileHeader)+tga_info->idlength
+
+        Select Case As Const tga_info->datatypecode
                 Case 2 'Nothing to do, already rgb data
 
                 Case 10
                     data_buf = rldecode( data_buf, file_data_size, w, h, bpp )
                 Case Else
-                    'con.WriteLine("Unsupported tga type")
                     'unsupported type
-                    deallocate( data_buf )
                     Return NULL
         End Select
 
@@ -107,13 +114,15 @@ Function load _
 
         idataToImg( data_buf, img, bpp )
 
-        If ((tga_info.imagedescriptor And 32) Shr 5) = 0 Then
-            img = ext.gfx.flipVertical( img )
+        If ((tga_info->imagedescriptor And 32) Shr 5) = 0 Then
+            var img2 = ext.gfx.flipVertical( img )
+            imagedestroy img
+            return img2
         End If
 
         Return img
 
-End Function
+end function
 
 function rldecode( byval data_buf as ubyte ptr, byval buflen as const uinteger, byval w as integer, byval h as integer, byval bpp as integer ) as ubyte ptr
 
@@ -158,7 +167,6 @@ function rldecode( byval data_buf as ubyte ptr, byval buflen as const uinteger, 
         End If
     Wend
 
-    deallocate( data_buf )
     return temp_buf
 
 end function
