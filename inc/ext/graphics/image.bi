@@ -18,6 +18,10 @@
 #include once "ext/detail/common.bi"
 #include once "ext/graphics/detail/common.bi"
 #include once "ext/math/vector2.bi"
+#include once "ext/graphics/jpg.bi"
+#include once "ext/graphics/bmp.bi"
+#include once "ext/graphics/png.bi"
+#include once "ext/graphics/tga.bi"
 #include once "fbgfx.bi"
 
 #Ifdef image_bi_dnbii
@@ -27,7 +31,6 @@
 ''Namespace: ext.gfx
 
 namespace ext.gfx
-
 
 ''class: Image
 ''Provides a *New*-able FB.IMAGE replacement with built-in memory management and convenience functions
@@ -169,6 +172,19 @@ type Image
     as uinteger m_w, m_h
 
 end type
+
+    ''Function: LoadImage
+    ''Loads a image file from disk to a FBGFX buffer.
+    ''
+    ''Supports TGA, JPG, BMP and PNG images.
+    ''
+    ''Parameters:
+    ''filename - the file to load.
+    ''
+    ''Returns:
+    ''Pointer to FBGFX buffer.
+    ''
+    declare function LoadImage ( byref filename as const string ) as Image ptr
 
 end namespace
 

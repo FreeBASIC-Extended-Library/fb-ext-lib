@@ -21,11 +21,7 @@
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define fbext_NoBuiltinInstanciations() 1
-#include once "ext/graphics/detail/common.bi"
-#include once "ext/graphics/bmp.bi"
-#include once "ext/graphics/png.bi"
-#include once "ext/graphics/jpg.bi"
-#include once "ext/graphics/tga.bi"
+#include once "ext/graphics/image.bi"
 #include once "ext/containers/hashtable.bi"
 
 namespace ext.gfx
@@ -34,7 +30,7 @@ namespace ext.gfx
 
 extern __driver_ht as fbext_HashTable((GraphicsLoader)) ptr
 
-function LoadImage ( byref filename as const string, byval t as target_e = TARGET_FBNEW ) as FB.IMAGE ptr
+function LoadImage ( byref filename as const string, byval t as target_e = TARGET_FBNEW ) as Image ptr
 
     if __driver_ht = null then return null
 
