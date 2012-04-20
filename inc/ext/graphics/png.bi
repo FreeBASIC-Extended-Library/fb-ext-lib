@@ -33,18 +33,6 @@
 
 namespace ext.gfx.png
 
-''Enum: target_e
-''Contains the valid destinations/locations for the png image.
-''
-''TARGET_FBNEW - use the new (.17 and up) style graphics buffer.
-''
-''TARGET_OPENGL - use an OpenGL compatible buffer.
-''
-enum target_e
-    TARGET_FBNEW
-    TARGET_OPENGL
-end enum
-
 ''Type: gl_img
 ''Contains height and width data for a image loaded for OpenGL by png.load
 type gl_img
@@ -64,7 +52,7 @@ end type
 ''Notes:
 ''When destroying an image created with TARGET_OPENGL you must use deallocate, not imagedestroy.
 ''
-declare function load cdecl alias "png_load" _
+declare function load _
     ( _
         byref filename as const string, _
         byval target   as target_e = TARGET_FBNEW _
@@ -81,10 +69,10 @@ declare function load cdecl alias "png_load" _
 ''Returns:
 ''Pointer to png image in memory.
 ''
-declare function load_mem cdecl alias "png_load_mem" _
+declare function load_mem _
     ( _
         byval buffer     as any ptr, _
-        byval buffer_len as integer, _
+        byval buffer_len as SizeType, _
         byval target     as target_e _
     ) as any ptr
 
@@ -133,6 +121,13 @@ declare sub dimensions_mem cdecl alias "png_dimensions_mem" _
         byref w      as uinteger, _
         byref h      as uinteger _
     )
+
+sub loadPNGdriver() constructor
+    dim loader as GraphicsLoader
+    loader.f = @load
+    loader.fmem = @load_mem
+    getDriver("png",@loader)
+end sub
 
 end namespace 'ext.gfx.png
 

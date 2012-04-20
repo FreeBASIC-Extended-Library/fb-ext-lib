@@ -11,41 +11,63 @@
 #define FBEXT_GFX_DETAIL_COMMON_BI__ -1
 
 #if not __FB_MT__
-	#inclib "ext-graphics"
-	#ifdef FBEXT_MULTITHREADED
-		#error "The multithreaded version of the library must be built using the -mt compiler option."
-	#endif
+    #inclib "ext-graphics"
+    #ifdef FBEXT_MULTITHREADED
+        #error "The multithreaded version of the library must be built using the -mt compiler option."
+    #endif
 #else
-	#inclib "ext-graphics.mt"
-	#ifndef FBEXT_MULTITHREADED
-		#define FBEXT_MULTITHREADED 1
-	#endif
+    #inclib "ext-graphics.mt"
+    #ifndef FBEXT_MULTITHREADED
+        #define FBEXT_MULTITHREADED 1
+    #endif
 #EndIf
 
 # include once "ext/detail/common.bi"
 
 namespace ext.gfx
 
-	''Enum: DrawMethods
-	''Used to determine the method to use when drawing an image.
-	''
-	''PSET_ - Source pixel values are copied without modification.
-	''PRESET_ - Source pixel values are 1's-complement negated before being copied.
-	''TRANS_ - Source pixel values are copied without modification. Does not draw source pixels of mask color.
-	''AND_ - Destination pixels are bitwise ANDed with source pixels.
-	''OR_ - Destination pixels are bitwise ORed with source pixels.
-	''XOR_ - Destination pixels are bitwise XORed with source pixels.
-	''ALPHA_ - Source is blended with a transparency factor specified in the image's individual pixels.
-	''
-	enum DrawMethods
-		PSET_
-		PRESET_
-		TRANS_
-		AND_
-		OR_
-		XOR_
-		ALPHA_
-	end enum
+    ''Enum: DrawMethods
+    ''Used to determine the method to use when drawing an image.
+    ''
+    ''PSET_ - Source pixel values are copied without modification.
+    ''PRESET_ - Source pixel values are 1's-complement negated before being copied.
+    ''TRANS_ - Source pixel values are copied without modification. Does not draw source pixels of mask color.
+    ''AND_ - Destination pixels are bitwise ANDed with source pixels.
+    ''OR_ - Destination pixels are bitwise ORed with source pixels.
+    ''XOR_ - Destination pixels are bitwise XORed with source pixels.
+    ''ALPHA_ - Source is blended with a transparency factor specified in the image's individual pixels.
+    ''
+    enum DrawMethods
+        PSET_
+        PRESET_
+        TRANS_
+        AND_
+        OR_
+        XOR_
+        ALPHA_
+    end enum
+
+    ''Enum: target_e
+    ''Contains the valid destinations/locations for the image.
+    ''
+    ''TARGET_FBNEW - use the new (.17 and up) style graphics buffer.
+    ''
+    ''TARGET_OPENGL - use an OpenGL compatible buffer.
+    ''
+    enum target_e
+        TARGET_FBNEW
+        TARGET_OPENGL
+    end enum
+
+    type GraphicsLoader
+        f as function( byref as const string, byval as target_e ) as any ptr
+        fmem as function( byval idat as any ptr, byval blen as SizeType, byval as target_e ) as any ptr
+        declare constructor
+        declare operator let( byref rhs as const GraphicsLoader )
+    end type
+    declare operator = ( byref lhs as const GraphicsLoader, byref rhs as const GraphicsLoader ) as integer
+
+    declare function getDriver(byref ftype as string, byval set_ as GraphicsLoader ptr = 0 ) as GraphicsLoader ptr
 
 end namespace ' ext
 

@@ -11,6 +11,7 @@
 #define FBEXT_GFX_JPG_BI__ -1
 
 #include once "ext/detail/common.bi"
+#include once "ext/graphics/detail/common.bi"
 #include once "fbgfx.bi"
 
 #ifndef FBEXT_NO_EXTERNAL_LIBS
@@ -30,7 +31,13 @@ namespace ext.gfx.jpg
 ''Returns:
 ''FB.IMAGE ptr containing the jpg data. Does not work with grayscale images at this time.
 ''
-declare function load ( byref filename as const string ) as FB.IMAGE ptr
+declare function load ( byref filename as const string, byval t as target_e ) as any ptr
+
+sub loadJPGdriver() constructor
+    dim loader as GraphicsLoader
+    loader.f = @load
+    getDriver("jpg",@loader)
+end sub
 
 end namespace
 

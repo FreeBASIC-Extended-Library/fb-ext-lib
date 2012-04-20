@@ -20,38 +20,35 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#define fbext_NoBuiltinInstanciations() 1
+#include once "ext/graphics/detail/common.bi"
 #include once "ext/graphics/bmp.bi"
 #include once "ext/graphics/png.bi"
 #include once "ext/graphics/jpg.bi"
 #include once "ext/graphics/tga.bi"
+#include once "ext/containers/hashtable.bi"
 
 namespace ext.gfx
 
-function LoadImage ( byref filename as const string ) as FB.IMAGE ptr
+   fbext_Instanciate(fbext_HashTable, ((GraphicsLoader)))
 
-    select case lcase(right(filename, 4))
+extern __driver_ht as fbext_HashTable((GraphicsLoader)) ptr
 
-    case ".bmp"
+function LoadImage ( byref filename as const string, byval t as target_e = TARGET_FBNEW ) as FB.IMAGE ptr
 
-        return gfx.bmp.load(filename)
+    if __driver_ht = null then return null
 
-    case ".png"
+    var extension = lcase(right(filename,3))
 
-        return gfx.png.load(filename, gfx.png.TARGET_FBNEW)
+    var loader = __driver_ht->Find(extension)
 
-    case ".jpg", "jpeg"
+    if loader = null then return null
 
-        return gfx.jpg.load(filename)
+    var ret = loader->f(filename, t)
 
-    case ".tga"
+    'this is where conversion for OpenGL will go
 
-        return gfx.tga.load(filename)
-
-    case else
-
-        return null
-
-    end select
+    return ret
 
 end function
 

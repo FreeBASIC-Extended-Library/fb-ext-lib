@@ -13,9 +13,6 @@
 #include once "ext/detail/common.bi"
 #include once "fbgfx.bi"
 
-#ifndef FBEXT_NO_LIBZ
-#ifndef FBEXT_NO_LIBJPG
-
 #include once "ext/graphics/jpg.bi"
 #include once "ext/graphics/bmp.bi"
 #include once "ext/graphics/png.bi"
@@ -39,9 +36,5 @@ namespace ext.gfx
     declare function LoadImage ( byref filename as const string ) as FB.IMAGE ptr
 
 end namespace
-
-#endif 'NO_LIBJPG
-#endif 'NO_LIBZ
-
 
 #endif

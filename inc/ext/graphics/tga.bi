@@ -19,22 +19,22 @@
 
 namespace ext.gfx.tga
 
-	''type: FileHeader
-	''Provided for users wanting to write tga manipulation routines
-	type FileHeader field = 1
-		idlength        As Ubyte
-		colourmaptype   As Ubyte
-		datatypecode    As Ubyte
-		colourmaporigin As Ushort
-		colourmaplength As Ushort
-		colourmapdepth  As Ubyte
-		x_origin        As Ushort
-		y_origin        As Ushort
-		Width           As Ushort
-		height          As Ushort
-		bitsperpixel    As Ubyte
-		imagedescriptor As Ubyte
-	end type
+    ''type: FileHeader
+    ''Provided for users wanting to write tga manipulation routines
+    type FileHeader field = 1
+        idlength        As Ubyte
+        colourmaptype   As Ubyte
+        datatypecode    As Ubyte
+        colourmaporigin As Ushort
+        colourmaplength As Ushort
+        colourmapdepth  As Ubyte
+        x_origin        As Ushort
+        y_origin        As Ushort
+        Width           As Ushort
+        height          As Ushort
+        bitsperpixel    As Ubyte
+        imagedescriptor As Ubyte
+    end type
 
 ''Function: load
 ''Loads a Targa Bitmap Image file.
@@ -45,8 +45,14 @@ namespace ext.gfx.tga
 ''Returns:
 ''Pointer to tga image in memory.
 ''
-	declare Function load ( byref filename As const String ) As FB.IMAGE Ptr
+    declare Function load ( byref filename As const String, byval t as target_e ) As any Ptr
 
+
+sub loadTGAdriver() constructor
+    dim loader as GraphicsLoader
+    loader.f = @load
+    getDriver("tga",@loader)
+end sub
 
 end namespace 'ext.gfx.tga
 

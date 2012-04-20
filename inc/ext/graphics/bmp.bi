@@ -11,49 +11,56 @@
 #define FBEXT_GFX_BMP_BI__ -1
 
 #include once "ext/detail/common.bi"
+#include once "ext/graphics/detail/common.bi"
 #include once "fbgfx.bi"
 
 ''Namespace: ext.gfx.bmp
 
 namespace ext.gfx.bmp
 
-	''type: FileHeader
-	''Provided for users wanting to write bmp manipulation routines
-	type FileHeader field = 1
-		as ushort		mark
-		as uinteger		size
-		As ushort		res1, res2
-		As uinteger		offset
-	end type
+    ''type: FileHeader
+    ''Provided for users wanting to write bmp manipulation routines
+    type FileHeader field = 1
+        as ushort       mark
+        as uinteger     size
+        As ushort       res1, res2
+        As uinteger     offset
+    end type
 
-	''type: InfoHeader
-	''Provided for users wanting to write bmp manipulation routines
-	type InfoHeader field = 1
-		as uinteger		size
-		As integer		w, h
-		As short		planes, bitCount
-		As uinteger		compression, sizeImage
-		As integer		ppmX, ppmY
-		As uinteger		used, important
-	end type
+    ''type: InfoHeader
+    ''Provided for users wanting to write bmp manipulation routines
+    type InfoHeader field = 1
+        as uinteger     size
+        As integer      w, h
+        As short        planes, bitCount
+        As uinteger     compression, sizeImage
+        As integer      ppmX, ppmY
+        As uinteger     used, important
+    end type
 
-	''type: bmp_header
-	''Provided for users wanting to write bmp manipulation routines
-	type bmp_header field = 1
-		As FileHeader	bmfh
-		As InfoHeader	bmih
-	end type
+    ''type: bmp_header
+    ''Provided for users wanting to write bmp manipulation routines
+    type bmp_header field = 1
+        As FileHeader   bmfh
+        As InfoHeader   bmih
+    end type
 
-	''Function: load
-	''Attempts to load a bitmap to a FBGFX buffer.
-	''
-	''Parameters:
-	''filename - the bitmap file to load.
-	''
-	''Returns:
-	''Pointer to FBGFX buffer or null.
-	''
-	declare Function load ( byref filename As const String ) As FB.IMAGE Ptr
+    ''Function: load
+    ''Attempts to load a bitmap to a FBGFX buffer.
+    ''
+    ''Parameters:
+    ''filename - the bitmap file to load.
+    ''
+    ''Returns:
+    ''Pointer to FBGFX buffer or null.
+    ''
+    declare Function load ( byref filename As const String, byval t as target_e ) As any Ptr
+
+    sub loadBMPdriver() constructor
+    dim loader as GraphicsLoader
+    loader.f = @load
+    getDriver("bmp",@loader)
+end sub
 
 end Namespace 'ext.gfx.bmp
 

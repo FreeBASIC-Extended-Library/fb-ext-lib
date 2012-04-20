@@ -46,6 +46,16 @@ type Image
     declare constructor( byval w_ as uinteger, byval h_ as uinteger, byval def_color as uinteger = RGBA(255,0,255,255) )
 
     ''sub: constructor
+    ''Assigns an existing OpenGL compatible image buffer to this object.
+    ''
+    ''Parameters:
+    ''w_ - the width of the image
+    ''h_ - the height of the image
+    ''d_ - the buffer containing the image
+    ''
+    declare constructor( byval w_ as uinteger, byval h_ as uinteger, byval d_ as any ptr )
+
+    ''sub: constructor
     ''Constructs an Image with an external FB.IMAGE. Takes over responsibility for freeing the fb.image's memory.
     ''
     ''Parameters:
@@ -71,14 +81,6 @@ type Image
     declare constructor( )
 
     declare destructor( )
-
-    ''sub: setImage
-    ''Sets the image to handle, freeing the current image if necessary.
-    ''
-    ''Parameters:
-    ''_x_ - FB.IMAGE ptr to the new image data to use.
-    ''
-    declare sub setImage( byval _x_ as FB.IMAGE ptr )
 
     ''function: height
     ''Returns the height of the image.
@@ -160,7 +162,11 @@ type Image
     declare function Pixels( byref num_pixels as uinteger = 0 ) as uinteger ptr
 
     private:
+    declare sub setImage( byval _x_ as FB.IMAGE ptr )
+    as bool m_isGL
     m_img as FB.IMAGE ptr
+    m_gl as uinteger ptr
+    as uinteger m_w, m_h
 
 end type
 

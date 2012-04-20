@@ -32,53 +32,53 @@
 namespace ext.gfx.jpg
 
 '':::::
-function load ( byref filename as const string ) as FB.IMAGE ptr
-	
-	dim as FILE ptr fp = fopen( strptr(filename), "rb" )
-	if( fp = null ) then return null
+function load ( byref filename as const string, byval t as target_e ) as any ptr
 
-	dim jinfo as jpeg_decompress_struct 
-	dim jerr as jpeg_error_mgr
-	dim row as JSAMPARRAY
+    dim as FILE ptr fp = fopen( strptr(filename), "rb" )
+    if( fp = null ) then return null
 
-	jpeg_create_decompress( @jinfo )
+    dim jinfo as jpeg_decompress_struct
+    dim jerr as jpeg_error_mgr
+    dim row as JSAMPARRAY
 
-	jinfo.err = jpeg_std_error( @jerr )
+    jpeg_create_decompress( @jinfo )
 
-	jpeg_stdio_src( @jinfo, fp )
+    jinfo.err = jpeg_std_error( @jerr )
 
-	jpeg_read_header( @jinfo, cTRUE )
+    jpeg_stdio_src( @jinfo, fp )
 
-	jpeg_start_decompress( @jinfo )
+    jpeg_read_header( @jinfo, cTRUE )
 
-	row = jinfo.mem->alloc_sarray(  cast( j_common_ptr, @jinfo ), _
-					JPOOL_IMAGE, _
-					jinfo.output_width * jinfo.output_components, _
-					1 )
+    jpeg_start_decompress( @jinfo )
 
-	dim img as FB.IMAGE ptr
-	img = imagecreate( jinfo.output_width, jinfo.output_height )
+    row = jinfo.mem->alloc_sarray(  cast( j_common_ptr, @jinfo ), _
+                    JPOOL_IMAGE, _
+                    jinfo.output_width * jinfo.output_components, _
+                    1 )
 
-	var dst = cast(byte ptr, img + 1)
+    dim img as FB.IMAGE ptr
+    img = imagecreate( jinfo.output_width, jinfo.output_height )
 
-	dim as integer bpp
-	screeninfo ,,,bpp
+    var dst = cast(byte ptr, img + 1)
 
-	do while jinfo.output_scanline < jinfo.output_height
-	        jpeg_read_scanlines( @jinfo, row, 1 )
+    dim as integer bpp
+    screeninfo ,,,bpp
 
-		imageconvertrow( *row, 24, dst, bpp*8, jinfo.output_width )
-		dst += img->pitch
+    do while jinfo.output_scanline < jinfo.output_height
+            jpeg_read_scanlines( @jinfo, row, 1 )
 
-	loop
+        imageconvertrow( *row, 24, dst, bpp*8, jinfo.output_width )
+        dst += img->pitch
 
-	jinfo.mem->free_pool( cast(j_common_ptr, @jinfo ), JPOOL_IMAGE )
+    loop
 
-	jpeg_finish_decompress( @jinfo )
-	jpeg_destroy_decompress( @jinfo )
-	fclose( fp )
+    jinfo.mem->free_pool( cast(j_common_ptr, @jinfo ), JPOOL_IMAGE )
 
-	return img
+    jpeg_finish_decompress( @jinfo )
+    jpeg_destroy_decompress( @jinfo )
+    fclose( fp )
+
+    return img
 
 end function
 

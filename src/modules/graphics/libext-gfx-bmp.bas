@@ -25,32 +25,32 @@
 
 namespace ext.gfx.bmp
 
-	'' :::::
-	function load ( byref filename as const string ) as FB.IMAGE ptr
-	
-		dim as bmp_header bmh 
-		dim as integer ff = freefile
-		dim as any ptr buffer
-		
-		if open( filename, for binary access read, as #ff ) = null then
-			get #ff, , bmh
-			
-			close #ff
-			
-			buffer = imagecreate( bmh.bmih.w, bmh.bmih.h )
-			
-			if buffer = null then return null
-			
-			bload filename, buffer
-		
-		else
-			buffer = null
-		
-		end if
-		
-		return buffer
-	
-	end function
+    '' :::::
+    function load ( byref filename as const string, byval t as target_e ) as any ptr
+
+        dim as bmp_header bmh
+        dim as integer ff = freefile
+        dim as any ptr buffer
+
+        if open( filename, for binary access read, as #ff ) = null then
+            get #ff, , bmh
+
+            close #ff
+
+            buffer = imagecreate( bmh.bmih.w, bmh.bmih.h )
+
+            if buffer = null then return null
+
+            bload filename, buffer
+
+        else
+            buffer = null
+
+        end if
+
+        return buffer
+
+    end function
 
 end namespace 'ext.gfx.bmp
 
