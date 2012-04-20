@@ -1,5 +1,6 @@
 #include once "pnginc/file_to_buffer.bi"
 #include once "pnginc/png_image.bi"
+#include once "ext/file/file.bi"
 
 namespace ext.gfx.png
 
@@ -7,20 +8,27 @@ namespace ext.gfx.png
     function load _
         ( _
             byref filename as const string, _
-            byval target   as target_e = TARGET_FBNEW _
+            byval t   as target_e = TARGET_FBNEW _
         ) as any ptr
 
-        if target <> TARGET_FBNEW AND target <> TARGET_OPENGL then return 0
+        Dim As ext.FILE  hFile
+        dim as any ptr img
+        dim as ubyte ptr fbuf
 
-        dim as any ptr buffer     = any
-        dim as integer buffer_len = any
+        if t <> TARGET_FBNEW ANDALSO t <> TARGET_OPENGL then return 0
 
-        buffer = file_to_buffer( strptr( filename ), buffer_len )
+        If hFile.open( filename ) Then
+                'con.WriteLine("File not loaded")
+                Return NULL
+        End If
 
-        if buffer <> NULL then
-            function = load_mem( buffer, buffer_len, target )
-            deallocate( buffer )
-        end if
+        var fsiz = hFile.toBuffer(fbuf)
+        hFile.close()
+
+        img = load_mem(fbuf,fsiz,t)
+        delete[] fbuf
+
+        Return img
 
     end function
 
