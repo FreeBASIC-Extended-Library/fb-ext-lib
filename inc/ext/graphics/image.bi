@@ -184,7 +184,7 @@ end type
     ''Returns:
     ''Pointer to FBGFX buffer.
     ''
-    declare function LoadImage ( byref filename as const string ) as Image ptr
+    declare function LoadImage ( byref filename as const string, byval t as target_e = TARGET_FBNEW ) as Image ptr
 
 end namespace
 
