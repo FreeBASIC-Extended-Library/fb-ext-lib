@@ -42,8 +42,6 @@ function LoadImage ( byref filename as const string, byval t as target_e = TARGE
 
     var ret = loader->f(filename, t)
 
-    'this is where conversion for OpenGL will go
-
     return ret
 
 end function
