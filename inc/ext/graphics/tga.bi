@@ -15,6 +15,12 @@
 #include once "ext/graphics/detail/common.bi"
 #include once "fbgfx.bi"
 
+#ifndef FBEXT_BUILD_NO_GFX_LOADERS
+#define FBEXT_BUILD_NO_GFX_LOADERS -1
+#include once "ext/graphics/image.bi"
+#undef FBEXT_BUILD_NO_GFX_LOADERS
+#endif
+
 ''Namespace: ext.gfx.tga
 
 namespace ext.gfx.tga
@@ -45,7 +51,7 @@ namespace ext.gfx.tga
 ''Returns:
 ''<ext.gfx.Image> Pointer to tga image in memory.
 ''
-    declare Function load ( byref filename As const String, byval t as target_e ) As any Ptr
+    declare Function load ( byref filename As const String, byval t as target_e ) As ext.gfx.Image Ptr
 
 ''Function: load_mem
 ''Loads a tga file that has been located in memory.
@@ -58,7 +64,7 @@ namespace ext.gfx.tga
 ''Returns:
 ''<ext.gfx.Image> Pointer to tga image.
 ''
-declare function load_mem( byval src as any ptr, byval src_len as SizeType, byval t as target_e ) as any ptr
+declare function load_mem( byval src as any ptr, byval src_len as SizeType, byval t as target_e ) as ext.gfx.Image ptr
 
 #ifndef FBEXT_BUILD_NO_GFX_LOADERS
 sub loadTGAdriver() constructor

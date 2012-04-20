@@ -17,6 +17,12 @@
 #ifndef FBEXT_NO_EXTERNAL_LIBS
 #ifndef FBEXT_NO_LIBJPG
 
+#ifndef FBEXT_BUILD_NO_GFX_LOADERS
+#define FBEXT_BUILD_NO_GFX_LOADERS -1
+#include once "ext/graphics/image.bi"
+#undef FBEXT_BUILD_NO_GFX_LOADERS
+#endif
+
 #inclib "jpeg"
 
 ''Namespace: ext.gfx.jpg
@@ -31,7 +37,7 @@ namespace ext.gfx.jpg
 ''Returns:
 ''<ext.gfx.Image> ptr containing the jpg data. Does not work with grayscale images at this time.
 ''
-declare function load ( byref filename as const string, byval t as target_e ) as any ptr
+declare function load ( byref filename as const string, byval t as target_e ) as ext.gfx.Image ptr
 
 #ifndef FBEXT_BUILD_NO_GFX_LOADERS
 sub loadJPGdriver() constructor

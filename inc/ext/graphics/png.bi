@@ -29,6 +29,13 @@
     #Inclib "z"
 #endif
 
+
+#ifndef FBEXT_BUILD_NO_GFX_LOADERS
+#define FBEXT_BUILD_NO_GFX_LOADERS -1
+#include once "ext/graphics/image.bi"
+#undef FBEXT_BUILD_NO_GFX_LOADERS
+#endif
+
 ''Namespace: ext.gfx.png
 
 namespace ext.gfx.png
@@ -53,7 +60,7 @@ declare function load _
     ( _
         byref filename as const string, _
         byval target   as target_e = TARGET_FBNEW _
-    ) as any ptr
+    ) as ext.gfx.Image ptr
 
 ''Function: load_mem
 ''Loads a png file that has been located in memory.
@@ -71,7 +78,7 @@ declare function load_mem _
         byval buffer     as any ptr, _
         byval buffer_len as SizeType, _
         byval target     as target_e _
-    ) as any ptr
+    ) as ext.gfx.Image ptr
 
 ''Function: save
 ''Saves a png image from a memory buffer.

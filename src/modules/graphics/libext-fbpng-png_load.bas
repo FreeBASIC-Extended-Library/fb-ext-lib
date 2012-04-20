@@ -1,6 +1,11 @@
 #include once "pnginc/file_to_buffer.bi"
 #include once "pnginc/png_image.bi"
 #include once "ext/file/file.bi"
+#ifndef FBEXT_BUILD_NO_GFX_LOADERS
+#define FBEXT_BUILD_NO_GFX_LOADERS -1
+#include once "ext/graphics/image.bi"
+#undef FBEXT_BUILD_NO_GFX_LOADERS
+#endif
 
 namespace ext.gfx.png
 
@@ -9,7 +14,7 @@ namespace ext.gfx.png
         ( _
             byref filename as const string, _
             byval t   as target_e = TARGET_FBNEW _
-        ) as any ptr
+        ) as ext.gfx.Image ptr
 
         Dim As ext.FILE  hFile
         dim as any ptr img
@@ -38,7 +43,7 @@ namespace ext.gfx.png
             byval buffer     as any ptr, _
             byval buffer_len as SizeType, _
             byval target     as target_e _
-        ) as any ptr
+        ) as ext.gfx.Image ptr
 
         dim as png_image_t img
 

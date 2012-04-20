@@ -16,10 +16,10 @@
 #endif
 
 #include once "ext/detail/common.bi"
-#include once "ext/graphics/detail/common.bi"
 #include once "ext/math/vector2.bi"
 
 #ifndef FBEXT_BUILD_NO_GFX_LOADERS
+#include once "ext/graphics/detail/common.bi"
 #include once "ext/graphics/jpg.bi"
 #include once "ext/graphics/bmp.bi"
 #include once "ext/graphics/png.bi"

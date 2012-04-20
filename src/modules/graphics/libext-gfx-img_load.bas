@@ -20,8 +20,7 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#define fbext_NoBuiltinInstanciations() 1
-#include once "ext/graphics/image.bi"
+#include once "ext/graphics/detail/common.bi"
 #include once "ext/containers/hashtable.bi"
 
 namespace ext.gfx

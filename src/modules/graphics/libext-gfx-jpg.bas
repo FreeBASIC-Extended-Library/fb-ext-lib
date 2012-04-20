@@ -20,8 +20,6 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#define FBEXT_BUILD_NO_GFX_LOADERS -1
-#include once "ext/graphics/image.bi"
 #include once "ext/graphics/jpg.bi"
 #include once "jpeglib.bi"
 
@@ -34,7 +32,7 @@
 namespace ext.gfx.jpg
 
 '':::::
-function load ( byref filename as const string, byval t as target_e ) as any ptr
+function load ( byref filename as const string, byval t as target_e ) as ext.gfx.Image ptr
 
     dim as FILE ptr fp = fopen( strptr(filename), "rb" )
     if( fp = null ) then return null

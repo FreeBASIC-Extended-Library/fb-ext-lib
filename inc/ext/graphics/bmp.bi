@@ -14,6 +14,13 @@
 #include once "ext/graphics/detail/common.bi"
 #include once "fbgfx.bi"
 
+
+#ifndef FBEXT_BUILD_NO_GFX_LOADERS
+#define FBEXT_BUILD_NO_GFX_LOADERS -1
+#include once "ext/graphics/image.bi"
+#undef FBEXT_BUILD_NO_GFX_LOADERS
+#endif
+
 ''Namespace: ext.gfx.bmp
 
 namespace ext.gfx.bmp
@@ -54,7 +61,7 @@ namespace ext.gfx.bmp
     ''Returns:
     ''Pointer to <ext.gfx.Image> or null.
     ''
-    declare Function load ( byref filename As const String, byval t as target_e ) As any Ptr
+    declare Function load ( byref filename As const String, byval t as target_e ) As ext.gfx.Image Ptr
 
 #ifndef FBEXT_BUILD_NO_GFX_LOADERS
     sub loadBMPdriver() constructor

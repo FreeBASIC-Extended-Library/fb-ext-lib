@@ -20,8 +20,7 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#define FBEXT_BUILD_NO_GFX_LOADERS -1
-#include once "ext/graphics/image.bi"
+
 #include once "ext/graphics/tga.bi"
 #include once "ext/graphics/manip.bi"
 #include once "ext/file/file.bi"
@@ -57,7 +56,7 @@ Function load _
         ( _
                 Byref file_name As const string, _
                 byval t as target_e _
-        ) As any Ptr
+        ) As ext.gfx.Image Ptr
 
         Dim As ext.FILE  hFile
         dim as any ptr img
@@ -80,7 +79,7 @@ Function load _
 
 End Function
 
-function load_mem( byval src as any ptr, byval src_len as SizeType, byval t as target_e ) as any ptr
+function load_mem( byval src as any ptr, byval src_len as SizeType, byval t as target_e ) as ext.gfx.Image ptr
 
         Dim As FileHeader ptr tga_info
         Dim As Ubyte Ptr  data_buf
