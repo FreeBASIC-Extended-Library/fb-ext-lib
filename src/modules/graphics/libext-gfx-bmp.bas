@@ -43,7 +43,7 @@ namespace ext.gfx.bmp
             bload filename, buffer
 
         else
-            buffer = null
+            return null
 
         end if
 
