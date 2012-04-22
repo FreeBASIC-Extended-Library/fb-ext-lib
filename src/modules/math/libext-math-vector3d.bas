@@ -27,25 +27,25 @@ namespace ext.math
 
 constructor vector3d ( byval x as single, byval y as single, byval z as single )
 
-	this.x = x
-	this.y = y
-	this.z = z
+    this.x = x
+    this.y = y
+    this.z = z
 
 end constructor
 
 constructor vector3d ( byref v3d as vector3d )
 
-	this.x = v3d.x
-	this.y = v3d.y
-	this.z = v3d.z
+    this.x = v3d.x
+    this.y = v3d.y
+    this.z = v3d.z
 
 end constructor
 
 constructor vector3d ( )
 
-	this.x = 0.0
-	this.y = 0.0
-	this.z = 0.0
+    this.x = 0.0
+    this.y = 0.0
+    this.z = 0.0
 
 end constructor
 
@@ -61,15 +61,15 @@ function vector3d.magnitude( ) As single
 end function
 
 sub vector3d.normalize()
-	this = this / this.magnitude()
+    this = this / this.magnitude()
 end sub
 
 function vector3d.cross( byref v as vector3d ) as vector3d
-	return Type<vector3d>((this.y * v.z) - (v.y * this.z), (this.z * v.x) - (v.z * this.x), (this.x * v.y) - (v.x * this.y))
+    return Type<vector3d>((this.y * v.z) - (v.y * this.z), (this.z * v.x) - (v.z * this.x), (this.x * v.y) - (v.x * this.y))
 end function
 
 function vector3d.distance( byref v as vector3d ) as single
-	return Sqr((v.x - this.x)^2 + (v.y - this.y)^2 + (v.z - this.z)^2)
+    return Sqr((v.x - this.x)^2 + (v.y - this.y)^2 + (v.z - this.z)^2)
 end function
 
 function vector3d.AngleBetween( byref v As vector3d ) As Single
@@ -77,11 +77,11 @@ function vector3d.AngleBetween( byref v As vector3d ) As Single
 end function
 
 operator vector3d.cast() as string
-	return "x: " & this.x & ", y: " & this.y & ", z: " & this.z
+    return "x: " & this.x & ", y: " & this.y & ", z: " & this.z
 end operator
 
 operator vector3d.cast() as vector2d
-	return type<vector2d>(this.x, this.y)
+    return type<vector2d>(this.x, this.y)
 end operator
 
 operator + ( Byref lhs As vector3d, Byref rhs As Single ) As vector3d
@@ -93,56 +93,56 @@ operator + ( Byref lhs As vector3d, Byref rhs As vector3d ) As vector3d
 End operator
 
 operator - ( Byref lhs As vector3d ) As vector3d
- 
+
     Return Type<vector3d>(-lhs.x, -lhs.y, -lhs.z )
- 
-End operator 
- 
- 
+
+End operator
+
+
 operator - ( Byref lhs As vector3d, Byref rhs As vector3d ) As vector3d
- 
+
     Return Type<vector3d>(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z )
- 
+
 End operator
 
 operator - ( Byref lhs As vector3d, Byref rhs As vector4d ) As vector3d
- 
+
     Return Type<vector3d>(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z )
- 
+
 End operator
- 
- 
+
+
 operator - ( Byref lhs As vector3d, Byref rhs As Single ) As vector3d
- 
+
     Return Type<vector3d>(lhs.x - rhs, lhs.y - rhs, lhs.z - rhs )
- 
+
 End operator
- 
- 
+
+
 operator * ( Byref lhs As vector3d, Byref rhs As vector3d ) As vector3d
- 
+
     Return Type<vector3d>(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z )
- 
+
 End operator
 
 operator * ( Byref lhs As vector3d, Byref rhs As vector4d ) As vector3d
- 
+
     Return Type<vector3d>(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z )
- 
+
 End operator
 
 operator * ( Byref lhs As vector3d, Byref rhs As Double ) As vector3d
     Return Type<vector3d>(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs )
 End operator
- 
- 
+
+
 operator * ( Byref lhs As vector3d, Byref rhs As Single ) As vector3d
     Return Type<vector3d>(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs )
 End operator
 
-operator vector3d.*= ( byref rhs as matrix )
-	this = this * rhs
-end operator
+'operator vector3d.*= ( byref rhs as matrix )
+'   this = this * rhs
+'end operator
 
 operator vector3d.*= ( Byref s As single )
     this.x *= s
@@ -158,16 +158,16 @@ operator vector3d.+=( byref rhs As vector3d )
 end operator
 
 
-operator / ( Byref lhs As vector3d, Byref rhs As vector3d ) As vector3d 
-    Return Type<vector3d>(lhs.x / rhs.x, lhs.y / rhs.y, lhs.z / rhs.z ) 
+operator / ( Byref lhs As vector3d, Byref rhs As vector3d ) As vector3d
+    Return Type<vector3d>(lhs.x / rhs.x, lhs.y / rhs.y, lhs.z / rhs.z )
 End operator
 
-operator / ( Byref lhs As vector3d, Byref rhs As Single ) As vector3d 
-    Return Type<vector3d>(lhs.x / rhs, lhs.y / rhs, lhs.z / rhs ) 
+operator / ( Byref lhs As vector3d, Byref rhs As Single ) As vector3d
+    Return Type<vector3d>(lhs.x / rhs, lhs.y / rhs, lhs.z / rhs )
 End operator
 
-operator / ( Byref lhs As vector3d, Byref rhs As Double ) As vector3d 
-    Return Type<vector3d>(lhs.x / rhs, lhs.y / rhs, lhs.z / rhs ) 
+operator / ( Byref lhs As vector3d, Byref rhs As Double ) As vector3d
+    Return Type<vector3d>(lhs.x / rhs, lhs.y / rhs, lhs.z / rhs )
 End operator
 
 end namespace

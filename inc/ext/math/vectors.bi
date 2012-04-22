@@ -12,7 +12,7 @@
 
 # ifndef FBEXT_MATH_VECTORS_BI__
 # define FBEXT_MATH_VECTORS_BI__ -1
-#print "Warning: ext/math/vectors.bi is being deprecated. You should check into the Vector2 and Vector3 replacement classes."
+#print "WARNING: ext/math/vectors.bi is being deprecated. You should check into the Vector2, Vector3 and Vector4 replacement classes."
 # include once "ext/math/detail/common.bi"
 
 ''Namespace: ext.math
@@ -28,9 +28,9 @@ type matrix_ as matrix
 ''
 type vector2d
 
-	declare constructor ( byval x as single, byval y as single )
-	declare constructor ( byref v2d as vector2d )
-	declare constructor ( )
+    declare constructor ( byval x as single, byval y as single )
+    declare constructor ( byref v2d as vector2d )
+    declare constructor ( )
 
    ''Variable: x
    x as single
@@ -105,9 +105,9 @@ end type
 ''
 type vector3d
 
-	declare constructor ( byval x as single, byval y as single, byval z as single )
-	declare constructor ( byref v3d as vector3d )
-	declare constructor ( )
+    declare constructor ( byval x as single, byval y as single, byval z as single )
+    declare constructor ( byref v3d as vector3d )
+    declare constructor ( )
 
    ''Variable: x
    x as single
@@ -187,9 +187,9 @@ end type
 ''Simple 4 dimensional vector.
 type vector4d
 
-	declare constructor ( byval x as single, byval y as single, byval z as single, byval w as double )
-	declare constructor ( byref v4d as vector4d )
-	declare constructor ( )
+    declare constructor ( byval x as single, byval y as single, byval z as single, byval w as double )
+    declare constructor ( byref v4d as vector4d )
+    declare constructor ( )
 
    ''Variable: x
    x as single

@@ -27,28 +27,28 @@ namespace ext.math
 
 constructor vector4d ( byval x as single, byval y as single, byval z as single, byval w as double )
 
-	this.x = x
-	this.y = y
-	this.z = z
-	this.w = w
+    this.x = x
+    this.y = y
+    this.z = z
+    this.w = w
 
 end constructor
 
 constructor vector4d ( byref v4d as vector4d )
 
-	this.x = v4d.x
-	this.y = v4d.y
-	this.z = v4d.z
-	this.w = v4d.w
+    this.x = v4d.x
+    this.y = v4d.y
+    this.z = v4d.z
+    this.w = v4d.w
 
 end constructor
 
 constructor vector4d ( )
 
-	this.x = 0.0
-	this.y = 0.0
-	this.z = 0.0
-	this.w = 0.0
+    this.x = 0.0
+    this.y = 0.0
+    this.z = 0.0
+    this.w = 0.0
 
 end constructor
 
@@ -65,57 +65,57 @@ function vector4d.magnitude( ) As single
 end function
 
 sub vector4d.normalize()
-	this = this / this.magnitude()
+    this = this / this.magnitude()
 end sub
 
 function vector4d.cross( byref v as vector4d ) as vector4d
-	return Type<vector4d>((this.y * v.z) - (v.y * this.z), (this.z * v.x) - (v.z * this.x), (this.x * v.y) - (v.x * this.y), this.w)
+    return Type<vector4d>((this.y * v.z) - (v.y * this.z), (this.z * v.x) - (v.z * this.x), (this.x * v.y) - (v.x * this.y), this.w)
 end function
 
 function vector4d.distance( byref v as vector4d ) as single
-	return Sqr((v.x - this.x)^2 + (v.y - this.y)^2 + (v.z - this.z)^2)
+    return Sqr((v.x - this.x)^2 + (v.y - this.y)^2 + (v.z - this.z)^2)
 end function
 
 operator vector4d.cast() as string
-	return "x: " & this.x & ", y: " & this.y & ", z: " & this.z & ", w: " & this.w
+    return "x: " & this.x & ", y: " & this.y & ", z: " & this.z & ", w: " & this.w
 end operator
 
 operator vector4d.cast() as vector3d
-	return type<vector3d>(this.x, this.y, this.z)
+    return type<vector3d>(this.x, this.y, this.z)
 end operator
 
 operator + ( byref lhs as vector3d, byref rhs as double ) as vector4d
-	return Type<vector4d>( lhs.x, lhs.y, lhs.z, rhs )
+    return Type<vector4d>( lhs.x, lhs.y, lhs.z, rhs )
 end operator
 
 operator + ( byref lhs as vector4d, byref rhs as vector4d ) as vector4d
-	return type<vector4d>( lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z, lhs.w + rhs.w )
+    return type<vector4d>( lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z, lhs.w + rhs.w )
 end operator
 
 operator + ( byref lhs as vector4d, byref rhs as single ) as vector4d
-	return type<vector4d>( lhs.x + rhs, lhs.y + rhs, lhs.z + rhs, lhs.w + rhs )
+    return type<vector4d>( lhs.x + rhs, lhs.y + rhs, lhs.z + rhs, lhs.w + rhs )
 end operator
 
 operator - ( byref lhs as vector4d, byref rhs as vector4d ) as vector4d
 
-	return type<vector4d>( lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z, lhs.w - rhs.w )
+    return type<vector4d>( lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z, lhs.w - rhs.w )
 
 end operator
 
 operator * ( byref lhs as vector4d, byref rhs as vector4d ) as vector4d
 
-	return type<vector4d>( lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z, lhs.w * rhs.w )
+    return type<vector4d>( lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z, lhs.w * rhs.w )
 
 end operator
 
- 
+
 operator * ( Byref lhs As vector4d, Byref rhs As Single ) As vector4d
     Return Type<vector4d>(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs, lhs.w * rhs )
 End operator
 
-operator vector4d.*= ( byref rhs as matrix )
-	this = this * rhs
-end operator
+'operator vector4d.*= ( byref rhs as matrix )
+'   this = this * rhs
+'end operator
 
 
 operator / ( Byref lhs As vector4d, Byref rhs As integer ) As vector4d
@@ -123,7 +123,7 @@ operator / ( Byref lhs As vector4d, Byref rhs As integer ) As vector4d
 End operator
 
 operator / ( byref lhs as vector4d, byref rhs as vector4d ) as vector4d
-	return type<vector4d>( lhs.x / rhs.x, lhs.y / rhs.y, lhs.z / rhs.z, lhs.w / rhs.w )
+    return type<vector4d>( lhs.x / rhs.x, lhs.y / rhs.y, lhs.z / rhs.z, lhs.w / rhs.w )
 end operator
 
 operator / ( Byref lhs As vector4d, Byref rhs As Single ) As vector4d
