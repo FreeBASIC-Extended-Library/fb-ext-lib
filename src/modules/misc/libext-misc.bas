@@ -25,44 +25,165 @@
 
 namespace ext.misc
 
+function UUID.isNull() as integer
 
+    for n as integer = 0 to 15
+        if d(n) <> 0 then return 0
+    next
 
-	constructor FILE_ITER( byref path as string )
-		
-		p_pathname = path
-		attrib = &h21
-		
-	end constructor
+    return -1
 
-	constructor FILE_ITER( byref path as string, byval attrib_ as integer )
+end function
 
-		p_pathname = path
-		attrib = attrib_
+constructor UUID()
+    this.clear()
+end constructor
 
-	end constructor
-	
-	operator FILE_ITER.for( )
-		
-		p_latest = dir(p_pathname, attrib)
-		
-	end operator
+constructor UUID( byref rhs as const UUID )
+    for n as integer = 0 to 15
+        this.d(n) = rhs.d(n)
+    next
+end constructor
 
-	operator FILE_ITER.step( )
+constructor UUID( byref rhs as string )
 
-		p_latest = dir( )
+    if len(rhs) <> 32 andalso len(rhs) <> 38 then
+        this.clear()
+        return
+    end if
 
-	end operator
-	
-	operator FILE_ITER.next( byref end_cond as FILE_ITER ) as integer
-		
-		return p_latest <> end_cond.p_pathname
-		
-	end operator
-	
-	function FILE_ITER.filename( ) as string
-		
-		return p_latest
-		
-	end function
+    if len(rhs) = 32 then
+        var index = 0
+        for n as integer = 0 to 31 step 2
+            d(index) = valint("&h" & chr(rhs[n]) & chr(rhs[n+1]))
+            index += 1
+        next n
+    else
+        var index = 0
+        for n as integer = 1 to 8 step 2
+            d(index) = valint("&h" & chr(rhs[n]) & chr(rhs[n+1]))
+            index += 1
+        next
+        for n as integer = 10 to 13 step 2
+            d(index) = valint("&h" & chr(rhs[n]) & chr(rhs[n+1]))
+            index += 1
+        next
+        for n as integer = 15 to 18 step 2
+            d(index) = valint("&h" & chr(rhs[n]) & chr(rhs[n+1]))
+            index += 1
+        next
+        for n as integer = 20 to 23 step 2
+            d(index) = valint("&h" & chr(rhs[n]) & chr(rhs[n+1]))
+            index += 1
+        next
+        for n as integer = 25 to 36 step 2
+            d(index) = valint("&h" & chr(rhs[n]) & chr(rhs[n+1]))
+            index += 1
+        next
+
+    end if
+
+end constructor
+
+operator = ( byref lhs as uuid, byref rhs as uuid ) as integer
+
+    for n as integer = 0 to 15
+        if lhs.d(n) <> rhs.d(n) then return 0
+    next
+
+    return -1
+
+end operator
+
+sub UUID.randomize()
+
+    for n as integer = 0 to 15
+        d(n) = int((rnd*256))
+    next
+
+    d(6) = (d(6) and &h0F) or &h40
+
+    var rflag = (d(8) and &hF0) shr 4
+    select case rflag
+    case 8, 9, &hA, &hB
+        'do nothing
+    case else
+        d(8) = (d(8) and &h0F) or &hA0
+    end select
+
+end sub
+
+sub UUID.clear()
+    for n as integer = 0 to 15
+        d(n) = 0
+    next
+end sub
+
+operator UUID.cast() as string
+
+    var ret = ""
+    var index = 0
+
+    for n as integer = 0 to 21
+
+    select case n
+    case 0
+        ret = "{"
+    case 5, 8, 11, 14
+        ret &= "-"
+    case 21
+        ret &= "}"
+    case else
+        if len(hex(d(index))) = 2 then
+            ret &= hex(d(index))
+        else
+            ret &= "0" & hex(d(index))
+        end if
+        index += 1
+    end select
+
+    next
+
+    return ret
+
+end operator
+
+    constructor FILE_ITER( byref path as string )
+
+        p_pathname = path
+        attrib = &h21
+
+    end constructor
+
+    constructor FILE_ITER( byref path as string, byval attrib_ as integer )
+
+        p_pathname = path
+        attrib = attrib_
+
+    end constructor
+
+    operator FILE_ITER.for( )
+
+        p_latest = dir(p_pathname, attrib)
+
+    end operator
+
+    operator FILE_ITER.step( )
+
+        p_latest = dir( )
+
+    end operator
+
+    operator FILE_ITER.next( byref end_cond as FILE_ITER ) as integer
+
+        return p_latest <> end_cond.p_pathname
+
+    end operator
+
+    function FILE_ITER.filename( ) as string
+
+        return p_latest
+
+    end function
 
 end namespace
