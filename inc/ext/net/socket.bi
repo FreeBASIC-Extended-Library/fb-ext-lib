@@ -23,18 +23,6 @@
 ''namespace: ext.net
 namespace ext.net
 
-    ''Enum: SOCKET_ERRORS
-    ''Provides the specific error (if any) that occured.
-    enum SOCKET_ERRORS
-        SOCKET_OK
-        FAILED_INIT
-        FAILED_RESOLVE
-        FAILED_CONNECT
-        FAILED_REUSE
-        FAILED_BIND
-        FAILED_LISTEN
-    end enum
-
     ''Type: socket_info
     ''Holds advanced information about a socket
     type socket_info
@@ -204,11 +192,6 @@ namespace ext.net
         ( _
         byref target as string _
         ) as string
-
-        enum ACCESS_METHOD
-            ONLY_ONCE = -1
-            BLOCK     = 0
-        end enum
 
         ''Function: get
         ''
