@@ -14,26 +14,12 @@
 # ifndef FBEXT_XML_XPATH_BI__
 # define FBEXT_XML_XPATH_BI__ -1
 
+#include once "ext/detail/common.bi"
 # include once "ext/xml/dom.bi"
-#ifndef fbext_NoBuiltinInstanciations
-#define fbext_NoBuiltinInstanciations() 1
-# include once "ext/containers/list.bi"
-#undef fbext_NoBuiltinInstanciations
-#else
-# include once "ext/containers/list.bi"
-#endif
-
-fbext_TDeclare( fbExt_List, ((xml)(node)) )
 
 ''Namespace: ext.xml
 ''
 namespace ext.xml
-
-
-''Type: XMLNodeList
-''A <ext.List> of <ext.xml.node>
-''
-type XMLNodeList as fbExt_List( ((node)) )
 
 ''Function: xpath
 ''XPath uses path expressions to select nodes or node-sets in an XML document.
