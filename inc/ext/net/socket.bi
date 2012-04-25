@@ -11,7 +11,7 @@
 #include once "crt.bi"
 #include once "ext/detail/common.bi"
 #include once "ext/net/detail/common.bi"
-#include once "ext/error.bi"
+'#include once "ext/error.bi"
 
 #ifndef FBEXT_NET_SOCKET_BI__
 #define FBEXT_NET_SOCKET_BI__ -1

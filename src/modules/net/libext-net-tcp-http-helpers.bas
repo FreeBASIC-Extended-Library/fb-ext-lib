@@ -21,10 +21,9 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#define fbext_NoBuiltinInstanciations() -1
+'#define fbext_NoBuiltinInstanciations() -1
 #include once "ext/net/http.bi"
-
-fbext_Instanciate(fbext_HashTable, ((string)))
+#include once "ext/file/file.bi"
 
 namespace ext.net
 
@@ -47,7 +46,7 @@ private function StatusToString( byval s as HTTP_STATUS ) as string
         return "204 No Content"
     case RESET_CONTENT
         return "205 Reset Content"
-    case PARTIAL_CONENT
+    case PARTIAL_CONTENT
         return "206 Partial Content"
     case MULT_CHOICES
         return "300 Multiple Choices"
@@ -77,7 +76,7 @@ private function StatusToString( byval s as HTTP_STATUS ) as string
         return "406 Not Acceptable"
     case PROXY_AUTH_REQ
         return "407 Proxy Authentication Required"
-    case REQ_TIMEOUT
+    case REQUEST_TIMEOUT
         return "408 Request Timeout"
     case CONFLICT
         return "409 Conflict"
@@ -91,13 +90,13 @@ private function StatusToString( byval s as HTTP_STATUS ) as string
         return "413 Request Entity Too Large"
     case REQ_URI_TOO_LONG
         return "414 Request-URI Too Long"
-    case UNSUPPORTED_MEDIA_TYPE
+    case UNSUP_MEDIA_TYPE
         return "415 Unsupported Media Type"
     case REQ_RANGE_NOT_SATISFIABLE
         return "416 Requested Range Not Satisfiable"
     case EXPECTATION_FAILED
         return "417 Expectation Failed"
-    case INT_SERVER_ERROR
+    case INT_SERVER_ERR
         return "500 Internal Server Error"
     case NOT_IMPLEMENTED
         return "501 Not Implemented"
@@ -115,9 +114,9 @@ private function StatusToString( byval s as HTTP_STATUS ) as string
 
 end function
 
-function readHTTPheaders( byref s as TCPsocket, byref retcode as HTTP_STATUS = HTTP_STATUS.NONE ) as fbext_HashTable(string)
+function readHTTPheaders( byref s as TCPsocket, byref retcode as HTTP_STATUS = HTTP_STATUS.NONE ) as fbext_HashTable((string)) ptr
 
-    var ret = fbext_HashTable(string)
+    var ret = new fbext_HashTable((string))
     if s.isClosed = true then return ret
 
     var resp = trim(s.getLine())
@@ -130,13 +129,14 @@ function readHTTPheaders( byref s as TCPsocket, byref retcode as HTTP_STATUS = H
             var colon = instr(resp,":")
             var hdr = left(resp,colon-1)
             var valu = trim(mid(resp,colon+1))
-            if ret.Find(hdr) = null then 'not in table
-                ret.Insert(hdr,valu)
+            dim as string ptr testret = ret->Find(hdr)
+            if testret = null then 'not in table
+                ret->Insert(hdr,valu)
             else 'in table
-                var existing = ret.Find(hdr)
+                var existing = ret->Find(hdr)
                 var tlist = *existing & "`" & valu
-                ret.Remove(hdr)
-                ret.Insert(hrd,tlist)
+                ret->Remove(hdr)
+                ret->Insert(hdr,tlist)
             end if
         end if
     wend
@@ -157,7 +157,7 @@ end sub
 
 sub sendHTTPheaders( byref s as TCPsocket, byref m as method = method.get, byval version as integer = 11, _
                             byref uri as string = "", byval st as HTTP_STATUS = HTTP_STATUS.NONE, _
-                            byref h as fbext_HashTable(string) )
+                            byref h as fbext_HashTable((string)) )
 
     var toSend = ""
     if uri = "" and st <> NONE then 'not sending to a specific location, like a server response
@@ -184,7 +184,7 @@ sub sendHTTPheaders( byref s as TCPsocket, byref m as method = method.get, byval
             toSend &= "HEAD "
         case method.post
             toSend &= "POST "
-        case method.delete
+        case method.delete_
             toSend &= "DELETE "
         end select
 
@@ -206,6 +206,8 @@ sub sendHTTPheaders( byref s as TCPsocket, byref m as method = method.get, byval
 
     h.ForEach( @htIter )
 
+    toSend &= m_hdr
+
     toSend &= CR_LF & CR_LF
 
     s.putString( toSend )
@@ -214,9 +216,90 @@ end sub
 
 function getFiletoMemory( byref s as TCPsocket, byref url as string, byref ret_len as SizeType, byref st as HTTP_STATUS = HTTP_STATUS.NONE ) as ubyte ptr
 
+    dim ht as fbext_HashTable((string))
+    dim rht as fbext_HashTable((string)) ptr
+
+    var host = ""
+
+    if left(url,7) = "http://" then
+        host = right(url,len(url)-7)
+    end if
+
+    ' get first slash, everything past that is a path
+    var first_slash = instr( host, "/" )
+    var path = "/"
+
+    ' there's a path.
+    if first_slash > 0 then
+
+        ' take everything past first slash
+        path += mid( host, first_slash + 1 )
+
+        ' cut off path from server name
+        host = left( host, first_slash - 1 )
+
+    end if
+
+    ht.Insert("Host",host)
+    ht.Insert("Connection","close")
+
+    sendHTTPheaders(s,,,path,,ht)
+
+    sleep 10,1
+
+    dim httpst as HTTP_STATUS
+    rht = readHTTPheaders(s, httpst)
+
+    'TODO: allow status' besides 200
+    st = httpst
+
+    if st <> HTTP_STATUS.OK then
+        ret_len = 0
+        return null
+    end if
+
+    if rht->Find("Content-Length") = null then
+        ret_len = 0
+        return null
+    end if
+
+    ret_len = valuint(*(rht->Find("Content-Length")))
+
+    delete rht
+
+    if ret_len = 0 then return null
+
+    var ret_buf = new ubyte[ret_len+1]
+    ret_buf[ret_len] = 0
+
+    s.get(*ret_buf,ret_len)
+
+    return ret_buf
+
 end function
 
 function getFile( byref s as TCPsocket, byref url as string, byref filetosave as string ) as HTTP_STATUS
+
+    var retlen = 0u
+    var st = HTTP_STATUS.NONE
+    var buf = getFiletoMemory(s,url,retlen,st)
+
+    if buf = null then return HTTP_STATUS.NOT_FOUND
+
+    if st <> HTTP_STATUS.OK then
+        if buf <> null then delete[] buf
+        return st
+    end if
+
+    var f = ext.File(filetosave,ext.File.ACCESS_TYPE.W)
+    var fo = f.open()
+    if fo = false then return HTTP_STATUS.NOT_FOUND
+
+    f.put(,*buf,retlen)
+
+    f.close()
+
+    return st
 
 end function
 

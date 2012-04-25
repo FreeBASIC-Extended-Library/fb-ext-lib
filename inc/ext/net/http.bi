@@ -21,7 +21,7 @@ enum method explicit
     put
     post
     head
-    delete
+    delete_
 end enum
 
 enum HTTP_STATUS
@@ -78,7 +78,7 @@ end enum
 ''HashTable of headers. In the case of multiple headers with the same
 ''name, they will be in a `(tilde) seperated list.
 ''
-declare function readHTTPheaders( byref s as TCPsocket, byref retcode as HTTP_STATUS = HTTP_STATUS.NONE ) as fbext_HashTable(string)
+declare function readHTTPheaders( byref s as TCPsocket, byref retcode as HTTP_STATUS = HTTP_STATUS.NONE ) as fbext_HashTable((string)) ptr
 
 ''Sub: sendHTTPheaders
 ''Sends the passed headers to the passed socket.
@@ -93,7 +93,7 @@ declare function readHTTPheaders( byref s as TCPsocket, byref retcode as HTTP_ST
 ''
 declare sub sendHTTPheaders( byref s as TCPsocket, byref m as method = method.get, byval version as integer = 11, _
                             byref uri as string = "", byval st as HTTP_STATUS = HTTP_STATUS.NONE, _
-                            byref h as fbext_HashTable(string) )
+                            byref h as fbext_HashTable((string)) )
 
 ''Function: getFiletoMemory
 ''Attempts to load the specified url into memory.
