@@ -214,7 +214,7 @@ sub sendHTTPheaders( byref s as TCPsocket, byref m as method = method.get, byval
 
 end sub
 
-function getFiletoMemory( byref s as TCPsocket, byref url as string, byref ret_len as SizeType, byref st as HTTP_STATUS = HTTP_STATUS.NONE ) as ubyte ptr
+function getRemoteFiletoMemory( byref s as TCPsocket, byref url as string, byref ret_len as SizeType, byref st as HTTP_STATUS = HTTP_STATUS.NONE ) as ubyte ptr
 
     dim ht as fbext_HashTable((string))
     dim rht as fbext_HashTable((string)) ptr
@@ -278,11 +278,11 @@ function getFiletoMemory( byref s as TCPsocket, byref url as string, byref ret_l
 
 end function
 
-function getFile( byref s as TCPsocket, byref url as string, byref filetosave as string ) as HTTP_STATUS
+function getRemoteFileToDisk( byref s as TCPsocket, byref url as string, byref filetosave as string ) as HTTP_STATUS
 
     var retlen = 0u
     var st = HTTP_STATUS.NONE
-    var buf = getFiletoMemory(s,url,retlen,st)
+    var buf = getRemoteFiletoMemory(s,url,retlen,st)
 
     if buf = null then return HTTP_STATUS.NOT_FOUND
 
