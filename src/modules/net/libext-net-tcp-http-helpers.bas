@@ -123,6 +123,8 @@ function readHTTPheaders( byref s as TCPsocket, byref retcode as HTTP_STATUS = H
     var first_space = instr(resp," ")
     retcode = cast(HTTP_STATUS,valint(mid( resp, first_space + 1 )))
 
+    ret->Insert("First-Line",resp)
+
     while resp <> ""
         resp = trim(s.getLine())
         if resp <> "" then
