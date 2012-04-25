@@ -15,15 +15,15 @@
 # include once "ext/debug.bi"
 
 #if not __FB_MT__
-	#inclib "ext-containers"
-	#ifdef FBEXT_MULTITHREADED
-		#error "The multithreaded version of the library must be built using the -mt compiler option."
-	#endif
+    #inclib "ext-containers"
+    #ifdef FBEXT_MULTITHREADED
+        #error "The multithreaded version of the library must be built using the -mt compiler option."
+    #endif
 #else
-	#inclib "ext-containers"
-	#ifndef FBEXT_MULTITHREADED
-		#define FBEXT_MULTITHREADED 1
-	#endif
+    #inclib "ext-containers"
+    #ifndef FBEXT_MULTITHREADED
+        #define FBEXT_MULTITHREADED 1
+    #endif
 #endif
 
 '' Namespace: ext
@@ -60,7 +60,7 @@ namespace ext
         ''* A default constructor.
         ''* Operator let.
         ''* Operator = (equality).
-		''If you are experiencing a large number of collisions, you should increase the size of the hashtable.
+        ''If you are experiencing a large number of collisions, you should increase the size of the hashtable.
         ''
         ''See Also:
         ''<Basic Usage of the HashTable Class> |
@@ -109,9 +109,9 @@ namespace ext
             ''value - the value to search for.
             ''
             ''Returns:
-            ''String containing the key associated with a value or "" if the value was not found.
+            ''ptr to String containing the key associated with a value or "" if the value was not found.
             ''
-            declare function Find ( byref value as const fbext_TypeName(T_) ) as string
+            declare function Find ( byref value as const fbext_TypeName(T_) ptr ) as string
 
             ''Sub: ForEach
             ''Iterates through the table calling the passed subroutine with each key pair.
@@ -182,7 +182,7 @@ namespace ext
             this.m_entryCount = x.m_entryCount : x.m_entryCount = 0
             this.m_loadLimit = x.m_loadLimit : x.m_loadLimit = 0
             this.m_primeIndex = x.m_primeindex : x.m_primeindex = 0
-            this.m_table = x.m_table : x.m_table = ext.null
+            this.m_table = x.m_table : x.m_table = null
 
         end operator
 
@@ -303,7 +303,6 @@ namespace ext
             if index >= 2 then
                 cindex = index - 2
             else
-                FBEXT_DPRINT("Unable to insert " & key_ & " into the table.")
                 return
             end if
 
@@ -333,12 +332,8 @@ namespace ext
         '' :::::
         linkage_ sub fbext_HashTable(T_).Insert ( byref key_ as string, byref value as fbext_TypeName(T_) )
 
-            FBEXT_DPRINT("Inserting " & key_ )
-
             if (m_entryCount + 1 > m_loadLimit) then
-                FBEXT_DPRINT("Expanding table from " & m_tablelength)
                 m_Expand()
-                FBEXT_DPRINT("to " & m_tablelength )
             end if
 
             var thash = m_HThash(key_)
@@ -362,12 +357,9 @@ namespace ext
                     m_entryCount += 1
                 else
                     if m_table[index].key = key_ then
-                        FBEXT_DPRINT("Duplicate insertion detected!")
                         return
                     end if
 
-                    FBEXT_DPRINT("Collision between " & key_ & " and " & m_table[index].key & ", attempting alternate insertion...")
-					FBEXT_DPRINT(key_ & ":" & hex(thash) & " " & m_table[index].key & ":" & hex(m_table[index].hash))
                     m_Insert(thash, index, key_, value)
                 end if
             end if
@@ -382,25 +374,24 @@ namespace ext
             var index = m_IndexFor(shash, m_tablelength)
 
             if (shash = m_table[index].hash)  then return m_table[index].value
-			if (shash = m_table[index+1].hash)  then return m_table[index+1].value
-			if (shash = m_table[index+2].hash)  then return m_table[index+2].value
-            FBEXT_DPRINT(key_ & " was not found in 3 tries, assuming its not there. Try making your table bigger (and try the default).")
+            if (shash = m_table[index+1].hash)  then return m_table[index+1].value
+            if (shash = m_table[index+2].hash)  then return m_table[index+2].value
 
-			return ext.null
+            return null
 
 
         end function
 
         '' :::::
-        linkage_ function fbext_HashTable(T_).Find ( byref value as const fbext_TypeName(T_) ) as string
+        linkage_ function fbext_HashTable(T_).Find ( byref value as const fbext_TypeName(T_) ptr ) as string
 
             var retval = ""
 
             for n as uinteger = 0 to m_tablelength -1
 
-                if m_table[n].value <> ext.null then
+                if m_table[n].value <> null then
 
-                    if value = *(m_table[n].value) then
+                    if *value = *(m_table[n].value) then
                         retval = m_table[n].key
                         exit for
                     end if
@@ -541,8 +532,8 @@ namespace ext
     ''end operator
     ''
     ''namespace ext 'must be declared within ext's namespace
-	''fbext_Instanciate( fbExt_HashTable, ((UDT)) )
-	''end namespace
+    ''fbext_Instanciate( fbExt_HashTable, ((UDT)) )
+    ''end namespace
     ''
     ''dim as FBEXT_HASHTABLE(UDT) MyUDTHT(10)
     ''
