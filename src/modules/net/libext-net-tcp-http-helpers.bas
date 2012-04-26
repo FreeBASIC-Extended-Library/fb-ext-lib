@@ -214,6 +214,8 @@ sub sendHTTPheaders( byref s as TCPsocket, byref m as method = method.get, byval
 
     s.putString( toSend )
 
+    m_hdr = ""
+
 end sub
 
 function getRemoteFiletoMemory( byref s as TCPsocket, byref url as string, byref ret_len as SizeType, byref st as HTTP_STATUS = HTTP_STATUS.NONE ) as ubyte ptr
