@@ -172,7 +172,7 @@ sub sendHTTPheaders( byref s as TCPsocket, byref m as method = method.get, byval
 
         if h.Find("Server") = null then
             'put us as the server since none was passed.
-            h.Insert("Server","FBEXT::NET/" & FBEXT_VERSION)
+            h.Insert("Server","FBEXT::NET/" & FBEXT_VERSION & " (http://ext.freebasic.net)")
         end if
 
     end if
@@ -201,7 +201,7 @@ sub sendHTTPheaders( byref s as TCPsocket, byref m as method = method.get, byval
         toSend &= CR_LF
 
         if h.Find("User-Agent") = null then 'no user agent passed, docs say one should be sent so here's the default
-            h.Insert("User-Agent","FBEXT::NET/" & FBEXT_VERSION)
+            h.Insert("User-Agent","FBEXT::NET/" & FBEXT_VERSION & " (http://ext.freebasic.net)")
         end if
 
     end if
