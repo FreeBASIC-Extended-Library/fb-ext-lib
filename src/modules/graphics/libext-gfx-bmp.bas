@@ -20,6 +20,8 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#define FBEXT_BUILD_NO_GFX_LOADERS 1
+#include once "ext/graphics/image.bi"
 # include once "ext/graphics/bmp.bi"
 
 namespace ext.gfx.bmp

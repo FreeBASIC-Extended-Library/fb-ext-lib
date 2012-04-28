@@ -1,11 +1,15 @@
-#include once "pnginc/file_to_buffer.bi"
+'#include once "pnginc/file_to_buffer.bi"
 #include once "pnginc/png_image.bi"
-#include once "ext/file/file.bi"
-#ifndef FBEXT_BUILD_NO_GFX_LOADERS
+
+
 #define FBEXT_BUILD_NO_GFX_LOADERS -1
+#include once "ext/graphics/png.bi"
 #include once "ext/graphics/image.bi"
 #undef FBEXT_BUILD_NO_GFX_LOADERS
-#endif
+#include once "ext/detail/common.bi"
+#include once "ext/file/file.bi"
+#include once "ext/graphics/detail/common.bi"
+
 
 namespace ext.gfx.png
 

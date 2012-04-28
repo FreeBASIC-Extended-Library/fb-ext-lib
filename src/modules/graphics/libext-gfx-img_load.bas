@@ -22,6 +22,9 @@
 
 #include once "ext/graphics/detail/common.bi"
 #include once "ext/containers/hashtable.bi"
+#include once "ext/debug.bi"
+#define FBEXT_BUILD_NO_GFX_LOADERS
+#include once "ext/graphics/image.bi"
 
 namespace ext.gfx
 
@@ -34,12 +37,20 @@ function LoadImage ( byref filename as const string, byval t as target_e = TARGE
     if __driver_ht = null then return null
 
     var extension = lcase(right(filename,3))
+    FBEXT_DPRINT("Looking for extension: " & extension)
 
     var loader = __driver_ht->Find(extension)
-
-    if loader = null then return null
+    if loader = null then
+        FBEXT_DPRINT("Loader for " & extension & " not found!")
+        return null
+    else
+        FBEXT_DPRINT("Loader found for " & extension)
+    end if
 
     var ret = loader->f(filename, t)
+    if ret = null orelse ret->isEmpty then
+    FBEXT_DPRINT("Something went wrong loading the file")
+    end if
 
     return ret
 

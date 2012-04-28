@@ -34,6 +34,8 @@
 #define FBEXT_BUILD_NO_GFX_LOADERS -1
 #include once "ext/graphics/image.bi"
 #undef FBEXT_BUILD_NO_GFX_LOADERS
+#else
+#include once "ext/graphics/image.bi"
 #endif
 
 ''Namespace: ext.gfx.png
@@ -103,7 +105,7 @@ sub loadPNGdriver() constructor
     loader.fmem = @load_mem
     getDriver("png",@loader)
 end sub
-#ifndef FBEXT_BUILD_NO_GFX_LOADERS
+#endif ' FBEXT_BUILD_NO_GFX_LOADERS
 
 end namespace 'ext.gfx.png
 

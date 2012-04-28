@@ -2,6 +2,9 @@
 # include once "ext/containers/hashtable.bi"
 # include once "ext/graphics/detail/common.bi"
 
+#define FBEXT_BUILD_NO_GFX_LOADERS 1
+#include once "ext/graphics/image.bi"
+
 namespace ext.gfx
 
 

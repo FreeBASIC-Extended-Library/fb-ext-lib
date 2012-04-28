@@ -17,15 +17,7 @@
 
 #include once "ext/detail/common.bi"
 #include once "ext/math/vector2.bi"
-
-#ifndef FBEXT_BUILD_NO_GFX_LOADERS
 #include once "ext/graphics/detail/common.bi"
-#include once "ext/graphics/jpg.bi"
-#include once "ext/graphics/bmp.bi"
-#include once "ext/graphics/png.bi"
-#include once "ext/graphics/tga.bi"
-#endif
-
 #include once "fbgfx.bi"
 
 #Ifdef image_bi_dnbii
@@ -194,6 +186,23 @@ end type
     ''
     declare function LoadImage ( byref filename as const string, byval t as target_e = TARGET_FBNEW ) as Image ptr
 
+    type GraphicsLoader
+        f as function( byref as const string, byval as target_e ) as Image ptr
+        fmem as function( byval idat as any ptr, byval blen as SizeType, byval as target_e ) as Image ptr
+        declare constructor
+        declare operator let( byref rhs as const GraphicsLoader )
+    end type
+    declare operator = ( byref lhs as const GraphicsLoader, byref rhs as const GraphicsLoader ) as integer
+
+    declare function getDriver(byref ftype as string, byval set_ as GraphicsLoader ptr = 0 ) as GraphicsLoader ptr
+
 end namespace
+
+#ifndef FBEXT_BUILD_NO_GFX_LOADERS
+#include once "ext/graphics/jpg.bi"
+#include once "ext/graphics/bmp.bi"
+#include once "ext/graphics/png.bi"
+#include once "ext/graphics/tga.bi"
+#endif
 
 #endif

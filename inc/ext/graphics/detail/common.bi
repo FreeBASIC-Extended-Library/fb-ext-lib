@@ -61,27 +61,5 @@ namespace ext.gfx
 
 end namespace
 
-#ifndef FBEXT_BUILD_NO_GFX_LOADERS
-#define FBEXT_BUILD_NO_GFX_LOADERS -1
-#include once "ext/graphics/image.bi"
-#undef FBEXT_BUILD_NO_GFX_LOADERS
-#else
-#include once "ext/graphics/image.bi"
-#endif
-
-namespace ext.gfx
-
-    type GraphicsLoader
-        f as function( byref as const string, byval as target_e ) as Image ptr
-        fmem as function( byval idat as any ptr, byval blen as SizeType, byval as target_e ) as Image ptr
-        declare constructor
-        declare operator let( byref rhs as const GraphicsLoader )
-    end type
-    declare operator = ( byref lhs as const GraphicsLoader, byref rhs as const GraphicsLoader ) as integer
-
-    declare function getDriver(byref ftype as string, byval set_ as GraphicsLoader ptr = 0 ) as GraphicsLoader ptr
-
-end namespace ' ext
-
 #endif ' include guard
 

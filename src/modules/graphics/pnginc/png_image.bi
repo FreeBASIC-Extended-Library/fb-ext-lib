@@ -5,7 +5,9 @@
 #ifndef _PNG_IMAGE_BI_
 #define _PNG_IMAGE_BI_
 
-#include "ext/graphics/png.bi"
+#include once "ext/detail/common.bi"
+#include once "ext/graphics/detail/common.bi"
+
 #include "crt.bi"
 
 namespace ext.gfx.png
@@ -23,123 +25,123 @@ namespace ext.gfx.png
 #define IS_CHUNK_TYPE(t,s) (*cptr( uinteger ptr, @(t) ) = *cptr( uinteger ptr, (s) ))
 
 #if not __FB_DEBUG__
-	#define DEBUGPRINT(x)
+    #define DEBUGPRINT(x)
 #else
-	#include once "ext/debug.bi"
-	#define DEBUGPRINT(x) FBEXT_DPRINT(x)
+    #include once "ext/debug.bi"
+    #define DEBUGPRINT(x) FBEXT_DPRINT(x)
 #endif
 
 type bool_e as ext.bool
 
 type OLD_HEADER field = 1
-	bpp   : 3  as ushort
-	width : 13 as ushort
-	height     as ushort
+    bpp   : 3  as ushort
+    width : 13 as ushort
+    height     as ushort
 end type
 
 type NEW_HEADER field = 1
-	union
-		old  as OLD_HEADER
-		type as uinteger
-	end union
-	bpp                as integer
-	width              as uinteger
-	height             as uinteger
-	pitch              as uinteger
-	_reserved(1 to 12) as ubyte
+    union
+        old  as OLD_HEADER
+        type as uinteger
+    end union
+    bpp                as integer
+    width              as uinteger
+    height             as uinteger
+    pitch              as uinteger
+    _reserved(1 to 12) as ubyte
 end type
 
 type png_chunk_t
-	length as uinteger
-	type   as zstring * 4
-	data   as ubyte ptr
-	crc32  as uinteger
+    length as uinteger
+    type   as zstring * 4
+    data   as ubyte ptr
+    crc32  as uinteger
 end type
 
 type png_RGB8_t
-	r as ubyte
-	g as ubyte
-	b as ubyte
+    r as ubyte
+    g as ubyte
+    b as ubyte
 end type
 
 type plot_func_t as sub _
-	( _
-		byval p as uinteger ptr, _
-		byval x as integer, _
-		byval y as integer, _
-		byval c as uinteger, _
-		byval w as integer, _
-		byval h as integer _
-	)
+    ( _
+        byval p as uinteger ptr, _
+        byval x as integer, _
+        byval y as integer, _
+        byval c as uinteger, _
+        byval w as integer, _
+        byval h as integer _
+    )
 
 type png_image_t
 ' IHDR
-	width                   as uinteger
-	height                  as uinteger
-	bitdepth                as ubyte
-	colortype               as ubyte
-	compressionmethod       as ubyte
-	filtermethod            as ubyte
-	interlacemethod         as ubyte
+    width                   as uinteger
+    height                  as uinteger
+    bitdepth                as ubyte
+    colortype               as ubyte
+    compressionmethod       as ubyte
+    filtermethod            as ubyte
+    interlacemethod         as ubyte
 ' PLTE
-	PLTE(0 to 255)          as png_RGB8_t
-	PLTE_count              as uinteger
+    PLTE(0 to 255)          as png_RGB8_t
+    PLTE_count              as uinteger
 ' IDAT
-	IDAT                    as ubyte ptr
-	IDAT_len                as uinteger
+    IDAT                    as ubyte ptr
+    IDAT_len                as uinteger
 ' tRNS
-	has_tRNS                as bool_e
-	tRNS_3(0 to 255)        as ubyte
-	tRNS_0                  as ushort
-	tRNS_2r                 as ushort
-	tRNS_2g                 as ushort
-	tRNS_2b                 as ushort
+    has_tRNS                as bool_e
+    tRNS_3(0 to 255)        as ubyte
+    tRNS_0                  as ushort
+    tRNS_2r                 as ushort
+    tRNS_2g                 as ushort
+    tRNS_2b                 as ushort
 ' Other
-	buffer                  as ubyte ptr
-	buffer_len              as uinteger
-	buffer_pos              as uinteger
-	bpp                     as uinteger
-	chunk                   as png_chunk_t ptr ptr
-	chunk_count             as uinteger
-	initialized             as bool_e
-	prepared                as bool_e
+    buffer                  as ubyte ptr
+    buffer_len              as uinteger
+    buffer_pos              as uinteger
+    bpp                     as uinteger
+    chunk                   as png_chunk_t ptr ptr
+    chunk_count             as uinteger
+    initialized             as bool_e
+    prepared                as bool_e
 end type
 
 declare sub png_image_init _
-	( _
-		byref png_image  as png_image_t, _
-		byval buffer     as any ptr, _
-		byval buffer_len as uinteger _
-	)
+    ( _
+        byref png_image  as png_image_t, _
+        byval buffer     as any ptr, _
+        byval buffer_len as uinteger _
+    )
 
 declare sub png_image_deinit _
-	( _
-		byref png_image as png_image_t _
-	)
+    ( _
+        byref png_image as png_image_t _
+    )
 
 declare sub png_image_prepare _
-	( _
-		byref png_image as png_image_t _
-	)
+    ( _
+        byref png_image as png_image_t _
+    )
 
 declare function png_image_convert _
-	( _
-		byref png_image as png_image_t, _
-		byval target    as target_e _
-	) as any ptr
+    ( _
+        byref png_image as png_image_t, _
+        byval target    as target_e _
+    ) as any ptr
 
 declare function chunk_find _
-	( _
-		byref png_image as png_image_t, _
-		byval _type_    as zstring ptr, _
-		byval start_pos as integer _
-	) as integer
+    ( _
+        byref png_image as png_image_t, _
+        byval _type_    as zstring ptr, _
+        byval start_pos as integer _
+    ) as integer
 
 declare function calc_scan_size _
-	( _
-		byref png_image as png_image_t, _
-		byval pass      as integer _
-	) as integer
+    ( _
+        byref png_image as png_image_t, _
+        byval pass      as integer _
+    ) as integer
 
 extern as integer tb_wfac(1 to 7)
 extern as integer tb_hfac(1 to 7)
