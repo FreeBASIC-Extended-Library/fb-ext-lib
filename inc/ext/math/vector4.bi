@@ -161,7 +161,7 @@ linkage_ function fbext_Vector4((T_)).distance( byref v as fbext_Vector4((T_)) )
 end function
 
 linkage_ operator fbext_Vector4((T_)).cast() as string
-    return "x: " & this.x & ", y: " & this.y & ", z: " & this.z & ", w: " & this.w
+    return "{x:" & this.x & ", y:" & this.y & ", z:" & this.z & ", w:" & this.w & "}"
 end operator
 
 linkage_ operator fbext_Vector4((T_)).cast() as fbext_Vector3((T_))

@@ -49,6 +49,9 @@ namespace ext.math
         declare operator let ( _
             byref v as const fbext_Vector2(( T_)) _
         )
+		
+		'' sub: cast to string operator
+		declare operator cast ( ) as string
 
         '' function: Magnitude
         declare const function Magnitude ( _
@@ -199,6 +202,11 @@ end namespace
 # macro fbext_Vector2_Define( linkage_, T_)
 :
 namespace ext.math
+
+	'' :::::
+	linkage_ operator fbext_Vector2(( T_)).cast() as string
+		return "{x:" & this.x & ", y:" & this.y & "}"
+	end operator
 
     '' :::::
     linkage_ constructor fbext_Vector2(( T_)) ( _
