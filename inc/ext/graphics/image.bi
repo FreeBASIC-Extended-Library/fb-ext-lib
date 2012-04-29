@@ -186,14 +186,36 @@ end type
     ''
     declare function LoadImage ( byref filename as const string, byval t as target_e = TARGET_FBNEW ) as Image ptr
 
+	''Type: GraphicsLoader
+	''Driver for loading graphics of potentially any format
+	''To use to add support for another format, populate f and fmem with your functions then pass to <getDriver>
+	''
     type GraphicsLoader
+		''Function: f
+		''Loads an image from a disk file.
+		''pointer to function taking a string and the target (FB or GL) and returning the <Image> or null on failure
+		''
         f as function( byref as const string, byval as target_e ) as Image ptr
+		''Function: fmem
+		''Loads an image that is loaded into memory.
+		''pointer to function taking a pointer, the buffer's length and the target (FB or GL) and returning the <Image> or null on failure
         fmem as function( byval idat as any ptr, byval blen as SizeType, byval as target_e ) as Image ptr
         declare constructor
         declare operator let( byref rhs as const GraphicsLoader )
     end type
     declare operator = ( byref lhs as const GraphicsLoader, byref rhs as const GraphicsLoader ) as integer
 
+	''Function: getDriver
+	''Used by LoadImage to load any graphics format.
+	''To add support (or override the default) simply pass a <GraphicsLoader> you have filled in as the second parameter.
+	''
+	''Parameters:
+	''ftype - string (3 letter) extension of the file types the loader supports
+	''set_ - <GraphicsLoader> containing the (pointers to) functions that do the loading.
+	''
+	''Returns:
+	''If called with only ftype then returns the <GraphicsLoader> for the filetype, otherwise returns null.
+	''
     declare function getDriver(byref ftype as string, byval set_ as GraphicsLoader ptr = 0 ) as GraphicsLoader ptr
 
 end namespace
