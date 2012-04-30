@@ -103,3 +103,11 @@
 ''
 '' Requires:
 ''  * dim s as string = x
+
+'' Interface: Serializable
+''  Specifies that an object of the type can be loaded from it's string representation.
+''
+'' Procedures:
+''  * <Printable>
+''  * function fromString( byref rhs as const string ) as bool
+
