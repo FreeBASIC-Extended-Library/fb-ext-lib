@@ -107,7 +107,10 @@
 '' Interface: Serializable
 ''  Specifies that an object of the type can be loaded from it's string representation.
 ''
+'' Requires:
+''  * Conforms to the <Printable> interface.
+''
 '' Procedures:
-''  * <Printable>
+''  * operator let( byref rhs as const string )
 ''  * function fromString( byref rhs as const string ) as bool
 
