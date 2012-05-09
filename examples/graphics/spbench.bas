@@ -20,7 +20,13 @@ var fps = 0
 var cur_frame = 1
 var cnt_over = 0
 
-screeninfo(s_w,s_h)
+
+if command() = "" then
+    screeninfo(s_w,s_h)
+else
+    s_w = valint(command(1))
+    s_h = valint(command(2))
+end if
 
 screenres s_w, s_h, 32, , fb.GFX_FULLSCREEN
 
