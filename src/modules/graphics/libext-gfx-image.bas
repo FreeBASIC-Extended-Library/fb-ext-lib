@@ -164,20 +164,21 @@ namespace ext.gfx
     end function
 
     function Image.pitch( ) as ext.SizeType
-		if m_isGL = false then
-			return iif(m_img,m_img->pitch,0)
-		else
-			return m_w*4
+        if m_isGL = false then
+            return iif(m_img,m_img->pitch,0)
+        else
+            return m_w*4
+        end if
 
     end function
 
     function Image.bpp( ) as ext.SizeType
 
-		if m_isGL = false then
-			return iif(m_img,m_img->bpp,0)
-		else
-			return 4
-		end if
+        if m_isGL = false then
+            return iif(m_img,m_img->bpp,0)
+        else
+            return 4
+        end if
 
     end function
 
