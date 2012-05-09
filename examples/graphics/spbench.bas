@@ -92,7 +92,7 @@ while not multikey(fb.sc_escape)
 
     if next_update < cur_time then
         if fps < 40 then
-            sp_next_cnt *= 1.5
+            sp_next_cnt *= 1.1
         else
             exit while
         end if
@@ -110,7 +110,7 @@ wend
 
 cls
 print "Results:"
-print "Maximum sprites < 40 ms on avg = " & int(sp_cnt/1.5) & " to " & sp_cnt
+print "Maximum sprites < 40 ms on avg = " & int(sp_cnt/1.1) & " to " & sp_cnt
 print "Screen Width: " & s_w & " Screen Height: " & s_h
 print "press any key to continue"
 sleep
