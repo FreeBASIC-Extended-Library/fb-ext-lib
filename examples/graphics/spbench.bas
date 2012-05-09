@@ -85,14 +85,15 @@ while not multikey(fb.sc_escape)
     if cur_frame > MAX_FRAME then cur_frame = 1
 
     if next_update < cur_time then
-        if fps < 100 then
+        if fps < 40 then
             sp_next_cnt *= 1.5
         else
             exit while
         end if
     end if
 
-    if fps > 100 then exit while
+    if fps > 40 then cnt_over += 1
+    if cnt_over > 5 then exit while
 
     sleep 10,1
 
@@ -101,8 +102,9 @@ wend
 while inkey <> ""
 wend
 
+cls
 print "Results:"
-print "Maximum sprites < 100 ms on avg = " & sp_cnt
+print "Maximum sprites < 40 ms on avg = " & int(sp_cnt/1.5) & " to " & sp_cnt
 print "Screen Width: " & s_w & " Screen Height: " & s_h
 print "press any key to continue"
 sleep
