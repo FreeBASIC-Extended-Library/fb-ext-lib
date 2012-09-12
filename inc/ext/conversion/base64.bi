@@ -82,3 +82,5 @@ namespace ext.conversion.base64
     declare function decoded_length (byval source_length as ext.SizeType) as ext.SizeType
 
 end namespace 'ext.base64
+
+#endif
