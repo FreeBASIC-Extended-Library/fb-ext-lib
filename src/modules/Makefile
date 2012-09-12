@@ -88,9 +88,9 @@ AutoBuildSources = $(wildcard $(1)/*.bas)
 AutoBuildObjects = $(patsubst %.bas,$(if $(MT),%.mt.o,%.o),\
                             $(call AutoBuildSources,$(1)))
 
-AutoBuildLib = ext-$(1)$(if $(MT),.mt)
+AutoBuildLib = libext-$(1)$(if $(MT),.mt).a
 AutoBuildLibOut  = $(LIBRARY_DIR)/$(call AutoBuildLib,$(1))
-AutoBuildLibFile = $(LIBRARY_DIR)/lib$(call AutoBuildLib,$(1)).a
+AutoBuildLibFile = $(LIBRARY_DIR)/$(call AutoBuildLib,$(1)).a
 
 ## :::::
 ## $(1) - module

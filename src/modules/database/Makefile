@@ -1,17 +1,17 @@
 ifeq ($(MT), 1)
-	DLIB := ext-database.mt
+	DLIB := libext-database.mt.a
 	DOBJ := database.mt.o
 	DS3O := sqlite3.mt.o
-	DS3L := ext-database-driver-sqlite3.mt
+	DS3L := libext-database-driver-sqlite3.mt.a
 	DSMYO := mysql.mt.o
-	DSMYL := ext-database-driver-mysql.mt
+	DSMYL := libext-database-driver-mysql.mt.a
 else
-	DLIB := ext-database
+	DLIB := libext-database.a
 	DOBJ := database.o
 	DS3O := sqlite3.o
-	DS3L := ext-database-driver-sqlite3
+	DS3L := libext-database-driver-sqlite3.a
 	DSMYO := mysql.o
-	DSMYL := ext-database-driver-mysql
+	DSMYL := libext-database-driver-mysql.a
 endif
 
 build-database : ../../../lib/$(TARGET)/$(DLIB).a ../../../lib/$(TARGET)/$(DS3L).a ../../../lib/$(TARGET)/$(DSMYL).a
