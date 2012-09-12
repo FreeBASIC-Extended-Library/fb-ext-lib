@@ -34,7 +34,6 @@ namespace ext.tests.conversion.base64
 
         var dec64 = ""
         ext.conversion.base64.decode( dec64, hw_base64 )
-        'print using !"\ndecoded: '&'\noriginal: '&'\n"; dec64, hellow
 
         TESTLY_ASSERT_TRUE( stringcompare(hellow, dec64) )
 

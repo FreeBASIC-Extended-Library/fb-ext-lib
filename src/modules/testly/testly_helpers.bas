@@ -264,7 +264,7 @@ namespace ext.Testly
 
             with collect
                 print using "#### suites, #### tests, #### assertions, #### failures, #### errors"; _
-                        suites_count, tests_count, .assertions, .failures, .errors
+                        suites_count; tests_count; .assertions; .failures; .errors
             end with
 
             return result
