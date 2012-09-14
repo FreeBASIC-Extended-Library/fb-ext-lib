@@ -10,6 +10,10 @@
 ''accompanying file LICENSE.txt or copy at
 ''http://code.google.com/p/fb-extended-lib/wiki/License
 
+#ifndef EXT_USE_EXPERIMENTAL
+#error "Experimental/Unfinished module included. Define EXT_USE_EXPERIMENTAL to bypass."
+#endif
+
 # pragma once
 # ifndef FBEXT_XML_XPATH_BI__
 # define FBEXT_XML_XPATH_BI__ -1
