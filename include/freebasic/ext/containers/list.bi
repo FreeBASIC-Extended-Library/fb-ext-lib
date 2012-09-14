@@ -20,7 +20,7 @@ namespace ext
         prev as ListNode__ ptr
         next as ListNode__ ptr
     end type
-    
+
 end namespace
 
 # define fbext_ListNodeT__( T_)             fbext_TID(ListNodeT__, ( T_))
@@ -36,7 +36,7 @@ namespace ext
     type fbext_ListNodeT__( T_)
         rep as ListNode__
         obj as fbext_TypeName( T_)
-        
+
         ' These merely satisfy Allocator_((fbext_ListNodeT__( T_)))
         ' construction members. They are never called.
         declare constructor ( byref as const fbext_ListNodeT__( T_) )
@@ -52,7 +52,7 @@ namespace ext
     '' :::::
     linkage_ constructor fbext_ListNodeT__( T_) ( byref x as const fbext_ListNodeT__( T_) )
     end constructor
-    
+
     '' :::::
     linkage_ destructor fbext_ListNodeT__( T_) ( )
     end destructor
@@ -72,7 +72,7 @@ namespace ext
         '' Parameters:
         '' node - the List node to point to, used internally by List
         declare constructor ( byval node as ListNode__ ptr = null )
-        
+
         '' Function: Get
         '' Returns a reference to the list element being pointed to.
         declare function Get ( ) as fbext_TypeName( T_) ptr
@@ -112,14 +112,14 @@ namespace ext
         '' Sub: conversion from ListIterator__ constructor
         '' Constructs an iterator.
         declare constructor ( byref x as const fbext_ListIterator__( T_) )
-        
+
         '' Sub: default constructor
         '' Constructs an iterator.
         ''
         '' Parameters:
         '' node - the List node to point to, used internally by List
         declare constructor ( byval node as const ListNode__ ptr = null )
-        
+
         '' Function: Get
         '' Gets a pointer that is constant to the referenced element.
         declare function Get ( ) as const fbext_TypeName( T_) ptr
@@ -152,7 +152,7 @@ namespace ext
         ' public for easy List access..
         m_node as ListNode__ ptr
     end type
-    
+
     '' Operator: dereference
     '' Equivalent to `fbext_ListIterator__( T_).Get()`.
     declare operator * ( byref self as const fbext_ListIterator__( T_) ) as fbext_TypeName( T_) ptr
@@ -201,7 +201,7 @@ namespace ext
     linkage_ operator * ( byref self as const fbext_ListIterator__( T_) ) as fbext_TypeName( T_) ptr
         return @cast(fbext_ListNodeT__( T_) ptr, self.m_node)->obj
     end operator
-    
+
     '' :::::
     linkage_ function fbext_ListIterator__( T_).Get ( ) as fbext_TypeName( T_) ptr
         return @cast(fbext_ListNodeT__( T_) ptr, m_node)->obj
@@ -235,7 +235,7 @@ namespace ext
     linkage_ constructor fbext_ListIteratorToConst__( T_) ( byref x as const fbext_ListIterator__( T_) )
         m_node = x.m_node
     end constructor
-    
+
     '' :::::
     linkage_ constructor fbext_ListIteratorToConst__( T_) ( byval node as const ListNode__ ptr )
         m_node = cast(ListNode__ ptr, cast(any ptr, node))
@@ -245,7 +245,7 @@ namespace ext
     linkage_ operator * ( byref self as const fbext_ListIteratorToConst__( T_) ) as const fbext_TypeName( T_) ptr
         return cast(const fbext_TypeName( T_) ptr, self.m_node + 1)
     end operator
-    
+
     '' :::::
     linkage_ function fbext_ListIteratorToConst__( T_).Get ( ) as const fbext_TypeName( T_) ptr
         return cast(const fbext_TypeName( T_) ptr, m_node + 1)
@@ -314,15 +314,30 @@ namespace ext
     public:
         declare static function Iterator as fbext_ListIterator__( T_)
         declare static function IteratorToConst as fbext_ListIteratorToConst__( T_)
-        
+
         '' Sub: default constructor
         '' Constructs an empty list.
         declare constructor ( )
-        
+
         '' Sub: copy constructor
         '' Constructs an empty list.
         declare constructor ( byref x as const fbext_List(( T_)( Allocator_)) )
-        
+
+        '' Sub: constructor
+        '' Constructs a list of n blank elements.
+        ''
+        '' Parameters:
+        '' n - <SizeType> specifing how many elements to create.
+        declare constructor ( byval n as SizeType )
+
+        '' Sub: constructor
+        '' Constructs a list of n elements with the same value.
+        ''
+        '' Parameters:
+        '' n - <SizeType> specifing how many elements to create.
+        '' value - the value to assign to each element.
+        declare constructor ( byval n as SizeType, byref valu as const T_ )
+
         '' Sub: constructor
         '' Constructs a list from a range of list element values.
         ''
@@ -365,7 +380,7 @@ namespace ext
         '' Function: Empty
         '' Determines if the list contains no elements.
         declare const function Empty ( ) as bool
-        
+
         '' Function: Begin
         '' Gets an iterator to the first element in the list.
         declare function Begin ( ) as typeof(Iterator)
@@ -464,7 +479,7 @@ namespace ext
         '' first - an iterator to the first element to remove
         '' last - an iterator to one-past the last element to remove
         ''
-        
+
         '' Returns:
         '' Returns an iterator to the element after the elements removed,
         '' or List.End_() if the trailing elements were removed.
@@ -473,7 +488,7 @@ namespace ext
         '' Sub: Clear
         '' Removes all elements from the list.
         declare sub Clear ( )
-        
+
         '' Sub: RemoveIf
         '' Removes elements from the list satisfying a predicate.
         ''
@@ -486,7 +501,7 @@ namespace ext
         declare static function T_Allocator as fbext_TypeName( Allocator_)(( T_))
         declare function m_CreateNode ( ) as ListNode__ ptr
         declare function m_CreateNode ( byref x as const fbext_TypeName( T_) ) as ListNode__ ptr
-        
+
         m_alloc as fbext_TypeName( Allocator_)( ((fbext_ListNodeT__( T_))) )
         m_node as ListNode__
     end type
@@ -533,22 +548,41 @@ namespace ext
 
     '' :::::
     linkage_ constructor fbext_List(( T_)( Allocator_)) ( byref x as const fbext_List(( T_)( Allocator_)) )
-    
+
         m_node.prev = @m_node
         m_node.next = @m_node
         this.Assign(x.cBegin(), x.cEnd())
-    
+
     end constructor
 
     '' :::::
     linkage_ constructor fbext_List(( T_)( Allocator_)) ( byval first as typeof(IteratorToConst), byval last as typeof(IteratorToConst) )
-    
+
         m_node.prev = @m_node
         m_node.next = @m_node
         this.Assign(first, last)
-    
+
     end constructor
-    
+
+    '' :::::
+    linkage_ constructor fbext_List(( T_)( Allocator_)) ( byval n as SizeType )
+
+        for t as SizeType = 0 to n
+            dim tmp as T_
+            this.PushBack(tmp)
+        next t
+
+    end constructor
+
+    '' :::::
+    linkage_ constructor fbext_List(( T_)( Allocator_)) ( byval n as SizeType, byref valu as const T_ )
+
+        for t as SizeType = 0 to n
+            this.PushBack(valu)
+        next t
+
+    end constructor
+
     '' :::::
     linkage_ destructor fbext_List(( T_)( Allocator_)) ( )
         this.Clear()
@@ -556,13 +590,13 @@ namespace ext
 
     '' :::::
     linkage_ operator fbext_List(( T_)( Allocator_)).let ( byref x as const fbext_List(( T_)( Allocator_)) )
-    
+
         dim first as typeof(IteratorToConst) = x.m_node.next
         dim last as typeof(IteratorToConst) = @x.m_node
         this.Assign(first, last)
-    
+
     end operator
-    
+
     '' :::::
     linkage_ sub fbext_List(( T_)( Allocator_)).Assign ( byval first as typeof(IteratorToConst), byval last as typeof(IteratorToConst) )
 
@@ -570,12 +604,12 @@ namespace ext
         dim last1 as typeof(Iterator) = @m_node
         var first2 = first
         var last2 = last
-        
+
         ' re-assign any existing elements.
         do while (first1 <> last1) andalso (first2 <> last2)
             **(first1.PostIncrement()) = **(first2.PostIncrement())
         loop
-        
+
         ' not enough existing elements ?
         if first2 <> last2 then
             this.Insert(last1, first2, last2)
@@ -629,7 +663,7 @@ namespace ext
     linkage_ function fbext_List(( T_)( Allocator_)).Empty ( ) as bool
         return m_node.next = @m_node
     end function
-    
+
     '' :::::
     linkage_ function fbext_List(( T_)( Allocator_)).Begin ( ) as typeof(Iterator)
         return m_node.next
@@ -732,13 +766,13 @@ namespace ext
         ' remove from node chain..
         position.m_node->prev->next = nextnode
         nextnode->prev = position.m_node->prev
-        
+
         ' destroy object and free node memory..
         var node = cast(fbext_ListNodeT__( T_) ptr, position.m_node)
         var talloc = fbext_TypeName( Allocator_)(( T_))
         talloc.Destroy(@node->obj)
         m_alloc.DeAllocate(node, 1)
-        
+
         ' auto-converts from a node to an iterator..
         return nextnode
 

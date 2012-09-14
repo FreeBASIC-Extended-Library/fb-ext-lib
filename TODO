@@ -21,8 +21,8 @@ Things to complete before v0.4.0:
         List
             [ ] Finish c++stdlib APIs
                 [ ] Add .constructor(alloc).
-                [ ] Add .constructor(n).
-                [ ] Add .constructor(n,value).
+                [x] Add .constructor(n).
+                [x] Add .constructor(n,value).
                 [ ] Add .constructor(n,value,alloc).
                 [ ] Add .constructor(first,last,alloc).
                 [ ] Add .Resize(n).
@@ -50,4 +50,4 @@ Things to complete before v0.4.0:
                     [ ] Add operator>=(list,list). (requires the algorithm ext.lexicographical_compare)
 '
 Examples need to be updated for current state of library.
- 
+
