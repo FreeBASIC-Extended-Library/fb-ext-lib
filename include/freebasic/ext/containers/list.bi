@@ -470,6 +470,27 @@ namespace ext
         ''
         declare sub Splice ( byval position as typeof(Iterator), byref lst as fbext_List(( T_)( Allocator_)) )
 
+        '' Sub: Splice
+        '' Moves the elements of list "b" into list "a" at the position specified in list "a" starting at the position in the list "b".
+        ''
+        '' Parameters:
+        '' position - an iterator where list "a" insertion will take place
+        '' lst - the list to insert
+        '' frst - an iterator where values from list "b" will be moved to list "a"
+        ''
+        declare sub Splice ( byval position as typeof(Iterator), byref lst as fbext_List(( T_)( Allocator_)), byval frst as typeof(Iterator) )
+
+        '' Sub: Splice
+        '' Moves the elements of list "b" into list "a" at the position specified in list "a" starting at the position in the list "b" and continuing until lastp.
+        ''
+        '' Parameters:
+        '' position - an iterator where list "a" insertion will take place
+        '' lst - the list to insert
+        '' frst - an iterator where values from list "b" will be moved to list "a"
+        '' lastp - an iterator where moving should end.
+        ''
+        declare sub Splice ( byval position as typeof(Iterator), byref lst as fbext_List(( T_)( Allocator_)), byval frst as typeof(Iterator), byval lastp as typeof(Iterator) )
+
         '' Function: Erase
         '' Removes an element from the list.
         ''
@@ -770,9 +791,23 @@ namespace ext
     '' :::::
     linkage_ sub fbext_List(( T_)( Allocator_)).Splice ( byval position as typeof(Iterator), byref lst as fbext_List(( T_)( Allocator_)) )
 
+        this.Splice(position,lst,lst.Begin_(),lst.End_())
+
+    end sub
+
+    '' :::::
+    linkage_ sub fbext_List(( T_)( Allocator_)).Splice ( byval position as typeof(Iterator), byref lst as fbext_List(( T_)( Allocator_)), byval frst as typeof(Iterator) )
+
+        this.Splice(position,lst,frst,lst.End_())
+
+    end sub
+
+    '' :::::
+    linkage_ sub fbext_List(( T_)( Allocator_)).Splice ( byval position as typeof(Iterator), byref lst as fbext_List(( T_)( Allocator_)), byval frst as typeof(Iterator), byval lastp as typeof(Iterator) )
+
         var this_iter = position
-        var first = lst.Begin_()
-        var last = lst.End_()
+        var first = frst
+        var last = lastp()
 
         do while first <> last
             var tmp = this.Insert(this_iter,*first.get_())
@@ -781,9 +816,10 @@ namespace ext
             first.Increment()
         loop
 
-        lst.Clear()
+        lst.Erase(frst,lastp)
 
     end sub
+
 
     '' :::::
     linkage_ function fbext_List(( T_)( Allocator_)).Erase ( byval position as typeof(Iterator) ) as typeof(Iterator)

@@ -32,8 +32,8 @@ Things to complete before v0.4.0:
                 [ ] Add .Merge(list,pred).
                 [ ] Add .Sort(pred).
                 [x] Add .Splice(pos,list).
-                [ ] Add .Splice(pos,list,first).
-                [ ] Add .Splice(pos,list,first,last).
+                [x] Add .Splice(pos,list,first).
+                [x] Add .Splice(pos,list,first,last).
                 [ ] Add .Unique(pred).
                 [ ] Add ext.Swap_(list,list).
                 [ ] ? Add member procs that require elements to be comparable ?
