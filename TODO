@@ -25,8 +25,8 @@ Things to complete before v0.4.0:
                 [x] Add .constructor(n,value).
                 [ ] Add .constructor(n,value,alloc).
                 [ ] Add .constructor(first,last,alloc).
-                [ ] Add .Resize(n).
-                [ ] Add .Resize(n,value).
+                [x] Add .Resize(n).
+                [x] Add .Resize(n,value).
                 [ ] Add .Reverse().
                 [ ] Add .Swap_(list).
                 [ ] Add .Merge(list,pred).

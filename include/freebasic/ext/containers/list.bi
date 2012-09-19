@@ -377,6 +377,21 @@ namespace ext
         '' Gets the number of elements in the list.
         declare const function Size ( ) as SizeType
 
+        '' Sub: Resize
+        '' Changes the size of the list. If x is greater than the current size new items are given the default value, if smaller the overhanging items are removed.
+        ''
+        '' Parameters:
+        '' x - <SizeType> specifing the number of elements the list will contain
+        declare sub Resize ( byval x as SizeType )
+
+        '' Sub: Resize
+        '' Changes the size of the list. If x is greater than the current size then new items are assigned the value passed or removed.
+        ''
+        '' Parameters:
+        '' x - <SizeType> specifing the number of elements the list will contain
+        '' v - value any new items will contain
+        declare sub Resize ( byval x as SizeType, byref v as const fbext_TypeName( T_) )
+
         '' Function: Empty
         '' Determines if the list contains no elements.
         declare const function Empty ( ) as bool
@@ -688,6 +703,44 @@ namespace ext
         return c
 
     end function
+
+    '' :::::
+    linkage_ sub Resize ( byval x as SizeType )
+
+        dim tmp as fbext_TypeName( T_)
+        this.Resize( x, tmp )
+
+    end sub
+
+    '' :::::
+    linkage_ sub Resize ( byval x as SizeType, byref v as const fbext_TypeName( T_) )
+
+        var s = this.Size()
+
+        if x = s then return
+
+        if x < s then
+
+            var diff = s - x
+            var it = this.End_()
+
+            for n as uinteger = 1 to diff
+                it.Decrement()
+            next
+
+            this.Erase(it,this.End_())
+
+        else
+
+            var diff = x - s
+
+            for n as uinteger = 1 to diff
+                this.PushBack(v)
+            next
+
+        end if
+
+    end sub
 
     '' :::::
     linkage_ function fbext_List(( T_)( Allocator_)).Empty ( ) as bool
