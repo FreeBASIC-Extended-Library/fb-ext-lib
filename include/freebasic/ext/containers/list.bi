@@ -461,6 +461,15 @@ namespace ext
         '' insert
         declare sub Insert ( byval position as typeof(Iterator), byval first as typeof(IteratorToConst), byval last as typeof(IteratorToConst) )
 
+        '' Sub: Splice
+        '' Moves the elements of the passed list into the list at the position specified.
+        ''
+        '' Parameters:
+        '' position - an iterator where the list insertion will take place
+        '' lst - the list to insert
+        ''
+        declare sub Splice ( byval position as typeof(Iterator), byref lst as fbext_List(( T_)( Allocator_)) )
+
         '' Function: Erase
         '' Removes an element from the list.
         ''
@@ -755,6 +764,24 @@ namespace ext
             var tmp = this.Insert(position, **first)
             first.Increment()
         loop
+
+    end sub
+
+    '' :::::
+    linkage_ sub fbext_List(( T_)( Allocator_)).Splice ( byval position as typeof(Iterator), byref lst as fbext_List(( T_)( Allocator_)) )
+
+        var this_iter = position
+        var first = lst.Begin_()
+        var last = lst.End_()
+
+        do while first <> last
+            var tmp = this.Insert(this_iter,*first.get_())
+            this_iter = tmp
+            this_iter.Increment()
+            first.Increment()
+        loop
+
+        lst.Clear()
 
     end sub
 
