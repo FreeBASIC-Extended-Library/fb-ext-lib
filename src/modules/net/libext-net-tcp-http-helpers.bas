@@ -295,7 +295,7 @@ function getRemoteFileToDisk( byref s as TCPsocket, byref url as string, byref f
         return st
     end if
 
-    var f = ext.File(filetosave,ext.File.ACCESS_TYPE.W)
+    var f = ext.File(filetosave,ext.ACCESS_TYPE.W)
     var fo = f.open()
     if fo = false then return HTTP_STATUS.NOT_FOUND
 
