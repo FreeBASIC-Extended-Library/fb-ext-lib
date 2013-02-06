@@ -1,5 +1,6 @@
 # include once "ext/testly.bi"
 # include once "ext/xml/xpath.bi"
+# include once "ext/xml/dom.bi"
 
 namespace ext.tests.xml
 
