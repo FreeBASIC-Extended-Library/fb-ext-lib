@@ -13,16 +13,84 @@
 # include once "ext/detail/common.bi"
 
 #if not __FB_MT__
-	#inclib "ext-file"
-	#ifdef FBEXT_MULTITHREADED
-		#error "The multithreaded version of the library must be built using the -mt compiler option."
-	#endif
+    #inclib "ext-file"
+    #ifdef FBEXT_MULTITHREADED
+        #error "The multithreaded version of the library must be built using the -mt compiler option."
+    #endif
 #else
-	#inclib "ext-file.mt"
-	#ifndef FBEXT_MULTITHREADED
-		#define FBEXT_MULTITHREADED 1
-	#endif
+    #inclib "ext-file.mt"
+    #ifndef FBEXT_MULTITHREADED
+        #define FBEXT_MULTITHREADED 1
+    #endif
 #endif
+
+namespace ext
+
+        ''Enum: ACCESS_TYPE
+        ''Used to specify the access to use when opening a file.
+        ''
+        ''R - Open the file read-only.
+        ''W - Open the file for write access.
+        ''RW - Open the file for reading and writing.
+        ''
+        enum ACCESS_TYPE
+
+            R = 0
+            W
+            RW
+
+        end enum
+
+type FileSystemDriverF as FileSystemDriver
+
+type drvfsopen as function( byval t as FileSystemDriverF ptr ) as bool
+type drvfsclose as sub( byval t as FileSystemDriverF ptr )
+type drvfslof as function( byval t as FileSystemDriverF ptr ) as ulongint
+type drvfsloc as function( byval t as FileSystemDriverF ptr ) as ulongint
+type drvfsseek as function(  byval t as FileSystemDriverF ptr, byval p as ulongint ) as bool
+type drvfseof as function(  byval t as FileSystemDriverF ptr ) as bool
+type drvfsget as function( byval t as FileSystemDriverF ptr, byval pos_ as ulongint, byref p as ubyte ptr, byval n as SizeType ) as SizeType
+type drvfsput as function( byval t as FileSystemDriverF ptr, byval pos_ as ulongint, byval p as ubyte ptr, byval n as SizeType ) as SizeType
+
+''Type: FileSystemDriver
+''A group of function pointers to allow access to a specific filesystem.
+type FileSystemDriver
+    fsopen as drvfsopen
+    fsclose as drvfsclose
+    fslof as drvfslof
+    fsloc as drvfsloc
+    fsseek as drvfsseek
+    fseof as drvfseof
+    fsget as drvfsget
+    fsput as drvfsput
+    driverdata as any ptr
+end type
+
+''Function: newDiskFileDriver
+''Creates a driver allowing access to a file located on a disk.
+''
+''Params:
+''fn - the name of the file to connect to.
+''a - the type of access to request to the file, one of <ACCESS_TYPE>
+''
+''Returns:
+''A fully functioning driver giving access to the specified file.
+''
+declare function newDiskFileDriver( byref fn as const string, byval a as ACCESS_TYPE ) as FileSystemDriver ptr
+
+''Function: newMemoryFileDriver
+''Creates a driver allowing one to access a region of memory as if it were a file.
+''
+''Params:
+''d - ubyte ptr to a region of memory that is already allocated and managed by the user.
+''dlen - the length (in bytes) of the memory pointed to by d
+''
+''Returns:
+''A fully functioning driver representing a memory region as a file.
+''
+declare function newMemoryFileDriver( byval d as ubyte ptr, byval dlen as SizeType ) as FileSystemDriver ptr
+
+end namespace
 
 # endif ' include guard
 

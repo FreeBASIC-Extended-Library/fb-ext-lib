@@ -25,20 +25,6 @@ namespace ext
     ''<Simple File class example>
     type File
     public:
-        ''Enum: ACCESS_TYPE
-        ''Used to specify the access to use when opening a file.
-        ''
-        ''R - Open the file read-only.
-        ''W - Open the file for write access.
-        ''RW - Open the file for reading and writing.
-        ''
-        enum ACCESS_TYPE
-
-            R = 0
-            W
-            RW
-
-        end enum
 
         ''Sub: constructor
         ''Sets the file to open and its access level.
