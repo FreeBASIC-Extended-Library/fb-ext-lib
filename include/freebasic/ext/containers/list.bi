@@ -336,7 +336,7 @@ namespace ext
         '' Parameters:
         '' n - <SizeType> specifing how many elements to create.
         '' value - the value to assign to each element.
-        declare constructor ( byval n as SizeType, byref valu as const T_ )
+        declare constructor ( byval n as SizeType, byref valu as const fbext_TypeName(T_ ))
 
         '' Sub: constructor
         '' Constructs a list from a range of list element values.
@@ -613,14 +613,14 @@ namespace ext
     linkage_ constructor fbext_List(( T_)( Allocator_)) ( byval n as SizeType )
 
         for t as SizeType = 0 to n
-            dim tmp as T_
+            dim tmp as fbext_TypeName(T_)
             this.PushBack(tmp)
         next t
 
     end constructor
 
     '' :::::
-    linkage_ constructor fbext_List(( T_)( Allocator_)) ( byval n as SizeType, byref valu as const T_ )
+    linkage_ constructor fbext_List(( T_)( Allocator_)) ( byval n as SizeType, byref valu as const fbext_TypeName(T_) )
 
         for t as SizeType = 0 to n
             this.PushBack(valu)
@@ -705,7 +705,7 @@ namespace ext
     end function
 
     '' :::::
-    linkage_ sub Resize ( byval x as SizeType )
+    linkage_ sub fbext_List(( T_)( Allocator_)).Resize ( byval x as SizeType )
 
         dim tmp as fbext_TypeName( T_)
         this.Resize( x, tmp )
@@ -713,7 +713,7 @@ namespace ext
     end sub
 
     '' :::::
-    linkage_ sub Resize ( byval x as SizeType, byref v as const fbext_TypeName( T_) )
+    linkage_ sub fbext_List(( T_)( Allocator_)).Resize ( byval x as SizeType, byref v as const fbext_TypeName( T_) )
 
         var s = this.Size()
 
@@ -728,7 +728,7 @@ namespace ext
                 it.Decrement()
             next
 
-            this.Erase(it,this.End_())
+            var unused = this.Erase(it,this.End_())
 
         else
 
@@ -844,7 +844,7 @@ namespace ext
     '' :::::
     linkage_ sub fbext_List(( T_)( Allocator_)).Splice ( byval position as typeof(Iterator), byref lst as fbext_List(( T_)( Allocator_)) )
 
-        this.Splice(position,lst,lst.Begin_(),lst.End_())
+        this.Splice(position,lst,lst.Begin(),lst.End_())
 
     end sub
 
@@ -860,16 +860,16 @@ namespace ext
 
         var this_iter = position
         var first = frst
-        var last = lastp()
+        var last = lastp
 
         do while first <> last
-            var tmp = this.Insert(this_iter,*first.get_())
+            var tmp = this.Insert(this_iter,*first.get())
             this_iter = tmp
             this_iter.Increment()
             first.Increment()
         loop
 
-        lst.Erase(frst,lastp)
+        var unused = lst.Erase(frst,lastp)
 
     end sub
 
