@@ -30,7 +30,8 @@ line (1,1)-(gfx.font.getTextWidth(mylargefont,"ABCDEFGHIJKLMN") + 1,1), &hff0000
 
 
 Open Cons For Output As #1
-Print #1, using "Large Font size: ####, requested: ####."; (mylargefont->height - 1), 40
+Print #1, using "Large Font size: ####, requested: ####."; (mylargefont->height - 1); 40;
+Print #1, ""
 Close
 end if
 
@@ -39,7 +40,8 @@ If ( gfx.font.loadttf("Vera.ttf", mysmallfont, 32, 128, 14 ) = 1 ) then
 Draw string (1,170), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", , mysmallfont, ALPHA
 Draw string (1,184), "abcdefghijklmnopqrstuvwxyz", , mysmallfont, Alpha
 Open Cons For Output As #1
-Print #1, using "Small Font size: ####, requested: ####."; (mysmallfont->height - 1), 14
+Print #1, using "Small Font size: ####, requested: ####."; (mysmallfont->height - 1); 14;
+Print #1, ""
 Close
 End if
 

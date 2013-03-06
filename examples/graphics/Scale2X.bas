@@ -7,15 +7,17 @@
 ''accompanying file LICENSE.txt or copy at
 ''http://code.google.com/p/fb-extended-lib/wiki/License)
 
-# include once "ext/graphics/img_load.bi"
+# include once "ext/graphics/image.bi"
 # include once "ext/graphics/manip.bi"
 # include once "fbgfx.bi"
 
+using ext.gfx
+
 screenres 640, 480, 32
 
-dim as FB.IMAGE ptr original = ext.LoadImage("fbextlogo.jpg")
+var original = LoadImage("fbextlogo.jpg")
 
-put(0,0),original, pset
-ext.gfx.Scale2X( 0, original, original->width, 0 )
+original->Display(0,0,PSET_)
+Scale2X( 0, *original, original->width, 0 )
 
 sleep

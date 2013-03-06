@@ -7,7 +7,7 @@
 ''accompanying file LICENSE.txt or copy at
 ''http://code.google.com/p/fb-extended-lib/wiki/License)
 
-# include once "ext/graphics/img_load.bi"
+# include once "ext/graphics/image.bi"
 # include once "ext/graphics/manip.bi"
 # include once "fbgfx.bi"
 
@@ -15,9 +15,9 @@ const as integer scrX = 320, scrY = 240
 
 screenres scrX, scrY, 32, ,FB.GFX_HIGH_PRIORITY
 
-dim as FB.image ptr back = ext.gfx.LoadImage("fbextlogo.jpg")
+var back = ext.gfx.LoadImage("fbextlogo.jpg")
 
-dim as FB.IMAGE ptr fore = ext.gfx.LoadImage("test.png")
+var fore = ext.gfx.LoadImage("test.png")
 
 dim as integer alpha
 
@@ -30,9 +30,9 @@ do
 
     cls
 
-    put( scrX/2-back->width/2, scrY/2-back->height/2 ), back, pset
+    put( scrX/2-back->width/2, scrY/2-back->height/2 ), *back, pset
 
-    ext.gfx.AlphaBlit( 0, fore, (scrX/2-fore->width/2)+50*sin(timer*2.3), (scrY/2-fore->height/2.5)+50*cos(timer*2), alpha )
+    ext.gfx.AlphaBlit( 0, *fore, (scrX/2-fore->width/2)+50*sin(timer*2.3), (scrY/2-fore->height/2.5)+50*cos(timer*2), alpha )
 
     locate 1,1
 

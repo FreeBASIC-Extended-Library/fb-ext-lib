@@ -7,15 +7,15 @@
 ''accompanying file LICENSE.txt or copy at
 ''http://code.google.com/p/fb-extended-lib/wiki/License)
 
-# include once "ext/graphics/img_load.bi"
+# include once "ext/graphics/image.bi"
 # include once "ext/graphics/manip.bi"
 # include once "fbgfx.bi"
 
-using ext
+using ext.gfx
 
 screenres 320, 240, 32
 
-dim as FB.IMAGE ptr original = LoadImage("fbextlogo.jpg")
+var original = LoadImage("fbextlogo.jpg")
 
 var angle = 0
 
@@ -23,7 +23,7 @@ do while not multikey(FB.SC_ESCAPE)
 
     screenlock
     cls
-    gfx.Rotate(0, original, 160-original->width\2, 120-original->height\2, angle)
+    Rotate(0, *original, 160-original->width\2, 120-original->height\2, angle)
     screenunlock
 
     if multikey(FB.SC_RIGHT) then angle -= 5

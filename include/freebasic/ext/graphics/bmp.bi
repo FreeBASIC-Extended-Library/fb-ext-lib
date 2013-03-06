@@ -61,7 +61,7 @@ namespace ext.gfx.bmp
     ''Returns:
     ''Pointer to <ext.gfx.Image> or null.
     ''
-    declare Function load ( byref filename As const String, byval t as target_e ) As ext.gfx.Image Ptr
+    declare Function load ( byref filename As const String, byval t as target_e = TARGET_FBNEW ) As ext.gfx.Image Ptr
 
 #ifndef FBEXT_BUILD_NO_GFX_LOADERS
     sub loadBMPdriver() constructor

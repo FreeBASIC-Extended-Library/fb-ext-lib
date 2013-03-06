@@ -7,7 +7,7 @@
 ''accompanying file LICENSE.txt or copy at
 ''http://code.google.com/p/fb-extended-lib/wiki/License)
 
-# include once "ext/graphics/img_load.bi"
+# include once "ext/graphics/image.bi"
 # include once "ext/graphics/manip.bi"
 # include once "fbgfx.bi"
 
@@ -15,7 +15,7 @@ using ext
 
 screenres 640, 480, 32
 
-dim as FB.IMAGE ptr original = LoadImage("fbextlogo.jpg")
+var original = gfx.LoadImage("fbextlogo.jpg")
 
 var angle = 0
 var zoom = 1f
@@ -27,11 +27,11 @@ do while not multikey(FB.SC_ESCAPE)
     cls
     select case as const method
         case 0
-            gfx.RotoZoom(0, original, 320, 240,angle, zoom, zoom)
+            gfx.RotoZoom(0, *original, 320, 240,angle, zoom, zoom)
             locate 1,1
             print "Normal"
         case else
-            gfx.RotoZoomASM(0, original, 320, 240,angle, zoom, zoom)
+            gfx.RotoZoomASM(0, *original, 320, 240,angle, zoom, zoom)
             locate 1,1
             print "ASM"
     end select

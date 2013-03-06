@@ -21,7 +21,7 @@ print "Photo provided by: http://www.flickr.com/photos/baggis/"
 print
 print "Preparing Marmot... ";
 var ti = timer
-var img2 = grayscale(img1)
+var img2 = grayscale(*img1)
 var tout = timer
 print "press any key! "
 ?

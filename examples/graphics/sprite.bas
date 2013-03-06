@@ -62,10 +62,10 @@ screenlock
 
     cls
 
-    mySprite1.DrawImage n, null, TRANS_
+    mySprite1.DrawImage n, , TRANS_
     ''is equivalent to: put (x1,y1), mySprite1.GetImage(n), TRANS
 
-    mySprite2.DrawImage n, null, TRANS_
+    mySprite2.DrawImage n, , TRANS_
     ''is equivalent to: put (x2,y2), mySprite2.GetImage(n), TRANS
 
     ''Lets see if our hero has collided with our enemy.

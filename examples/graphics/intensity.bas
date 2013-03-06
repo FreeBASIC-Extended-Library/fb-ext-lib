@@ -7,7 +7,7 @@
 ''accompanying file LICENSE.txt or copy at
 ''http://code.google.com/p/fb-extended-lib/wiki/License)
 
-# include once "ext/graphics/img_load.bi"
+# include once "ext/graphics/image.bi"
 # include once "ext/graphics/manip.bi"
 # include once "fbgfx.bi"
 
@@ -15,7 +15,7 @@ using ext
 
 screenres 320,240,32
 
-dim as FB.IMAGE ptr image = gfx.LoadImage("fbextlogo.jpg")
+var image = gfx.LoadImage("fbextlogo.jpg")
 
 
 Do
@@ -25,7 +25,7 @@ Do
 
         cls
 
-        gfx.Intensify( 0, image, 160-image->width\2, 120-image->height\2, intensity )
+        gfx.Intensify( 0, *image, 160-image->width\2, 120-image->height\2, intensity )
 
         screensync
 

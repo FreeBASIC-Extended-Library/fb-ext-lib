@@ -1,18 +1,18 @@
 # include once "ext/file/file.bi"
 # include once "ext/error.bi"
 
-var myfile = ext.File("test.txt", ext.file.R)
+var myfile = ext.File("test.txt", ext.ACCESS_TYPE.R)
 
 if myfile.open = ext.false then
 
-	do while not myfile.eof
+    do while not myfile.eof
 
-		print myfile.linput
+        print myfile.linput
 
-	loop
+    loop
 
 else
 
-	print ext.GetErrorText(myfile.LastError)
+    print ext.GetErrorText(myfile.LastError)
 
 end if
