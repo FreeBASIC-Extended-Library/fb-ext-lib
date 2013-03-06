@@ -1,9 +1,8 @@
-# define fbext_NoBuiltinInstanciations() -1
+'# define fbext_NoBuiltinInstanciations() -1
 # include once "ext/testly.bi"
-
 # include once "ext/containers/list.bi"
 
-fbext_Instanciate(fbext_List, ((integer)))
+'fbext_Instanciate(fbext_List, ((integer)) )
 
 namespace ext.tests.containers
 
