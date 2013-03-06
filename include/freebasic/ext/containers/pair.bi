@@ -3,7 +3,7 @@
 '' This header is currently under development and is not ready for usage.
 ''
 '' About: License
-''  Copyright (c) 2007-2012, FreeBASIC Extended Library Development Group
+''  Copyright (c) 2007-2013, FreeBASIC Extended Library Development Group
 ''
 ''  Distributed under the FreeBASIC Extended Library Group license. See
 ''  accompanying file LICENSE.txt or copy at
@@ -14,14 +14,13 @@
 
 # include once "ext/detail/common.bi"
 
-# define fbext_Pair( targs )       fbext_TemplateID( Pair, targs, fbext_Pair_DefaultTArgs() )
-# define fbext_Pair_DefaultTArgs() (__)((__))
+#define fbext_Pair( targs) fbext_TemplateID( Pair, targs, fbext_Pair_DefaultTArgs() )
+#define fbext_Pair_DefaultTArgs() (__)((__))
 
-# macro fbext_Pair_Declare( T_, C_ )
+#macro fbext_Pair_Declare( T_, C_ )
 :
 type fbext_Pair((T_)(C_))ftype as FBEXT_PP_SEQ_ELEM(0, T_)
 type fbext_Pair((T_)(C_))stype as FBEXT_PP_SEQ_ELEM(1, T_)
-
 
 ''namespace: ext
 namespace ext
@@ -138,6 +137,6 @@ end namespace
 :
 # endmacro
 
-'fbext_InstanciateForBuiltins__(fbext_Pair)
+'Not instanciated by default as would be code generated for a ton of combinations if done properly.
 
 # endif ' include guard
