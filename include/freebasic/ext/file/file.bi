@@ -221,7 +221,7 @@ namespace ext
     ''
     ''  do while not myfile.eof
     ''
-    ''      print myfile.linput
+    ''      print myfile.readLine
     ''
     ''  loop
     ''
