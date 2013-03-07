@@ -166,13 +166,13 @@ namespace ext
     fbext_InstanciateMulti(fbext_FileGet, fbext_BuiltinTypes())
     fbext_InstanciateMulti(fbext_FilePut, fbext_BuiltinTypes())
 
-        ''Function: linput
+        ''Function: readLine
         ''Line Input function. Retrieves one line of text from the file.
         ''
         ''Returns:
         ''string containing one line of text from the file.
         ''
-        declare function linput () as string
+        declare function readLine () as string
 
         ''Property: LastError
         ''Retrieves the error number of the last error, only set by <open>

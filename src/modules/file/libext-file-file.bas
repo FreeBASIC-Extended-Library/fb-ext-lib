@@ -365,7 +365,7 @@ namespace ext
     end function
 
     '' :::::
-    function File.linput() as string
+    function File.readLine() as string
 
         #ifdef FBEXT_MULTITHREADED
         mutexlock(m_mutex)
