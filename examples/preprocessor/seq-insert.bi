@@ -7,7 +7,7 @@
 ''accompanying file LICENSE.txt or copy at
 ''http://code.google.com/p/fb-extended-lib/wiki/License)
 
-''Copyright (c) 2007-2012, FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2013, FreeBASIC Extended Library Development Group
 ''
 ''All rights reserved.
 ''

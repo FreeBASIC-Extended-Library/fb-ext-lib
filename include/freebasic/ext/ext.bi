@@ -72,7 +72,7 @@
 ''
 ''
 ''About: License
-''Copyright (c) 2007-2012, FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2013, FreeBASIC Extended Library Development Group
 ''http://code.google.com/p/fb-extended-lib
 ''
 ''All rights reserved.
