@@ -19,24 +19,20 @@ using ext.gfx
 
 randomize timer
 
-type vec2i
-    as integer x, y
-end type
-
 type tri_struct
     index(1 to 3) as integer'indices into our vertex array... p1,p2,p3
     r as integer'Red color value for this triangle
     g as integer'...
     b as integer'...
-    normal as vector3d' the triangle's normal... used in the lighting calculation
+    normal as vec3f' the triangle's normal... used in the lighting calculation
 end type
 
 type obj_struct
     max_vertices    as integer'the number of vertices in our model
     max_tris        as integer'the number of triangles in our model
-    vertices        as vector3d ptr'the vertex array... 3d points
-    tvertices       as vector3d ptr'the transformed vertex array
-    pvertices       as vector3d ptr'the projected vertex array
+    vertices        as vec3f ptr'the vertex array... 3d points
+    tvertices       as vec3f ptr'the transformed vertex array
+    pvertices       as vec3f ptr'the projected vertex array
     tris            as tri_struct ptr'our triangle array
 end type
 
@@ -65,7 +61,7 @@ dim as integer r, g, b, zN
 
 'some more generic variables and the light
 'tlight is used for the transformed light position
-dim as vector3d p, pa, p1, p2, p3, tvec, light = vector3d(15,15,15), tlight
+dim as vec3f p, pa, p1, p2, p3, tvec, light = vec3f(15,15,15), tlight
 
 'even more generic variables... dot product, distance and angle of rotation
 dim as single dot, dist, angle
@@ -86,15 +82,15 @@ restore MODEL_VERTEX_DATA
 read obj.max_vertices
 
 'allocate just enough memory for the vertex arrays
-obj.vertices  = new vector3d[obj.max_vertices]
-obj.tvertices = new vector3d[obj.max_vertices]
-obj.pvertices = new vector3d[obj.max_vertices]
+obj.vertices  = new vec3f[obj.max_vertices]
+obj.tvertices = new vec3f[obj.max_vertices]
+obj.pvertices = new vec3f[obj.max_vertices]
 
 'read the vertex info from the data statements and store it in our main vertex array
 for i as integer = 0 to obj.max_vertices-1
     dim as single tx, ty, tz
     read tx, ty, tz
-    obj.vertices[i] = vector3d(tx, ty, tz)
+    obj.vertices[i] = vec3f(tx, ty, tz)
 next
 
 'find out how many triangles our model has by reading

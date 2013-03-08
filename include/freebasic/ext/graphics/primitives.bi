@@ -11,6 +11,7 @@
 #define FBEXT_GFX_PRIMITIVES_BI__ -1
 
 #include once "ext/detail/common.bi"
+#include once "ext/graphics/detail/common.bi"
 #include once "fbgfx.bi"
 #include once "ext/math/vector2.bi"
 

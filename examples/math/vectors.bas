@@ -1,7 +1,7 @@
 # include once "ext/math.bi"
 
-dim as ext.math.vector4d my4
-dim as ext.math.vector3d my3
+dim as ext.math.vec4f my4
+dim as ext.math.vec3f my3
 
 
 my4.x = 1

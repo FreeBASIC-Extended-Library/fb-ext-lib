@@ -17,13 +17,13 @@
 #include once "ext/graphics/collision.bi"
 #include once "ext/graphics/sprite.bi"
 #include once "ext/graphics/primitives.bi"
+#include once "ext/graphics/image.bi"
 
 
 #ifndef FBEXT_NO_EXTERNAL_LIBS
 
-	#include once "ext/graphics/img_load.bi"
-	#include once "ext/graphics/jpg.bi"
-	#include once "ext/graphics/png.bi"
+    #include once "ext/graphics/jpg.bi"
+    #include once "ext/graphics/png.bi"
 
 #endif
 

@@ -13,16 +13,16 @@
 
 using ext.math
 
-declare function cPointline( byref vA as vector2d, byref vB as vector2d, byref vPoint as vector2d ) as vector2d 
+declare function cPointline( byref vA as vec2f, byref vB as vec2f, byref vPoint as vec2f ) as vec2f 
 
 screenres 640,480,8,,FB.GFX_HIGH_PRIORITY
 
 dim as integer num_verts
 dim as single radius = 30, tDist, mSpeed = 50
 dim as double tTimer, fTime
-dim as vector2d Lines()
-var pl = vector2d(320,240)
-dim as vector2d pld, cent, ero
+dim as vec2f Lines()
+var pl = vec2f(320,240)
+dim as vec2f pld, cent, ero
 
 read Num_Verts 
 redim Lines(num_verts)
@@ -87,11 +87,11 @@ do
 loop until multikey(FB.SC_ESCAPE)
 
 
-function cPointline( byref vA as vector2d, byref vB as vector2d, byref vPoint as vector2d ) as vector2d 
+function cPointline( byref vA as vec2f, byref vB as vec2f, byref vPoint as vec2f ) as vec2f 
     
-    dim as vector2d tVector1
-    dim as vector2d tVector2
-    dim as vector2d vReturn
+    dim as vec2f tVector1
+    dim as vec2f tVector2
+    dim as vec2f vReturn
     dim as single d
     dim as single t
     

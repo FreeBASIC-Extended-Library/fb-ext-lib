@@ -10,12 +10,12 @@
 
 # include once "ext/math/vector2.bi"
 # include once "ext/math/vector3.bi"
+# include once "ext/math/vector4.bi"
 # include once "ext/math/line2.bi"
 # include once "ext/math/intersects.bi"
 # include once "ext/math/projections.bi"
 # include once "ext/math/reflections.bi"
 
-# include once "ext/math/vectors.bi"
 # include once "ext/math/matrix.bi"
 # include once "ext/math/factorial.bi"
 # include once "ext/math/pow2.bi"

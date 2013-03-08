@@ -26,26 +26,26 @@ screenres SCR_W,SCR_H,32
 
 
 Function vertex_sort Cdecl ( Byval elm1 As Any Ptr, Byval elm2 As Any Ptr ) As Integer
-    Return Sgn( (Cptr(vector3d Ptr, elm2)->z) - (Cptr(vector3d Ptr, elm1)->z) )
+    Return Sgn( (Cptr(vec3f Ptr, elm2)->z) - (Cptr(vec3f Ptr, elm1)->z) )
 End Function
 
-dim as vector3d vert(5000), tvert( ubound(vert) )
+dim as vec3f vert(5000), tvert( ubound(vert) )
  
 'set up some test vertices
 for i as integer = lbound(vert) to ubound(vert)
-    vert(i) = type<vector3d>(-1000+rnd*2000,-1000+rnd*2000,-1000+rnd*2000)
+    vert(i) = type<vec3f>(-1000+rnd*2000,-1000+rnd*2000,-1000+rnd*2000)
     vert(i)*=1.45
 next
 
-    dim as vector3d posit, look
-    dim as vector3d tposit
-    dim as vector3d tlook 
-    dim as vector3d up = vector3d(0,1,0) 
+    dim as vec3f posit, look
+    dim as vec3f tposit
+    dim as vec3f tlook 
+    dim as vec3f up = vec3f(0,1,0) 
  
 do
     if tposit.distance(posit)<100 then
-        tposit = type<vector3d>(-1000+rnd*2000,-1000+rnd*2000,-1000+rnd*2000)
-        tlook = type<vector3d>(-1000+rnd*2000,-1000+rnd*2000,-1000+rnd*2000)
+        tposit = type<vec3f>(-1000+rnd*2000,-1000+rnd*2000,-1000+rnd*2000)
+        tlook = type<vec3f>(-1000+rnd*2000,-1000+rnd*2000,-1000+rnd*2000)
     end if
     
     posit += (tposit-posit)/50.0
@@ -58,13 +58,13 @@ do
         tvert(i) = vert(i)*m
     next
         
-    'ext.quicksort( @tvert(0), ubound(tvert), SizeOf(Vector3D), @vertex_sort )
-    qsort( @tvert(0), ubound(tvert), sizeof(Vector3D), @vertex_sort )
+    'ext.quicksort( @tvert(0), ubound(tvert), SizeOf(vec3f), @vertex_sort )
+    qsort( @tvert(0), ubound(tvert), sizeof(vec3f), @vertex_sort )
 
     screenlock
     line(0,0)-(SCR_W-1,SCR_H-1), 0, BF
     for i as integer = lbound(vert) to ubound(vert)
-        dim as vector3d pnt = tvert(i)
+        dim as vec3f pnt = tvert(i)
         dim as single dist = pnt.z
         if dist > 0 then
             dim as single size = 20 - dist/80

@@ -13,8 +13,6 @@
 # include once "ext/math/vector2.bi"
 # include once "ext/math/line2.bi"
 
-# include once "ext/math/vectors.bi"
-
 # macro fbext_Math_Intersects_Line2_Declare( T_)
 :
 fbext_TDeclare( fbext_Vector2, ( T_) )
@@ -124,11 +122,11 @@ namespace ext.math
 
     '' ::::: (it puts the lotion in the basket, Dr_D)
     private function LinesIntersect ( _
-        byref ip as vector2d, _
-        byval p1 as vector2d, _
-        byval p2 as vector2d, _
-        byval p3 as vector2d, _
-        byval p4 as vector2d _
+        byref ip as vec2f, _
+        byval p1 as vec2f, _
+        byval p2 as vec2f, _
+        byval p3 as vec2f, _
+        byval p4 as vec2f _
     ) as integer
 
         var v1 = p2 - p1
