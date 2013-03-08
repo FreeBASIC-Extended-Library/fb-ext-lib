@@ -26,7 +26,7 @@ namespace ext
     type File
     public:
 
-        ''Sub: constructor
+        ''Sub: Standard "file" constructor
         ''Sets the file to open and its access level.
         ''
         ''Parameters:
@@ -34,6 +34,14 @@ namespace ext
         ''acc - one of <ACCESS_TYPE>
         ''
         declare constructor ( byref filename as const string, byval acc as ACCESS_TYPE = R )
+
+        ''Sub: FileSystemDriver constructor
+        ''Creates a file-like object from any source.
+        ''
+        ''Parameters:
+        ''fsd - pointer to the <FileSystemDriver> to use (created with new or helper function.)
+        ''
+        declare constructor ( byval fsd as FileSystemDriver ptr )
 
         ''Sub: default constructor
         ''Constructs an invalid File object. Use the <open> function to
@@ -195,12 +203,16 @@ namespace ext
 
         declare destructor ()
 
+        declare function getBytesRW() as ulongint
+
     private:
 
         m_filename as string
         m_access as integer
         m_filehandle as integer
         m_lasterror as integer
+        m_fsd as FileSystemDriver ptr
+        m_bytes as ulongint
 
     #ifdef FBEXT_MULTITHREADED
 

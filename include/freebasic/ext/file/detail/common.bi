@@ -49,7 +49,7 @@ type drvfslof as function( byval t as FileSystemDriverF ptr ) as ulongint
 type drvfsloc as function( byval t as FileSystemDriverF ptr ) as ulongint
 type drvfsseek as function(  byval t as FileSystemDriverF ptr, byval p as ulongint ) as bool
 type drvfseof as function(  byval t as FileSystemDriverF ptr ) as bool
-type drvfsget as function( byval t as FileSystemDriverF ptr, byval pos_ as ulongint, byref p as ubyte ptr, byval n as SizeType ) as SizeType
+type drvfsget as function( byval t as FileSystemDriverF ptr, byval pos_ as ulongint, byval p as ubyte ptr, byval n as SizeType ) as SizeType
 type drvfsput as function( byval t as FileSystemDriverF ptr, byval pos_ as ulongint, byval p as ubyte ptr, byval n as SizeType ) as SizeType
 
 ''Type: FileSystemDriver

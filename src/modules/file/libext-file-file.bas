@@ -35,10 +35,18 @@ sub File.print( byref data_ as fbext_TypeName(T_) )
     mutexlock(m_mutex)
     #endif
 
+    if m_fsd <> null then
+        #if fbext_TypeName(T_) = string
+        generic_print(m_fsd,cast(ubyte ptr,@data_[0]),len(data_))
+        #else
+        generic_print(m_fsd,cast(ubyte ptr,@data_),sizeof(data_))
+        #endif
+    else
     if m_filehandle <> null then
 
         ..print #m_filehandle, data_
 
+    end if
     end if
 
     #ifdef FBEXT_MULTITHREADED
@@ -54,17 +62,22 @@ sub File.print( _data() as fbext_TypeName(T_) , byval amount as integer = 0 )
     mutexlock(m_mutex)
     #endif
 
-    if m_filehandle <> null then
+
 
         var amm = iif(amount = 0, ubound(_data), amount)
 
         for n as integer = lbound(_data) to amm
 
-            ..print #m_filehandle, _data(n)
+            if m_fsd <> null then
+                this.print(_data(n))
+            else
+                if m_filehandle <> null then
+                ..print #m_filehandle, _data(n)
+                end if
+            end if
 
         next n
 
-    end if
 
     #ifdef FBEXT_MULTITHREADED
     mutexunlock(m_mutex)
@@ -87,18 +100,34 @@ sub File.get( byval filepos as longint = -1, byref data_ as fbext_TypeName(T_), 
 
     #if fbext_TypeName(T_) = string
         if filepos = -1 then
-            ..get #m_filehandle, , data_
+            if m_fsd <> null then
+                m_bytes = m_fsd->fsget(m_fsd,0,cast(ubyte ptr,@data_),amount*len(data_))
+            else
+                ..get #m_filehandle, , data_
+            end if
 
         else
-            ..get #m_filehandle, filepos, data_
+            if m_fsd <> null then
+                m_bytes = m_fsd->fsget(m_fsd,filepos,cast(ubyte ptr,@data_),amount*len(data_))
+            else
+                ..get #m_filehandle, filepos, data_
+            end if
 
         end if
     #else
         if filepos = -1 then
-            ..get #m_filehandle, , data_, amount
+            if m_fsd <> null then
+                m_bytes = m_fsd->fsget(m_fsd,0,cast(ubyte ptr,@data_),amount*sizeof(data_))
+            else
+                ..get #m_filehandle, , data_, amount
+            end if
 
         else
-            ..get #m_filehandle, filepos, data_, amount
+            if m_fsd <> null then
+                m_bytes = m_fsd->fsget(m_fsd,filepos,cast(ubyte ptr,@data_),amount*sizeof(data_))
+            else
+                ..get #m_filehandle, filepos, data_, amount
+            end if
 
         end if
     #endif
@@ -124,18 +153,34 @@ sub File.put( byval filepos as longint = -1, byref data_ as fbext_TypeName(T_), 
 
     #if fbext_TypeName(T_) = string
         if filepos = -1 then
-            ..put #m_filehandle, , data_
+            if m_fsd <> null then
+                m_bytes = m_fsd->fsput(m_fsd,0,cast(ubyte ptr,@data_),amount*len(data_))
+            else
+                ..put #m_filehandle, , data_
+            end if
 
         else
-            ..put #m_filehandle, filepos, data_
+            if m_fsd <> null then
+                m_bytes = m_fsd->fsput(m_fsd,filepos,cast(ubyte ptr,@data_),amount*len(data_))
+            else
+                ..put #m_filehandle, filepos, data_
+            end if
 
         end if
     #else
         if filepos = -1 then
-            ..put #m_filehandle, , data_, amount
+            if m_fsd <> null then
+                m_bytes = m_fsd->fsput(m_fsd,0,cast(ubyte ptr,@data_),amount*sizeof(data_))
+            else
+                ..put #m_filehandle, , data_, amount
+            end if
 
         else
-            ..put #m_filehandle, filepos, data_, amount
+            if m_fsd <> null then
+                m_bytes = m_fsd->fsput(m_fsd,filepos,cast(ubyte ptr,@data_),amount*sizeof(data_))
+            else
+                ..put #m_filehandle, filepos, data_, amount
+            end if
 
         end if
     #endif
@@ -149,6 +194,30 @@ end sub
 # endmacro
 
 namespace ext
+
+    function File.getBytesRW() as ulongint
+        return m_bytes
+    end function
+
+    private sub generic_print( byval t as FileSystemDriver ptr, byval d as ubyte ptr, byval n as SizeType )
+
+        #ifdef __FB_WIN32__
+            var lineending = !"\r\n"
+        #else
+            var lineending = !"\n"
+        #endif
+
+        for i as uinteger = 0 to n-1
+            var r = t->fsput(t,0,@d[i],1)
+            if r <> 1 then return
+        next
+
+        'if t->fsput(t,0,d,n) <> n then return
+        for i as integer = 0 to len(lineending)-1
+            t->fsput(t,0,cast(ubyte ptr,@lineending[n]),1)
+        next
+
+    end sub
 
     fbext_InstanciateMulti(fbext_FilePrint, fbext_BuiltinTypes())
     fbext_InstanciateMulti(fbext_FilePut, fbext_BuiltinTypes())
@@ -185,6 +254,11 @@ namespace ext
     end constructor
 
     '' :::::
+    constructor File ( byval fsd as FileSystemDriver ptr )
+        m_fsd = fsd
+    end constructor
+
+    '' :::::
     constructor File ( )
 
         m_filename = ""
@@ -205,7 +279,13 @@ namespace ext
         mutexlock(m_mutex)
         #endif
 
-        var x = iif(..eof(m_filehandle), ext.true, ext.false)
+        var x = false
+
+        if m_fsd <> null then
+            x = m_fsd->fseof(m_fsd)
+        else
+            x = iif(..eof(m_filehandle), ext.true, ext.false)
+        end if
 
         #ifdef FBEXT_MULTITHREADED
         mutexunlock(m_mutex)
@@ -227,7 +307,13 @@ namespace ext
         mutexlock(m_mutex)
         #endif
 
-        var x = ..lof(m_filehandle)
+        dim x as longint
+
+        if m_fsd <> null then
+            x = m_fsd->fslof(m_fsd)
+        else
+            x = ..lof(m_filehandle)
+        end if
 
         #ifdef FBEXT_MULTITHREADED
         mutexunlock(m_mutex)
@@ -244,7 +330,13 @@ namespace ext
         mutexlock(m_mutex)
         #endif
 
-        var x = ..loc(m_filehandle)
+        dim x as longint
+
+        if m_fsd <> null then
+            x = m_fsd->fsloc(m_fsd)
+        else
+            x = ..loc(m_filehandle)
+        end if
 
         #ifdef FBEXT_MULTITHREADED
         mutexunlock(m_mutex)
@@ -261,7 +353,11 @@ namespace ext
         mutexlock(m_mutex)
         #endif
 
-        ..seek #m_filehandle, poz
+        if m_fsd <> null then
+            m_fsd->fsseek(m_fsd,poz)
+        else
+            ..seek #m_filehandle, poz
+        end if
 
         #ifdef FBEXT_MULTITHREADED
         mutexunlock(m_mutex)
@@ -276,7 +372,13 @@ namespace ext
         mutexlock(m_mutex)
         #endif
 
-        var x = ..seek(m_filehandle)
+        dim x as longint
+
+        if m_fsd <> null then
+            x = m_fsd->fsloc(m_fsd)
+        else
+            x = ..seek(m_filehandle)
+        end if
 
         #ifdef FBEXT_MULTITHREADED
         mutexunlock(m_mutex)
@@ -315,6 +417,13 @@ namespace ext
         #ifdef FBEXT_MULTITHREADED
         mutexlock(m_mutex)
         #endif
+
+        if m_fsd <> null then
+        #ifdef FBEXT_MULTITHREADED
+        mutexunlock(m_mutex)
+        #endif
+            return m_fsd->fsopen(m_fsd)
+        else
 
         m_filehandle = freefile
 
@@ -362,6 +471,40 @@ namespace ext
 
         end if
 
+        end if
+
+    end function
+
+    private function generic_readline ( byval fsd as FileSystemDriver ptr ) as string
+
+        var ret = ""
+
+        dim as ubyte x
+
+        while 1
+
+            var res = fsd->fsget(fsd,0,@x,1)
+            if res = 0 orelse x = 0 then exit while
+
+            if x <> 13 then
+                if x <> 10 then
+                    ret &= chr(x)
+                else
+                    exit while
+                end if
+            else
+                res = fsd->fsget(fsd,0,@x,1)
+                if res = 0 orelse x = 0 then exit while
+                if x <> 10 then
+                    var cloc = fsd->fsloc(fsd)
+                    fsd->fsseek(fsd,cloc-1)
+                end if
+                exit while
+            end if
+        wend
+
+        return ret
+
     end function
 
     '' :::::
@@ -372,7 +515,12 @@ namespace ext
         #endif
 
         var x = ""
-        line input #m_filehandle, x
+
+        if m_fsd <> 0 then
+            x = generic_readline(m_fsd)
+        else
+            line input #m_filehandle, x
+        end if
 
         #ifdef FBEXT_MULTITHREADED
         mutexunlock(m_mutex)
@@ -389,7 +537,11 @@ namespace ext
         mutexlock(m_mutex)
         #endif
 
-        if m_filehandle <> 0 then ..close #m_filehandle
+        if m_fsd <> 0 then
+            m_fsd->fsclose(m_fsd)
+        else
+            if m_filehandle <> 0 then ..close #m_filehandle
+        end if
 
         #ifdef FBEXT_MULTITHREADED
         mutexunlock(m_mutex)
@@ -400,11 +552,13 @@ namespace ext
     '' :::::
     destructor File ( )
 
+        this.close
+
         #ifdef FBEXT_MULTITHREADED
         mutexdestroy(m_mutex)
         #endif
 
-        if m_filehandle <> 0 then ..close #m_filehandle
+        if m_fsd <> 0 then delete m_fsd
 
     end destructor
 
