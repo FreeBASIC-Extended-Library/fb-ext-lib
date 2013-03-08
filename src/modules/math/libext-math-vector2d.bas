@@ -21,28 +21,29 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#define FBEXT_USE_DEPRECATED 1
 # include once "ext/math/vectors.bi"
 
 namespace ext.math
 
 constructor vector2d ( byval x as single, byval y as single )
 
-	this.x = x
-	this.y = y
+    this.x = x
+    this.y = y
 
 end constructor
 
 constructor vector2d ( byref v2d as vector2d )
 
-	this.x = v2d.x
-	this.y = v2d.y
+    this.x = v2d.x
+    this.y = v2d.y
 
 end constructor
 
 constructor vector2d ( )
 
-	this.x = 0.0
-	this.y = 0.0
+    this.x = 0.0
+    this.y = 0.0
 
 end constructor
 
@@ -58,7 +59,7 @@ function vector2d.magnitude( ) As single
 end function
 
 sub vector2d.normalize()
-	this = this / this.magnitude()
+    this = this / this.magnitude()
 end sub
 
 function vector2d.cross( byref v as vector2d ) as vector2d
@@ -71,20 +72,20 @@ function vector2d.cross( byref v as vector2d ) as vector2d
 end function
 
 function vector2d.distance( byref v as vector2d ) as single
-	return Sqr((v.x - this.x)^2 + (v.y - this.y)^2)
+    return Sqr((v.x - this.x)^2 + (v.y - this.y)^2)
 end function
 
 function vector2d.AngleBetween( byref v as vector2d ) as single
-	return acos( this.dot(v) / (this.magnitude * v.magnitude) )
+    return acos( this.dot(v) / (this.magnitude * v.magnitude) )
 end function
 
 operator vector2d.let( byref rhs as vector2d )
-	this.x = rhs.x
-	this.y = rhs.y
+    this.x = rhs.x
+    this.y = rhs.y
 end operator
 
 operator vector2d.cast() as string
-	return "x: " & this.x & ", y: " & this.y
+    return "x: " & this.x & ", y: " & this.y
 end operator
 
 operator + ( Byref lhs As vector2d, Byref rhs As Single ) As vector2d
@@ -92,40 +93,40 @@ operator + ( Byref lhs As vector2d, Byref rhs As Single ) As vector2d
 End operator
 
 operator + ( byref lhs as vector2d, byref rhs as vector2d ) as vector2d
-	return type<vector2d>( lhs.x + rhs.x, lhs.y + rhs.y )
+    return type<vector2d>( lhs.x + rhs.x, lhs.y + rhs.y )
 end operator
 
 operator - ( byref lhs as vector2d, byref rhs as vector2d ) as vector2d
 
-	return type<vector2d>( lhs.x - rhs.x, lhs.y - rhs.y )
+    return type<vector2d>( lhs.x - rhs.x, lhs.y - rhs.y )
 
 end operator
 
 operator * ( byref lhs as vector2d, byref rhs as vector2d ) as vector2d
 
-	return type<vector2d>( lhs.x * rhs.x, lhs.y * rhs.y )
+    return type<vector2d>( lhs.x * rhs.x, lhs.y * rhs.y )
 
 end operator
 
 
 operator * ( byref lhs as vector2d, byref rhs as single ) as vector2d
 
-	return type<vector2d>( lhs.x * rhs, lhs.y * rhs )
+    return type<vector2d>( lhs.x * rhs, lhs.y * rhs )
 
-end operator 
- 
+end operator
+
 operator * ( byref lhs as vector2d, byref rhs as double ) as vector2d
 
-	return type<vector2d>( lhs.x * rhs, lhs.y * rhs )
+    return type<vector2d>( lhs.x * rhs, lhs.y * rhs )
 
 end operator
 
 operator / ( byref lhs as vector2d, byref rhs as integer ) as vector2d
-	return type<vector2d>( lhs.x / rhs, lhs.y / rhs )
+    return type<vector2d>( lhs.x / rhs, lhs.y / rhs )
 end operator
 
 operator / ( byref lhs as vector2d, byref rhs as vector2d ) as vector2d
-	return type<vector2d>( lhs.x / rhs.x, lhs.y / rhs.y )
+    return type<vector2d>( lhs.x / rhs.x, lhs.y / rhs.y )
 end operator
 
 operator / ( Byref lhs As vector2d, Byref rhs As Single ) As vector2d

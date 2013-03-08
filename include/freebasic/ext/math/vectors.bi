@@ -12,7 +12,11 @@
 
 # ifndef FBEXT_MATH_VECTORS_BI__
 # define FBEXT_MATH_VECTORS_BI__ -1
+#ifndef FBEXT_USE_DEPRECATED
+#error "ERROR: ext/math/vectors.bi is being deprecated. You should check into the Vector2, Vector3 and Vector4 replacement classes."
+#else
 #print "WARNING: ext/math/vectors.bi is being deprecated. You should check into the Vector2, Vector3 and Vector4 replacement classes."
+#endif
 # include once "ext/math/detail/common.bi"
 
 ''Namespace: ext.math

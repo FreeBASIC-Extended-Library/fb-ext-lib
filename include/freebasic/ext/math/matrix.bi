@@ -14,7 +14,6 @@
 # include once "ext/math/vector3.bi"
 # include once "ext/math/vector2.bi"
 # include once "ext/math/vector4.bi"
-'# include once "ext/math/vectors.bi" 'vec4f
 
 ''Namespace: ext.math
 
