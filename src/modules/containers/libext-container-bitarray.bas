@@ -44,6 +44,9 @@ namespace ext
         next
     end sub
 
+    constructor BitArray
+    end constructor
+
     '' :::::
     constructor BitArray ( byval sz as SizeType )
         size(sz)
