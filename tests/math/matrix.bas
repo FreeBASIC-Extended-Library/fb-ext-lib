@@ -53,9 +53,9 @@ namespace ext.tests.math
         var m = matrix(matrix.identity())
         m.rotate( 90.0f, 180.0f, 270.0f )
 
-        TESTLY_ASSERT_TRUE( check_vector(m.right,       3.65039e-08f,   -1.216797e-08f, -1.0f) )
-        TESTLY_ASSERT_TRUE( check_vector(m.up,          -1,             2.433593e-08f,  -3.65039e-08f) )
-        TESTLY_ASSERT_TRUE( check_vector(m.forward,     2.433593e-08f,  1.0f,           1.216796e-08f) )
+        TESTLY_ASSERT_TRUE( check_vector(m.right,       -8.571431e-016f,   2.857144e-016f, -1.0f) )
+        TESTLY_ASSERT_TRUE( check_vector(m.up,          -1,             -5.714288e-016f,  8.571431e-016f) )
+        TESTLY_ASSERT_TRUE( check_vector(m.forward,     -5.714288e-016f,  1.0f,           2.857144e-016f) )
         TESTLY_ASSERT_TRUE( check_vector(m.position,    0.0f,           0.0f,           0.0f) )
 
     end sub
@@ -73,7 +73,7 @@ namespace ext.tests.math
         TESTLY_ASSERT_TRUE( check_vector(m.right,       0f, 3f, 6f) )
         TESTLY_ASSERT_TRUE( check_vector(m.up,          1f, 4f, 7f) )
         TESTLY_ASSERT_TRUE( check_vector(m.forward,     2f, 5f, 8f) )
-        TESTLY_ASSERT_TRUE( check_vector(m.position,    -32f, -122f, 212f) )
+        TESTLY_ASSERT_TRUE( check_vector(m.position,    -32f, -122f, -212f) )
 
     end sub
 
