@@ -88,12 +88,30 @@ private sub test_memory_driver_string
 
 end sub
 
+private sub test_string_as_file
+
+    var test_string = "This is a test string and needs to be longish."
+    var x = new ext.File(newMemoryFileDriver(cast(ubyte ptr,@test_string[0]),len(test_string)))
+
+    TESTLY_ASSERT_TRUE( x->lof = len(test_string) )
+
+    dim as ubyte p
+    for n as integer = 0 to 10
+        x->get(,p)
+        TESTLY_ASSERT_TRUE( p = test_string[n] )
+    next
+
+    delete x
+
+end sub
+
 '' :::::
 private sub register_tests constructor
     ext.testly.addSuite("File::MemoryDriver")
     ext.testly.addTest("General Usage",@test_memory_driver)
     ext.testly.addTest("String functions",@test_memory_driver_string)
     ext.testly.addTest("put",@test_memory_driver_put)
+    ext.testly.addTest("String as File",@test_string_as_file)
 end sub
 
 end namespace
