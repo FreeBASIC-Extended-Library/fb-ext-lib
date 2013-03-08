@@ -66,18 +66,6 @@ type FileSystemDriver
     driverdata as any ptr
 end type
 
-''Function: newDiskFileDriver
-''Creates a driver allowing access to a file located on a disk.
-''
-''Params:
-''fn - the name of the file to connect to.
-''a - the type of access to request to the file, one of <ACCESS_TYPE>
-''
-''Returns:
-''A fully functioning driver giving access to the specified file.
-''
-declare function newDiskFileDriver( byref fn as const string, byval a as ACCESS_TYPE ) as FileSystemDriver ptr
-
 ''Function: newMemoryFileDriver
 ''Creates a driver allowing one to access a region of memory as if it were a file.
 ''
