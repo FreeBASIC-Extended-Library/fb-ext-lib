@@ -26,77 +26,77 @@
 
 namespace ext.hashes
 
-	'' :::::
-	function joaat ( byref xStr as const string ) as uinteger
+    '' :::::
+    function joaat ( byref xStr as const string ) as uinteger
 
-		return joaat( cast(zstring ptr,strptr(xStr)), len(xStr) )
+        return joaat( cast(zstring ptr,strptr(xStr)), len(xStr) )
 
-	end function
+    end function
 
-	'' :::::
-	function joaat ( byval src__ as const any ptr, byval len_b as uinteger ) as uinteger
+    '' :::::
+    function joaat ( byval src__ as const any ptr, byval len_b as uinteger, byval seed as uinteger = 0 ) as uinteger
 
-		if (src__ = NULL) or (len_b < 1) then return 0
-		
-		var src = cast(const ubyte ptr, src__)
-		dim as uinteger hash
-	
-		if len_b > 1 then
-			for i as uinteger = 0 to (len_b-1)
-				hash += src[i]
-				hash += (hash shl 10)
-				hash xor= (hash shr 6)
-			next
-	
-		else
-			hash += src[0]
-			hash += (hash shl 10)
-			hash xor= (hash shr 6)
-	
-		end if
-	
-		hash += (hash shl 3)
-		hash xor= (hash shr 11)
-		hash += (hash shl 15)
-	
-		return hash
+        if (src__ = NULL) or (len_b < 1) then return 0
 
-	end function
+        var src = cast(const ubyte ptr, src__)
+        var hash = seed
 
-	'' :::::
-	function joaat64 ( byref xStr as const string ) as ulongint
+        if len_b > 1 then
+            for i as uinteger = 0 to (len_b-1)
+                hash += src[i]
+                hash += (hash shl 10)
+                hash xor= (hash shr 6)
+            next
 
-		return joaat64( cast(zstring ptr,strptr(xStr)), len(xStr) )
+        else
+            hash += src[0]
+            hash += (hash shl 10)
+            hash xor= (hash shr 6)
 
-	end function
+        end if
 
-	'' :::::
-	function joaat64 ( byval src__ as const any ptr, byval len_b as uinteger ) as ulongint
+        hash += (hash shl 3)
+        hash xor= (hash shr 11)
+        hash += (hash shl 15)
 
-		if (src__ = NULL) or (len_b < 1) then return 0
-	
-		var src = cast(const ubyte ptr, src__)
-		dim as ulongint hash
-	
-		if len_b > 1 then
-			for i as uinteger = 0 to (len_b-1)
-				hash += src[i]
-				hash += shl64(hash, 20)
-				hash xor= shr64(hash, 12)
-			next
-	
-		else
-			hash += src[0]
-			hash += shl64(hash, 20)
-			hash xor= shr64(hash, 12)	
-		end if
-	
-		hash += shl64(hash, 6)
-		hash xor= shr64(hash, 22)
-		hash += shl64(hash, 30)
-	
-		return hash
+        return hash
 
-	end function
+    end function
+
+    '' :::::
+    function joaat64 ( byref xStr as const string ) as ulongint
+
+        return joaat64( cast(zstring ptr,strptr(xStr)), len(xStr) )
+
+    end function
+
+    '' :::::
+    function joaat64 ( byval src__ as const any ptr, byval len_b as uinteger ) as ulongint
+
+        if (src__ = NULL) or (len_b < 1) then return 0
+
+        var src = cast(const ubyte ptr, src__)
+        dim as ulongint hash
+
+        if len_b > 1 then
+            for i as uinteger = 0 to (len_b-1)
+                hash += src[i]
+                hash += shl64(hash, 20)
+                hash xor= shr64(hash, 12)
+            next
+
+        else
+            hash += src[0]
+            hash += shl64(hash, 20)
+            hash xor= shr64(hash, 12)
+        end if
+
+        hash += shl64(hash, 6)
+        hash xor= shr64(hash, 22)
+        hash += shl64(hash, 30)
+
+        return hash
+
+    end function
 
 end namespace 'ext.hashes
