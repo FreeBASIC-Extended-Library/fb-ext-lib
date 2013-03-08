@@ -31,7 +31,7 @@
 #include once "ext/debug.bi"
 #include once "ext/file/file.bi"
 #include once "ext/options.bi"
-#include once "ext/hash/crc32.bi"
+#include once "ext/hash.bi"
 
 'fb includes
 #include once "file.bi"
@@ -264,7 +264,7 @@ sub AnalyzeFile( byval xnode as ext.xml.node ptr )
     file_name = this_dir
     file_time = filedatetime( file_name )
 
-    ff = ext.File(file_name,ext.File.R)
+    ff = ext.File(file_name,ext.ACCESS_TYPE.R)
 
     if ff.open = false then
         'FBEXT_DPRINT("Processing file: " & file_name)
