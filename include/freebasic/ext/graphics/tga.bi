@@ -68,10 +68,10 @@ declare function load_mem( byval src as any ptr, byval src_len as SizeType, byva
 
 #ifndef FBEXT_BUILD_NO_GFX_LOADERS
 sub loadTGAdriver() constructor
-    dim loader as GraphicsLoader
-    loader.f = @load
-    loader.fmem = @load_mem
-    getDriver("tga",@loader)
+    var loader = new GraphicsLoader
+    loader->f = @load
+    loader->fmem = @load_mem
+    getDriver("tga",loader)
 end sub
 #endif
 

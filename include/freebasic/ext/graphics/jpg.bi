@@ -41,9 +41,9 @@ declare function load ( byref filename as const string, byval t as target_e ) as
 
 #ifndef FBEXT_BUILD_NO_GFX_LOADERS
 sub loadJPGdriver() constructor
-    dim loader as GraphicsLoader
-    loader.f = @load
-    getDriver("jpg",@loader)
+    var loader = new GraphicsLoader
+    loader->f = @load
+    getDriver("jpg",loader)
 end sub
 #endif
 

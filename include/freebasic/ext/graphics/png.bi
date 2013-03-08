@@ -100,10 +100,10 @@ declare function save cdecl alias "png_save" _
 
 #ifndef FBEXT_BUILD_NO_GFX_LOADERS
 sub loadPNGdriver() constructor
-    dim loader as GraphicsLoader
-    loader.f = @load
-    loader.fmem = @load_mem
-    getDriver("png",@loader)
+    var loader = new GraphicsLoader
+    loader->f = @load
+    loader->fmem = @load_mem
+    getDriver("png",loader)
 end sub
 #endif ' FBEXT_BUILD_NO_GFX_LOADERS
 

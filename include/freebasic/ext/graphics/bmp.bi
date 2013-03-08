@@ -65,9 +65,9 @@ namespace ext.gfx.bmp
 
 #ifndef FBEXT_BUILD_NO_GFX_LOADERS
     sub loadBMPdriver() constructor
-    dim loader as GraphicsLoader
-    loader.f = @load
-    getDriver("bmp",@loader)
+    var loader = new GraphicsLoader
+    loader->f = @load
+    getDriver("bmp",loader)
 end sub
 #endif
 
