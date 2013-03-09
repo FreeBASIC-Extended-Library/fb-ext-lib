@@ -16,7 +16,7 @@ export LIBRARY_DIR := ../../$(LIBRARY_DIR)
 # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 #  MODULE LIST - any new modules go here
 # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-ALL_MODULES := algorithms containers conversion
+ALL_MODULES := algorithms containers conversion config
 ALL_MODULES += file graphics hash math memory net
 ALL_MODULES += php preprocessor strings
 ALL_MODULES += debug error fbmld misc templates

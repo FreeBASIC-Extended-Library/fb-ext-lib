@@ -22,13 +22,13 @@ build-database : ../../../lib/$(TARGET)/$(DLIB).a ../../../lib/$(TARGET)/$(DS3L)
 $(DOBJ) : database.bas ../../../include/freebasic/ext/database/database.bi ../../../include/freebasic/ext/database/driver.bi
 	$(FBC) $(FBC_CFLAGS) $(IF $(MT),-mt) -i ../../../include/freebasic database.bas -o $(DOBJ)
 
-drivers/$(DS3O) : drivers/sqlite3.bas ../../../include/freebasic/ext/database/driver.bi ../../../include/freebasic/ext/database/drivers/sqlite3driver.bi
+drivers/$(DS3O) : drivers/sqlite3.bas ../../../include/freebasic/ext/database/driver.bi ../../../include/freebasic/ext/database/drivers/sqlite3.bi
 	$(FBC) $(FBC_CFLAGS) $(IF $(MT),-mt) -i ../../../include/freebasic drivers/sqlite3.bas -o drivers/$(DS3O)
 
 ../../../lib/$(TARGET)/$(DS3L).a : drivers/$(DS3O)
 	$(FBC) $(FBC_LFLAGS) $(IF $(MT),-mt) -i ../../../include/freebasic -x ../../../lib/$(TARGET)/$(DS3L) drivers/$(DS3O)
 
-drivers/$(DSMYO) : drivers/mysql.bas ../../../include/freebasic/ext/database/driver.bi ../../../include/freebasic/ext/database/drivers/mysqldriver.bi
+drivers/$(DSMYO) : drivers/mysql.bas ../../../include/freebasic/ext/database/driver.bi ../../../include/freebasic/ext/database/drivers/mysql.bi
 	$(FBC) $(FBC_CFLAGS) $(IF $(MT),-mt) -i ../../../include/freebasic drivers/mysql.bas -o drivers/$(DSMYO)
 
 ../../../lib/$(TARGET)/$(DSMYL).a : drivers/$(DSMYO)

@@ -24,131 +24,118 @@
 
 namespace ext.database
 
-constructor Connection ( byref connectst as string, byval d as DatabaseDriverF ptr )
-	m_cs = connectst
-	m_db_driver = d
-end constructor
-
 constructor Connection ( byval d as DatabaseDriverF ptr )
-	m_db_driver = d
+    m_db_driver = d
 end constructor
 
 constructor Connection ( byref rhs as Connection )
-	m_cs = rhs.m_cs
-	m_db_driver = rhs.m_db_driver
+    m_db_driver = rhs.m_db_driver
 end constructor
 
-function Connection.connect( byref connectst as string = "") as StatusCode
+function Connection.connect( ) as StatusCode
 
-	if connectst = "" and m_cs = "" then return -1
-	if connectst <> "" then
-		m_cs = connectst
-	else
-		if m_cs = "" then return -1
-	end if
-
-	return m_db_driver->opendb( m_db_driver, m_cs )
+    return m_db_driver->opendb( m_db_driver )
 
 end function
 
 function Connection.getError() as string
-	return m_db_driver->geterr( m_db_driver )
+    return m_db_driver->geterr( m_db_driver )
 end function
 
 function Connection.query( byref sql as const string ) as StatusCode
 
-	return m_db_driver->noresq( m_db_driver, sql )
+    return m_db_driver->noresq( m_db_driver, sql )
 
 end function
 
 function Connection.prepare( byref sql as string ) as Statement ptr
 
-	return new Statement( sql, m_db_driver )
+    return new Statement( sql, m_db_driver )
 
 end function
 
 function Connection.close() as StatusCode
 
-	return m_db_driver->closedb( m_db_driver )
+    return m_db_driver->closedb( m_db_driver )
 
 end function
 
 function Connection.handle() as any ptr
 
-	return m_db_driver->gethandle( m_db_driver )
+    return m_db_driver->gethandle( m_db_driver )
 
 end function
 
 destructor Connection()
-	m_cs = ""
-	this.close()
-	m_db_driver->destroy( m_db_driver )
-	delete m_db_driver
+
+    this.close()
+    m_db_driver->destroy( m_db_driver )
+    delete m_db_driver
 
 end destructor
 
 constructor Statement( byref zzsql as string, byval d as DatabaseDriverF ptr )
-	m_db_driver = d
-	m_sql = zzsql
+    m_db_driver = d
+    m_sql = zzsql
 end constructor
 
 destructor Statement()
-	m_sql = ""
-	this.finalize()
+    m_sql = ""
+    this.finalize()
 
 end destructor
 
 function Statement.bind overload ( byval coli as integer, byval value as integer ) as StatusCode
-	return m_db_driver->bindint( m_db_driver, coli, value )
+    return m_db_driver->bindint( m_db_driver, coli, value )
 end function
 
 function Statement.bind ( byval coli as integer, byval value as double ) as StatusCode
-	return m_db_driver->binddbl( m_db_driver, coli, value )
+    return m_db_driver->binddbl( m_db_driver, coli, value )
 end function
 
 function Statement.bind ( byval coli as integer, byref value as string ) as StatusCode
-	return m_db_driver->bindstr( m_db_driver, coli, value )
+    return m_db_driver->bindstr( m_db_driver, coli, value )
 end function
 
 function Statement.bind ( byval coli as integer, byval value as any ptr, byval lenv as integer ) as StatusCode
-	return m_db_driver->bindblob( m_db_driver, coli, value, lenv )
+    return m_db_driver->bindblob( m_db_driver, coli, value, lenv )
 end function
 
 function Statement.bind ( byval coli as integer ) as StatusCode
-	return m_db_driver->bindNull( m_db_driver, coli )
+    return m_db_driver->bindNull( m_db_driver, coli )
 end function
 
 function Statement.execute( ) as StatusCode
 
-	if (not m_prepared) then
-		m_db_driver->prepdb( m_db_driver, m_sql )
-		m_prepared = true
-	end if
+    if (not m_prepared) then
+        m_db_driver->prepdb( m_db_driver, m_sql )
+        m_prepared = true
+    end if
 
-	return m_db_driver->stepfunc( m_db_driver )
+    return m_db_driver->stepfunc( m_db_driver )
 end function
 
 function Statement.numColumns( ) as integer
-	return m_db_driver->numcols( m_db_driver )
+    return m_db_driver->numcols( m_db_driver )
 end function
 
 function Statement.columnName( byval iCol as integer ) as string
-	var temp = (m_db_driver->colname( m_db_driver, iCol ))
-	return temp
+    var temp = (m_db_driver->colname( m_db_driver, iCol ))
+    return temp
 end function
 
 function Statement.columnValue( byval iCol as integer ) as string
-	var temp = (m_db_driver->colval( m_db_driver, iCol ))
-	return temp
+    var temp = (m_db_driver->colval( m_db_driver, iCol ))
+    return temp
 end function
 
 function Statement.finalize( ) as StatusCode
-	return m_db_driver->cleanup( m_db_driver )
+    return m_db_driver->cleanup( m_db_driver )
 end function
 
 function Statement.handle() as any ptr
 
-	return m_db_driver->sthandle( m_db_driver )
+    return m_db_driver->sthandle( m_db_driver )
 
 end function
 

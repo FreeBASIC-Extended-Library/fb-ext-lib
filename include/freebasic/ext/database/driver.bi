@@ -15,18 +15,18 @@ namespace ext.database
 ''Database dependant status codes are mapped to their logical equivalent
 ''in this enumeration.
 enum StatusCode explicit
-	Error
-	Ok
-	MoreResults
-	Done
-	Retry
-	SyntaxError
-	IndexOutOfRange
+    Error
+    Ok
+    MoreResults
+    Done
+    Retry
+    SyntaxError
+    IndexOutOfRange
 end enum
 
 type DatabaseDriverF as DatabaseDriver
 
-type DBOpenFunc as function( byval d as  DatabaseDriverF ptr, byref connect as const string ) as StatusCode
+type DBOpenFunc as function( byval d as  DatabaseDriverF ptr ) as StatusCode
 type DBCloseFunc as function( byval d as DatabaseDriverF ptr ) as StatusCode
 type DBNoResultsQuery as function( byval d as DatabaseDriverF ptr, byref sql as const string ) as StatusCode
 type DBPrepareFunc as function( byval d as DatabaseDriverF ptr, byref sql as const string ) as StatusCode
@@ -51,25 +51,25 @@ type DBbindNull as function( byval d as DatabaseDriverF ptr, byval coli as integ
 ''
 ''To see how to write a DatabaseDriver see the file src/modules/database/drivers/sqlite3.bas.
 type DatabaseDriver
-	as DBOpenFunc opendb
-	as DBCloseFunc closedb
-	as DBNoResultsQuery noresq
-	as DBPrepareFunc prepdb
-	as DBbindInt bindInt
-	as DBbindDbl bindDbl
-	as DBbindStr bindStr
-	as DBbindBlob bindBlob
-	as DBbindNull bindNull
-	as DBStepFunc stepfunc
-	as DBColInResult numcols
-	as DBColName colname
-	as DBColVal colval
-	as DBCleanup cleanup
-	as DBError geterr
-	as DBHandle gethandle
-	as STMTHandle sthandle
-	as DDdestroy destroy
-	as any ptr driverdata
+    as DBOpenFunc opendb
+    as DBCloseFunc closedb
+    as DBNoResultsQuery noresq
+    as DBPrepareFunc prepdb
+    as DBbindInt bindInt
+    as DBbindDbl bindDbl
+    as DBbindStr bindStr
+    as DBbindBlob bindBlob
+    as DBbindNull bindNull
+    as DBStepFunc stepfunc
+    as DBColInResult numcols
+    as DBColName colname
+    as DBColVal colval
+    as DBCleanup cleanup
+    as DBError geterr
+    as DBHandle gethandle
+    as STMTHandle sthandle
+    as DDdestroy destroy
+    as any ptr driverdata
 end type
 
 end namespace
