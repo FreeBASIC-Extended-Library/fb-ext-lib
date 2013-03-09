@@ -18,6 +18,7 @@
 # include once "ext/algorithms/copy.bi"
 # include once "ext/algorithms/copybackward.bi"
 # include once "ext/algorithms/fill.bi"
+# include once "ext/algorithms/quicksort.bi"
 
 '' Macro: fbext_Array
 ''  This macro expands to the name of the fbext_Array type. It expects a single
@@ -141,6 +142,14 @@ namespace ext
         declare sub Resize ( byval newsize as SizeType, byref value as const fbext_TypeName( T_) )
 
         '' Group: Iterators
+
+        '' Sub: sort
+        ''  Sorts the array using the default type comparator.
+        ''
+        '' Parameters:
+        '' first - the index to begin sorting at, defaults to the first element
+        '' last - the last index to sort, defaults to the last element
+        declare sub Sort ( byval first as fbext_TypeName( T_) ptr = 0, byval last as fbext_TypeName( T_) ptr = 0 )
 
         '' Function: Begin
         ''  Gets an iterator to the element at the front of the array.
@@ -361,6 +370,7 @@ fbext_TDeclare(fbext_UninitializedFillN, ( T_))
 fbext_TDeclare(fbext_Copy, ( T_))
 fbext_TDeclare(fbext_CopyBackward, ( T_))
 fbext_TDeclare(fbext_Fill, ( T_))
+fbext_TDeclare(fbext_quickSort, ( T_))
 
 fbext_TDefine(fbext_Construct, private, ( T_))
 fbext_TDefine(fbext_TypeName( Allocator_),   private, ( T_))
@@ -369,8 +379,20 @@ fbext_TDefine(fbext_UninitializedFillN, private, ( T_))
 fbext_TDefine(fbext_Copy, private, ( T_))
 fbext_TDefine(fbext_CopyBackward, private, ( T_))
 fbext_TDefine(fbext_Fill, private, ( T_))
+fbext_TDefine(fbext_quickSort, private, ( T_))
 
 namespace ext
+
+    '' :::::
+    linkage_ sub fbext_Array(( T_)( Allocator_)).sort overload ( byval first as fbext_TypeName( T_) ptr, byval last as fbext_TypeName( T_) ptr )
+        var fs = first
+        var ls = last
+
+        if fs = 0 then fs = Front()
+        if ls = 0 then ls = Back() +1
+
+        quickSort( fs, ls )
+    end sub
 
     '' :::::
     linkage_ function fbext_Array(( T_)( Allocator_)).at ( byval n as SizeType ) as fbext_TypeName( T_) ptr
