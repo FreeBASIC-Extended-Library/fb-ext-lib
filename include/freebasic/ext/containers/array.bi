@@ -52,6 +52,14 @@ namespace ext
         ''  Constructs an empty array (having zero elements).
         declare constructor ( )
 
+        'does not work, needs allocator inheritable type
+        ' Sub: constructor with allocator
+        ' Constructs an empty array with a custom allocator.
+        '
+        ' Parameters:
+        ' a - the <fbext_Allocator> to use.
+        'declare constructor ( byref alloc as as fbext_TypeName( Allocator_)(( T_)) )
+
         '' Sub: copy constructor
         ''  Constructs an array consisting of copies of the elements from
         ''  another.
@@ -404,6 +412,17 @@ namespace ext
     end if
 
     end function
+
+    'linkage_ constructor fbext_Array(( T_)( Allocator_)) ( byref a as fbext_TypeName( Allocator_)(( T_)) )
+    '    m_start = 0
+    '    m_finish = 0
+    '    m_eos = 0
+    '    m_alloc = a
+
+    '    #ifdef FBEXT_MULTITHREADED
+    '    m_mutex = mutexcreate()
+    '    #endif
+    'end constructor
 
     '' :::::
     linkage_ constructor fbext_Array(( T_)( Allocator_)) ( )
