@@ -1,4 +1,4 @@
-''Title: database/drivers/mysqldriver.bi
+''Title: database/drivers/mysql.bi
 ''
 ''About: License
 ''Copyright (c) 2007-2013, FreeBASIC Extended Library Development Group
