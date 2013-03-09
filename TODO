@@ -9,7 +9,7 @@ Things to complete before v0.4.0:
                 [ ] Add .constructor(alloc).
                 [ ] Add .Assign(first,last) member proc.
                 [ ] Add .Assign(n,value) member proc.
-                [ ] Add .At(offset) member proc (checked .Index).
+                [x] Add .At(offset) member proc (checked .Index).
                 [ ] Add ext.Swap_(list,list).
                 [ ] ? Add member procs that require elements to be comparable ?
                     [ ] Add operator=(array,array). (requires = comparable)
@@ -48,5 +48,4 @@ Things to complete before v0.4.0:
                     [ ] Add operator>(list,list). (requires the algorithm ext.lexicographical_compare)
                     [ ] Add operator>=(list,list). (requires the algorithm ext.lexicographical_compare)
 '
-Examples need to be updated for current state of library.
 
