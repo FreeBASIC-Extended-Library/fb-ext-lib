@@ -58,6 +58,7 @@ sub setPath( byref path as string )
 end sub
 
 sub load()
+    if __tree <> null then return
     if _path = "" then
         __appname = "UnnamedApp"
         _path = CONFIG_DIR & CONFIG_NAME
