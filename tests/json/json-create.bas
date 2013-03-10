@@ -42,12 +42,35 @@ namespace ext.tests.json_
     private sub test_create_blank
 
     dim j as ext.json.JSONobject
-
     dim t as string
     t = j
 
-
     TESTLY_ASSERT_TRUE( t = "{}" )
+
+    end sub
+
+    private sub test_create_from_string
+
+    var test_str = !"{ \"one\" : 1, \"test\" : true }"
+
+    dim as ext.json.JSONobject j
+    j.loadString( test_str )
+    var t = ""
+    t = j
+
+    TESTLY_ASSERT_TRUE( t = test_str )
+
+    end sub
+
+    private sub test_create_from_string_array
+    var test_str = !"{ \"array\" : [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ] }"
+
+    dim as ext.json.JSONobject j
+    j.loadString( test_str )
+    var t = ""
+    t = j
+
+    TESTLY_ASSERT_TRUE( t = test_str )
 
     end sub
 
@@ -56,6 +79,8 @@ namespace ext.tests.json_
         ext.testly.addTest("test_create", @test_create)
         ext.testly.addTest("test_create_array",@test_create_array)
         ext.testly.addTest("test_create_blank",@test_create_blank)
+        ext.testly.addTest("test_create_from_string",@test_create_from_string)
+        ext.testly.addTest("loadString w/ Array",@test_create_from_string_array)
     end sub
 
 

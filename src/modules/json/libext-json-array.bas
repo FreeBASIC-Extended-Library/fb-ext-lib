@@ -25,7 +25,7 @@
 namespace ext.json
 
 operator JSONarray.cast() as string
-
+? "array"
     if m_children = 0 then return "[]"
 
     var ret = "[ "

@@ -54,24 +54,27 @@ constructor JSONvalue
 end constructor
 
 operator JSONvalue.cast() as string
+    var ret = ""
     select case m_type
     case jvalue_type.jobject
-        return *(cast(JSONobject ptr,m_child))
+        ret = *(cast(JSONobject ptr,m_child))
     case jvalue_type.array
-        return *(cast(JSONarray ptr,m_child))
+        ret = *(cast(JSONarray ptr,m_child))
     case jvalue_type.jstring
-        return !"\"" & m_string & !"\""
+        ret = !"\"" & m_string & !"\""
     case jvalue_type.number
-        return str(m_number)
+        ret = str(m_number)
     case jvalue_type.boolean
         if m_bool then
-            return "true"
+            ret = "true"
         else
-            return "false"
+            ret = "false"
         end if
     case else
-        return "null"
+        ret = "null"
     end select
+    ? ret
+    return ret
 end operator
 
 function JSONvalue.valueType() as jvalue_type

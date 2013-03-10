@@ -49,6 +49,7 @@ function JSONobject.addChild( byref k as const string, byval v as JSONvalue ptr 
 end function
 
 operator JSONobject.cast() as string
+? "object"
     if m_children = 0 then return "{}"
 
     var ret = "{ "
@@ -69,8 +70,271 @@ end operator
 #define JSON_OPEN_A ASC("[")
 #define JSON_CLOS_A ASC("]")
 
+enum parser_state
+    begin_object
+    begin_pair
+    begin_string
+    end_string
+    pair_mid
+    begin_array
+    array_sep
+    end_array
+    end_pair
+    end_object
+end enum
+
+private function parse_string( byref j as const string, byval i as uinteger, byref end_ as uinteger ) as string
+    var ret = ""
+    var n = i
+    while j[n] <> JSON_QUOTE andalso n <= len(j) -1
+        ret = ret & chr(j[n])
+        n += 1
+    wend
+    end_ = n + 1
+    return ret
+end function
+
+declare function parse_array( byref j as const string, byval i as uinteger, byref end_ as uinteger ) as JSONarray ptr
+
+private function parse_object( byval t as JSONobject ptr, byref j as const string, byval i as uinteger, byref end_ as uinteger = 0 ) as JSONobject ptr
+
+    dim pstate as fbext_Stack( ((integer)) )
+    pstate.Push(begin_object)
+    pstate.Push(begin_pair)
+
+    dim as string str1, str2
+    dim as JSONobject ptr obj
+    dim as JSONarray ptr arr
+    dim as double numbe
+
+    var n = i
+
+    while n <= len(j)-1
+
+    if n > len(j)-1 then exit while
+        if j[n] = JSON_CLOS_B then exit while
+        if j[n] = JSON_QUOTE then
+            if str1 = "" then
+
+                str1 = parse_string(j,n+1,n)
+                continue while
+            else
+
+                str2 = parse_string(j,n+1,n)
+                t->addChild(str1,new JSONvalue(str2))
+                continue while
+            end if
+        end if
+        if j[n] = asc(",") then
+            if str1 <> "" andalso str2 <> "" then
+
+                    select case lcase(str2)
+                    case "true"
+                        t->addChild(str1,new JSONvalue(true))
+                    case "false"
+                        t->addChild(str1,new JSONvalue(false))
+                    case "null"
+                        t->addChild(str1,new JSONvalue())
+                    case else
+                        numbe = val(str2)
+                        t->addChild(str1,new JSONvalue(numbe))
+                    end select
+            end if
+            pstate.Push(end_pair)
+            pstate.Push(begin_pair)
+            str1 = ""
+            str2 = ""
+            obj = 0
+            arr = 0
+            n += 1
+            continue while
+        end if
+        if j[n] = asc(":") then
+
+            n += 1
+            continue while
+        end if
+        if j[n] = JSON_OPEN_B then
+
+            if str1 = "" then return 0
+            obj = parse_object(new JSONobject,j,n+1,n)
+            t->addChild(str1,new JSONvalue(obj))
+            obj = 0
+            str1 = ""
+            continue while
+        end if
+        if j[n] = JSON_OPEN_A then
+
+            if str1 = "" then return 0
+            arr = parse_array(j,n+1,n)
+            t->addChild(str1,new JSONvalue(arr))
+            n+=1
+            str1 = ""
+            str2 = ""
+            arr = 0
+            continue while
+        end if
+
+        if j[n] = JSON_CLOS_A then
+
+            n += 1
+            continue while
+        end if
+
+        if str1 <> "" then
+            if not FBEXT_CHAR_IS_WHITESPACE(j[n]) then
+
+                str2 = str2 & chr(j[n])
+            else
+                if str2 <> "" then
+
+                    select case lcase(str2)
+                    case "true"
+                        t->addChild(str1,new JSONvalue(true))
+                    case "false"
+                        t->addChild(str1,new JSONvalue(false))
+                    case "null"
+                        t->addChild(str1,new JSONvalue())
+                    case else
+                        numbe = val(str2)
+                        t->addChild(str1,new JSONvalue(numbe))
+                    end select
+                    n += 1
+                    str1 = ""
+                    str2 = ""
+                    continue while
+                end if
+            end if
+        end if
+
+    n += 1
+    wend
+
+    end_ = n
+    return t
+
+end function
+
+private function parse_array( byref j as const string, byval i as uinteger, byref end_ as uinteger ) as JSONarray ptr
+
+    dim arr() as JSONvalue ptr
+
+    var n = i
+    var c = 0
+    var c_l = -1
+
+    var str1 = ""
+
+    while n <= len(j)-1
+
+        if j[n] = JSON_CLOS_A then exit while
+        if j[n] = JSON_QUOTE then
+            str1 = parse_string(j,n+1,n)
+            c_l += 1
+            c += 1
+            redim preserve arr( c )
+            arr(c_l) = new JSONvalue(str1)
+            str1 = ""
+            n+=1
+            continue while
+        end if
+        if j[n] = asc(",") then
+            if str1 <> "" then
+                c_l += 1
+                c += 1
+                redim preserve arr( c )
+                    select case lcase(str1)
+                    case "true"
+                        arr(c_l) = new JSONvalue(true)
+                    case "false"
+                        arr(c_l) = new JSONvalue(false)
+                    case "null"
+                        arr(c_l) = new JSONvalue()
+                    case else
+                        var numbe = val(str1)
+                        arr(c_l) = new JSONvalue(numbe)
+                    end select
+                str1 = ""
+                n+=1
+                continue while
+            end if
+        end if
+        if j[n] = JSON_OPEN_B then
+            var obj = parse_object(new JSONobject,j,n+1,n)
+            c_l += 1
+            c += 1
+            redim preserve arr( c )
+            arr(c_l) = new JSONvalue(obj)
+            str1 = ""
+            n+=1
+            continue while
+        end if
+        if j[n] = JSON_OPEN_A then
+            var ar = parse_array(j,n+1,n)
+            c_l += 1
+            c += 1
+            redim preserve arr( c )
+            arr(c_l) = new JSONvalue(ar)
+            n+=1
+            str1 = ""
+            continue while
+        end if
+            if not FBEXT_CHAR_IS_WHITESPACE(j[n]) then
+                str1 = str1 & chr(j[n])
+                n += 1
+                continue while
+            else
+                if str1 <> "" then
+                    c_l += 1
+                    c += 1
+                    redim preserve arr( c )
+                    select case lcase(str1)
+                    case "true"
+                        arr(c_l) = new JSONvalue(true)
+                    case "false"
+                        arr(c_l) = new JSONvalue(false)
+                    case "null"
+                        arr(c_l) = new JSONvalue()
+                    case else
+                        var numbe = val(str1)
+                        arr(c_l) = new JSONvalue(numbe)
+                    end select
+                    n+=1
+                    str1 = ""
+                    continue while
+                end if
+            end if
+
+    n += 1
+
+    wend
+
+    end_ = n + 1
+    dim as JSONvalue ptr ptr x
+    x = callocate(sizeof(JSONvalue ptr)*ubound(arr))
+
+    for m as uinteger = 0 to ubound(arr)
+        x[m] = arr(m)
+    next
+
+    return new JSONarray(x,ubound(arr))
+
+end function
+
 function JSONobject.loadString( byref jstr as const string ) as JSONobject ptr
-    return 0
+    var unused = 0u
+    for n as uinteger = 0 to len(jstr)-1
+
+        if not FBEXT_CHAR_IS_WHITESPACE(jstr[n]) then
+            if jstr[n] = JSON_OPEN_B then
+                parse_object(@this,jstr,n+1,unused)
+                return @this
+            end if
+        end if
+
+    next
+
+    return @this
 end function
 
 function JSONobject.child( byref c as const string ) as JSONvalue ptr
