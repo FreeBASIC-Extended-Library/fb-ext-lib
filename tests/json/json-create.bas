@@ -74,6 +74,18 @@ namespace ext.tests.json_
 
     end sub
 
+    private sub test_create_from_string_obj
+    var test_str = !"{ \"obj\" : [ 1, { \"this\" : true } ] }"
+
+    dim as ext.json.JSONobject j
+    j.loadString( test_str )
+    var t = ""
+    t = j
+
+    TESTLY_ASSERT_TRUE( t = test_str )
+
+    end sub
+
     private sub register constructor
         ext.testly.addSuite("ext-json-create")
         ext.testly.addTest("test_create", @test_create)
@@ -81,6 +93,7 @@ namespace ext.tests.json_
         ext.testly.addTest("test_create_blank",@test_create_blank)
         ext.testly.addTest("test_create_from_string",@test_create_from_string)
         ext.testly.addTest("loadString w/ Array",@test_create_from_string_array)
+        ext.testly.addTest("loadString w/ Object",@test_create_from_string_obj)
     end sub
 
 
