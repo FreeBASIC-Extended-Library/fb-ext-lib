@@ -5,6 +5,12 @@
 ''accompanying file LICENSE.txt or copy at
 ''http://code.google.com/p/fb-extended-lib/wiki/License
 
+#ifdef FBEXT_NO_EXTERNAL_LIBS
+    #define FBEXT_NO_LIBZ -1
+    #define FBEXT_NO_LIBJPG -1
+    #define FBEXT_NO_LIBFREETYPE -1
+#endif
+
 # pragma once
 # ifndef FBEXT_DETAIL_COMMON_BI__
 # define FBEXT_DETAIL_COMMON_BI__ -1

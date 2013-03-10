@@ -1,7 +1,7 @@
 ''Title: Home
 ''
 ''About: Getting Live Help
-'' E-Mail - fb-ext-lib@googlegroups.com
+'' E-Mail - freebasic-extended-library-discussion@googlegroups.com
 '' IRC - #freebasic-ext on FreeNode or http://webchat.freenode.net/?randomnick=1&channels=freebasic-ext
 ''
 ''
@@ -63,7 +63,7 @@
 '' * Please check the latest Dev release to see if your bug has already been fixed.
 ''
 ''You will need the following information to fill out the bug report:
-'' * Ext version (SVN revision number, Dev release date or Stable version number).
+'' * Ext version (Mercurial revision number, Dev release date or Stable version number).
 '' * FreeBASIC Compiler version (fbc -version)
 '' * Your Operating System Name and Version
 '' * A Google Account (available for free)
@@ -99,12 +99,6 @@
 # pragma once
 # ifndef FBEXT_EXT_BI__
 # define FBEXT_EXT_BI__ -1
-
-#ifdef FBEXT_NO_EXTERNAL_LIBS
-	#define FBEXT_NO_LIBZ -1
-	#define FBEXT_NO_LIBJPG -1
-	#define FBEXT_NO_LIBFREETYPE -1
-#endif
 
 /' lmf: note the order of least recursion '/
 # include once "ext/preprocessor.bi"
