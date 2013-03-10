@@ -119,6 +119,7 @@ namespace ext.json
     end type
 
     ''Class: JSONobject
+    ''In JSON an object is similiar to a hashtable.
     type JSONobject
         public:
         ''Function: loadString
@@ -165,6 +166,7 @@ namespace ext.json
     end type
 
     ''Class: JSONarray
+    ''Represents an array of <JSONvalue> objects.
     type JSONarray
         public:
         ''Sub: Constructor
