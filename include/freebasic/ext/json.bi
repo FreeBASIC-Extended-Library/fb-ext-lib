@@ -1,4 +1,4 @@
-'' Title: ext/config.bi
+'' Title: ext/json.bi
 ''
 '' About: License
 ''  Copyright (c) 2007-2013, FreeBASIC Extended Library Development Group
@@ -24,8 +24,11 @@
     #endif
 #endif
 
+''Namespace: ext.json
 namespace ext.json
 
+    ''Enum: jvalue_type
+    ''Possible types present in a JSON document.
     enum jvalue_type
         jnull = 0
         jobject
@@ -38,23 +41,63 @@ namespace ext.json
     type jarray_f as JSONarray
     type jobject_f as JSONobject
 
+    ''Class: JSONvalue
+    ''Represents a possible JSON value.
     type JSONvalue
         public:
+        ''Sub: Number Constructor
+        ''Assign this JSONvalue a double value.
         declare constructor( byval n as double )
+
+        ''Sub: String Constructor
+        ''Assign this JSONvalue a string value.
         declare constructor( byref x as const string )
+
+        ''Sub: Bool Constructor
+        ''Assign this JSONvalue a boolean value.
         declare constructor( byval b as bool )
+
+        ''Sub: <JSONobject> Constructor
+        ''Assign this JSONvalue a <JSONobject> value.
         declare constructor( byval o as jobject_f ptr )
+
+        ''Sub: <JSONarray> Constructor
+        ''Assign this JSONvalue a <JSONarray> value.
         declare constructor( byval a as jarray_f ptr )
+
+        ''Sub: Default Constructor
+        ''Assign this JSONvalue a null value.
         declare constructor()
 
+        ''Function: valueType
+        ''Determine what type of content this type contains.
+        ''
+        ''Returns:
+        ''<jvalue_type>
         declare function valueType() as jvalue_type
 
+        ''Function: getString
+        ''Get the string value, or "" if this object is not a string.
         declare function getString() as string
+
+        ''Function: getNumber
+        ''Get the number value, or 0 if this object is not a number.
         declare function getNumber() as double
+
+        ''Function: getBool
+        ''Get the boolean value, or invalid if this object is not a boolean.
         declare function getBool() as bool
+
+        ''Function: getObject
+        ''Get the <JSONobject> ptr value, or null if this object is not an <JSONobject>.
         declare function getObject() as jobject_f ptr
+
+        ''Function: getArray
+        ''Get the <JSONarray> ptr value, or null if this object is not an <JSONarray>.
         declare function getArray() as jarray_f ptr
 
+        ''Function: cast
+        ''Returns the JSON string format of this object.
         declare operator cast () as string
 
         declare destructor
@@ -66,6 +109,7 @@ namespace ext.json
         m_type as jvalue_type
     end type
 
+    'JSONpair is only used internally and will not be exposed.
     type JSONpair
         declare constructor( byref k as const string, byval v as JSONvalue ptr )
         as string key
@@ -74,13 +118,45 @@ namespace ext.json
         declare operator cast () as string
     end type
 
+    ''Class: JSONobject
     type JSONobject
         public:
+        ''Function: loadString
+        ''Loads the JSON document passed as a string.
+        ''
+        ''Returns:
+        ''Pointer to this object for chaining.
+        ''Null may be returned on error.
         declare function loadString( byref jstr as const string ) as JSONobject ptr
+
+        ''Function: addChild
+        ''Add the specified value to this object.
+        ''
+        ''Parameters:
+        ''k - the key to give the value in the object.
+        ''v - the <JSONvalue> to assign to k
+        ''
+        ''Returns:
+        ''v, for chaining
         declare function addChild( byref k as const string, byval v as JSONvalue ptr ) as JSONvalue ptr
+
+        ''Function: child
+        ''Looks up the specified child.
+        ''
+        ''Parameters:
+        ''c - The key of the value to retrieve.
+        ''
+        ''Returns:
+        ''The <JSONvalue> requested or null on failure.
         declare function child( byref c as const string ) as JSONvalue ptr
+
+        ''Function: children
+        ''Returns the 1-based number of children to this object.
         declare function children() as uinteger
         declare destructor
+
+        ''Operator: cast
+        ''Convert this object and all children to a JSON string.
         declare operator cast () as string
         private:
         m_child as JSONpair ptr ptr
@@ -88,11 +164,33 @@ namespace ext.json
 
     end type
 
+    ''Class: JSONarray
     type JSONarray
         public:
+        ''Sub: Constructor
+        ''Used when you need to construct your own array.
+        ''
+        ''Parameters:
+        ''i - pointer array of <JSONvalue> pointers
+        ''i_len - the 1-based length of i
         declare constructor( byval i as JSONvalue ptr ptr, byval i_len as uinteger )
+
+        ''Function: at
+        ''Retrieve a value from the array.
+        ''
+        ''Parameters:
+        ''index - the 0 based index to retrieve
+        ''
+        ''Returns:
+        ''<JSONvalue> ptr of the index or null on index error
         declare function at( byval index as uinteger ) as JSONvalue ptr
+
+        ''Function: length
+        ''Retrieve the number of items in the array.
         declare function length() as uinteger
+
+        ''Operator: cast
+        ''Returns the JSON string value of the array and it's contents.
         declare operator cast () as string
         declare destructor
         private:
