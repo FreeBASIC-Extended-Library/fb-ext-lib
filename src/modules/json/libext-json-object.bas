@@ -49,7 +49,7 @@ function JSONobject.addChild( byref k as const string, byval v as JSONvalue ptr 
 end function
 
 operator JSONobject.cast() as string
-? "object"
+
     if m_children = 0 then return "{}"
 
     var ret = "{ "
@@ -242,6 +242,7 @@ private function parse_array( byref j as const string, byval i as uinteger, byre
             if str1 <> "" then
                 c_l += 1
                 c += 1
+
                 redim preserve arr( c )
                     select case lcase(str1)
                     case "true"
@@ -287,6 +288,7 @@ private function parse_array( byref j as const string, byval i as uinteger, byre
                 if str1 <> "" then
                     c_l += 1
                     c += 1
+
                     redim preserve arr( c )
                     select case lcase(str1)
                     case "true"
@@ -311,7 +313,7 @@ private function parse_array( byref j as const string, byval i as uinteger, byre
 
     end_ = n + 1
     dim as JSONvalue ptr ptr x
-    x = callocate(sizeof(JSONvalue ptr)*ubound(arr))
+    x = callocate(sizeof(JSONvalue ptr)*(ubound(arr)-lbound(arr))+1)
 
     for m as uinteger = 0 to ubound(arr)
         x[m] = arr(m)

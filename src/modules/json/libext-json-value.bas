@@ -73,7 +73,6 @@ operator JSONvalue.cast() as string
     case else
         ret = "null"
     end select
-    ? ret
     return ret
 end operator
 

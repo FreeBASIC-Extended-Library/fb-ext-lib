@@ -25,7 +25,6 @@
 namespace ext.json
 
 operator JSONpair.cast() as string
-? "pair"
     return !"\"" & key & !"\"" & " : " & *value
 end operator
 
