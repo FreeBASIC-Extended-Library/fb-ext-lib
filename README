@@ -85,7 +85,7 @@ which can be found here:
 Building the documentation should not be necessary, as up-to-date online
 documentation can be found at
 
-	Looking for a host...
+	http://ext.freebasic.net/dev-docs/
 
 but should you decide to do so, the process is familiar: enter the root
 directory and type,
@@ -139,6 +139,6 @@ packages, when building the FreeBASIC Extended Library):
 [Getting help]
 
 Official website - http://ext.freebasic.net
-Documentation - http://ext.freebasic.net/docs/ and http://ext.freebasic.net/wiki/
+Documentation - http://ext.freebasic.net/dev-docs/
 IRC - #freebasic-ext on irc.freenode.net
-Mailing List: fb-ext-lib@googlegroups.com
+Mailing List: freebasic-extended-library-discussion@googlegroups.com
