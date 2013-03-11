@@ -86,6 +86,9 @@ namespace ext
             end if
         end if
         if (x->l + n) <= x->dlen then
+            for m as ubyte = 0 to n-1
+                p[m] = 0
+            next
             for i as uinteger = 0 to n - 1
                 p[i] = x->d[x->l+i]
             next

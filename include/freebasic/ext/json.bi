@@ -120,6 +120,8 @@ namespace ext.json
 
     ''Class: JSONobject
     ''In JSON an object is similiar to a hashtable.
+    ''If the top-level object in the JSON is an array then the object will have a single child
+    ''named "", you would get the array by calling `array = obj.child("")`
     type JSONobject
         public:
         ''Function: loadString

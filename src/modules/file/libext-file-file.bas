@@ -481,10 +481,10 @@ namespace ext
 
         dim as ubyte x
 
-        while 1
+        while not fsd->fseof(fsd)
 
             var res = fsd->fsget(fsd,0,@x,1)
-            if res = 0 orelse x = 0 then exit while
+            if res = 0 orelse x = 0 orelse x = 255 then exit while
 
             if x <> 13 then
                 if x <> 10 then
@@ -498,6 +498,7 @@ namespace ext
                 if x <> 10 then
                     var cloc = fsd->fsloc(fsd)
                     fsd->fsseek(fsd,cloc-1)
+                    continue while
                 end if
                 exit while
             end if

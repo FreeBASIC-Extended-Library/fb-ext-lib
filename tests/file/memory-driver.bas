@@ -84,7 +84,7 @@ private sub test_memory_driver_string
     var ts = x->readLine()
     TESTLY_ASSERT_TRUE( test_string = ts )
     delete x
-    delete[] dat
+    delete dat
 
 end sub
 

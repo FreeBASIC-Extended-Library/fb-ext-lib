@@ -52,6 +52,12 @@ operator JSONobject.cast() as string
 
     if m_children = 0 then return "{}"
 
+    if m_children = 1 then
+        if m_child[0]->key = "" then 'hack to allow in and out of top-level arrays
+            return cast(string,*(m_child[0]->value))
+        end if
+    end if
+
     var ret = "{ "
     for n as uinteger = 0 to m_children -1
         ret = ret & *(m_child[n])
@@ -330,6 +336,11 @@ function JSONobject.loadString( byref jstr as const string ) as JSONobject ptr
         if not FBEXT_CHAR_IS_WHITESPACE(jstr[n]) then
             if jstr[n] = JSON_OPEN_B then
                 parse_object(@this,jstr,n+1,unused)
+                return @this
+            end if
+            if jstr[n] = JSON_OPEN_A then
+                var arr = parse_array(jstr,n+1,unused)
+                addChild("",new JSONvalue(arr))
                 return @this
             end if
         end if
