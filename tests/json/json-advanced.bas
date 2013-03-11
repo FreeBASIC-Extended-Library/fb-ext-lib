@@ -47,10 +47,32 @@ namespace ext.tests.json_
 
     end sub
 
+    const as string nested_obj_str = _
+    "{" & _
+    !"\"test\": {" & _
+    !"       \"case\": 1," & _
+    !"       \"case2\": 2," & _
+    "       }" & _
+    "}"
+
+    private sub nested_obj
+
+        dim j as ext.json.JSONobject
+        var test = j.loadString(nested_obj_str)
+        TESTLY_ASSERT_TRUE(test <> null)
+
+        var t = ""
+        t = j
+
+        TESTLY_ASSERT_TRUE( t = !"{ \"test\" : { \"case\" : 1, \"case2\" : 2 } }" )
+
+    end sub
+
     private sub register constructor
         ext.testly.addSuite("JSON Advanced")
         ext.testly.addTest("test_create_adv", @test_create_adv)
         ext.testly.addTest("Toplevel Array",@test_json_array_toplevel)
+        ext.testly.addTest("Nested Objects",@nested_obj)
     end sub
 
 

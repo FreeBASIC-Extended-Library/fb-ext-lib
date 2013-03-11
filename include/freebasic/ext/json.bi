@@ -151,7 +151,17 @@ namespace ext.json
         ''
         ''Returns:
         ''The <JSONvalue> requested or null on failure.
-        declare function child( byref c as const string ) as JSONvalue ptr
+        declare function child overload ( byref c as const string ) as JSONvalue ptr
+
+        ''Function: child
+        ''Looks up the specified child.
+        ''
+        ''Parameters:
+        ''c - The index (0 based) of the child to retrieve
+        ''
+        ''Returns:
+        ''The <JSONvalue requested or null on failure.
+        declare function child overload ( byval c as uinteger ) as JSONvalue ptr
 
         ''Function: children
         ''Returns the 1-based number of children to this object.
