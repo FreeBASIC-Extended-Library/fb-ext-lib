@@ -13,6 +13,9 @@
 #ifndef FBEXT_MISC
 #define FBEXT_MISC
 
+#include once "ext/detail/common.bi"
+#include once "string.bi"
+
 #if not __FB_MT__
     #inclib "ext-misc"
     #ifdef FBEXT_MULTITHREADED
@@ -48,6 +51,16 @@ namespace ext.misc
     end scope
     # endmacro
 
+    ''Macro: FBEXT_TIMED_OP_START
+    ''Start timing a sequence of events.
+    #define FBEXT_TIMED_OP_START var __ext_time_op_in = timer
+
+    ''Macro: FBEXT_TIMED_OP_END
+    ''Ends timing a sequence of events.
+    ''
+    ''Returns:
+    ''string containing a formatted value of the time difference in seconds.
+    #define FBEXT_TIMED_OP_END format(timer-__ext_time_op_in,"#####0.######")
 
     ''Class: FILE_ITER
     ''Provides a simple way to iterate through a directory structure.
