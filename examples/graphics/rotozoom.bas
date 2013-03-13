@@ -9,7 +9,6 @@
 
 # include once "ext/graphics/image.bi"
 # include once "ext/graphics/manip.bi"
-# include once "fbgfx.bi"
 
 using ext
 
@@ -27,11 +26,11 @@ do while not multikey(FB.SC_ESCAPE)
     cls
     select case as const method
         case 0
-            gfx.RotoZoom(0, *original, 320, 240,angle, zoom, zoom)
+            gfx.RotoZoom(0, original, 320, 240,angle, zoom, zoom)
             locate 1,1
             print "Normal"
         case else
-            gfx.RotoZoomASM(0, *original, 320, 240,angle, zoom, zoom)
+            gfx.RotoZoomASM(0, original, 320, 240,angle, zoom, zoom)
             locate 1,1
             print "ASM"
     end select
@@ -54,3 +53,5 @@ do while not multikey(FB.SC_ESCAPE)
     sleep 5,1
 
 loop
+
+delete original

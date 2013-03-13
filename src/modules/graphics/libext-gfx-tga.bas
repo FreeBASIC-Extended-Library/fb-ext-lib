@@ -110,19 +110,17 @@ function load_mem( byval src as any ptr, byval src_len as SizeType, byval t as t
                     Return NULL
         End Select
 
-        Dim As fb.image Ptr img
+        var img = new image( w, h )
 
-        img = imagecreate( w, h )
-
-        idataToImg( data_buf, img, bpp )
+        idataToImg( data_buf, *img, bpp )
 
         If ((tga_info->imagedescriptor And 32) Shr 5) = 0 Then
             var img2 = ext.gfx.flipVertical( img )
-            imagedestroy img
-            return new ext.gfx.Image(img2)
+            delete img
+            return img2
         End If
 
-        Return new ext.gfx.Image(img)
+        Return img
 
 end function
 

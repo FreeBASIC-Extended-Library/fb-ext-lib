@@ -20,49 +20,50 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#define FBEXT_BUILD_NO_GFX_LOADERS
 #include once "ext/graphics/manip.bi"
 
 namespace ext.gfx
 '' :::::
-sub AlphaBlit( byval dst as FB.IMAGE ptr, byval src as const FB.IMAGE ptr, byref positx as integer, byref posity as integer, byref malpha as integer )
-    
+sub AlphaBlit( byval dst as IMAGE ptr, byval src as const IMAGE ptr, byref positx as integer, byref posity as integer, byref malpha as integer )
+
     if (src = null) then exit sub
-    
+
     static as uinteger ptr dstptr, srcptr
     static as integer srcc, dstc
     dim as integer iwidth = src->width
-	dim as integer iheight= src->height
+    dim as integer iheight= src->height
     static as integer dw, dh, xput, yput
     static as integer sr, sg, sb, sa, na
-    static as integer dr, dg, db, da    
+    static as integer dr, dg, db, da
 
     if dst = 0 then
         dstptr = screenptr
         screeninfo dw,dh
     else
-        dstptr = FBEXT_FBGFX_PIXELPTR( uinteger, dst )
+        dstptr = dst->Pixels
         dw = dst->width
         dh = dst->height
     end if
-    
-    srcptr = FBEXT_FBGFX_PIXELPTR( uinteger, src )
-    
+
+    srcptr = src->Pixels
+
     for y as integer = 0 to iheight-1
-        
+
         yput = y + posity
         if yput>-1 and yput<dh then
-            
+
             for x as integer = 0 to iwidth-1
                 xput = x + positx
-                
+
                 if xput>-1 and xput<dw then
-                    
+
                     if dst = 0 then
                         dstc = dstptr[ (yput * dw ) + xput ]
                     else
                         dstc = *cast(uinteger ptr, cast(ubyte ptr, dstptr) + yput * dst->pitch + xput * dst->bpp )
                     end if
-                    
+
                     dr = ( ( dstc shr 16 ) and 255 )
                     dg = ( ( dstc shr  8 ) and 255 )
                     db = ( ( dstc        ) and 255 )
@@ -73,36 +74,36 @@ sub AlphaBlit( byval dst as FB.IMAGE ptr, byval src as const FB.IMAGE ptr, byref
                     sg = ( ( srcc shr  8 ) and 255 )
                     sb = ( ( srcc        ) and 255 )
                     sa = ( ( srcc shr 24 ) and 255 )
-                    
+
                     na = (( ( srcc shr 24 ) and 255 ) + malpha) * malpha shr 8
 
                     if na < 0 then
                         na = 0
-                    elseif na > 255 then 
+                    elseif na > 255 then
                         na = 255
                     end if
-                    
+
                     sr = ( na * ( sr - dr) ) shr 8 + dr
-                    if sr < 0 then 
+                    if sr < 0 then
                         sr = 0
-                    elseif sr > 255 then 
+                    elseif sr > 255 then
                         sr = 255
                     end if
-                    
+
                     sg = ( na * ( sg - dg) ) shr 8 + dg
-                    if sg < 0 then 
+                    if sg < 0 then
                         sg = 0
-                    elseif sg > 255 then 
+                    elseif sg > 255 then
                         sg = 255
                     end if
-                    
+
                     sb = ( na * ( sb - db) ) shr 8 + db
-                    if sb < 0 then 
+                    if sb < 0 then
                         sb = 0
-                    elseif sb > 255 then 
+                    elseif sb > 255 then
                         sb = 255
                     end if
-                    
+
                     if srcc <> rgba( 255, 0, 255, 255 ) and sa > 0 then
                         if dst = 0 then
                             dstptr[ (yput * dw ) + xput ] = rgba( sr, sg, sb, sa )
@@ -116,13 +117,13 @@ sub AlphaBlit( byval dst as FB.IMAGE ptr, byval src as const FB.IMAGE ptr, byref
                             *cast(uinteger ptr, cast(ubyte ptr, dstptr) + yput * dst->pitch + xput * dst->bpp) = rgba( dr, dg, db, da )
                         end if
                     end if
-                    
+
                 end if
             next
-            
+
         end if
     next
-    
+
 end sub
 
 end namespace 'ext.gfx

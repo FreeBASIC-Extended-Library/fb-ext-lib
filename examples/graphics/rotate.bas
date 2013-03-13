@@ -9,7 +9,6 @@
 
 # include once "ext/graphics/image.bi"
 # include once "ext/graphics/manip.bi"
-# include once "fbgfx.bi"
 
 using ext.gfx
 
@@ -23,7 +22,7 @@ do while not multikey(FB.SC_ESCAPE)
 
     screenlock
     cls
-    Rotate(0, *original, 160-original->width\2, 120-original->height\2, angle)
+    Rotate(0, original, 160-original->width\2, 120-original->height\2, angle)
     screenunlock
 
     if multikey(FB.SC_RIGHT) then angle -= 5
@@ -37,3 +36,5 @@ do while not multikey(FB.SC_ESCAPE)
     sleep 5,1
 
 loop
+
+delete original

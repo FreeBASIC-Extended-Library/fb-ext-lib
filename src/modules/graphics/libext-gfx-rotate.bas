@@ -20,13 +20,14 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#define FBEXT_BUILD_NO_GFX_LOADERS
 #include once "ext/graphics/manip.bi"
 #include once "ext/math/matrix.bi"
 
 namespace ext.gfx
 
     '' :::::
-    sub Rotate( byref dst as FB.IMAGE ptr, byref src as const FB.IMAGE ptr, byref positx as integer, byref posity as integer, byref angle as integer )
+    sub Rotate( byref dst as IMAGE ptr, byref src as const IMAGE ptr, byref positx as integer, byref posity as integer, byref angle as integer )
 
         if (src = null) then exit sub
 
@@ -42,12 +43,12 @@ namespace ext.gfx
             dstptr = screenptr
             screeninfo dw,dh
         else
-            dstptr = FBEXT_FBGFX_PIXELPTR( uinteger, dst )
+            dstptr = dst->Pixels
             dw = dst->width
             dh = dst->height
         end if
 
-        srcptr = FBEXT_FBGFX_PIXELPTR( uinteger, src )
+        srcptr = src->Pixels
 
         dim as integer iwidth = src->width
         dim as integer iheight= src->height

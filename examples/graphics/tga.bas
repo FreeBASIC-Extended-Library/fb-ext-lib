@@ -8,6 +8,7 @@
 ''http://code.google.com/p/fb-extended-lib/wiki/License)
 
 #include once "ext/graphics/tga.bi"
+using ext.gfx
 
 Dim As String       file_name
 Dim As Double       t
@@ -19,12 +20,12 @@ screenres 800, 600, 32
 If file_name = "" Then file_name = "fbextlogo.tga"
 
 t = Timer( )
-var img = ext.gfx.tga.load( file_name )
+var img = tga.load( file_name )
 t = Timer( ) - t
 
 If img <> 0 Then
         Print Int( t * 1000 ) & "ms"
-        Put (16, 16), *img, ALPHA
+        img->Display 16, 16, ALPHA_
         delete img
 Else
         Print "Load error"

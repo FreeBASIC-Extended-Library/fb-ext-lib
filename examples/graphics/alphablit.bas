@@ -9,39 +9,30 @@
 
 # include once "ext/graphics/image.bi"
 # include once "ext/graphics/manip.bi"
-# include once "fbgfx.bi"
+#include once "fbgfx.bi"
+
+using ext.gfx
 
 const as integer scrX = 320, scrY = 240
-
 screenres scrX, scrY, 32, ,FB.GFX_HIGH_PRIORITY
-
-var back = ext.gfx.LoadImage("fbextlogo.jpg")
-
-var fore = ext.gfx.LoadImage("test.png")
-
+var back = LoadImage("fbextlogo.jpg")
+var fore = LoadImage("test.png")
 dim as integer alpha
 
 
 do
-
     alpha = 127.5 + 127.5 * sin(timer)
-
     screenlock
-
     cls
-
-    put( scrX/2-back->width/2, scrY/2-back->height/2 ), *back, pset
-
-    ext.gfx.AlphaBlit( 0, *fore, (scrX/2-fore->width/2)+50*sin(timer*2.3), (scrY/2-fore->height/2.5)+50*cos(timer*2), alpha )
-
+    back->Display scrX/2-back->width/2, scrY/2-back->height/2, PSET_
+    AlphaBlit( 0, fore, (scrX/2-fore->width/2)+50*sin(timer*2.3), (scrY/2-fore->height/2.5)+50*cos(timer*2), alpha )
     locate 1,1
-
     print "additive alpha = " & alpha
-
     screensync
-
     screenunlock
-
     sleep 1,1
 
 loop until multikey(FB.SC_ESCAPE)
+
+delete back
+delete fore

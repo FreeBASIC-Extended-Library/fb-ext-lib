@@ -20,90 +20,91 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#define FBEXT_BUILD_NO_GFX_LOADERS
 # include once "ext/graphics/manip.bi"
 
 namespace ext.gfx
 
-sub Scale2X( byref dst as fb.image ptr = 0, byref src as const fb.image ptr, byref positx as integer, byref posity as integer )
-    
-    dim as uinteger ptr srcptr = FBEXT_FBGFX_PIXELPTR( uinteger, src )
-    
+sub Scale2X( byref dst as image ptr = 0, byref src as const image ptr, byref positx as integer, byref posity as integer )
+
+    dim as uinteger ptr srcptr = src->Pixels
+
     static as uinteger ptr dstptr
-    
+
     static as integer x2, y2, b, d, e, f, h, e0, e1, e2, e3, dw, dh
     static as uinteger transcol
-    
+
     if dst = 0 then
         dstptr = screenptr
         screeninfo dw,dh
         transcol = RGB(255,0,255)
     else
-        dstptr = FBEXT_FBGFX_PIXELPTR( uinteger, dst )
+        dstptr = dst->Pixels
         dw = dst->width
         dh = dst->height
     end if
 
 
     for y as integer = 0 to src->height-1
-        
+
         for x as integer = 0 to src->width-1
-            
+
             x2 = (x * 2) + positx
 
             y2 = (y * 2) + posity
-            
+
             if y>0 then
                 b = *cast(uinteger ptr, cast(ubyte ptr, srcptr) + (y-1) * src->pitch + (x) * src->bpp)
             else
                 b = 0
             end if
-            
+
             if x>0 then
                 d = *cast(uinteger ptr, cast(ubyte ptr, srcptr) + (y) * src->pitch + (x-1) * src->bpp)
             else
                 d = 0
             end if
-            
+
             e = *cast(uinteger ptr, cast(ubyte ptr, srcptr) + (y) * src->pitch + (x) * src->bpp)
-            
+
             if x<src->width-1 then
                 f = *cast(uinteger ptr, cast(ubyte ptr, srcptr) + (y) * src->pitch + (x+1) * src->bpp)
             else
                 f = 0
             end if
-            
+
             if y<src->height-1 then
                 h = *cast(uinteger ptr, cast(ubyte ptr, srcptr) + (y+1) * src->pitch + (x) * src->bpp)
             else
                 h = 0
             end if
-            
+
             if b <> h and d <> f then
-                
-                if d = b then 
-                    e0 = d 
-                else 
+
+                if d = b then
+                    e0 = d
+                else
                     e0 = e
                 end if
-                
-                if b = f then 
-                    e1 = f 
-                else 
+
+                if b = f then
+                    e1 = f
+                else
                     e1 = e
                 end if
-                
+
                 if d = h then
-                    e2 = d 
-                else 
+                    e2 = d
+                else
                     e2 = e
                 end if
-                
-                if h = f then 
-                    e3 = f 
-                else 
+
+                if h = f then
+                    e3 = f
+                else
                     e3 = e
                 end if
-                
+
             else
 
                 e0 = e
@@ -115,7 +116,7 @@ sub Scale2X( byref dst as fb.image ptr = 0, byref src as const fb.image ptr, byr
                 e3 = e
 
             end if
-            
+
             if dst = 0 then
 
                 if x2<dw and y2<dh then
@@ -123,48 +124,48 @@ sub Scale2X( byref dst as fb.image ptr = 0, byref src as const fb.image ptr, byr
                         dstptr[ ((y2) * dw ) + (x2) ] = e0
                     end if
                 end if
-                
+
                 if x2<dw-1 and y2<dh then
                     if e1 <> transcol then
                         dstptr[ ((y2) * dw ) + (x2+1) ] = e1
                     end if
                 end if
-                
+
                 if x2<dw and y2<dh-1 then
                     if e2 <> transcol then
                         dstptr[ ((y2+1) * dw ) + (x2) ] = e2
                     end if
                 end if
-                
+
                 if x2<dw-1 and y2<dh-1 then
                     if e3<> transcol then
                         dstptr[ ((y2+1) * dw ) + (x2+1) ] = e3
                     end if
                 end if
-            
+
             else
 
                 if x2<dst->width and y2<dst->height then
                     *cast(uinteger ptr, cast(ubyte ptr, dstptr) + (y2) * dst->pitch + (x2) * dst->bpp) = e0
                 end if
-                
+
                 if x2<dst->width-1 and y2<dst->height then
                     *cast(uinteger ptr, cast(ubyte ptr, dstptr) + (y2) * dst->pitch + (x2+1) * dst->bpp) = e1
                 end if
-                
+
                 if x2<dst->width and y2<dst->height-1 then
                     *cast(uinteger ptr, cast(ubyte ptr, dstptr) + (y2+1) * dst->pitch + (x2) * dst->bpp) = e2
                 end if
-                
+
                 if x2<dst->width-1 and y2<dst->height-1 then
                     *cast(uinteger ptr, cast(ubyte ptr, dstptr) + (y2+1) * dst->pitch + (x2+1) * dst->bpp) = e3
                 end if
 
             end if
         next
-        
+
     next
-    
+
 end sub
 
 end namespace

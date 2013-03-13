@@ -12,27 +12,15 @@
 # include once "fbgfx.bi"
 
 using ext
-
 screenres 320,240,32
-
 var image = gfx.LoadImage("fbextlogo.jpg")
-
 
 Do
     dim as integer intensity = 255*sin(timer)
-
     screenlock
-
         cls
-
-        gfx.Intensify( 0, *image, 160-image->width\2, 120-image->height\2, intensity )
-
+        gfx.Intensify( 0, image, 160-image->width\2, 120-image->height\2, intensity )
         screensync
-
     screenunlock
-
     sleep 1,1
-
 Loop until multikey(FB.SC_ESCAPE)
-
-

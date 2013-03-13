@@ -8,29 +8,23 @@
 ''http://code.google.com/p/fb-extended-lib/wiki/License)
 
 # include once "ext/graphics/manip.bi"
-# include once "fbgfx.bi"
 
-using ext
-
+using ext.gfx
 screenres 320,240,32
 
-dim as FB.IMAGE ptr myimg
-
 'create a 100x100 box and fill it with pink with full alpha
-myimg = imagecreate(100,100, &hFFFF00FF)
+var myimg = new image(100,100, &hFFFF00FF)
 
 print "Original image:"
-put (1,10),myimg, PSET
-
+myimg->Display 1, 10, PSET_
 sleep
 
 'change pink to yellow, keeping the original alpha and treating it like a font buffer
-gfx.change_color( myimg, &hFF00FF, &hFFF00F, false, true )
+change_color( myimg, &hFF00FF, &hFFF00F, ext.false, ext.true )
 
 cls
 print "New image:"
-put (1,10),myimg, PSET
-
+myimg->Display 1, 10, PSET_
 sleep
 
-imagedestroy(myimg)
+delete myimg

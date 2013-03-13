@@ -20,71 +20,72 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#define FBEXT_BUILD_NO_GFX_LOADERS
 #include once "ext/graphics/manip.bi"
 
 namespace ext.gfx
 '' :::::
-sub Intensify( byval dst as FB.IMAGE ptr, byval src as const FB.IMAGE ptr, byref positx as integer, byref posity as integer, byref intensity as integer )
-    
+sub Intensify( byval dst as IMAGE ptr, byval src as const IMAGE ptr, byref positx as integer, byref posity as integer, byref intensity as integer )
+
     if src = null then exit sub
-    
+
     static as uinteger ptr dstptr, srcptr
     static as uinteger transcol = RGBA(255,0,255,0)
     static as integer srcc
     dim as integer iwidth = src->width
-	dim as integer iheight= src->height
+    dim as integer iheight= src->height
     static as integer dw, dh, xput, yput
     static as integer sr, sg, sb, sa, na
-    
+
     if dst = 0 then
         dstptr = screenptr
         screeninfo dw,dh
     else
-        dstptr = FBEXT_FBGFX_PIXELPTR( uinteger, dst )
+        dstptr = dst->Pixels
         dw = dst->width
         dh = dst->height
     end if
-    
-    srcptr = FBEXT_FBGFX_PIXELPTR( uinteger, src )
-    
+
+    srcptr = src->Pixels
+
     for y as integer = 0 to iheight-1
-        
+
         yput = y + posity
         if yput>-1 and yput<dh then
-            
+
             for x as integer = 0 to iwidth-1
                 xput = x + positx
-                
+
                 if xput>-1 and xput<dw then
-                    
+
                     srcc = *cast(uinteger ptr, cast(ubyte ptr, srcptr) + y * src->pitch + x * src->bpp )
-                    
+
                     sr = ( ( srcc shr 16 ) and 255 )
                     sg = ( ( srcc shr  8 ) and 255 )
                     sb = ( ( srcc        ) and 255 )
                     sa = ( ( srcc shr 24 ) and 255 )
-                    
+
                     sr += intensity
-                    if sr<0 then 
+                    if sr<0 then
                         sr = 0
-                    elseif sr>255 then 
+                    elseif sr>255 then
                         sr = 255
                     end if
-                    
+
                     sg += intensity
-                    if sg < 0 then 
+                    if sg < 0 then
                         sg = 0
-                    elseif sg > 255 then 
+                    elseif sg > 255 then
                         sg = 255
                     end if
-                    
+
                     sb += intensity
-                    if sb < 0 then 
+                    if sb < 0 then
                         sb = 0
-                    elseif sb > 255 then 
+                    elseif sb > 255 then
                        sb = 255
                     end if
-                    
+
                     if srcc <> transcol and sa > 0 then
                         if dst = 0 then
                             dstptr[ (yput * dw ) + xput ] = rgba( sr, sg, sb, sa )
@@ -97,7 +98,7 @@ sub Intensify( byval dst as FB.IMAGE ptr, byval src as const FB.IMAGE ptr, byref
             next
         end if
     next
-    
+
 end sub
 
 end namespace 'ext.gfx

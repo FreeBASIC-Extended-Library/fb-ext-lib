@@ -20,6 +20,7 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#define FBEXT_BUILD_NO_GFX_LOADERS
 # include once "ext/graphics/manip.bi"
 #include once "crt.bi"
 
@@ -35,7 +36,7 @@ namespace ext.gfx
         end type
         end union
 
-        function grayscale ( byval img as fb.image ptr, byval skip_trans as ext.bool = ext.bool.true ) as fb.image ptr
+        function grayscale ( byval img as image ptr, byval skip_trans as ext.bool = ext.bool.true ) as image ptr
 
                 #define red_m (299/1000)
                 #define gre_m (587/1000)
@@ -44,7 +45,7 @@ namespace ext.gfx
                 if img = ext.null then return ext.null
                 if img->bpp < 4 then return ext.null
 
-                var ret_img = imagecreate( img->width, img->height,, 32 )
+                var ret_img = new Image( img->width, img->height)
 
                 dim luma as _color_t
 
@@ -53,14 +54,14 @@ namespace ext.gfx
 
                                 luma.colour = point(x,y,img)
                                 if skip_trans = true and luma.r = 255 and luma.g = 0 and luma.b = 255 then
-                                        pset ret_img,(x,y), luma.colour
+                                        pset *ret_img,(x,y), luma.colour
                                 else
                                         'TRAAAAAANSFORM!!!!!
                                         var tmp = cubyte((luma.r * red_m) + _
-                                        (luma.g * gre_m) + _
-                                        (luma.b * blu_m))
+                                                         (luma.g * gre_m) + _
+                                                         (luma.b * blu_m))
                                         luma.r = tmp : luma.g = tmp : luma.b = tmp
-                                        pset ret_img,(x,y), luma.colour
+                                        pset *ret_img,(x,y), luma.colour
                                 end if
 
                         next x
@@ -71,7 +72,7 @@ namespace ext.gfx
         end function
 
 
-        sub change_color ( byref img as FB.IMAGE ptr, byval from_ as uinteger, byval to_ as uinteger, byval include_alpha as ext.bool = ext.bool.false, byval is_font as ext.bool = ext.bool.false )
+        sub change_color ( byref img as IMAGE ptr, byval from_ as uinteger, byval to_ as uinteger, byval include_alpha as ext.bool = ext.bool.false, byval is_font as ext.bool = ext.bool.false )
 
                 if img = ext.null then exit sub
                 if img->bpp < 4 then exit sub 'this procedure only operates on 24 & 32 bit bitmaps
@@ -79,7 +80,7 @@ namespace ext.gfx
                 var pitch_ = img->width
                 var height_ = img->height
                 var len_data = pitch_ * height_
-                var pixelptr = FBEXT_FBGFX_PIXELPTR( uinteger, img )
+                var pixelptr = img->Pixels
                 dim start_data as uinteger = 0
 
                 if (is_font = ext.bool.true) then
@@ -115,17 +116,17 @@ namespace ext.gfx
 
         function flipVertical _
                 ( _
-                byval img as fb.image ptr _
-                ) as fb.image ptr
+                byval img as const image ptr _
+                ) as image ptr
 
-                dim as fb.image ptr temp_img
+                dim as image ptr temp_img
                 dim as ubyte ptr    p1
                 dim as ubyte ptr    p2
 
-                temp_img = imagecreate( img->width, img->height )
+                temp_img = new image( img->width, img->height )
 
-                p1 = cptr( ubyte ptr, img ) + sizeof( fb.image ) + ((img->height - 1) * img->pitch)
-                p2 = cptr( ubyte ptr, temp_img ) + sizeof( fb.image )
+                p1 = cptr( ubyte ptr, img->Pixels ) + ((img->height - 1) * img->pitch)
+                p2 = cptr( ubyte ptr, temp_img->Pixels )
 
                 for y as integer = 0 to img->height - 1
                         memcpy( p2, p1, img->pitch )
@@ -133,22 +134,20 @@ namespace ext.gfx
                         p2 += img->pitch
                 next y
 
-                imagedestroy( img )
-
                 function = temp_img
 
         end function
 
         ''Function: flipHorizontal
-        function flipHorizontal( byval src as fb.image ptr ) as fb.image ptr
+        function flipHorizontal( byval src as const image ptr ) as image ptr
 
-                var temp_img = imagecreate( src->width, src->height )
+                var temp_img = new image( src->width, src->height )
 
                 for d as integer = 0 to src->bpp - 1
                         for y as integer = 0 to src->height - 1
                                 var dx = 0
                                 for x as integer = src->width - 1 to 0 step -1
-                                        pset temp_img, (dx, y), point(x,y,src)
+                                        pset *temp_img, (dx, y), point(x,y,*src)
                                         dx += 1
                                 next x
                         next y

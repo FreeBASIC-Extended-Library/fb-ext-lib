@@ -20,85 +20,86 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#define FBEXT_BUILD_NO_GFX_LOADERS
 # include once "ext/graphics/manip.bi"
 # include once "crt.bi"
 
 namespace ext.gfx
 
-sub Blur( byref dst as FB.IMAGE ptr, byref src as const FB.IMAGE ptr, byref blur_level as integer )
+sub Blur( byref dst as IMAGE ptr, byref src as const IMAGE ptr, byref blur_level as integer )
 
-	if ( dst = null ) OR ( src = null ) then exit sub
+    if ( dst = null ) OR ( src = null ) then exit sub
 
-	dim as uinteger ptr srcptr = FBEXT_FBGFX_PIXELPTR( uinteger, src )
-	dim as uinteger ptr dstptr = FBEXT_FBGFX_PIXELPTR( uinteger, dst )
+    dim as uinteger ptr srcptr = src->Pixels
+    dim as uinteger ptr dstptr = dst->Pixels
 
-	static as integer xstart, xend, ystart, yend, hits, r, g, b, c
+    static as integer xstart, xend, ystart, yend, hits, r, g, b, c
 
-	if blur_level <= 0 then
+    if blur_level <= 0 then
 
-		memcpy( dstptr, srcptr, src->height * src->pitch )
+        memcpy( dstptr, srcptr, src->height * src->pitch )
 
-	exit sub
+    exit sub
 
-	end if
+    end if
 
-	for y as integer = 0 to dst->height - 1
+    for y as integer = 0 to dst->height - 1
 
-		for x as integer = 0 to dst->width - 1
+        for x as integer = 0 to dst->width - 1
 
-			xstart = x - blur_level
-			xend = x + blur_level
-			ystart = y - blur_level
-			yend = y + blur_level
+            xstart = x - blur_level
+            xend = x + blur_level
+            ystart = y - blur_level
+            yend = y + blur_level
 
-			if xstart < 0 then
-				xstart = 0
-			end if
+            if xstart < 0 then
+                xstart = 0
+            end if
 
-			if xend > src->width-1 then
+            if xend > src->width-1 then
 
-				xend = src->width - 1
+                xend = src->width - 1
 
-			end if
+            end if
 
-			if ystart < 0 then
-				ystart = 0
-			end if
+            if ystart < 0 then
+                ystart = 0
+            end if
 
-			if yend > src->height - 1 then
-				yend = src->height - 1
-			end if
+            if yend > src->height - 1 then
+                yend = src->height - 1
+            end if
 
-			hits = 0
-			r = 0
-			g = 0
-			b = 0
+            hits = 0
+            r = 0
+            g = 0
+            b = 0
 
-			for y2 as integer = ystart to yend
+            for y2 as integer = ystart to yend
 
-				for x2 as integer = xstart to xend
+                for x2 as integer = xstart to xend
 
-					hits += 1
+                    hits += 1
 
-					c = *cast( uinteger ptr, cast( ubyte ptr, srcptr ) + y2 * src->pitch + x2 * src->bpp )
+                    c = *cast( uinteger ptr, cast( ubyte ptr, srcptr ) + y2 * src->pitch + x2 * src->bpp )
 
-					r += ( c shr 16 ) and &hFF 
-					g += ( c shr  8 ) and &hFF 
-					b += ( c        ) and &hFF
+                    r += ( c shr 16 ) and &hFF
+                    g += ( c shr  8 ) and &hFF
+                    b += ( c        ) and &hFF
 
-				next
+                next
 
-			next
+            next
 
-			r \= hits
-			g \= hits
-			b \= hits
+            r \= hits
+            g \= hits
+            b \= hits
 
-			*cast( uinteger ptr, cast( ubyte ptr, dstptr ) + y * dst->pitch + x * dst->bpp ) = rgb( r, g, b )
+            *cast( uinteger ptr, cast( ubyte ptr, dstptr ) + y * dst->pitch + x * dst->bpp ) = rgb( r, g, b )
 
-		next
+        next
 
-	next
+    next
 
 end sub
 

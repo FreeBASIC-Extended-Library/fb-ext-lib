@@ -9,7 +9,6 @@
 
 # include once "ext/graphics/image.bi"
 # include once "ext/graphics/manip.bi"
-# include once "fbgfx.bi"
 
 using ext.gfx
 
@@ -17,7 +16,8 @@ screenres 640, 480, 32
 
 var original = LoadImage("fbextlogo.jpg")
 
-original->Display(0,0,PSET_)
-Scale2X( 0, *original, original->width, 0 )
+original->Display 0, 0, PSET_
+Scale2X( 0, original, original->width, 0 )
 
+delete original
 sleep

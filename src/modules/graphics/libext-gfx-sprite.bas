@@ -20,6 +20,7 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#define FBEXT_BUILD_NO_GFX_LOADERS
 #include once "ext/graphics/sprite.bi"
 #include once "ext/graphics/manip.bi"
 #include once "ext/graphics/collision.bi"
@@ -51,8 +52,8 @@ end function
 constructor Sprite ( byval num as uinteger)
 
     m_size = num
-    m_imgdata = callocate(sizeof(FB.IMAGE ptr) * m_size)
-    m_coldata = callocate(sizeof(FB.IMAGE ptr) * m_size)
+    m_imgdata = callocate(sizeof(IMAGE ptr) * m_size)
+    m_coldata = callocate(sizeof(IMAGE ptr) * m_size)
     m_lastindex = 0
 
 end constructor
@@ -69,19 +70,19 @@ end constructor
 constructor Sprite( byref rhs as Sprite )
 
     m_size = rhs.m_size
-    m_imgdata = callocate(sizeof(FB.IMAGE ptr) * m_size)
-    m_coldata = callocate(sizeof(FB.IMAGE ptr) * m_size)
+    m_imgdata = callocate(sizeof(IMAGE ptr) * m_size)
+    m_coldata = callocate(sizeof(IMAGE ptr) * m_size)
 
     for n as uinteger = 0 to m_size -1
 
         if rhs.m_imgdata[n] <> null then
-            m_imgdata[n] = imagecreate( rhs.m_imgdata[n]->width, rhs.m_imgdata[n]->height )
-            put m_imgdata[n], (0,0), rhs.m_imgdata[n], PSET
+            m_imgdata[n] = new image( rhs.m_imgdata[n]->width, rhs.m_imgdata[n]->height )
+            rhs.m_imgdata[n]->Display *(m_imgdata[n]), 0, 0, PSET_
         end if
 
         if rhs.m_coldata[n] <> null then
-            m_coldata[n] = imagecreate( rhs.m_coldata[n]->width, rhs.m_coldata[n]->height )
-            put m_coldata[n], (0,0), rhs.m_coldata[n], PSET
+            m_coldata[n] = new image( rhs.m_coldata[n]->width, rhs.m_coldata[n]->height )
+            rhs.m_imgdata[n]->Display *(m_coldata[n]), 0, 0, PSET_
         end if
 
     next n
@@ -93,9 +94,8 @@ end constructor
 destructor Sprite ( )
     if m_size > 0 then
     for n as uinteger = 0 to m_size - 1
-
-        if m_imgdata[n] <> null then imagedestroy(m_imgdata[n])
-        if m_coldata[n] <> null then imagedestroy(m_coldata[n])
+        if m_imgdata[n] <> null then delete m_imgdata[n]
+        if m_coldata[n] <> null then delete m_coldata[n]
     next
     end if
     if m_imgdata <> null then deallocate m_imgdata
@@ -104,26 +104,19 @@ destructor Sprite ( )
 end destructor
 
 '' :::::
-function Sprite.FromSpritesheet( byval srci as fb.image ptr, byval startx as uinteger, byval starty as uinteger, _
+function Sprite.FromSpritesheet( byval srci as image ptr, byval startx as uinteger, byval starty as uinteger, _
         byval spwidth as uinteger, byval spheight as uinteger, byval startindex as uinteger, byval numsp as integer ) _
         as integer
 
         if numsp * spwidth > srci->width then return -1
-
         if numsp > m_size then return 0
-
         var stepr = startindex
 
         for n as uinteger = startx to startx + (spwidth * numsp) step spwidth
-
-                var newimg = imagecreate( spwidth, spheight )
-
-                get srci, (n,starty)-(n+(spwidth-1),starty+(spheight-1)), newimg
-
+                var newimg = new image( spwidth, spheight )
+                get *srci, (n,starty)-(n+(spwidth-1),starty+(spheight-1)), *newimg
                 SetImage(stepr, newimg)
-
                 stepr += 1
-
         next n
 
         return stepr - startindex
@@ -131,15 +124,13 @@ function Sprite.FromSpritesheet( byval srci as fb.image ptr, byval startx as uin
 end function
 
 '' :::::
-function Sprite.GetImage( byval index as uinteger ) as FB.IMAGE ptr
+function Sprite.GetImage( byval index as uinteger ) as IMAGE ptr
 
     if (index + 1) <= m_size then
         m_lastindex = index
         return m_imgdata[m_lastindex]
-
     else
         return ext.null
-
     end if
 
 end function
@@ -182,7 +173,7 @@ end sub
 '' :::::
 sub Sprite.DrawImage ( _
         byval src_img as uinteger, _
-        byval dst_img as FB.IMAGE ptr, _
+        byval dst_img as Image ptr, _
         byval method as DrawMethods _
 )
 
@@ -193,32 +184,11 @@ sub Sprite.DrawImage ( _
 
         m_lastindex = src_img
 
-
-        select case method
-
-        case DrawMethods.PSET_
-            put dst_img, (x_location, y_location), m_imgdata[src_img], PSET
-
-        case DrawMethods.PRESET_
-            put dst_img, (x_location, y_location), m_imgdata[src_img], PRESET
-
-        case DrawMethods.TRANS_
-            put dst_img, (x_location, y_location), m_imgdata[src_img], TRANS
-
-        case DrawMethods.AND_
-            put dst_img, (x_location, y_location), m_imgdata[src_img], AND
-
-        case DrawMethods.OR_
-            put dst_img, (x_location, y_location), m_imgdata[src_img], OR
-
-        case DrawMethods.XOR_
-            put dst_img, (x_location, y_location), m_imgdata[src_img], XOR
-
-        case DrawMethods.ALPHA_
-            put dst_img, (x_location, y_location), m_imgdata[src_img], ALPHA
-
-        end select
-
+        if dst_img <> 0 then
+            m_imgdata[src_img]->Display *dst_img, x_location, y_location, method
+        else
+            m_imgdata[src_img]->Display x_location, y_location, method
+        end if
     end if
 
 end sub
@@ -227,33 +197,23 @@ end sub
 sub Sprite.RotateFrom ( byval from_index as uinteger, byval to_index as uinteger, byval angle as integer )
 
     if ((from_index +1) <= m_size) AND ((to_index + 1) <= m_size) then
-
-        if m_imgdata[to_index] <> null then imagedestroy( m_imgdata[to_index] )
-
-        m_imgdata[to_index] = imagecreate(m_imgdata[from_index]->width, m_imgdata[from_index]->height, &hff00ff)
-
+        if m_imgdata[to_index] <> null then delete m_imgdata[to_index]
+        m_imgdata[to_index] = new image(m_imgdata[from_index]->width, m_imgdata[from_index]->height, &hff00ff)
         ext.gfx.Rotate( m_imgdata[to_index], m_imgdata[from_index], 0, 0, angle )
-
         this.UpdateImage( to_index )
-
     end if
 
 end sub
 
 
 '' :::::
-sub Sprite.RotateFromImage ( byval from_image as FB.IMAGE ptr, byval to_index as uinteger, byval angle as integer )
+sub Sprite.RotateFromImage ( byval from_image as IMAGE ptr, byval to_index as uinteger, byval angle as integer )
 
     if ((to_index + 1) <= m_size) AND from_image <> null then
-
-        if m_imgdata[to_index] <> null then imagedestroy( m_imgdata[to_index] )
-
-        m_imgdata[to_index] = imagecreate(from_image->width, from_image->height, &hff00ff)
-
+        if m_imgdata[to_index] <> null then delete m_imgdata[to_index]
+        m_imgdata[to_index] = new image(from_image->width, from_image->height, &hff00ff)
         ext.gfx.Rotate( m_imgdata[to_index], from_image, 0, 0, angle )
-
         this.UpdateImage( to_index )
-
     end if
 
 end sub
@@ -262,40 +222,30 @@ end sub
 sub Sprite.Init ( byval num as uinteger )
 
     if m_size = 0 then
-
         m_size = num
-        m_imgdata = callocate(sizeof(FB.IMAGE ptr) * m_size)
-        m_coldata = callocate(sizeof(FB.IMAGE ptr) * m_size)
+        m_imgdata = callocate(sizeof(IMAGE ptr) * m_size)
+        m_coldata = callocate(sizeof(IMAGE ptr) * m_size)
         m_lastindex = 0
-
     end if
 
 end sub
 
 '' :::::
-function Sprite.GetColMap ( byval index as uinteger ) as FB.IMAGE ptr
-
+function Sprite.GetColMap ( byval index as uinteger ) as IMAGE ptr
     return m_coldata[index]
-
 end function
 
 '' :::::
-sub Sprite.ReplaceImage ( byval index as uinteger, byval img as FB.IMAGE ptr )
+sub Sprite.ReplaceImage ( byval index as uinteger, byval img as IMAGE ptr )
 
     if index <= m_size-1 then
-
-    if m_imgdata[index] = ext.null then
-
-        m_imgdata[index] = img
-
-    else
-        imagedestroy m_imgdata[index]
-        m_imgdata[index] = img
-
-    end if
-
-    UpdateImage(index)
-
+        if m_imgdata[index] = ext.null then
+            m_imgdata[index] = img
+        else
+            delete m_imgdata[index]
+            m_imgdata[index] = img
+        end if
+        UpdateImage(index)
     end if
 
 end sub
@@ -304,12 +254,9 @@ end sub
 sub Sprite.DuplicateImage ( byval from_index as uinteger, byval to_index as uinteger )
 
     if (from_index <= m_size-1) and (to_index <= m_size-1) and (from_index <> to_index) then
-
-        var temp = imagecreate( m_imgdata[from_index]->width, m_imgdata[from_index]->height )
-        put temp, (0,0), m_imgdata[from_index], PSET
-
+        var temp = new image( m_imgdata[from_index]->width, m_imgdata[from_index]->height )
+        m_imgdata[from_index]->Display *temp, 0, 0, PSET_
         ReplaceImage(to_index, temp)
-
     end if
 
 end sub
@@ -318,22 +265,22 @@ end sub
 sub Sprite.DeleteImage ( byval index as uinteger )
 
     if m_imgdata[index] <> ext.null then
-        imagedestroy m_imgdata[index]
-
+        delete m_imgdata[index]
     end if
 
 end sub
 
 '' :::::
-sub Sprite.SetImage ( byval index as uinteger, byval img as FB.IMAGE ptr )
+sub Sprite.SetImage ( byval index as uinteger, byval img as IMAGE ptr )
 
     if img = null then return
     m_lastindex = index
+    if m_imgdata[m_lastindex] <> ext.null then delete m_imgdata[m_lastindex]
     m_imgdata[m_lastindex] = img
 
-    m_coldata[m_lastindex] = imagecreate(img->width, img->height, &hFF00FF)
+    m_coldata[m_lastindex] = new image(img->width, img->height, &hFF00FF)
 
-    put m_coldata[m_lastindex], (0,0), m_imgdata[m_lastindex], CUSTOM, @Masker
+    put *(m_coldata[m_lastindex]), (0,0), *(m_imgdata[m_lastindex]), CUSTOM, @Masker
 
 end sub
 
@@ -341,13 +288,12 @@ end sub
 sub Sprite.UpdateImage ( byval index as uinteger )
 
     if m_coldata[index] <> ext.null then
-        imagedestroy m_coldata[index]
-
+        delete m_coldata[index]
     end if
 
-    m_coldata[index] = imagecreate(m_imgdata[index]->width, m_imgdata[index]->height, &hFF00FF)
+    m_coldata[index] = new image(m_imgdata[index]->width, m_imgdata[index]->height, &hFF00FF)
 
-    put m_coldata[index], (0,0), m_imgdata[index], CUSTOM, @Masker
+    put *(m_coldata[index]), (0,0), *(m_imgdata[index]), CUSTOM, @Masker
 
 end sub
 
@@ -361,27 +307,30 @@ function Sprite.isCollided ( byref spr as Sprite, byval ppcol as PPOPTIONS = use
     var x1 = m_vec.x : var y1 = m_vec.y
     var x2 = spr.m_vec.x : var y2 = spr.m_vec.y
 
-    if ext.gfx.collision_rect(m_imgdata[m_lastindex], x1, y1, spr.GetImage(useIndex), x2, y2) then
+    function = ext.bool.false
+
+    if ext.gfx.collision_rect(*(m_imgdata[m_lastindex]), x1, y1, *(spr.GetImage(useIndex)), x2, y2) then
 
         if (ppcol = noPP) then return ext.bool.true
 
-        m_temp = imagecreate(m_coldata[m_lastindex]->width, m_coldata[m_lastindex]->height)
-        put m_temp, (0,0), m_coldata[m_lastindex], PSET
+        m_temp = new image(m_coldata[m_lastindex]->width, m_coldata[m_lastindex]->height)
+        m_coldata[m_lastindex]->Display *m_temp, 0, 0, PSET_
 
         var cx = x2 - x1
         var cy = y2 - y1
 
-        put m_temp, (cx,cy), spr.GetColMap(useIndex), CUSTOM, @CMasker
+        put *m_temp, (cx,cy), *(spr.GetColMap(useIndex)), CUSTOM, @CMasker
 
-        var pp = cast(uinteger ptr, m_temp + 1)
+        var pp = m_temp->Pixels
         for n as uinteger = 0 to (m_temp->height * m_temp->width) - 1
-            if pp[n] = &hFF0000 then return ext.bool.true
+            if pp[n] = &hFF0000 then
+                function = ext.bool.true
+                exit for
+            end if
         next
-        imagedestroy m_temp
+        delete m_temp
 
     end if
-
-    return ext.bool.false
 
 end function
 

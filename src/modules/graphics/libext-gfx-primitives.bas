@@ -20,13 +20,14 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#define FBEXT_BUILD_NO_GFX_LOADERS
 #include once "ext/graphics/manip.bi"
 #include once "ext/graphics/primitives.bi"
 
 namespace ext.gfx
 
     '' :::::
-    sub Triangle ( byval dst as FB.IMAGE ptr = 0, byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval x3 as integer, byval y3 as integer, byval col as uinteger = rgba(255,255,255,255) )
+    sub Triangle ( byval dst as Image ptr = 0, byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval x3 as integer, byval y3 as integer, byval col as uinteger = rgba(255,255,255,255) )
 
         dim as uinteger ptr dstptr
 
@@ -40,7 +41,7 @@ namespace ext.gfx
             dstptr = screenptr
             screeninfo dw,dh
         else
-            dstptr = FBEXT_FBGFX_PIXELPTR( uinteger, dst )
+            dstptr = dst->Pixels
             dw=dst->width
             dh = dst->height
         end if
@@ -155,14 +156,14 @@ namespace ext.gfx
 
     end sub
 
-    sub Triangle( byval dst as FB.IMAGE ptr = 0, byref p1 as ext.math.vec2i, byref p2 as ext.math.vec2i, byref p3 as ext.math.vec2i, byval col as uinteger = rgba(255,255,255,255) )
+    sub Triangle( byval dst as Image ptr = 0, byref p1 as ext.math.vec2i, byref p2 as ext.math.vec2i, byref p3 as ext.math.vec2i, byval col as uinteger = rgba(255,255,255,255) )
 
         Triangle( dst, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, col )
 
     end sub
 
 
-    sub TriangleASM( byval dst as FB.IMAGE ptr = 0, byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval x3 as integer, byval y3 as integer, byval col as uinteger = rgba(255,255,255,255) )
+    sub TriangleASM( byval dst as Image ptr = 0, byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval x3 as integer, byval y3 as integer, byval col as uinteger = rgba(255,255,255,255) )
 
         dim as any ptr dstptr
         dim as integer dw, dh, dp
@@ -172,7 +173,7 @@ namespace ext.gfx
             screeninfo dw,dh
             dp = dw * 4
         else
-            dstptr = cast( any ptr, dst + 1 )
+            dstptr = dst->Pixels
             dw = dst->width
             dh = dst->height
             dp = dst->pitch
@@ -353,7 +354,7 @@ namespace ext.gfx
 
     end sub
 
-    sub TriangleASM( byval dst as FB.IMAGE ptr = 0, byref p1 as ext.math.vec2i, byref p2 as ext.math.vec2i, byref p3 as ext.math.vec2i, byval col as uinteger = rgba(255,255,255,255) )
+    sub TriangleASM( byval dst as Image ptr = 0, byref p1 as ext.math.vec2i, byref p2 as ext.math.vec2i, byref p3 as ext.math.vec2i, byval col as uinteger = rgba(255,255,255,255) )
 
         TriangleASM( dst, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, col )
 

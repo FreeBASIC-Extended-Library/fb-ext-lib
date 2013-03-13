@@ -12,7 +12,7 @@
 
 #include once "ext/detail/common.bi"
 #include once "ext/graphics/detail/common.bi"
-#include once "fbgfx.bi"
+#include once "ext/graphics/image.bi"
 #include once "ext/math/vector2.bi"
 
 namespace ext.gfx
@@ -21,7 +21,7 @@ namespace ext.gfx
     ''Draws a flat shaded triangle.
     ''
     ''Parameters:
-    ''dst - FBGFX buffer to draw on. Pass 0 to draw to the screen.
+    ''dst - <Image> buffer to draw on. Pass 0 to draw to the screen.
     ''x1 - x coordinate of first point of triangle.
     ''y1 - y coordinate of first point of triangle.
     ''x2 - x coordinate of second point of triangle.
@@ -33,14 +33,14 @@ namespace ext.gfx
     ''See Also:
     ''<Drawing a Triangle>
     ''
-    declare sub Triangle overload ( byval dst as FB.IMAGE ptr = 0, byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval x3 as integer, byval y3 as integer, byval col as uinteger = rgba(255,255,255,255) )
+    declare sub Triangle overload ( byval dst as Image ptr = 0, byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval x3 as integer, byval y3 as integer, byval col as uinteger = rgba(255,255,255,255) )
 
 
     ''Sub: Triangle
     ''Draws a flat shaded triangle.
     ''
     ''Parameters:
-    ''dst - FBGFX buffer to draw on. Pass 0 to draw to the screen.
+    ''dst - <Image> buffer to draw on. Pass 0 to draw to the screen.
     ''p1 - <Vector2> containing the x and y of the first point.
     ''p2 - <Vector2> containing the x and y of the second point.
     ''p3 - <Vector2> containing the x and y of the third point.
@@ -51,7 +51,7 @@ namespace ext.gfx
     ''
     ''<vector2d>
     ''
-    declare sub Triangle( byval dst as FB.IMAGE ptr = 0, byref p1 as ext.math.vec2i, byref p2 as ext.math.vec2i, byref p3 as ext.math.vec2i, byval col as uinteger = rgba(255,255,255,255) )
+    declare sub Triangle( byval dst as Image ptr = 0, byref p1 as ext.math.vec2i, byref p2 as ext.math.vec2i, byref p3 as ext.math.vec2i, byval col as uinteger = rgba(255,255,255,255) )
 
     ''Example: Drawing a Triangle
     ''(begin code)
@@ -96,7 +96,7 @@ namespace ext.gfx
     ''  screenlock
     ''  cls
     ''  ext.gfx.Triangle( 0, Points[0], Points[1], Points[2], ext.math.RndRange(&h222222, &hFFFFFF) )
-    ''  screenunlock
+    ''  screenunlocek
     ''
     ''  sleep 100,1
     ''
@@ -106,9 +106,9 @@ namespace ext.gfx
     ''(end code)
     ''
 
-    declare sub TriangleASM overload ( byval dst as FB.IMAGE ptr = 0, byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval x3 as integer, byval y3 as integer, byval col as uinteger = rgba(255,255,255,255) )
+    declare sub TriangleASM overload ( byval dst as Image ptr = 0, byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval x3 as integer, byval y3 as integer, byval col as uinteger = rgba(255,255,255,255) )
 
-    declare sub TriangleASM( byval dst as FB.IMAGE ptr = 0, byref p1 as ext.math.vec2i, byref p2 as ext.math.vec2i, byref p3 as ext.math.vec2i, byval col as uinteger = rgba(255,255,255,255) )
+    declare sub TriangleASM( byval dst as Image ptr = 0, byref p1 as ext.math.vec2i, byref p2 as ext.math.vec2i, byref p3 as ext.math.vec2i, byval col as uinteger = rgba(255,255,255,255) )
 
 end namespace 'ext.gfx
 

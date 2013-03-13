@@ -83,19 +83,19 @@ type Image
 
     ''function: height
     ''Returns the height of the image.
-    declare function height( ) as ext.SizeType
+    declare const function height( ) as ext.SizeType
 
     ''function: width
     ''Returns the width of the image.
-    declare function width( ) as ext.SizeType
+    declare const function width( ) as ext.SizeType
 
     ''function: pitch
     ''Returns the pitch of the image.
-    declare function pitch( ) as ext.SizeType
+    declare const function pitch( ) as ext.SizeType
 
     ''function: bpp
     ''Returns the bits per pixel of the image.
-    declare function bpp( ) as ext.SizeType
+    declare const function bpp( ) as ext.SizeType
 
     ''sub: Display
     ''Copies the image data to a buffer. Equivalent to fbgfx's put command.
@@ -107,7 +107,7 @@ type Image
     ''_method_ - The method to use to draw the image, one of <DrawMethods>.
     ''_al - Optional value to use with the Alpha_ draw method, defaults to 0.
     ''
-    declare sub Display overload( byval _dest_ as FB.IMAGE ptr, byval _x_ as integer, byval _y_ as integer, byval _method_ as ext.gfx.DrawMethods = XOR_, byval _al as integer = 0)
+    declare const sub Display overload( byval _dest_ as FB.IMAGE ptr, byval _x_ as integer, byval _y_ as integer, byval _method_ as ext.gfx.DrawMethods = XOR_, byval _al as integer = 0)
 
     ''sub: Display
     ''Copies the image data to a buffer. Equivalent to fbgfx's put command.
@@ -118,7 +118,7 @@ type Image
     ''_method_ - The method to use to draw the image, one of <DrawMethods>.
     ''_al - Optional value to use with the Alpha_ draw method, defaults to 0.
     ''
-    declare sub Display( byval _dest_ as FB.IMAGE ptr, byref _pos as const ext.math.vec2i, byval _method_ as ext.gfx.DrawMethods = XOR_, byval _al as integer = 0)
+    declare const sub Display( byval _dest_ as FB.IMAGE ptr, byref _pos as const ext.math.vec2i, byval _method_ as ext.gfx.DrawMethods = XOR_, byval _al as integer = 0)
 
 
     ''sub: Display
@@ -130,7 +130,7 @@ type Image
     ''_method_ - The method to use to draw the image, one of <DrawMethods>.
     ''_al - Optional value to use with the Alpha_ draw method, defaults to 0.
     ''
-    declare sub Display( byval _x_ as integer, byval _y_ as integer, byval _method_ as ext.gfx.DrawMethods = XOR_, byval _al as integer = 0)
+    declare const sub Display( byval _x_ as integer, byval _y_ as integer, byval _method_ as ext.gfx.DrawMethods = XOR_, byval _al as integer = 0)
 
     ''sub: Display
     ''Copies the image data to the screen. Equivalent to fbgfx's put command.
@@ -140,14 +140,14 @@ type Image
     ''_method_ - The method to use to draw the image, one of <DrawMethods>.
     ''_al - Optional value to use with the Alpha_ draw method, defaults to 0.
     ''
-    declare sub Display( byref _pos as const ext.math.vec2i, byval _method_ as ext.gfx.DrawMethods = XOR_, byval _al as integer = 0)
+    declare const sub Display( byref _pos as const ext.math.vec2i, byval _method_ as ext.gfx.DrawMethods = XOR_, byval _al as integer = 0)
 
-    declare operator Cast( ) as FB.IMAGE ptr
+    declare const operator Cast( ) as FB.IMAGE ptr
 
     ''funtion: isEmpty
     ''Returns True if the Image was not properly constructed.
     ''
-    declare property isEmpty( ) as ext.bool
+    declare const property isEmpty( ) as ext.bool
 
     ''Function: Pixels
     ''Used to access the raw pixels of the underlying image.
@@ -158,7 +158,7 @@ type Image
     ''Returns:
     ''Uinteger ptr to image data.
     ''
-    declare function Pixels( byref num_pixels as uinteger = 0 ) as uinteger ptr
+    declare const function Pixels( byref num_pixels as uinteger = 0 ) as uinteger ptr
 
     private:
     declare sub setImage( byval _x_ as FB.IMAGE ptr )
@@ -186,36 +186,36 @@ end type
     ''
     declare function LoadImage ( byref filename as const string, byval t as target_e = TARGET_FBNEW ) as Image ptr
 
-	''Type: GraphicsLoader
-	''Driver for loading graphics of potentially any format
-	''To use to add support for another format, populate f and fmem with your functions then pass to <getDriver>
-	''
+    ''Type: GraphicsLoader
+    ''Driver for loading graphics of potentially any format
+    ''To use to add support for another format, populate f and fmem with your functions then pass to <getDriver>
+    ''
     type GraphicsLoader
-		''Function: f
-		''Loads an image from a disk file.
-		''pointer to function taking a string and the target (FB or GL) and returning the <Image> or null on failure
-		''
+        ''Function: f
+        ''Loads an image from a disk file.
+        ''pointer to function taking a string and the target (FB or GL) and returning the <Image> or null on failure
+        ''
         f as function( byref as const string, byval as target_e ) as Image ptr
-		''Function: fmem
-		''Loads an image that is loaded into memory.
-		''pointer to function taking a pointer, the buffer's length and the target (FB or GL) and returning the <Image> or null on failure
+        ''Function: fmem
+        ''Loads an image that is loaded into memory.
+        ''pointer to function taking a pointer, the buffer's length and the target (FB or GL) and returning the <Image> or null on failure
         fmem as function( byval idat as any ptr, byval blen as SizeType, byval as target_e ) as Image ptr
         declare constructor
         declare operator let( byref rhs as const GraphicsLoader )
     end type
     declare operator = ( byref lhs as const GraphicsLoader, byref rhs as const GraphicsLoader ) as integer
 
-	''Function: getDriver
-	''Used by LoadImage to load any graphics format.
-	''To add support (or override the default) simply pass a <GraphicsLoader> you have filled in as the second parameter.
-	''
-	''Parameters:
-	''ftype - string (3 letter) extension of the file types the loader supports
-	''set_ - <GraphicsLoader> containing the (pointers to) functions that do the loading.
-	''
-	''Returns:
-	''If called with only ftype then returns the <GraphicsLoader> for the filetype, otherwise returns null.
-	''
+    ''Function: getDriver
+    ''Used by LoadImage to load any graphics format.
+    ''To add support (or override the default) simply pass a <GraphicsLoader> you have filled in as the second parameter.
+    ''
+    ''Parameters:
+    ''ftype - string (3 letter) extension of the file types the loader supports
+    ''set_ - <GraphicsLoader> containing the (pointers to) functions that do the loading.
+    ''
+    ''Returns:
+    ''If called with only ftype then returns the <GraphicsLoader> for the filetype, otherwise returns null.
+    ''
     declare function getDriver(byref ftype as string, byval set_ as GraphicsLoader ptr = 0 ) as GraphicsLoader ptr
 
 end namespace
