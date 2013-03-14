@@ -77,12 +77,12 @@ constructor Sprite( byref rhs as Sprite )
 
         if rhs.m_imgdata[n] <> null then
             m_imgdata[n] = new image( rhs.m_imgdata[n]->width, rhs.m_imgdata[n]->height )
-            rhs.m_imgdata[n]->Display *(m_imgdata[n]), 0, 0, PSET_
+            rhs.m_imgdata[n]->Display m_imgdata[n], 0, 0, PSET_
         end if
 
         if rhs.m_coldata[n] <> null then
             m_coldata[n] = new image( rhs.m_coldata[n]->width, rhs.m_coldata[n]->height )
-            rhs.m_imgdata[n]->Display *(m_coldata[n]), 0, 0, PSET_
+            rhs.m_imgdata[n]->Display m_coldata[n], 0, 0, PSET_
         end if
 
     next n
@@ -113,8 +113,8 @@ function Sprite.FromSpritesheet( byval srci as image ptr, byval startx as uinteg
         var stepr = startindex
 
         for n as uinteger = startx to startx + (spwidth * numsp) step spwidth
-                var newimg = new image( spwidth, spheight )
-                get *srci, (n,starty)-(n+(spwidth-1),starty+(spheight-1)), *newimg
+                var newimg = new image(spwidth,spheight)
+                srci->copy n, starty, n+(spwidth-1), starty+(spheight-1), newimg
                 SetImage(stepr, newimg)
                 stepr += 1
         next n
@@ -185,7 +185,7 @@ sub Sprite.DrawImage ( _
         m_lastindex = src_img
 
         if dst_img <> 0 then
-            m_imgdata[src_img]->Display *dst_img, x_location, y_location, method
+            m_imgdata[src_img]->Display dst_img, x_location, y_location, method
         else
             m_imgdata[src_img]->Display x_location, y_location, method
         end if
@@ -255,7 +255,7 @@ sub Sprite.DuplicateImage ( byval from_index as uinteger, byval to_index as uint
 
     if (from_index <= m_size-1) and (to_index <= m_size-1) and (from_index <> to_index) then
         var temp = new image( m_imgdata[from_index]->width, m_imgdata[from_index]->height )
-        m_imgdata[from_index]->Display *temp, 0, 0, PSET_
+        m_imgdata[from_index]->Display temp, 0, 0, PSET_
         ReplaceImage(to_index, temp)
     end if
 
@@ -314,7 +314,7 @@ function Sprite.isCollided ( byref spr as Sprite, byval ppcol as PPOPTIONS = use
         if (ppcol = noPP) then return ext.bool.true
 
         m_temp = new image(m_coldata[m_lastindex]->width, m_coldata[m_lastindex]->height)
-        m_coldata[m_lastindex]->Display *m_temp, 0, 0, PSET_
+        m_coldata[m_lastindex]->Display m_temp, 0, 0, PSET_
 
         var cx = x2 - x1
         var cy = y2 - y1
