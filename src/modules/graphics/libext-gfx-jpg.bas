@@ -58,10 +58,10 @@ function load ( byref filename as const string, byval t as target_e ) as ext.gfx
                     jinfo.output_width * jinfo.output_components, _
                     1 )
 
-    dim img as FB.IMAGE ptr
-    img = imagecreate( jinfo.output_width, jinfo.output_height )
+    dim img as IMAGE ptr
+    img = new image( jinfo.output_width, jinfo.output_height )
 
-    var dst = cast(byte ptr, img + 1)
+    var dst = cast(byte ptr, img->Pixels)
 
     dim as integer bpp
     screeninfo ,,,bpp
@@ -80,7 +80,7 @@ function load ( byref filename as const string, byval t as target_e ) as ext.gfx
     jpeg_destroy_decompress( @jinfo )
     fclose( fp )
 
-    return new ext.gfx.Image(img)
+    return img
 
 end function
 
