@@ -44,12 +44,10 @@
 
 #define COLOUR_16TO32_555(c) ((CRACKR555(c) Shl R_SHIFT) Or (CRACKG555(c) Shl G_SHIFT) Or (CRACKB555(c) Shl B_SHIFT) Or (DEFAULT_ALPHA_VALUE Shl A_SHIFT))
 
-
-
 namespace ext.gfx.tga
 
 declare function rldecode( byval db as ubyte ptr, byval buflen as const uinteger, byval w as integer, byval h as integer, byval bpp as integer ) as ubyte ptr
-declare sub idataToImg( byval data_buf as ubyte ptr, byval img as fb.image ptr, byval bpp as integer )
+declare sub idataToImg( byval data_buf as ubyte ptr, byval img as image ptr, byval bpp as integer )
 
 'dim shared as ext.Console con
 
@@ -60,7 +58,7 @@ Function load _
         ) As ext.gfx.Image Ptr
 
         Dim As ext.FILE  hFile
-        dim as any ptr img
+        dim as Image ptr img
         dim as ubyte ptr fbuf
 
         if t <> TARGET_FBNEW ANDALSO t <> TARGET_OPENGL then return 0
@@ -112,7 +110,7 @@ function load_mem( byval src as any ptr, byval src_len as SizeType, byval t as t
 
         var img = new image( w, h )
 
-        idataToImg( data_buf, *img, bpp )
+        idataToImg( data_buf, img, bpp )
 
         If ((tga_info->imagedescriptor And 32) Shr 5) = 0 Then
             var img2 = ext.gfx.flipVertical( img )
@@ -171,14 +169,14 @@ function rldecode( byval data_buf as ubyte ptr, byval buflen as const uinteger, 
 
 end function
 
-sub idataToImg( byval data_buf as ubyte ptr, byval img as fb.image ptr, byval bpp as integer )
+sub idataToImg( byval data_buf as ubyte ptr, byval img as image ptr, byval bpp as integer )
 
     dim as integer h = img->height, w = img->width
         Dim As Ubyte Ptr p1, p2
         Dim As Integer ofs
 
         p1 = data_buf
-        p2 = cptr( Ubyte Ptr, img ) + sizeof( fb.image )
+        p2 = cast(ubyte ptr,img->Pixels)
 
         ofs = img->pitch - (img->width * 4)
 
