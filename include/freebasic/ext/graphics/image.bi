@@ -101,24 +101,24 @@ type Image
     ''Copies the image data to a buffer. Equivalent to fbgfx's put command.
     ''
     ''Parameters:
-    ''_dest_ - FB.IMAGE ptr to destination buffer.
+    ''_dest_ - IMAGE ptr to destination buffer.
     ''_x_ - The X position to draw image at.
     ''_y_ - The Y position to draw image at.
     ''_method_ - The method to use to draw the image, one of <DrawMethods>.
     ''_al - Optional value to use with the Alpha_ draw method, defaults to 0.
     ''
-    declare const sub Display overload( byval _dest_ as FB.IMAGE ptr, byval _x_ as integer, byval _y_ as integer, byval _method_ as ext.gfx.DrawMethods = XOR_, byval _al as integer = 0)
+    declare const sub Display overload( byval _dest_ as IMAGE ptr, byval _x_ as integer, byval _y_ as integer, byval _method_ as ext.gfx.DrawMethods = XOR_, byval _al as integer = 0)
 
     ''sub: Display
     ''Copies the image data to a buffer. Equivalent to fbgfx's put command.
     ''
     ''Parameters:
-    ''_dest_ - FB.IMAGE ptr to destination buffer.
+    ''_dest_ - IMAGE ptr to destination buffer.
     ''_pos - position to draw image at.
     ''_method_ - The method to use to draw the image, one of <DrawMethods>.
     ''_al - Optional value to use with the Alpha_ draw method, defaults to 0.
     ''
-    declare const sub Display( byval _dest_ as FB.IMAGE ptr, byref _pos as const ext.math.vec2i, byval _method_ as ext.gfx.DrawMethods = XOR_, byval _al as integer = 0)
+    declare const sub Display( byval _dest_ as IMAGE ptr, byref _pos as const ext.math.vec2i, byval _method_ as ext.gfx.DrawMethods = XOR_, byval _al as integer = 0)
 
 
     ''sub: Display
@@ -144,6 +144,34 @@ type Image
 
     declare const operator Cast( ) as FB.IMAGE ptr
 
+    ''Function: copy
+    ''Copies the selected pixels to a new image buffer
+    ''
+    ''Parameters:
+    ''x1 - the top left x coordinate
+    ''y1 - the top left y coordinate
+    ''x2 - the bottom right x coordinate
+    ''y2 - the bottom right y coordinate
+    ''dest - *optional* pre-allocated image buffer
+    ''
+    ''Returns:
+    ''A newly constructed Image ptr
+    ''
+    declare const function copy overload ( byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval dest as image ptr = 0 ) as image ptr
+
+    ''Function: copy
+    ''Copies the selected pixels to a new image buffer
+    ''
+    ''Parameters:
+    ''x1y1 - top left point
+    ''x2y2 - bottom right point
+    ''dest - *optional* pre-allocated image buffer
+    ''
+    ''Returns:
+    ''A newly constructed Image ptr
+    ''
+    declare const function copy overload ( byref x1y1 as const ext.math.vec2i, byref x2y2 as const ext.math.vec2i, byval dest as image ptr = 0) as image ptr
+
     ''funtion: isEmpty
     ''Returns True if the Image was not properly constructed.
     ''
@@ -168,6 +196,32 @@ type Image
     as uinteger m_w, m_h
 
 end type
+
+    ''Function: copyScreen
+    ''Copies from the screen to a new image buffer
+    ''
+    ''Parameters:
+    ''x1 - the top left x coordinate
+    ''y1 - the top left y coordinate
+    ''x2 - the bottom right x coordinate
+    ''y2 - the bottom right y coordinate
+    ''dest - *optional* pre-allocated destination image buffer
+    ''
+    ''Returns:
+    ''A newly constructed <Image> ptr or dest if not null
+    declare function copyScreen overload ( byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval dest as image ptr = 0 ) as image ptr
+
+    ''Function: copyScreen
+    ''Copies from the screen to a new image buffer
+    ''
+    ''Parameters:
+    ''x1y1 - the top left coordinate
+    ''x2y2 - the bottom right coordinate
+    ''dest - *optional* pre-allocated destination image buffer
+    ''
+    ''Returns:
+    ''A newly constructed <Image> ptr or dest if not null
+    declare function copyScreen overload ( byref x1y1 as const ext.math.vec2i, byref x2y2 as const ext.math.vec2i, byval dest as image ptr = 0 ) as image ptr
 
     ''Function: LoadImage
     ''Loads a image file from disk to a FBGFX buffer.

@@ -23,6 +23,7 @@
 #define FBEXT_BUILD_NO_GFX_LOADERS
 #include once "ext/graphics/manip.bi"
 #include once "ext/graphics/image.bi"
+#include once "ext/misc.bi"
 
 namespace ext.gfx
 
@@ -104,28 +105,77 @@ namespace ext.gfx
 
     end property
 
-    sub Image.Display( byval _dest_ as FB.IMAGE ptr, byval _x_ as integer, byval _y_ as integer, byval _method_ as ext.gfx.DrawMethods = XOR_, byval _al as integer = 0 )
+    sub Image.Display( byval _dest_ as IMAGE ptr, byval _x_ as integer, byval _y_ as integer, byval _method_ as ext.gfx.DrawMethods = XOR_, byval _al as integer = 0 )
 
     select case _method_
         case PSET_
-            put _dest_, (_x_,_y_), m_img, PSET
+            put _dest_->m_img, (_x_,_y_), m_img, PSET
         case PRESET_
-            put _dest_, (_x_,_y_), m_img, PRESET
+            put _dest_->m_img, (_x_,_y_), m_img, PRESET
         case TRANS_
-            put _dest_, (_x_,_y_), m_img, TRANS
+            put _dest_->m_img, (_x_,_y_), m_img, TRANS
         case AND_
-            put _dest_, (_x_,_y_), m_img, AND
+            put _dest_->m_img, (_x_,_y_), m_img, AND
         case OR_
-            put _dest_, (_x_,_y_), m_img, OR
+            put _dest_->m_img, (_x_,_y_), m_img, OR
         case XOR_
-            put _dest_, (_x_,_y_), m_img, XOR
+            put _dest_->m_img, (_x_,_y_), m_img, XOR
         case ALPHA_
-            put _dest_, (_x_,_y_), m_img, ALPHA, _al
+            put _dest_->m_img, (_x_,_y_), m_img, ALPHA, _al
         end select
 
     end sub
 
-    sub Image.Display( byval _dest_ as FB.IMAGE ptr, byref _pos as const ext.math.vec2i, byval _method_ as ext.gfx.DrawMethods = XOR_, byval _al as integer = 0)
+    function Image.copy ( byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval dest as image ptr = 0 ) as image ptr
+
+        var rx1 = FBEXT_MIN(x1,x2)
+        var rx2 = FBEXT_MAX(x1,x2)
+        var ry1 = FBEXT_MIN(y1,y2)
+        var ry2 = FBEXT_MAX(y1,y2)
+        dim ret as image ptr
+
+        if dest = 0 then
+            var w = abs(x2 - x1)
+            var h = abs(y2 - y1)
+            ret = new image(w,h)
+        else
+            ret = dest
+        end if
+        get m_img, (rx1,ry1)-(rx2,ry2), ret->m_img
+
+        return ret
+    end function
+
+    function Image.copy ( byref x1y1 as const ext.math.vec2i, byref x2y2 as const ext.math.vec2i, byval dest as image ptr = 0 ) as image ptr
+        return this.copy(x1y1.x,x1y1.y,x2y2.x,x2y2.y,dest)
+    end function
+
+    function copyScreen ( byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval dest as image ptr = 0 ) as image ptr
+
+        var rx1 = FBEXT_MIN(x1,x2)
+        var rx2 = FBEXT_MAX(x1,x2)
+        var ry1 = FBEXT_MIN(y1,y2)
+        var ry2 = FBEXT_MAX(y1,y2)
+        dim ret as image ptr
+
+        if dest = 0 then
+            var w = abs(x2 - x1)
+            var h = abs(y2 - y1)
+            ret = new image(w,h)
+        else
+            ret = dest
+        end if
+        get (rx1,ry1)-(rx2,ry2), *ret
+
+        return ret
+    end function
+
+    function copyScreen ( byref x1y1 as const ext.math.vec2i, byref x2y2 as const ext.math.vec2i, byval dest as image ptr = 0 ) as image ptr
+        return copyScreen(x1y1.x,x1y1.y,x2y2.x,x2y2.y,dest)
+    end function
+
+
+    sub Image.Display( byval _dest_ as IMAGE ptr, byref _pos as const ext.math.vec2i, byval _method_ as ext.gfx.DrawMethods = XOR_, byval _al as integer = 0)
 
         Display( _dest_, _pos.x, _pos.y, _method_, _al )
 
