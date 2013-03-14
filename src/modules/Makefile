@@ -90,7 +90,7 @@ AutoBuildObjects = $(patsubst %.bas,$(if $(MT),%.mt.o,%.o),\
 
 AutoBuildLib = libext-$(1)$(if $(MT),.mt).a
 AutoBuildLibOut  = $(LIBRARY_DIR)/$(call AutoBuildLib,$(1))
-AutoBuildLibFile = $(LIBRARY_DIR)/$(call AutoBuildLib,$(1)).a
+AutoBuildLibFile = $(LIBRARY_DIR)/$(call AutoBuildLib,$(1))
 
 ## :::::
 ## $(1) - module
