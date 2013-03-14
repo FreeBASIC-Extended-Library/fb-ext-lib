@@ -74,10 +74,11 @@ function load ( byref filename as const string, byval t as target_e ) as ext.gfx
 
     loop
 
-    jinfo.mem->free_pool( cast(j_common_ptr, @jinfo ), JPOOL_IMAGE )
-
     jpeg_finish_decompress( @jinfo )
-    jpeg_destroy_decompress( @jinfo )
+
+    jinfo.mem->free_pool( cast(j_common_ptr, @jinfo ), JPOOL_IMAGE )
+jpeg_destroy_decompress( @jinfo )
+
     fclose( fp )
 
     return img

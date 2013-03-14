@@ -16,8 +16,11 @@ screenres 640, 480, 32
 
 var original = LoadImage("fbextlogo.jpg")
 
-original->Display 0, 0, PSET_
-Scale2X( 0, original, original->width, 0 )
-
-delete original
+if original <> 0 then
+    original->Display 0, 0, PSET_
+    Scale2X( 0, original, original->width, 0 )
+    delete original
+else
+    print "Failed"
+end if
 sleep

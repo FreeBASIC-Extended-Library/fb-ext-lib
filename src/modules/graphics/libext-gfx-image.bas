@@ -101,11 +101,32 @@ namespace ext.gfx
 
     property Image.isEmpty( ) as ext.bool
 
-        return iif( m_img = 0 or m_gl = 0, true, false )
+        return iif( m_img = 0 andalso m_gl = 0, true, false )
 
     end property
 
     sub Image.Display( byval _dest_ as IMAGE ptr, byval _x_ as integer, byval _y_ as integer, byval _method_ as ext.gfx.DrawMethods = XOR_, byval _al as integer = 0 )
+
+    if _dest_ = 0 then
+
+    select case _method_
+        case PSET_
+            put (_x_,_y_), m_img, PSET
+        case PRESET_
+            put (_x_,_y_), m_img, PRESET
+        case TRANS_
+            put (_x_,_y_), m_img, TRANS
+        case AND_
+            put (_x_,_y_), m_img, AND
+        case OR_
+            put (_x_,_y_), m_img, OR
+        case XOR_
+            put (_x_,_y_), m_img, XOR
+        case ALPHA_
+            put (_x_,_y_), m_img, ALPHA, _al
+    end select
+
+    else
 
     select case _method_
         case PSET_
@@ -122,7 +143,9 @@ namespace ext.gfx
             put _dest_->m_img, (_x_,_y_), m_img, XOR
         case ALPHA_
             put _dest_->m_img, (_x_,_y_), m_img, ALPHA, _al
-        end select
+    end select
+
+    end if
 
     end sub
 

@@ -46,27 +46,25 @@ namespace ext.gfx
                 if img->bpp < 4 then return ext.null
 
                 var ret_img = new Image( img->width, img->height)
-
+                var src = img->Pixels
+                var ret = ret_img->Pixels
                 dim luma as _color_t
 
                 for y as uinteger = 0 to img->height
                         for x as uinteger = 0 to img->width
-
-                                luma.colour = point(x,y,img)
+                                luma.colour = *cast( uinteger ptr, cast( ubyte ptr, src ) + y * img->pitch + x * img->bpp )
                                 if skip_trans = true and luma.r = 255 and luma.g = 0 and luma.b = 255 then
-                                        pset *ret_img,(x,y), luma.colour
+                                        *cast( uinteger ptr, cast( ubyte ptr, ret ) + y * img->pitch + x * img->bpp ) = luma.colour
                                 else
                                         'TRAAAAAANSFORM!!!!!
                                         var tmp = cubyte((luma.r * red_m) + _
                                                          (luma.g * gre_m) + _
                                                          (luma.b * blu_m))
                                         luma.r = tmp : luma.g = tmp : luma.b = tmp
-                                        pset *ret_img,(x,y), luma.colour
+                                        *cast( uinteger ptr, cast( ubyte ptr, ret ) + y * img->pitch + x * img->bpp ) = luma.colour
                                 end if
-
                         next x
                 next y
-
                 return ret_img
 
         end function
