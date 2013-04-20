@@ -42,6 +42,7 @@ namespace ext.xml
     '' Child XML class, branch and leaf nodes.
     ''
     '' Supports casting to string to print out XML data of the node and its children.
+    '' Any Unicode characters in the XML are internally converted to UTF-8.
     ''
     type node
         private:
