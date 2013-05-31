@@ -23,8 +23,30 @@ namespace ext
     ''Class: ZipFile
     ''Represents a readonly zip archive.
     type ZipFile
+        ''Sub: constructor
+        ''Open a zip archive.
+        ''
+        ''Parameters:
+        ''zfname - the name of the existing zip archive to open
+        ''
         declare constructor ( byref zfname as const string )
+
+        ''Sub: destructor
+        ''Cleans up memory related to the zip archive itself.
+        ''Does not affect any previously created File objects.
+        ''
         declare destructor()
+
+        ''Function: open
+        ''Open a file inside of a zip archive.
+        ''
+        ''Parameters:
+        ''zifname - the name (including path) of the file to open
+        ''
+        ''Returns:
+        ''On success returns a pointer to a fully formed <File> object that you should delete when no longer needed.
+        ''On failure returns NULL.
+        ''
         declare function open( byref zifname as const string ) as File ptr
         private:
         m_data as any ptr
