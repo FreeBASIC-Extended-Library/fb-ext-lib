@@ -68,11 +68,11 @@ namespace ext
 
     '' Constant: FBEXT_MINOR_VERSION
     ''The minor (x.0.x) version of the library.
-    const FBEXT_MINOR_VERSION = 3
+    const FBEXT_MINOR_VERSION = 5
 
     '' Constant: FBEXT_PATCH_VERSION
     ''The patch (x.x.0) version of the library.
-    const FBEXT_PATCH_VERSION = 2
+    const FBEXT_PATCH_VERSION = 0
 
     '' Constant: FBEXT_VERSION
     ''Integer representation of the library version.

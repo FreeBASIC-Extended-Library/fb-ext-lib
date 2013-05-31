@@ -44,6 +44,7 @@ namespace ext.tests.json_
 
         TESTLY_ASSERT_TRUE( j.children() = 1 )
         TESTLY_ASSERT_TRUE( t = array_string_t )
+        TESTLY_ASSERT_TRUE( j.child("") <> null )
 
     end sub
 
@@ -68,11 +69,25 @@ namespace ext.tests.json_
 
     end sub
 
+    private sub floating_point
+        dim j as ext.json.JSONobject
+        var test = j.loadString(!"{ \"PI\":3.141E-10 }")
+        TESTLY_ASSERT_TRUE(test <> null)
+
+        var v = j.child("PI")
+        TESTLY_ASSERT_TRUE(v <> null)
+
+        TESTLY_ASSERT_TRUE(v->valueType = ext.json.jvalue_type.number)
+        TESTLY_ASSERT_TRUE(v->getNumber = 3.141e-10)
+
+    end sub
+
     private sub register constructor
         ext.testly.addSuite("JSON Advanced")
         ext.testly.addTest("test_create_adv", @test_create_adv)
         ext.testly.addTest("Toplevel Array",@test_json_array_toplevel)
         ext.testly.addTest("Nested Objects",@nested_obj)
+        ext.testly.addTest("Floating Point",@floating_point)
     end sub
 
 
