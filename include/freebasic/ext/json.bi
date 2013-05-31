@@ -160,8 +160,8 @@ namespace ext.json
         ''c - The index (0 based) of the child to retrieve
         ''
         ''Returns:
-        ''The <JSONvalue requested or null on failure.
-        declare function child overload ( byval c as uinteger ) as JSONvalue ptr
+        ''The <JSONpair> requested or null on failure.
+        declare function child overload ( byval c as uinteger ) as JSONpair ptr
 
         ''Function: children
         ''Returns the 1-based number of children to this object.

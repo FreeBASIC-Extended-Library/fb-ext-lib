@@ -28,6 +28,7 @@ namespace ext
         as ubyte ptr d
         as SizeType dlen
         as SizeType l
+        as sub(byval as any ptr) ff
     end type
 
     private function MFopen ( byval t as FileSystemDriver ptr ) as bool
@@ -40,7 +41,13 @@ namespace ext
     end function
 
     private sub MFclose ( byval t as FileSystemDriver ptr )
-        exit sub 'does nothing, obviously
+        var x = cast(MemoryFileDriver ptr,t->driverdata)
+        if x->ff <> 0 then
+            x->ff(x->d)
+            x->d = NULL
+            x->dlen = 0
+            x->l = 0
+        end if
     end sub
 
     private function MFlof ( byval t as FileSystemDriver ptr ) as ulongint
@@ -126,12 +133,13 @@ namespace ext
     end function
 
 
-    function newMemoryFileDriver( byval d as ubyte ptr, byval dlen as SizeType ) as FileSystemDriver ptr
+    function newMemoryFileDriver( byval d as ubyte ptr, byval dlen as SizeType, byval frefun as sub(byval as any ptr) = 0 ) as FileSystemDriver ptr
         var ret = new FileSystemDriver
         var dd = new MemoryFileDriver
             dd->d = d
             dd->dlen = dlen
             dd->l = 0u
+            dd->ff = frefun
         ret->driverdata = dd
 
         ret->fsopen = @MFopen

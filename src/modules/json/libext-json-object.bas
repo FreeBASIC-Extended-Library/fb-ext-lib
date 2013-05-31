@@ -359,9 +359,9 @@ function JSONobject.child overload ( byref c as const string ) as JSONvalue ptr
     return ret->value
 end function
 
-function JSONobject.child overload ( byval c as uinteger ) as JSONvalue ptr
+function JSONobject.child overload ( byval c as uinteger ) as JSONpair ptr
     if c > m_children-1 then return 0
-    return m_child[c]->value
+    return m_child[c]
 end function
 
 function JSONobject.children() as uinteger

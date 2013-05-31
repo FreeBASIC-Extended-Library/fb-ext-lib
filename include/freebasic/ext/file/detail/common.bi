@@ -76,7 +76,7 @@ end type
 ''Returns:
 ''A fully functioning driver representing a memory region as a file.
 ''
-declare function newMemoryFileDriver( byval d as ubyte ptr, byval dlen as SizeType ) as FileSystemDriver ptr
+declare function newMemoryFileDriver( byval d as ubyte ptr, byval dlen as SizeType, byval frefun as sub(byval as any ptr) = 0 ) as FileSystemDriver ptr
 
 end namespace
 
