@@ -48,6 +48,7 @@ namespace ext
             x->dlen = 0
             x->l = 0
         end if
+        delete x
     end sub
 
     private function MFlof ( byval t as FileSystemDriver ptr ) as ulongint

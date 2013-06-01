@@ -37,18 +37,58 @@ private  sub zipfile_fre( byval d as any ptr )
     deallocate( cast(ubyte ptr,d) )
 end sub
 
+type ZipFileSystemDriver
+        as ubyte ptr d
+        as SizeType dlen
+        as SizeType l
+        as sub(byval as any ptr) ff
+        as any ptr z
+        as string f
+end type
+
+private function MFzip_open ( byval t as FileSystemDriver ptr ) as bool
+
+        var x = cast(ZipFileSystemDriver ptr, t->driverdata)
+        var zf = zip_fopen( x->z, x->f, 0 )
+        if zf = 0 then return TRUE
+        x->d = callocate(x->dlen)
+        zip_fread( zf, x->d, x->dlen )
+        zip_fclose( zf )
+        return FALSE
+
+end function
+
+private sub MFzip_close ( byval t as FileSystemDriver ptr )
+        var x = cast(ZipFileSystemDriver ptr, t->driverdata)
+        zipfile_fre(x->d)
+        if x <> 0 then delete x
+end sub
+
+type __zf_MemoryFileDriver
+        as ubyte ptr d
+        as SizeType dlen
+        as SizeType l
+        as sub(byval as any ptr) ff
+end type
+
 function ZipFile.open( byref zifname as const string ) as File ptr
 
     dim as zip_stat_ fileinfo
     zip_stat_init( @fileinfo )
 
     if zip_stat( m_data, zifname, 0, @fileinfo ) = 0 then
-        var zf = zip_fopen( m_data, zifname, 0 )
-        if zf = 0 then return NULL
-        var retbuf = callocate(cuint(fileinfo.size))
-        zip_fread( zf, retbuf, cuint(fileinfo.size) )
-        zip_fclose( zf )
-        return new File(newMemoryFileDriver(retbuf,cuint(fileinfo.size),@zipfile_fre))
+
+        var md = newMemoryFileDriver(0,cuint(fileinfo.size))
+        var x = cast(__zf_MemoryFileDriver ptr,md->driverdata)
+        var zfsd = new ZipFileSystemDriver
+        zfsd->dlen = x->dlen
+        zfsd->z = m_data
+        zfsd->f = zifname
+        md->fsopen = @MFzip_open
+        md->fsclose(md)
+        md->fsclose = @MFzip_close
+
+        return new File(md)
     else
         return NULL
     end if
