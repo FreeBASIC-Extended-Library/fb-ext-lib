@@ -1,5 +1,5 @@
 FBC_CFLAGS := -g -i ../include/freebasic
-FBC_LFLAGS := -p ../lib/$(TARGET)
+FBC_LFLAGS := -p ../bin -p ../lib/$(TARGET)
 
 TESTS_MAIN := main$(EXE_EXT)
 

@@ -48,6 +48,39 @@ function JSONobject.addChild( byref k as const string, byval v as JSONvalue ptr 
 
 end function
 
+sub JSONobject.removeChild( byref k as const string )
+
+    if m_children > 0 then
+        var rem_id = -1u
+        for n as uinteger = 0 to m_children -1
+            if m_child[n]->key = k then
+                rem_id = n
+                exit for
+            end if
+        next
+
+        if rem_id <> -1u then
+
+            dim new_child as JSONpair ptr ptr
+            new_child = callocate( sizeof(JSONpair ptr) * m_children - 1 )
+            if new_child = 0 then return
+            var cnt = 0u
+            for n as uinteger = 0 to m_children-2
+                if cnt <> rem_id then
+                    new_child[n] = m_child[cnt]
+                end if
+                cnt += 1
+            next
+            deallocate(m_child)
+            m_child = new_child
+            m_children = m_children -1
+
+        end if
+
+    end if
+
+end sub
+
 operator JSONobject.cast() as string
 
     if m_children = 0 then return "{}"

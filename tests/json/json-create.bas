@@ -14,6 +14,9 @@ namespace ext.tests.json_
     test = j
 
     TESTLY_ASSERT_TRUE( test = !"{ \"one\" : 1, \"test\" : true }")
+    'and test removing
+    j.removeChild("test")
+    TESTLY_ASSERT_TRUE( j.children = 1 )
 
     end sub
 

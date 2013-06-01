@@ -109,10 +109,15 @@ namespace ext.json
         m_type as jvalue_type
     end type
 
-    'JSONpair is only used internally and will not be exposed.
+    ''Class: JSONpair
+    ''Represents a key: value pair in JSON
     type JSONpair
+        ''Sub: constructor
+        ''Create a Pair using the specified key and value.
         declare constructor( byref k as const string, byval v as JSONvalue ptr )
+        ''Variable: key
         as string key
+        ''Variable: value
         as JSONvalue ptr value
         declare destructor
         declare operator cast () as string
@@ -142,6 +147,13 @@ namespace ext.json
         ''Returns:
         ''v, for chaining
         declare function addChild( byref k as const string, byval v as JSONvalue ptr ) as JSONvalue ptr
+
+        ''Sub: removeChild
+        ''Remove the specified child from the object.
+        ''
+        ''Parameters:
+        ''k - the key of the child to remove
+        declare sub removeChild( byref k as const string )
 
         ''Function: child
         ''Looks up the specified child.
