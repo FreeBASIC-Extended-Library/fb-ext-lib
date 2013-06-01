@@ -21,7 +21,7 @@
 namespace ext
 
     ''Class: ZipFile
-    ''Represents a readonly zip archive.
+    ''Represents a zip archive.
     type ZipFile
         ''Sub: constructor
         ''Open a zip archive.
