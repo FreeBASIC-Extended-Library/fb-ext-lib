@@ -55,4 +55,91 @@ function ZipFile.open( byref zifname as const string ) as File ptr
 
 end function
 
+function ZipFile.fileCount( ) as ulongint
+    return zip_get_num_entries(m_data,0)
+end function
+
+sub ZipFile.fileNames ( fns() as string )
+
+    var cnt = cuint(fileCount())
+    if cnt = 0 then return
+
+    redim fns(0 to cnt - 1)
+
+    for n as uinteger = 0 to cnt - 1
+        fns(n) = *(zip_get_name(m_data,n,0))
+    next
+
+end sub
+
+function ZipFile.add(   byref zifname as const string, _
+                                    byval zfil as File ptr, _
+                                    byval ovrw as Bool = FALSE ) as Bool
+
+    dim buf as ubyte ptr
+    var buf_len = zfil->toBuffer(buf)
+
+    var zsrc = zip_source_buffer(m_data,buf,buf_len,0)
+    if zsrc = 0 then
+        zip_source_free(zsrc)
+        return TRUE
+    end if
+
+    var zret = 0
+
+    if ovrw then
+        var i = zip_name_locate(m_data,zifname,0)
+        if i < 0 then
+            zret = zip_add(m_data, zifname, zsrc)
+        else
+            zret = zip_replace(m_data, i, zsrc)
+        end if
+    else
+        zret = zip_add(m_data, zifname, zsrc)
+    end if
+    zip_source_free(zsrc)
+    if zret <> 0 then return TRUE
+
+    return FALSE
+
+end function
+
+function ZipFile.name( byref orig as const string, byref dest as const string ) as bool
+
+    var orig_i = zip_name_locate(m_data,orig,0)
+    if orig_i < 0 then
+        return TRUE
+    end if
+
+    if zip_rename(m_data, orig_i, dest) <> 0 then
+        return TRUE
+    else
+        return FALSE
+    end if
+
+end function
+
+function ZipFile.remove( byref zfname as const string ) as bool
+
+    var orig_i = zip_name_locate(m_data,zfname,0)
+    if orig_i < 0 then
+        return TRUE
+    end if
+
+    if zip_delete(m_data, orig_i) <> 0 then
+        return TRUE
+    else
+        return FALSE
+    end if
+
+end function
+
+function ZipFile.forgetChanges( ) as bool
+    if zip_unchange_all(m_data) <> 0 then
+        return TRUE
+    else
+        return FALSE
+    end if
+end function
+
 end namespace

@@ -48,6 +48,61 @@ namespace ext
         ''On failure returns NULL.
         ''
         declare function open( byref zifname as const string ) as File ptr
+
+        ''Function: fileCount
+        ''Returns the number of files in the archive.
+        declare function fileCount( ) as ulongint
+
+        ''Sub: fileNames
+        ''Get an array of all the files in the archive.
+        ''
+        ''Parameters:
+        ''fns - array that will hold the filenames
+        ''
+        declare sub fileNames ( fns() as string )
+
+        ''Function: add
+        ''Adds a <File> to the archive optionally overwriting an existing file.
+        ''
+        ''Parameters:
+        ''zifname - the file name inside of the zipfile to use
+        ''zfil - the (pointer to) the <File> to add (or replace)
+        ''ovrw - <Bool> defaults to False; Whether to overwrite an existing file.
+        ''
+        ''Returns:
+        ''False on Success, True on Error
+        declare function add(   byref zifname as const string, _
+                                    byval zfil as File ptr, _
+                                    byval ovrw as Bool = FALSE ) as Bool
+
+        ''Function: name
+        ''Renames a file in the archive.
+        ''
+        ''Parameters:
+        ''orig - the current filename
+        ''dest - the desired filename
+        ''
+        ''Returns:
+        ''False on Success, True on Error
+        declare function name( byref orig as const string, byref dest as const string ) as bool
+
+        ''Function: remove
+        ''Removes a file from the archive.
+        ''
+        ''Parameters:
+        ''zfname - the filename to remove
+        ''
+        ''Returns:
+        ''False on Success, True on Error
+        declare function remove( byref zfname as const string ) as bool
+
+        ''Function: forgetChanges
+        ''Attempt to revert any unsaved changes to the archive.
+        ''
+        ''Returns:
+        ''False on Success, True on Error
+        declare function forgetChanges( ) as bool
+
         private:
         m_data as any ptr
     end type
