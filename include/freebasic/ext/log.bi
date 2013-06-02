@@ -1,6 +1,14 @@
 ''Title: log.bi
 ''
-''About: License
+''About: About this Module
+''The logging module is meant to be a very simple log that is also
+''very capable. For basic usage absolutely no configuration is needed,
+''just start using the DEBUG, INFO, WARN or FATAL logging macros.
+''
+''For an example showing how to use this module see https://code.google.com/p/fb-extended-lib/source/browse/examples/logging/log.bas
+''or check your examples/logging directory.
+''
+''About: Code License
 ''Copyright (c) 2007-2013, FreeBASIC Extended Library Development Group
 ''
 ''Distributed under the FreeBASIC Extended Library Group license. See
@@ -88,10 +96,11 @@ type custom_data_free as sub ( byval as any ptr )
 declare function setNumberOfLogChannels( byval c as uinteger ) as bool
 
 ''Sub: setLogMethod
-''Set the default log channel's logger to use, must be one of <LOG_METHODS>
+''Set the log channel's method to use, must be one of <LOG_METHODS>.
+''The default setting is LOG_PRINT.
 ''
 ''Parameters:
-''c - *Optional* The logger channel to change, can be completely omitted (comma and all) for default channel
+''c - *Optional* The log channel to change, can be completely omitted (comma and all) for default channel
 ''lm - the <LOG_METHODS> to use
 ''s - for LOG_FILE this is the filename (is optional, default is command(0).log, recommended to set to a writable file.), for LOG_CUSTOM this is the method to call *Not Used for other <LOG_METHODS>*
 ''fd - pointer for arbitrary data to be passed to the LOG_CUSTOM method.
@@ -126,6 +135,9 @@ declare sub __log( byval as LOGLEVEL, _
 ''
 ''Parameters:
 ''m - the message to send.
+''
+''Note:
+''All messages must be a value that is either already a string or is able to be converted to a string, i.e. it has a cast() as string operator.
 #define DEBUG(m) _LOG(_DEBUG,m,0)
 
 ''Macro: DEBUGto
@@ -134,6 +146,9 @@ declare sub __log( byval as LOGLEVEL, _
 ''Parameters:
 ''c - the channel number to send to
 ''m - the message to send.
+''
+''Note:
+''All messages must be a value that is either already a string or is able to be converted to a string, i.e. it has a cast() as string operator.
 #define DEBUGto(c,m) _LOG(_DEBUG,m,(c))
 
 ''Macro: INFO
@@ -141,6 +156,9 @@ declare sub __log( byval as LOGLEVEL, _
 ''
 ''Parameters:
 ''m - the message to send.
+''
+''Note:
+''All messages must be a value that is either already a string or is able to be converted to a string, i.e. it has a cast() as string operator.
 #define INFO(m) _LOG(_INFO,m,0)
 
 ''Macro: INFOto
@@ -149,6 +167,9 @@ declare sub __log( byval as LOGLEVEL, _
 ''Parameters:
 ''c - the channel number to send to
 ''m - the message to send.
+''
+''Note:
+''All messages must be a value that is either already a string or is able to be converted to a string, i.e. it has a cast() as string operator.
 #define INFOto(c,m) _LOG(_INFO,m,(c))
 
 ''Macro: WARN
@@ -156,6 +177,9 @@ declare sub __log( byval as LOGLEVEL, _
 ''
 ''Parameters:
 ''m - the message to send.
+''
+''Note:
+''All messages must be a value that is either already a string or is able to be converted to a string, i.e. it has a cast() as string operator.
 #define WARN(m) _LOG(_WARN,m,0)
 
 ''Macro: WARNto
@@ -164,6 +188,9 @@ declare sub __log( byval as LOGLEVEL, _
 ''Parameters:
 ''c - the channel number to send to
 ''m - the message to send.
+''
+''Note:
+''All messages must be a value that is either already a string or is able to be converted to a string, i.e. it has a cast() as string operator.
 #define WARNto(c,m) _LOG(_WARN,m,(c))
 
 ''Macro: FATAL
@@ -171,6 +198,9 @@ declare sub __log( byval as LOGLEVEL, _
 ''
 ''Parameters:
 ''m - the message to send.
+''
+''Note:
+''All messages must be a value that is either already a string or is able to be converted to a string, i.e. it has a cast() as string operator.
 #define FATAL(m) _LOG(_FATAL,m,0)
 
 ''Macro: FATALto
@@ -179,6 +209,9 @@ declare sub __log( byval as LOGLEVEL, _
 ''Parameters:
 ''c - the channel number to send to
 ''m - the message to send.
+''
+''Note:
+''All messages must be a value that is either already a string or is able to be converted to a string, i.e. it has a cast() as string operator.
 #define FATALto(c,m) _LOG(_FATAL,m,(c))
 
 #define _LOG(l,m,c) ext.__log( ext.##l, (m), __FILE__, __LINE__, (c) )

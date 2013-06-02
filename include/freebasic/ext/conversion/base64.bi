@@ -1,8 +1,24 @@
 ''Title: conversion/base64.bi
 ''
-''About: License
+''About: About this Module
+''
+''This module provides functions for converting to and from BASE64 data.
+''
+''According to https://en.wikipedia.org/wiki/Base64
+''(begin code)
+''  Base64 encoding schemes are commonly used when there is a need
+''  to encode binary data that needs to be stored and transferred
+''  over media that are designed to deal with textual data. This is
+''  to ensure that the data remain intact without modification during
+''  transport. Base64 is commonly used in a number of applications
+''  including email via MIME, and storing complex data in XML.
+''(end code)
+''
+''About: Code License
 ''Copyright (c) 2007-2013, FreeBASIC Extended Library Development Group
+''
 ''Contains code contributed and Copyright (c) 2007, Daniel Verkamp (DrV) http://drv.nu
+''
 ''Contains code contributed and Copyright (c) 2010, D.J. Peters <d.j.peters@web.de>
 ''
 ''Distributed under the FreeBASIC Extended Library Group license. See

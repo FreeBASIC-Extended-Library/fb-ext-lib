@@ -1,6 +1,14 @@
 ''Title: xml/dom.bi
 ''
-''About: License
+''About: About this Module
+''This is the XML-DOM api module. This allows you to parse small XML
+''documents rapidly using a simple interface.
+''
+''For a simple example of creating a document using this interface see https://code.google.com/p/fb-extended-lib/source/browse/examples/xml/simple.bas or
+''for a more advanced example of document creation see https://code.google.com/p/fb-extended-lib/source/browse/examples/xml/advanced.bas. You can also
+''look in the examples/xml folder for more examples.
+''
+''About: Code License
 ''Copyright (c) 2007-2013, FreeBASIC Extended Library Development Group
 ''
 ''Distributed under the FreeBASIC Extended Library Group license. See
