@@ -5,11 +5,11 @@
 '# See MIT-LICENSE file for details
 '#++
 
-#include once "ext/testly.bi"
+#include once "ext/tests.bi"
 #include once "testly_helpers.bi"
 #include once "testly_common.bi"
 
-namespace ext.Testly
+namespace ext.tests
     'namespace Helpers
         dim shared CURRENT_SUITE as Suite ptr
         dim shared CURRENT_TEST as TestCase ptr

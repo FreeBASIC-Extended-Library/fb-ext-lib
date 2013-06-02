@@ -1,5 +1,5 @@
 '# define fbext_NoBuiltinInstanciations() -1
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/containers/list.bi"
 
 'fbext_Instanciate(fbext_List, ((integer)) )
@@ -15,12 +15,12 @@ namespace ext.tests.containers
 
         list.Assign(n, value)
 
-        TESTLY_ASSERT_EQUAL( list.Size(), n )
+        ext_assert_EQUAL( list.Size(), n )
 
         var first = list.cBegin()
 
         do while first <> list.cEnd()
-            TESTLY_ASSERT_EQUAL( **(first.PostIncrement()), value )
+            ext_assert_EQUAL( **(first.PostIncrement()), value )
         loop
 
     end sub
@@ -33,12 +33,12 @@ namespace ext.tests.containers
 
         list.Assign(n, value)
 
-        TESTLY_ASSERT_EQUAL( list.Size(), n )
+        ext_assert_EQUAL( list.Size(), n )
 
         var first = list.cBegin()
 
         do while first <> list.cEnd()
-            TESTLY_ASSERT_EQUAL( **(first.PostIncrement()), value )
+            ext_assert_EQUAL( **(first.PostIncrement()), value )
         loop
 
     end sub
@@ -53,12 +53,12 @@ namespace ext.tests.containers
 
         list.Assign(n, value)
 
-        TESTLY_ASSERT_EQUAL( list.Size(), n )
+        ext_assert_EQUAL( list.Size(), n )
 
         var first = list.cBegin()
 
         do while first <> list.cEnd()
-            TESTLY_ASSERT_EQUAL( **(first.PostIncrement()), value )
+            ext_assert_EQUAL( **(first.PostIncrement()), value )
         loop
 
     end sub
@@ -75,22 +75,22 @@ namespace ext.tests.containers
 
         list.Assign(n, value)
 
-        TESTLY_ASSERT_EQUAL( list.Size(), n )
+        ext_assert_EQUAL( list.Size(), n )
 
         var first = list.cBegin()
 
         do while first <> list.cEnd()
-            TESTLY_ASSERT_EQUAL( **(first.PostIncrement()), value )
+            ext_assert_EQUAL( **(first.PostIncrement()), value )
         loop
 
     end sub
 
     private sub register constructor
-        ext.testly.addSuite("ext-containers-list-assigncount")
-        ext.testly.addTest("testAssignToEmptyList", @testAssignToEmptyList)
-        ext.testly.addTest("testAssignToSmallerList", @testAssignToSmallerList)
-        ext.testly.addTest("testAssignToSimilarList", @testAssignToSimilarList)
-        ext.testly.addTest("testAssignToLargerList", @testAssignToLargerList)
+        ext.tests.addSuite("ext-containers-list-assigncount")
+        ext.tests.addTest("testAssignToEmptyList", @testAssignToEmptyList)
+        ext.tests.addTest("testAssignToSmallerList", @testAssignToSmallerList)
+        ext.tests.addTest("testAssignToSimilarList", @testAssignToSimilarList)
+        ext.tests.addTest("testAssignToLargerList", @testAssignToLargerList)
     end sub
 
 end namespace

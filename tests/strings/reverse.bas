@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/strings.bi"
 
 namespace ext.tests.strings
@@ -12,11 +12,11 @@ namespace ext.tests.strings
 	
 	private sub test_reverse_string
 	
-		TESTLY_ASSERT_TRUE( reverse_and_check("", "")         )
-		TESTLY_ASSERT_TRUE( reverse_and_check("a", "a")       )
-		TESTLY_ASSERT_TRUE( reverse_and_check("ab", "ba")     )
-		TESTLY_ASSERT_TRUE( reverse_and_check("abc", "cba")   )
-		TESTLY_ASSERT_TRUE( reverse_and_check("abcd", "dcba") )
+		ext_assert_TRUE( reverse_and_check("", "")         )
+		ext_assert_TRUE( reverse_and_check("a", "a")       )
+		ext_assert_TRUE( reverse_and_check("ab", "ba")     )
+		ext_assert_TRUE( reverse_and_check("abc", "cba")   )
+		ext_assert_TRUE( reverse_and_check("abcd", "dcba") )
 	
 	end sub
 	
@@ -34,22 +34,22 @@ namespace ext.tests.strings
 	
 		dim s0(0) as string = { "" }
 		dim t0(0) as string = { "" }
-		TESTLY_ASSERT_TRUE( reverse_and_check(s0(), t0()) )
+		ext_assert_TRUE( reverse_and_check(s0(), t0()) )
 	
 		dim s1(0) as string = { "abc" }
 		dim t1(0) as string = { "cba" }
-		TESTLY_ASSERT_TRUE( reverse_and_check(s1(), t1()) )
+		ext_assert_TRUE( reverse_and_check(s1(), t1()) )
 		
 		dim s2(1) as string = { "abc", "abc" }
 		dim t2(1) as string = { "cba", "cba" }
-		TESTLY_ASSERT_TRUE( reverse_and_check(s2(), t2()) )
+		ext_assert_TRUE( reverse_and_check(s2(), t2()) )
 	
 	end sub
 	
 	private sub register constructor
-		ext.testly.addSuite("ext-strings-reverse")
-		ext.testly.addTest("reverse-string", @test_reverse_string)
-		ext.testly.addTest("reverse-array", @test_reverse_array)
+		ext.tests.addSuite("ext-strings-reverse")
+		ext.tests.addTest("reverse-string", @test_reverse_string)
+		ext.tests.addTest("reverse-array", @test_reverse_array)
 	end sub
 
 end namespace

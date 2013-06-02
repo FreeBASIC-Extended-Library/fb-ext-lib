@@ -1,4 +1,4 @@
-#include once "ext/testly.bi"
+#include once "ext/tests.bi"
 #include once "ext/file/file.bi"
 
 namespace ext.tests.memorydriver
@@ -28,21 +28,21 @@ private sub test_memory_driver
 
     var x = new ext.File(newMemoryFileDriver(dat,dat_len))
 
-    TESTLY_ASSERT_TRUE( x->open() )
-    TESTLY_ASSERT_TRUE( x->lof() = dat_len )
-    TESTLY_ASSERT_TRUE( x->loc() = 0 )
+    ext_assert_TRUE( x->open() )
+    ext_assert_TRUE( x->lof() = dat_len )
+    ext_assert_TRUE( x->loc() = 0 )
 
     var dat2 = new ubyte[dat_len]
 
     x->get(, *dat2,dat_len)
 
-    TESTLY_ASSERT_TRUE( x->loc() = dat_len )
+    ext_assert_TRUE( x->loc() = dat_len )
 
     var dat2_ret = x->getBytesRW
 
-    TESTLY_ASSERT_TRUE( dat2_ret = dat_len )
+    ext_assert_TRUE( dat2_ret = dat_len )
 
-    TESTLY_ASSERT_TRUE( verify(dat,dat2) )
+    ext_assert_TRUE( verify(dat,dat2) )
 
     delete[] dat
     delete[] dat2
@@ -65,7 +65,7 @@ private sub test_memory_driver_put
         dat2[n] = n
     next
 
-    TESTLY_ASSERT_TRUE( verify(dat,dat2) )
+    ext_assert_TRUE( verify(dat,dat2) )
 
     delete[] dat
     delete[] dat2
@@ -80,9 +80,9 @@ private sub test_memory_driver_string
     var x = new ext.file(newMemoryFileDriver(dat,64))
     x->print(test_string)
     x->seek = 0
-    TESTLY_ASSERT_TRUE( x->loc = 0 )
+    ext_assert_TRUE( x->loc = 0 )
     var ts = x->readLine()
-    TESTLY_ASSERT_TRUE( test_string = ts )
+    ext_assert_TRUE( test_string = ts )
     delete x
     delete dat
 
@@ -93,12 +93,12 @@ private sub test_string_as_file
     var test_string = "This is a test string and needs to be longish."
     var x = new ext.File(newMemoryFileDriver(cast(ubyte ptr,@test_string[0]),len(test_string)))
 
-    TESTLY_ASSERT_TRUE( x->lof = len(test_string) )
+    ext_assert_TRUE( x->lof = len(test_string) )
 
     dim as ubyte p
     for n as integer = 0 to 10
         x->get(,p)
-        TESTLY_ASSERT_TRUE( p = test_string[n] )
+        ext_assert_TRUE( p = test_string[n] )
     next
 
     delete x
@@ -107,11 +107,11 @@ end sub
 
 '' :::::
 private sub register_tests constructor
-    ext.testly.addSuite("File::MemoryDriver")
-    ext.testly.addTest("General Usage",@test_memory_driver)
-    ext.testly.addTest("String functions",@test_memory_driver_string)
-    ext.testly.addTest("put",@test_memory_driver_put)
-    ext.testly.addTest("String as File",@test_string_as_file)
+    ext.tests.addSuite("File::MemoryDriver")
+    ext.tests.addTest("General Usage",@test_memory_driver)
+    ext.tests.addTest("String functions",@test_memory_driver_string)
+    ext.tests.addTest("put",@test_memory_driver_put)
+    ext.tests.addTest("String as File",@test_string_as_file)
 end sub
 
 end namespace

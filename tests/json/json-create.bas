@@ -1,4 +1,4 @@
-#include once "ext/testly.bi"
+#include once "ext/tests.bi"
 #include once "ext/json.bi"
 
 namespace ext.tests.json_
@@ -13,10 +13,10 @@ namespace ext.tests.json_
     dim as string test
     test = j
 
-    TESTLY_ASSERT_TRUE( test = !"{ \"one\" : 1, \"test\" : true }")
+    ext_assert_TRUE( test = !"{ \"one\" : 1, \"test\" : true }")
     'and test removing
     j.removeChild("test")
-    TESTLY_ASSERT_TRUE( j.children = 1 )
+    ext_assert_TRUE( j.children = 1 )
 
     end sub
 
@@ -37,7 +37,7 @@ namespace ext.tests.json_
     dim as string test
     test = j
 
-    TESTLY_ASSERT_TRUE( test = !"{ \"array\" : [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ] }")
+    ext_assert_TRUE( test = !"{ \"array\" : [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ] }")
 
 
     end sub
@@ -48,7 +48,7 @@ namespace ext.tests.json_
     dim t as string
     t = j
 
-    TESTLY_ASSERT_TRUE( t = "{}" )
+    ext_assert_TRUE( t = "{}" )
 
     end sub
 
@@ -61,7 +61,7 @@ namespace ext.tests.json_
     var t = ""
     t = j
 
-    TESTLY_ASSERT_TRUE( t = test_str )
+    ext_assert_TRUE( t = test_str )
 
     end sub
 
@@ -73,7 +73,7 @@ namespace ext.tests.json_
     var t = ""
     t = j
 
-    TESTLY_ASSERT_TRUE( t = test_str )
+    ext_assert_TRUE( t = test_str )
 
     end sub
 
@@ -85,18 +85,18 @@ namespace ext.tests.json_
     var t = ""
     t = j
 
-    TESTLY_ASSERT_TRUE( t = test_str )
+    ext_assert_TRUE( t = test_str )
 
     end sub
 
     private sub register constructor
-        ext.testly.addSuite("ext-json-create")
-        ext.testly.addTest("test_create", @test_create)
-        ext.testly.addTest("test_create_array",@test_create_array)
-        ext.testly.addTest("test_create_blank",@test_create_blank)
-        ext.testly.addTest("test_create_from_string",@test_create_from_string)
-        ext.testly.addTest("loadString w/ Array",@test_create_from_string_array)
-        ext.testly.addTest("loadString w/ Object",@test_create_from_string_obj)
+        ext.tests.addSuite("ext-json-create")
+        ext.tests.addTest("test_create", @test_create)
+        ext.tests.addTest("test_create_array",@test_create_array)
+        ext.tests.addTest("test_create_blank",@test_create_blank)
+        ext.tests.addTest("test_create_from_string",@test_create_from_string)
+        ext.tests.addTest("loadString w/ Array",@test_create_from_string_array)
+        ext.tests.addTest("loadString w/ Object",@test_create_from_string_obj)
     end sub
 
 

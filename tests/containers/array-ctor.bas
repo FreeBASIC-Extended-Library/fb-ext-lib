@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/containers/array.bi"
 
 namespace ext.tests.containers.array_
@@ -7,9 +7,9 @@ namespace ext.tests.containers.array_
 	
 	    var array = fbext_Array( ((integer)) )
 	    
-	    TESTLY_ASSERT_EQUAL( 0, array.Size() )
-	    TESTLY_ASSERT_EQUAL( 0, array.Capacity() )
-	    TESTLY_ASSERT_EQUAL( ext.true, array.Empty() )
+	    ext_assert_EQUAL( 0, array.Size() )
+	    ext_assert_EQUAL( 0, array.Capacity() )
+	    ext_assert_EQUAL( ext.true, array.Empty() )
 	
 	end sub
 	
@@ -23,7 +23,7 @@ namespace ext.tests.containers.array_
 	    var array = fbext_Array( ((integer)) )(first, last)
 	    
 	    for i as ext.SizeType = 0 to 2
-	        TESTLY_ASSERT_EQUAL( *array.cIndex(i), elems(i) )
+	        ext_assert_EQUAL( *array.cIndex(i), elems(i) )
 	    next
 	
 	end sub
@@ -34,19 +34,19 @@ namespace ext.tests.containers.array_
 	    dim value as const integer = 420
 	    var array = fbext_Array( ((integer)) )(count, value)
 	
-	    TESTLY_ASSERT_EQUAL( count, array.Size() )
+	    ext_assert_EQUAL( count, array.Size() )
 	    
 	    for i as integer = 0 to count-1
-    	    TESTLY_ASSERT_EQUAL( 420, *array.cIndex(i) )
+    	    ext_assert_EQUAL( 420, *array.cIndex(i) )
 	    next
 	
 	end sub
 	
 	private sub register constructor
-		ext.testly.addSuite("ext-containers-array-ctor")
-		ext.testly.addTest("testDefaultCtor", @testDefaultCtor)
-		ext.testly.addTest("testRangedCtor", @testRangedCtor)
-		ext.testly.addTest("testRepeatCtor", @testRepeatCtor)
+		ext.tests.addSuite("ext-containers-array-ctor")
+		ext.tests.addTest("testDefaultCtor", @testDefaultCtor)
+		ext.tests.addTest("testRangedCtor", @testRangedCtor)
+		ext.tests.addTest("testRepeatCtor", @testRepeatCtor)
 	end sub
 
 end namespace

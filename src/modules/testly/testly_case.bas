@@ -7,7 +7,7 @@
 
 #include once "testly_case.bi"
 
-namespace ext.Testly
+namespace ext.tests
     '#############################################################
     '# TestCase
     '# ctor()
@@ -16,5 +16,5 @@ namespace ext.Testly
         test_name = new_name
         test_func = new_test_func
     end constructor
-    
+
 end namespace 'Testly

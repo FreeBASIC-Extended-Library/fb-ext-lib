@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/strings.bi"
 
 namespace ext.tests.strings
@@ -8,16 +8,16 @@ namespace ext.tests.strings
 		var res = ""
 		
 		res = ext.strings.repeat("abc", 0)
-		TESTLY_ASSERT_STRING_EQUAL("", res)
+		ext_assert_STRING_EQUAL("", res)
 	
 		res = ext.strings.repeat("", 0)
-		TESTLY_ASSERT_STRING_EQUAL("", res)
+		ext_assert_STRING_EQUAL("", res)
 		
 		res = ext.strings.repeat("", 3)
-		TESTLY_ASSERT_STRING_EQUAL("", res)
+		ext_assert_STRING_EQUAL("", res)
 		
 		res = ext.strings.repeat("abc", 3)
-		TESTLY_ASSERT_STRING_EQUAL("abcabcabc", res)
+		ext_assert_STRING_EQUAL("abcabcabc", res)
 	
 	end sub
 	
@@ -26,17 +26,17 @@ namespace ext.tests.strings
 		var res = ""
 		
 		res = ext.strings.repeat(asc("a"), 0)
-		TESTLY_ASSERT_STRING_EQUAL("", res)
+		ext_assert_STRING_EQUAL("", res)
 	
 		res = ext.strings.repeat(asc("a"), 3)
-		TESTLY_ASSERT_STRING_EQUAL("aaa", res)
+		ext_assert_STRING_EQUAL("aaa", res)
 	
 	end sub
 	
 	private sub register constructor
-		ext.testly.addSuite("ext-strings-repeat")
-		ext.testly.addTest("string-repeat", @test_string_repeat)
-		ext.testly.addTest("char-repeat", @test_char_repeat)
+		ext.tests.addSuite("ext-strings-repeat")
+		ext.tests.addTest("string-repeat", @test_string_repeat)
+		ext.tests.addTest("char-repeat", @test_char_repeat)
 	end sub
 
 end namespace

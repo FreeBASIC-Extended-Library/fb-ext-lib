@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/detail/common.bi"
 # include once "ext/math/random.bi"
 
@@ -12,8 +12,8 @@ namespace ext.tests.math
 
 		xx = ext.math.RndRange(1,5)
 
-		TESTLY_ASSERT_TRUE( ( xx >= 1 ) )
-		TESTLY_ASSERT_TRUE( ( xx<=5 ) )
+		ext_assert_TRUE( ( xx >= 1 ) )
+		ext_assert_TRUE( ( xx<=5 ) )
 
 	next
 
@@ -27,17 +27,17 @@ namespace ext.tests.math
 
 		xx = ext.math.RndRange(1.0,5.0)
 
-		TESTLY_ASSERT_TRUE( ( xx > 0.99 ) )
-		TESTLY_ASSERT_TRUE( ( xx < 6.0 ) )
+		ext_assert_TRUE( ( xx > 0.99 ) )
+		ext_assert_TRUE( ( xx < 6.0 ) )
 
 	next
 
 	end sub
 
 	private sub register constructor
-		ext.testly.addSuite("ext-math-random-test")
-		ext.testly.addTest("intRndRange", @intRndRangetest)
-		ext.testly.addTest("doubleRndRange", @doubleRndRangetest)
+		ext.tests.addSuite("ext-math-random-test")
+		ext.tests.addTest("intRndRange", @intRndRangetest)
+		ext.tests.addTest("doubleRndRange", @doubleRndRangetest)
 	end sub
 
 end namespace

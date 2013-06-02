@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/preprocessor/array/size.bi"
 # include once "ext/preprocessor/array/data.bi"
 # include once "ext/preprocessor/stringize.bi"
@@ -11,9 +11,9 @@ namespace ext.tests.preprocessor.array_.size
 		# define ARRAY1 (1, (a))
 		# define ARRAY2 (2, (a, b))
 
-		TESTLY_ASSERT_TRUE( 0 = fbextPP_ArraySize(ARRAY0) )
-		TESTLY_ASSERT_TRUE( 1 = fbextPP_ArraySize(ARRAY1) )
-		TESTLY_ASSERT_TRUE( 2 = fbextPP_ArraySize(ARRAY2) )
+		ext_assert_TRUE( 0 = fbextPP_ArraySize(ARRAY0) )
+		ext_assert_TRUE( 1 = fbextPP_ArraySize(ARRAY1) )
+		ext_assert_TRUE( 2 = fbextPP_ArraySize(ARRAY2) )
 
 	end sub
 
@@ -27,9 +27,9 @@ namespace ext.tests.preprocessor.array_.data_
 		# define ARRAY1 (1, (a))
 		# define ARRAY2 (2, (a, b))
 
-		TESTLY_ASSERT_TRUE( "()" = FBEXT_PP_STRINGIZE(fbextPP_ArrayData(ARRAY0)) )
-		TESTLY_ASSERT_TRUE( "(a)" = FBEXT_PP_STRINGIZE(fbextPP_ArrayData(ARRAY1)) )
-		TESTLY_ASSERT_TRUE( "(a, b)" = FBEXT_PP_STRINGIZE(fbextPP_ArrayData(ARRAY2)) )
+		ext_assert_TRUE( "()" = FBEXT_PP_STRINGIZE(fbextPP_ArrayData(ARRAY0)) )
+		ext_assert_TRUE( "(a)" = FBEXT_PP_STRINGIZE(fbextPP_ArrayData(ARRAY1)) )
+		ext_assert_TRUE( "(a, b)" = FBEXT_PP_STRINGIZE(fbextPP_ArrayData(ARRAY2)) )
 
 	end sub
 
@@ -38,9 +38,9 @@ end namespace
 namespace ext.tests.preprocessor.array_
 
 	private sub register constructor
-		ext.testly.addSuite("ext-preprocessor-array-core")
-		ext.testly.addTest("size.test", @size.test)
-		ext.testly.addTest("data_.test", @data_.test)
+		ext.tests.addSuite("ext-preprocessor-array-core")
+		ext.tests.addTest("size.test", @size.test)
+		ext.tests.addTest("data_.test", @data_.test)
 	end sub
 
 end namespace

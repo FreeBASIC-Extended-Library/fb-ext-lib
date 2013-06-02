@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/detail/common.bi"
 # include once "ext/preprocessor/seq/foreach.bi"
 # include once "ext/preprocessor/stringize.bi"
@@ -10,13 +10,13 @@ namespace ext.tests.preprocessor
 		# define SEQ (a)(b)(c)(d)
 		# define M(data, elem) data##elem
 		
-		TESTLY_ASSERT_TRUE( "xa xb xc xd" = FBEXT_PP_STRINGIZE(FBEXT_PP_SEQ_FOREACH(M, x, SEQ)) )
+		ext_assert_TRUE( "xa xb xc xd" = FBEXT_PP_STRINGIZE(FBEXT_PP_SEQ_FOREACH(M, x, SEQ)) )
 	
 	end sub
 	
 	private sub register constructor
-		ext.testly.addSuite("ext-preprocessor-seq-foreach")
-		ext.testly.addTest("test", @test)
+		ext.tests.addSuite("ext-preprocessor-seq-foreach")
+		ext.tests.addTest("test", @test)
 	end sub
 
 end namespace

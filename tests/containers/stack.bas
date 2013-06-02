@@ -1,5 +1,5 @@
 # define fbext_NoBuiltinInstanciations() 1
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 
 # include once "ext/containers/stack.bi"
 
@@ -12,7 +12,7 @@ namespace ext.tests.containers
 	private sub test_construct
 
 		var stack = fbext_Stack( ((integer)) )
-		TESTLY_ASSERT_TRUE( 0 = stack.Size() )
+		ext_assert_TRUE( 0 = stack.Size() )
 
 	end sub
 
@@ -25,23 +25,23 @@ namespace ext.tests.containers
 
 		var stack = fbext_Stack( ((single)) )(array)
 
-		TESTLY_ASSERT_TRUE( 3 = stack.Size() )
+		ext_assert_TRUE( 3 = stack.Size() )
 
 
 		var temp = *stack.Top()
 
 		stack.Pop()
-		TESTLY_ASSERT_TRUE( 3.0 = temp )
+		ext_assert_TRUE( 3.0 = temp )
 
 		temp = *stack.Top()
 		stack.Pop()
-		TESTLY_ASSERT_TRUE( 2.0 = temp )
+		ext_assert_TRUE( 2.0 = temp )
 
 		temp = *stack.Top()
 		stack.Pop()
-		TESTLY_ASSERT_TRUE( 1.0 = temp )
+		ext_assert_TRUE( 1.0 = temp )
 
-		TESTLY_ASSERT_TRUE( 0 = stack.Size() )
+		ext_assert_TRUE( 0 = stack.Size() )
 
 	end sub
 
@@ -50,24 +50,24 @@ namespace ext.tests.containers
 		var stack = fbext_Stack( ((integer)) )
 
 		stack.Push(10)
-		TESTLY_ASSERT_TRUE( 1 = stack.Size() )
-		TESTLY_ASSERT_TRUE( 10 = *stack.Top() )
+		ext_assert_TRUE( 1 = stack.Size() )
+		ext_assert_TRUE( 10 = *stack.Top() )
 
 		stack.Push(20)
-		TESTLY_ASSERT_TRUE( 2 = stack.Size() )
-		TESTLY_ASSERT_TRUE( 20 = *stack.Top() )
+		ext_assert_TRUE( 2 = stack.Size() )
+		ext_assert_TRUE( 20 = *stack.Top() )
 
 		stack.Push(30)
-		TESTLY_ASSERT_TRUE( 3 = stack.Size() )
-		TESTLY_ASSERT_TRUE( 30 = *stack.Top() )
+		ext_assert_TRUE( 3 = stack.Size() )
+		ext_assert_TRUE( 30 = *stack.Top() )
 
 	end sub
 
 	private sub register constructor
-		ext.testly.addSuite("ext-containers-stack")
-		ext.testly.addTest("test_construct", @test_construct)
-		ext.testly.addTest("test_construct_with_array", @test_construct_with_array)
-		ext.testly.addTest("test_push", @test_push)
+		ext.tests.addSuite("ext-containers-stack")
+		ext.tests.addTest("test_construct", @test_construct)
+		ext.tests.addTest("test_construct_with_array", @test_construct_with_array)
+		ext.tests.addTest("test_push", @test_push)
 	end sub
 
 end namespace

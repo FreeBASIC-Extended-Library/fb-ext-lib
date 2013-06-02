@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/php.bi"
 
 namespace ext.tests.php_
@@ -16,7 +16,7 @@ namespace ext.tests.php_
         strings(0) = "one"
         strings(1) = "two"
         strings(2) = "three"
-        TESTLY_ASSERT_TRUE( "one::two::three" = ext.php.Implode("::", strings()) )
+        ext_assert_TRUE( "one::two::three" = ext.php.Implode("::", strings()) )
     
     end sub
     
@@ -27,16 +27,16 @@ namespace ext.tests.php_
         strings(0) = "one"
         strings(1) = "two"
         strings(2) = "three"
-        TESTLY_ASSERT_TRUE( "onetwothree" = ext.php.Implode("", strings()) )
+        ext_assert_TRUE( "onetwothree" = ext.php.Implode("", strings()) )
     
     end sub
     
     '' :::::
     private sub register constructor
-        ext.testly.addSuite("ext-php-implode")
-        ext.testly.addTest("API", @API)
-        ext.testly.addTest("TestSimple", @TestSimple)
-        ext.testly.addTest("TestEmptyGlue", @TestEmptyGlue)
+        ext.tests.addSuite("ext-php-implode")
+        ext.tests.addTest("API", @API)
+        ext.tests.addTest("TestSimple", @TestSimple)
+        ext.tests.addTest("TestEmptyGlue", @TestEmptyGlue)
     end sub
 
 end namespace

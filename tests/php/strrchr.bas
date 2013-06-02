@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/php.bi"
 
 namespace ext.tests.php_
@@ -12,33 +12,33 @@ namespace ext.tests.php_
     
     '' :::::
     private sub TestSimple
-        TESTLY_ASSERT_TRUE( ":123" = ext.php.StrRChr(":abc:123", asc(":")) )
-        TESTLY_ASSERT_TRUE( ":123" = ext.php.StrRChr(":abc:123", "::") )
+        ext_assert_TRUE( ":123" = ext.php.StrRChr(":abc:123", asc(":")) )
+        ext_assert_TRUE( ":123" = ext.php.StrRChr(":abc:123", "::") )
     end sub
     
     '' :::::
     private sub TestEmptyChars
-        TESTLY_ASSERT_TRUE( "" = ext.php.StrRChr("abc", "") )
+        ext_assert_TRUE( "" = ext.php.StrRChr("abc", "") )
     end sub
     
     '' :::::
     private sub TestEmptyText
-        TESTLY_ASSERT_TRUE( "" = ext.php.StrRChr("", asc(":")) )
+        ext_assert_TRUE( "" = ext.php.StrRChr("", asc(":")) )
     end sub
     
     '' :::::
     private sub TestCharNotFound
-        TESTLY_ASSERT_TRUE( "" = ext.php.StrRChr("abc", asc("x")) )
+        ext_assert_TRUE( "" = ext.php.StrRChr("abc", asc("x")) )
     end sub
     
     '' :::::
     private sub register constructor
-        ext.testly.addSuite("ext-php-strrchr")
-        ext.testly.addTest("API", @API)
-        ext.testly.addTest("TestSimple", @TestSimple)
-        ext.testly.addTest("TestEmptyChars", @TestEmptyChars)
-        ext.testly.addTest("TestEmptyText", @TestEmptyText)
-        ext.testly.addTest("TestCharNotFound", @TestCharNotFound)
+        ext.tests.addSuite("ext-php-strrchr")
+        ext.tests.addTest("API", @API)
+        ext.tests.addTest("TestSimple", @TestSimple)
+        ext.tests.addTest("TestEmptyChars", @TestEmptyChars)
+        ext.tests.addTest("TestEmptyText", @TestEmptyText)
+        ext.tests.addTest("TestCharNotFound", @TestCharNotFound)
     end sub
 
 end namespace

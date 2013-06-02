@@ -1,5 +1,5 @@
 #define fbext_NoBuiltinInstanciations() -1
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/math/matrix.bi"
 
 fbext_Instanciate(Vector3, ((single)))
@@ -29,10 +29,10 @@ namespace ext.tests.math
         var m = matrix(matrix.identity())
         m = m
 
-        TESTLY_ASSERT_TRUE( check_vector(m.right,       1.0f, 0.0f, 0.0f) )
-        TESTLY_ASSERT_TRUE( check_vector(m.up,          0.0f, 1.0f, 0.0f) )
-        TESTLY_ASSERT_TRUE( check_vector(m.forward,     0.0f, 0.0f, 1.0f) )
-        TESTLY_ASSERT_TRUE( check_vector(m.position,    0.0f, 0.0f, 0.0f) )
+        ext_assert_TRUE( check_vector(m.right,       1.0f, 0.0f, 0.0f) )
+        ext_assert_TRUE( check_vector(m.up,          0.0f, 1.0f, 0.0f) )
+        ext_assert_TRUE( check_vector(m.forward,     0.0f, 0.0f, 1.0f) )
+        ext_assert_TRUE( check_vector(m.position,    0.0f, 0.0f, 0.0f) )
 
     end sub
 
@@ -41,10 +41,10 @@ namespace ext.tests.math
         var m = matrix(matrix.identity())
         m.translate( 1.0f, 2.0f, 3.0f )
 
-        TESTLY_ASSERT_TRUE( check_vector(m.right,       1.0f, 0.0f, 0.0f) )
-        TESTLY_ASSERT_TRUE( check_vector(m.up,          0.0f, 1.0f, 0.0f) )
-        TESTLY_ASSERT_TRUE( check_vector(m.forward,     0.0f, 0.0f, 1.0f) )
-        TESTLY_ASSERT_TRUE( check_vector(m.position,    1.0f, 2.0f, 3.0f) )
+        ext_assert_TRUE( check_vector(m.right,       1.0f, 0.0f, 0.0f) )
+        ext_assert_TRUE( check_vector(m.up,          0.0f, 1.0f, 0.0f) )
+        ext_assert_TRUE( check_vector(m.forward,     0.0f, 0.0f, 1.0f) )
+        ext_assert_TRUE( check_vector(m.position,    1.0f, 2.0f, 3.0f) )
 
     end sub
 
@@ -53,10 +53,10 @@ namespace ext.tests.math
         var m = matrix(matrix.identity())
         m.rotate( 90.0f, 180.0f, 270.0f )
 
-        TESTLY_ASSERT_TRUE( check_vector(m.right,       -8.571431e-016f,   2.857144e-016f, -1.0f) )
-        TESTLY_ASSERT_TRUE( check_vector(m.up,          -1,             -5.714288e-016f,  8.571431e-016f) )
-        TESTLY_ASSERT_TRUE( check_vector(m.forward,     -5.714288e-016f,  1.0f,           2.857144e-016f) )
-        TESTLY_ASSERT_TRUE( check_vector(m.position,    0.0f,           0.0f,           0.0f) )
+        ext_assert_TRUE( check_vector(m.right,       -8.571431e-016f,   2.857144e-016f, -1.0f) )
+        ext_assert_TRUE( check_vector(m.up,          -1,             -5.714288e-016f,  8.571431e-016f) )
+        ext_assert_TRUE( check_vector(m.forward,     -5.714288e-016f,  1.0f,           2.857144e-016f) )
+        ext_assert_TRUE( check_vector(m.position,    0.0f,           0.0f,           0.0f) )
 
     end sub
 
@@ -70,10 +70,10 @@ namespace ext.tests.math
         )
         m.invert()
 
-        TESTLY_ASSERT_TRUE( check_vector(m.right,       0f, 3f, 6f) )
-        TESTLY_ASSERT_TRUE( check_vector(m.up,          1f, 4f, 7f) )
-        TESTLY_ASSERT_TRUE( check_vector(m.forward,     2f, 5f, 8f) )
-        TESTLY_ASSERT_TRUE( check_vector(m.position,    -32f, -122f, -212f) )
+        ext_assert_TRUE( check_vector(m.right,       0f, 3f, 6f) )
+        ext_assert_TRUE( check_vector(m.up,          1f, 4f, 7f) )
+        ext_assert_TRUE( check_vector(m.forward,     2f, 5f, 8f) )
+        ext_assert_TRUE( check_vector(m.position,    -32f, -122f, -212f) )
 
     end sub
 
@@ -87,20 +87,20 @@ namespace ext.tests.math
         )
         m *= m
 
-        TESTLY_ASSERT_TRUE( check_vector(m.right,       15f, 18f, 21f) )
-        TESTLY_ASSERT_TRUE( check_vector(m.up,          42f, 54f, 66f) )
-        TESTLY_ASSERT_TRUE( check_vector(m.forward,     69f, 90f, 111f) )
-        TESTLY_ASSERT_TRUE( check_vector(m.position,    105f, 136f, 167f) )
+        ext_assert_TRUE( check_vector(m.right,       15f, 18f, 21f) )
+        ext_assert_TRUE( check_vector(m.up,          42f, 54f, 66f) )
+        ext_assert_TRUE( check_vector(m.forward,     69f, 90f, 111f) )
+        ext_assert_TRUE( check_vector(m.position,    105f, 136f, 167f) )
 
     end sub
 
     private sub register constructor
-        ext.testly.addSuite("ext-math-matrix")
-        ext.testly.addTest("test_matrix_identity", @test_matrix_identity)
-        ext.testly.addTest("test_matrix_translate", @test_matrix_translate)
-        ext.testly.addTest("test_matrix_rotate", @test_matrix_rotate)
-        ext.testly.addTest("test_matrix_invert", @test_matrix_invert)
-        ext.testly.addTest("test_matrix_multiply", @test_matrix_multiply)
+        ext.tests.addSuite("ext-math-matrix")
+        ext.tests.addTest("test_matrix_identity", @test_matrix_identity)
+        ext.tests.addTest("test_matrix_translate", @test_matrix_translate)
+        ext.tests.addTest("test_matrix_rotate", @test_matrix_rotate)
+        ext.tests.addTest("test_matrix_invert", @test_matrix_invert)
+        ext.tests.addTest("test_matrix_multiply", @test_matrix_multiply)
     end sub
 
 end namespace

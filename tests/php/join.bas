@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/php.bi"
 
 namespace ext.tests.php_
@@ -14,8 +14,8 @@ namespace ext.tests.php_
     
     '' :::::
     private sub register constructor
-        ext.testly.addSuite("ext-php-join")
-        ext.testly.addTest("API", @API)
+        ext.tests.addSuite("ext-php-join")
+        ext.tests.addTest("API", @API)
     end sub
 
 end namespace

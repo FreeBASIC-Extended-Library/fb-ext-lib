@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/strings.bi"
 
 namespace ext.tests.strings
@@ -18,18 +18,18 @@ namespace ext.tests.strings
 	private sub test_join
 	
 		'                               a    	b		c		glue	res
-		TESTLY_ASSERT_TRUE(test_result( "",		"",		"",		"",		"" ))
-		TESTLY_ASSERT_TRUE(test_result( "a",	"",		"",		"",		"a" ))
-		TESTLY_ASSERT_TRUE(test_result( "",		"b",	"",		"",		"b" ))
-		TESTLY_ASSERT_TRUE(test_result( "",		"",		"c",	"",		"c" ))
-		TESTLY_ASSERT_TRUE(test_result( "",		"",		"",		" ",	"  " ))
-		TESTLY_ASSERT_TRUE(test_result( "a",	"b",	"c",	" ",	"a b c" ))
+		ext_assert_TRUE(test_result( "",		"",		"",		"",		"" ))
+		ext_assert_TRUE(test_result( "a",	"",		"",		"",		"a" ))
+		ext_assert_TRUE(test_result( "",		"b",	"",		"",		"b" ))
+		ext_assert_TRUE(test_result( "",		"",		"c",	"",		"c" ))
+		ext_assert_TRUE(test_result( "",		"",		"",		" ",	"  " ))
+		ext_assert_TRUE(test_result( "a",	"b",	"c",	" ",	"a b c" ))
 	
 	end sub
 	
 	private sub register constructor
-		ext.testly.addSuite("ext-strings-join")
-		ext.testly.addTest("join", @test_join)
+		ext.tests.addSuite("ext-strings-join")
+		ext.tests.addTest("join", @test_join)
 	end sub
 
 end namespace

@@ -1,4 +1,4 @@
-/'# include once "ext/testly.bi"
+/'# include once "ext/tests.bi"
 # include once "ext/containers/hashtable.bi"
 
 namespace ext.tests.containers
@@ -8,11 +8,11 @@ namespace ext.tests.containers
 		var ht = FBEXT_HASHTABLE(integer)(15)
 
 		for n as integer = 1 to 15
-			TESTLY_ASSERT_TRUE( ht.count = (n-1) )
+			ext_assert_TRUE( ht.count = (n-1) )
 
 			ht.Insert( "Test" & space(n) & n, n )
 
-			TESTLY_ASSERT_TRUE( ht.count = n )
+			ext_assert_TRUE( ht.count = n )
 		next
 
 	end sub
@@ -24,13 +24,13 @@ namespace ext.tests.containers
 		ht.Insert("Testing1", 42)
 		ht.Insert("Testing2", 32)
 
-		TESTLY_ASSERT_TRUE( ht.count = 2 )
+		ext_assert_TRUE( ht.count = 2 )
 
 		ht.Insert("Testing1", 12)
 
-		TESTLY_ASSERT_TRUE( *ht.Find("Testing1") <> 12 )
+		ext_assert_TRUE( *ht.Find("Testing1") <> 12 )
 
-		TESTLY_ASSERT_TRUE( ht.count = 2 )
+		ext_assert_TRUE( ht.count = 2 )
 
 	end sub
 
@@ -48,11 +48,11 @@ namespace ext.tests.containers
 
 			var x = *ht.Find( "Test" & space(n) & n )
 
-			TESTLY_ASSERT_TRUE( n = x )
+			ext_assert_TRUE( n = x )
 
 		next
 
-		TESTLY_ASSERT_TRUE( ext.null = ht.Find("FBEXT Rocks") )
+		ext_assert_TRUE( ext.null = ht.Find("FBEXT Rocks") )
 
 	end sub
 
@@ -74,22 +74,22 @@ namespace ext.tests.containers
 
 			dim as string x = ht.Find( y )
 
-			TESTLY_ASSERT_TRUE( x = "Test" & space(n) & n)
+			ext_assert_TRUE( x = "Test" & space(n) & n)
 
 		next
 
 		y = 16
 
-		TESTLY_ASSERT_TRUE( "" = ht.Find(y) )
+		ext_assert_TRUE( "" = ht.Find(y) )
 
 	end sub
 
 	private sub register 'constructor
-		ext.testly.addSuite("ext-containers-hashtable")
-		ext.testly.addTest("test_insert_count", @test_insert_count)
-		ext.testly.addTest("test_verify_bykey", @test_verify_bykey)
-		ext.testly.addTest("test_verify_byval", @test_verify_byval)
-		ext.testly.addTest("test_collisions", @test_collisions)
+		ext.tests.addSuite("ext-containers-hashtable")
+		ext.tests.addTest("test_insert_count", @test_insert_count)
+		ext.tests.addTest("test_verify_bykey", @test_verify_bykey)
+		ext.tests.addTest("test_verify_byval", @test_verify_byval)
+		ext.tests.addTest("test_collisions", @test_collisions)
 	end sub
 
 end namespace

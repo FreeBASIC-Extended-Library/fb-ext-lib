@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/detail/common.bi"
 # include once "ext/preprocessor/tuple/elem.bi"
 # include once "ext/preprocessor/stringize.bi"
@@ -9,7 +9,7 @@ namespace ext.tests.preprocessor.tuple_.elem
 	
 		# define TUPLE (a)
 		
-		TESTLY_ASSERT_TRUE( "a" = FBEXT_PP_STRINGIZE(fbextPP_TupleElem(1, 0, TUPLE)) )
+		ext_assert_TRUE( "a" = FBEXT_PP_STRINGIZE(fbextPP_TupleElem(1, 0, TUPLE)) )
 	
 	end sub
 	
@@ -17,8 +17,8 @@ namespace ext.tests.preprocessor.tuple_.elem
 	
 		# define TUPLE (a, b)
 		
-		TESTLY_ASSERT_TRUE( "a" = FBEXT_PP_STRINGIZE(fbextPP_TupleElem(2, 0, TUPLE)) )
-		TESTLY_ASSERT_TRUE( "b" = FBEXT_PP_STRINGIZE(fbextPP_TupleElem(2, 1, TUPLE)) )
+		ext_assert_TRUE( "a" = FBEXT_PP_STRINGIZE(fbextPP_TupleElem(2, 0, TUPLE)) )
+		ext_assert_TRUE( "b" = FBEXT_PP_STRINGIZE(fbextPP_TupleElem(2, 1, TUPLE)) )
 	
 	end sub
 	
@@ -26,17 +26,17 @@ namespace ext.tests.preprocessor.tuple_.elem
 	
 		# define TUPLE (a, b, c)
 		
-		TESTLY_ASSERT_TRUE( "a" = FBEXT_PP_STRINGIZE(fbextPP_TupleElem(3, 0, TUPLE)) )
-		TESTLY_ASSERT_TRUE( "b" = FBEXT_PP_STRINGIZE(fbextPP_TupleElem(3, 1, TUPLE)) )
-		TESTLY_ASSERT_TRUE( "c" = FBEXT_PP_STRINGIZE(fbextPP_TupleElem(3, 2, TUPLE)) )
+		ext_assert_TRUE( "a" = FBEXT_PP_STRINGIZE(fbextPP_TupleElem(3, 0, TUPLE)) )
+		ext_assert_TRUE( "b" = FBEXT_PP_STRINGIZE(fbextPP_TupleElem(3, 1, TUPLE)) )
+		ext_assert_TRUE( "c" = FBEXT_PP_STRINGIZE(fbextPP_TupleElem(3, 2, TUPLE)) )
 	
 	end sub
 	
 	private sub register constructor
-		ext.testly.addSuite("ext-preprocessor-tuple-elem")
-		ext.testly.addTest("test1", @test1)
-		ext.testly.addTest("test2", @test2)
-		ext.testly.addTest("test3", @test3)
+		ext.tests.addSuite("ext-preprocessor-tuple-elem")
+		ext.tests.addTest("test1", @test1)
+		ext.tests.addTest("test2", @test2)
+		ext.tests.addTest("test3", @test3)
 	end sub
 
 end namespace

@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/preprocessor/control/while.bi"
 # include once "ext/preprocessor/comparison/notequal.bi"
 # include once "ext/preprocessor/arithmetic/inc.bi"
@@ -17,7 +17,7 @@ namespace ext.tests.preprocessor.control
         # define RESULT() RESULT_ fbextPP_While(PRED, OP, (1, 5))
         # define RESULT_(value, limit) value
         
-        TESTLY_ASSERT_TRUE( 5 = RESULT() )
+        ext_assert_TRUE( 5 = RESULT() )
     
     end sub
     
@@ -27,14 +27,14 @@ namespace ext.tests.preprocessor.control
         # define OP(r, state) 69
         # define RESULT() fbextPP_While(PRED, OP, 420)
         
-        TESTLY_ASSERT_TRUE( 420 = RESULT() )
+        ext_assert_TRUE( 420 = RESULT() )
     
     end sub
     
 	private sub register constructor
-		ext.testly.addSuite("ext-preprocessor-control-while")
-		ext.testly.addTest("test", @test)
-		ext.testly.addTest("testNoRepeat", @testNoRepeat)
+		ext.tests.addSuite("ext-preprocessor-control-while")
+		ext.tests.addTest("test", @test)
+		ext.tests.addTest("testNoRepeat", @testNoRepeat)
 	end sub
 
 end namespace

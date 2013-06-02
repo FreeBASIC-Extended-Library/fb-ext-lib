@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/memory/sharedarray.bi"
 
 namespace ext.tests.memory
@@ -33,37 +33,37 @@ namespace ext.tests.memory
 
 	private sub test
 	
-		TESTLY_ASSERT_TRUE( 0 = m_newInstances )
-		TESTLY_ASSERT_TRUE( 0 = m_destroyedInstances )
+		ext_assert_TRUE( 0 = m_newInstances )
+		ext_assert_TRUE( 0 = m_destroyedInstances )
 		
 		scope
 			var sa1 = fbext_SharedPtrArray((ext)(tests)(memory)(VerboseType))(new VerboseType[3])
 			
-			TESTLY_ASSERT_TRUE( 3 = m_newInstances )
-			TESTLY_ASSERT_TRUE( 0 = m_destroyedInstances )
+			ext_assert_TRUE( 3 = m_newInstances )
+			ext_assert_TRUE( 0 = m_destroyedInstances )
 			
 			var sa2 = sa1
 			
-			TESTLY_ASSERT_TRUE( sa1.Get() = sa2.Get() )
-			TESTLY_ASSERT_TRUE( 3 = m_newInstances )
-			TESTLY_ASSERT_TRUE( 0 = m_destroyedInstances )
+			ext_assert_TRUE( sa1.Get() = sa2.Get() )
+			ext_assert_TRUE( 3 = m_newInstances )
+			ext_assert_TRUE( 0 = m_destroyedInstances )
 			
 			sa1.Reset()
 			
-			TESTLY_ASSERT_TRUE( null = sa1.Get() )
-			TESTLY_ASSERT_TRUE( 3 = m_newInstances )
-			TESTLY_ASSERT_TRUE( 0 = m_destroyedInstances )
+			ext_assert_TRUE( null = sa1.Get() )
+			ext_assert_TRUE( 3 = m_newInstances )
+			ext_assert_TRUE( 0 = m_destroyedInstances )
 		
 		end scope
 		
-		TESTLY_ASSERT_TRUE( 3 = m_newInstances )
-		TESTLY_ASSERT_TRUE( 3 = m_destroyedInstances )
+		ext_assert_TRUE( 3 = m_newInstances )
+		ext_assert_TRUE( 3 = m_destroyedInstances )
 	
 	end sub
 	
 	private sub register constructor
-		ext.testly.addSuite("ext-memory-sharedarray")
-		ext.testly.addTest("test", @test)
+		ext.tests.addSuite("ext-memory-sharedarray")
+		ext.tests.addTest("test", @test)
 	end sub
 
 end namespace

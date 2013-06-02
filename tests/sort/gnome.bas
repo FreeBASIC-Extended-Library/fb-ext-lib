@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/algorithms/gnomesort.bi"
 
 namespace ext.tests.algorithms
@@ -17,7 +17,7 @@ namespace ext.tests.algorithms
 
 		for n as integer = 1 to 10
 
-			TESTLY_ASSERT_TRUE( testarray1(n-1) = n )
+			ext_assert_TRUE( testarray1(n-1) = n )
 
 		next
 		
@@ -25,8 +25,8 @@ namespace ext.tests.algorithms
 	end sub
 	
 	private sub register constructor
-		ext.testly.addSuite("ext-algorithms-gnomesort")
-		ext.testly.addTest("gnome", @test_gnome)
+		ext.tests.addSuite("ext-algorithms-gnomesort")
+		ext.tests.addTest("gnome", @test_gnome)
 	end sub
 
 end namespace

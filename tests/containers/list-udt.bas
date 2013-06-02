@@ -1,6 +1,6 @@
 # define fbext_NoBuiltinInstanciations() 1
 
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/containers/list.bi"
 
 type UDT
@@ -45,19 +45,19 @@ namespace ext.tests.containers
 		var list = fbext_List( ((UDT)) )
 
 		list.PushBack(UDT("one"))
-		TESTLY_ASSERT_TRUE( 1 = list.Size() )
-		TESTLY_ASSERT_TRUE( "one" = list.Front()->s )
-		TESTLY_ASSERT_TRUE( "one" = list.Back()->s )
+		ext_assert_TRUE( 1 = list.Size() )
+		ext_assert_TRUE( "one" = list.Front()->s )
+		ext_assert_TRUE( "one" = list.Back()->s )
 
 		list.PushBack(UDT("two"))
-		TESTLY_ASSERT_TRUE( 2 = list.Size() )
-		TESTLY_ASSERT_TRUE( "one" = list.Front()->s )
-		TESTLY_ASSERT_TRUE( "two" = list.Back()->s )
+		ext_assert_TRUE( 2 = list.Size() )
+		ext_assert_TRUE( "one" = list.Front()->s )
+		ext_assert_TRUE( "two" = list.Back()->s )
 
 		list.PushBack(UDT("three"))
-		TESTLY_ASSERT_TRUE( 3 = list.Size() )
-		TESTLY_ASSERT_TRUE( "one" = list.Front()->s )
-		TESTLY_ASSERT_TRUE( "three" = list.Back()->s )
+		ext_assert_TRUE( 3 = list.Size() )
+		ext_assert_TRUE( "one" = list.Front()->s )
+		ext_assert_TRUE( "three" = list.Back()->s )
 
 	end sub
 
@@ -66,14 +66,14 @@ namespace ext.tests.containers
 		var list = fbext_List( ((UDT)) )
 
 		list.Insert(list.End_(), 5, UDT("x"))
-		TESTLY_ASSERT_TRUE( 5 = list.Size() )
+		ext_assert_TRUE( 5 = list.Size() )
 
 	end sub
 
 	private sub register constructor
-		ext.testly.addSuite("ext-containers-list-udt")
-		ext.testly.addTest("test_ListPushBack", @test_ListPushBack)
-		ext.testly.addTest("test_ListInsert", @test_ListInsert)
+		ext.tests.addSuite("ext-containers-list-udt")
+		ext.tests.addTest("test_ListPushBack", @test_ListPushBack)
+		ext.tests.addTest("test_ListInsert", @test_ListInsert)
 	end sub
 
 end namespace

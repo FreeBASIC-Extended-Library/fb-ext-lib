@@ -1,4 +1,4 @@
-#include once "ext/testly.bi"
+#include once "ext/tests.bi"
 #include once "ext/containers/bloomfilter.bi"
 
 namespace ext.tests.bloomf
@@ -15,18 +15,18 @@ private sub test_bf
     bf->add("Daniel Verkamp")
     bf->add("Tito Puentes")
 
-    TESTLY_ASSERT_TRUE(bf->lookup("Dennis Ritchie"))
-    TESTLY_ASSERT_TRUE(bf->lookup("Andre Victor"))
-    TESTLY_ASSERT_FALSE(bf->lookup("Ben Stiller"))
-    TESTLY_ASSERT_FALSE(bf->lookup("Bill Gates"))
+    ext_assert_TRUE(bf->lookup("Dennis Ritchie"))
+    ext_assert_TRUE(bf->lookup("Andre Victor"))
+    ext_assert_FALSE(bf->lookup("Ben Stiller"))
+    ext_assert_FALSE(bf->lookup("Bill Gates"))
 
     delete bf
 
 end sub
 
 private sub register constructor
-    ext.testly.addSuite("Containers::BloomFilter")
-    ext.testly.addTest("General",@test_bf)
+    ext.tests.addSuite("Containers::BloomFilter")
+    ext.tests.addTest("General",@test_bf)
 end sub
 
 end namespace

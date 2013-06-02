@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/strings.bi"
 
 namespace ext.tests.strings
@@ -28,7 +28,7 @@ namespace ext.tests.strings
 				*test_input(i).oldtext, _
 				*test_input(i).newtext _
 			)
-			TESTLY_ASSERT_STRING_EQUAL(*test_input(i).result, subject)
+			ext_assert_STRING_EQUAL(*test_input(i).result, subject)
 		next
 	
 	end sub
@@ -51,7 +51,7 @@ namespace ext.tests.strings
 				*test_input(i).oldtext, _
 				*test_input(i).newtext _
 			)
-			TESTLY_ASSERT_STRING_EQUAL(*test_input(i).result, subject)
+			ext_assert_STRING_EQUAL(*test_input(i).result, subject)
 		next
 	
 	end sub
@@ -74,16 +74,16 @@ namespace ext.tests.strings
 				*test_input(i).oldtext, _
 				*test_input(i).newtext _
 			)
-			TESTLY_ASSERT_STRING_EQUAL(*test_input(i).result, subject)
+			ext_assert_STRING_EQUAL(*test_input(i).result, subject)
 		next
 	
 	end sub
 	
 	private sub register constructor
-		ext.testly.addSuite("ext-strings-replace")
-		ext.testly.addTest("testEqualNewText", @testEqualNewText)
-		ext.testly.addTest("testSmallerNewText", @testSmallerNewText)
-		ext.testly.addTest("testLargerNewText", @testLargerNewText)
+		ext.tests.addSuite("ext-strings-replace")
+		ext.tests.addTest("testEqualNewText", @testEqualNewText)
+		ext.tests.addTest("testSmallerNewText", @testSmallerNewText)
+		ext.tests.addTest("testLargerNewText", @testLargerNewText)
 	end sub
 
 end namespace

@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/conversion/base64.bi"
 
 namespace ext.tests.conversion.base64
@@ -10,7 +10,7 @@ namespace ext.tests.conversion.base64
 
         var enc64 = ext.conversion.base64.encode( hellow )
 
-        TESTLY_ASSERT_STRING_EQUAL( hw_base64, enc64 )
+        ext_assert_STRING_EQUAL( hw_base64, enc64 )
 
     end sub
 
@@ -35,14 +35,14 @@ namespace ext.tests.conversion.base64
         var dec64 = ""
         ext.conversion.base64.decode( dec64, hw_base64 )
 
-        TESTLY_ASSERT_TRUE( stringcompare(hellow, dec64) )
+        ext_assert_TRUE( stringcompare(hellow, dec64) )
 
     end sub
 
     private sub register constructor
-        ext.testly.addSuite("ext-base64")
-        ext.testly.addTest("test_base64_encode", @test_base64_encode)
-        ext.testly.addTest("test_base64_decode", @test_base64_decode)
+        ext.tests.addSuite("ext-base64")
+        ext.tests.addTest("test_base64_encode", @test_base64_encode)
+        ext.tests.addTest("test_base64_decode", @test_base64_decode)
     end sub
 
 end namespace

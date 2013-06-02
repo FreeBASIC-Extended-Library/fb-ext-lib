@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/algorithms/count.bi"
 # include once "ext/algorithms/countif.bi"
 
@@ -9,7 +9,7 @@ namespace ext.tests.algorithms
 		
 		var c = ext.Count(@array(0), @array(0) + 6, 420)
 		
-		TESTLY_ASSERT_TRUE( 3 = c )
+		ext_assert_TRUE( 3 = c )
 		
 	end sub
 	
@@ -22,14 +22,14 @@ namespace ext.tests.algorithms
 		
 		var c = ext.CountIf(@array(0), @array(0) + 7, @LessThan30)
 		
-		TESTLY_ASSERT_TRUE( 3 = c )
+		ext_assert_TRUE( 3 = c )
 		
 	end sub
 	
 	private sub register constructor
-		ext.testly.addSuite("ext-algorithms-count")
-		ext.testly.addTest("ext_algorithms-count", @test_count)
-		ext.testly.addTest("ext_algorithms-countif", @test_countif)
+		ext.tests.addSuite("ext-algorithms-count")
+		ext.tests.addTest("ext_algorithms-count", @test_count)
+		ext.tests.addTest("ext_algorithms-countif", @test_countif)
 	end sub
 
 end namespace

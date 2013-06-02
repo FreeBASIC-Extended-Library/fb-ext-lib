@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/math/vector2.bi"
 
 namespace ext.tests.math
@@ -8,7 +8,7 @@ namespace ext.tests.math
         var a = ext.math.fbext_Vector2( ((double)) )( 100.0, 0.0 )
         
         var theta = a.AngleBetween( a )
-        TESTLY_ASSERT_TRUE( FBEXT_FLOAT_EQUAL( 0.0, FBEXT_RADIAN_TO_DEGREE( theta ) ) )
+        ext_assert_TRUE( FBEXT_FLOAT_EQUAL( 0.0, FBEXT_RADIAN_TO_DEGREE( theta ) ) )
     
     end sub
     
@@ -18,10 +18,10 @@ namespace ext.tests.math
         var b = ext.math.fbext_Vector2( ((double)) )( 0.0, 100.0 )
         
         var theta = a.AngleBetween( b )
-        TESTLY_ASSERT_TRUE( FBEXT_FLOAT_EQUAL( 90.0, FBEXT_RADIAN_TO_DEGREE( theta ) ) )
+        ext_assert_TRUE( FBEXT_FLOAT_EQUAL( 90.0, FBEXT_RADIAN_TO_DEGREE( theta ) ) )
         
         theta = b.AngleBetween( a )
-        TESTLY_ASSERT_TRUE( FBEXT_FLOAT_EQUAL( 90.0, FBEXT_RADIAN_TO_DEGREE( theta ) ) )
+        ext_assert_TRUE( FBEXT_FLOAT_EQUAL( 90.0, FBEXT_RADIAN_TO_DEGREE( theta ) ) )
     
     end sub
     
@@ -31,18 +31,18 @@ namespace ext.tests.math
         var b = ext.math.fbext_Vector2( ((double)) )( 100.0, 0.0 )
         
         var theta = a.AngleBetween( b )
-        TESTLY_ASSERT_TRUE( FBEXT_FLOAT_EQUAL( 180.0, FBEXT_RADIAN_TO_DEGREE( theta ) ) )
+        ext_assert_TRUE( FBEXT_FLOAT_EQUAL( 180.0, FBEXT_RADIAN_TO_DEGREE( theta ) ) )
         
         theta = b.AngleBetween( a )
-        TESTLY_ASSERT_TRUE( FBEXT_FLOAT_EQUAL( 180.0, FBEXT_RADIAN_TO_DEGREE( theta ) ) )
+        ext_assert_TRUE( FBEXT_FLOAT_EQUAL( 180.0, FBEXT_RADIAN_TO_DEGREE( theta ) ) )
     
     end sub
     
 	private sub register constructor
-		ext.testly.addSuite("ext-math-vector2-angle")
-		ext.testly.addTest("Test0", @Test0)
-		ext.testly.addTest("Test90", @Test90)
-		ext.testly.addTest("Test180", @Test180)
+		ext.tests.addSuite("ext-math-vector2-angle")
+		ext.tests.addTest("Test0", @Test0)
+		ext.tests.addTest("Test90", @Test90)
+		ext.tests.addTest("Test180", @Test180)
 	end sub
 
 end namespace

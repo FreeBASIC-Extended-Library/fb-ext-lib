@@ -1,5 +1,5 @@
 # define fbext_NoBuiltinInstanciations() 1
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 
 # include once "ext/containers/list.bi"
 
@@ -11,17 +11,17 @@ namespace ext.tests.containers
 
 		var list = fbext_List( ((integer)) )
 
-		TESTLY_ASSERT_TRUE( list.Empty() )
+		ext_assert_TRUE( list.Empty() )
 
 		list.PushBack(1)
 
-		TESTLY_ASSERT_TRUE( not list.Empty() )
+		ext_assert_TRUE( not list.Empty() )
 
 	end sub
 
 	private sub register constructor
-		ext.testly.addSuite("ext-containers-list-empty")
-		ext.testly.addTest("testEmpty", @testEmpty)
+		ext.tests.addSuite("ext-containers-list-empty")
+		ext.tests.addTest("testEmpty", @testEmpty)
 	end sub
 
 end namespace

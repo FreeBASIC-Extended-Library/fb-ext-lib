@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/containers/array.bi"
 
 namespace ext.tests.containers.array_
@@ -12,7 +12,7 @@ namespace ext.tests.containers.array_
         next
 
         for i as integer = 0 to 5
-            TESTLY_ASSERT_EQUAL( i, *array.Index(i) )
+            ext_assert_EQUAL( i, *array.Index(i) )
         next
 
     end sub
@@ -25,15 +25,15 @@ namespace ext.tests.containers.array_
             array.PushBack(i)
         next
 
-        TESTLY_ASSERT_EQUAL( 1, *array.at(1) )
-        TESTLY_ASSERT_TRUE( array.at(10) = null )
+        ext_assert_EQUAL( 1, *array.at(1) )
+        ext_assert_TRUE( array.at(10) = null )
 
     end sub
 
     private sub register constructor
-        ext.testly.addSuite("ext-containers-array-index")
-        ext.testly.addTest("Index", @test_index)
-        ext.testly.addTest("At",@test_at)
+        ext.tests.addSuite("ext-containers-array-index")
+        ext.tests.addTest("Index", @test_index)
+        ext.tests.addTest("At",@test_at)
     end sub
 
 end namespace

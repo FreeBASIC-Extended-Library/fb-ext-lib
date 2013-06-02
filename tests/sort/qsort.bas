@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/algorithms/quicksort.bi"
 
 namespace ext.tests.algorithms
@@ -18,7 +18,7 @@ namespace ext.tests.algorithms
 
 		for n as integer = 1 to 10
 
-			TESTLY_ASSERT_TRUE( testarray1(n-1) = n )
+			ext_assert_TRUE( testarray1(n-1) = n )
 
 		next
 		
@@ -26,8 +26,8 @@ namespace ext.tests.algorithms
 	end sub
 	
 	private sub register constructor
-		ext.testly.addSuite("ext-algorithms-quicksort")
-		ext.testly.addTest("test_quicksort", @test_quicksort)
+		ext.tests.addSuite("ext-algorithms-quicksort")
+		ext.tests.addTest("test_quicksort", @test_quicksort)
 	end sub
 
 end namespace

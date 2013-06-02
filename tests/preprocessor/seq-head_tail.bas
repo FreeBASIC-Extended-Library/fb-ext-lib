@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/detail/common.bi"
 # include once "ext/preprocessor/seq/head.bi"
 # include once "ext/preprocessor/seq/tail.bi"
@@ -10,7 +10,7 @@ namespace ext.tests.preprocessor
 	
 		# define SEQ (a)(b)(c)(d)
 		
-		TESTLY_ASSERT_TRUE( "a" = FBEXT_PP_STRINGIZE(FBEXT_PP_SEQ_HEAD(SEQ)) )
+		ext_assert_TRUE( "a" = FBEXT_PP_STRINGIZE(FBEXT_PP_SEQ_HEAD(SEQ)) )
 	
 	end sub
 	
@@ -18,14 +18,14 @@ namespace ext.tests.preprocessor
 	
 		# define SEQ (a)(b)(c)(d)
 		
-		TESTLY_ASSERT_TRUE( "(b)(c)(d)" = FBEXT_PP_STRINGIZE(FBEXT_PP_SEQ_TAIL(SEQ)) )
+		ext_assert_TRUE( "(b)(c)(d)" = FBEXT_PP_STRINGIZE(FBEXT_PP_SEQ_TAIL(SEQ)) )
 	
 	end sub
 	
 	private sub register constructor
-		ext.testly.addSuite("ext-preprocessor-seq-head_tail")
-		ext.testly.addTest("test_head", @test_head)
-		ext.testly.addTest("test_tail", @test_tail)
+		ext.tests.addSuite("ext-preprocessor-seq-head_tail")
+		ext.tests.addTest("test_head", @test_head)
+		ext.tests.addTest("test_tail", @test_tail)
 	end sub
 
 end namespace

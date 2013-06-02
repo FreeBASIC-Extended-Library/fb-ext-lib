@@ -63,7 +63,7 @@ Group: Documentation  {
    File: Commandline Option Parsing  (no auto-title, ext/options.bi)
    File: PHP String Functions  (no auto-title, ext/php/strings.bi)
    File: Templates  (no auto-title, ext/templates.bi)
-   File: Unit Testing  (no auto-title, ext/testly.bi)
+   File: Unit Testing  (no auto-title, ext/tests.bi)
    File: xString  (no auto-title, ext/xstring.bi)
 
    Group: Algorithms  {

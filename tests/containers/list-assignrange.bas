@@ -1,5 +1,5 @@
 # define fbext_NoBuiltinInstanciations() 1
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 
 # include once "ext/containers/list.bi"
 
@@ -19,13 +19,13 @@ namespace ext.tests.containers
 
 		list2.Assign(list1.cBegin(), list1.cEnd())
 
-   		TESTLY_ASSERT_EQUAL( list2.Size(), list1.Size() )
+   		ext_assert_EQUAL( list2.Size(), list1.Size() )
 
 		var first1 = list1.cBegin()
 		var first2 = list2.cBegin()
 
 		do while first1 <> list1.cEnd()
-    		TESTLY_ASSERT_EQUAL( **(first2.PostIncrement()), **(first1.PostIncrement()) )
+    		ext_assert_EQUAL( **(first2.PostIncrement()), **(first1.PostIncrement()) )
 		loop
 
 	end sub
@@ -44,13 +44,13 @@ namespace ext.tests.containers
 
 		list2.Assign(list1.cBegin(), list1.cEnd())
 
-   		TESTLY_ASSERT_EQUAL( list2.Size(), list1.Size() )
+   		ext_assert_EQUAL( list2.Size(), list1.Size() )
 
 		var first1 = list1.cBegin()
 		var first2 = list2.cBegin()
 
 		do while first1 <> list1.cEnd()
-    		TESTLY_ASSERT_EQUAL( **(first2.PostIncrement()), **(first1.PostIncrement()) )
+    		ext_assert_EQUAL( **(first2.PostIncrement()), **(first1.PostIncrement()) )
 		loop
 
 	end sub
@@ -71,13 +71,13 @@ namespace ext.tests.containers
 
 		list2.Assign(list1.cBegin(), list1.cEnd())
 
-   		TESTLY_ASSERT_EQUAL( list2.Size(), list1.Size() )
+   		ext_assert_EQUAL( list2.Size(), list1.Size() )
 
 		var first1 = list1.cBegin()
 		var first2 = list2.cBegin()
 
 		do while first1 <> list1.cEnd()
-    		TESTLY_ASSERT_EQUAL( **(first2.PostIncrement()), **(first1.PostIncrement()) )
+    		ext_assert_EQUAL( **(first2.PostIncrement()), **(first1.PostIncrement()) )
 		loop
 
 	end sub
@@ -96,13 +96,13 @@ namespace ext.tests.containers
 
 		list2.Assign(list1.cBegin(), list1.cEnd())
 
-   		TESTLY_ASSERT_EQUAL( list2.Size(), list1.Size() )
+   		ext_assert_EQUAL( list2.Size(), list1.Size() )
 
 		var first1 = list1.cBegin()
 		var first2 = list2.cBegin()
 
 		do while first1 <> list1.cEnd()
-    		TESTLY_ASSERT_EQUAL( **(first2.PostIncrement()), **(first1.PostIncrement()) )
+    		ext_assert_EQUAL( **(first2.PostIncrement()), **(first1.PostIncrement()) )
 		loop
 
 	end sub
@@ -123,12 +123,12 @@ namespace ext.tests.containers
     		var b = list.cEnd() : b.Decrement()
     		list.Assign(a, b)
 
-       		TESTLY_ASSERT_EQUAL( list.Size(), 4 )
+       		ext_assert_EQUAL( list.Size(), 4 )
 
     		var first = list.cBegin()
     		var n = 2
     		do while first <> list.cEnd()
-        		TESTLY_ASSERT_EQUAL( **(first.PostIncrement()), n )
+        		ext_assert_EQUAL( **(first.PostIncrement()), n )
         		n += 1
     		loop
 	    end scope
@@ -139,12 +139,12 @@ namespace ext.tests.containers
     		var b = list.cEnd() : b.Decrement()
     		list.Assign(a, b)
 
-       		TESTLY_ASSERT_EQUAL( list.Size(), 3 )
+       		ext_assert_EQUAL( list.Size(), 3 )
 
     		var first = list.cBegin()
     		var n = 2
     		do while first <> list.cEnd()
-        		TESTLY_ASSERT_EQUAL( **(first.PostIncrement()), n )
+        		ext_assert_EQUAL( **(first.PostIncrement()), n )
         		n += 1
     		loop
 	    end scope
@@ -152,12 +152,12 @@ namespace ext.tests.containers
 	end sub
 
 	private sub register constructor
-		ext.testly.addSuite("ext-containers-list-assignrange")
-		ext.testly.addTest("testAssignToEmptyList", @testAssignToEmptyList)
-		ext.testly.addTest("testAssignToSmallerList", @testAssignToSmallerList)
-		ext.testly.addTest("testAssignToSimilarList", @testAssignToSimilarList)
-		ext.testly.addTest("testAssignToLargerList", @testAssignToLargerList)
-		ext.testly.addTest("testAssignToSameList", @testAssignToSameList)
+		ext.tests.addSuite("ext-containers-list-assignrange")
+		ext.tests.addTest("testAssignToEmptyList", @testAssignToEmptyList)
+		ext.tests.addTest("testAssignToSmallerList", @testAssignToSmallerList)
+		ext.tests.addTest("testAssignToSimilarList", @testAssignToSimilarList)
+		ext.tests.addTest("testAssignToLargerList", @testAssignToLargerList)
+		ext.tests.addTest("testAssignToSameList", @testAssignToSameList)
 	end sub
 
 end namespace

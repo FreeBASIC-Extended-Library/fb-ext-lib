@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/strings.bi"
 
 namespace ext.tests.strings
@@ -16,7 +16,7 @@ namespace ext.tests.strings
 		
 		for i as integer = lbound(test_strings) to ubound(test_strings)
 			var res = test_strings(i, 0)
-			TESTLY_ASSERT_EQUAL(test_strings(i, 1), ext.strings.ReverseCopy(res))
+			ext_assert_EQUAL(test_strings(i, 1), ext.strings.ReverseCopy(res))
 		next
 	
 	end sub
@@ -30,7 +30,7 @@ namespace ext.tests.strings
 		ext.strings.ReverseCopy(test_strings(), result())
 		
 		for i as integer = lbound(test_strings) to ubound(test_strings)
-			TESTLY_ASSERT_EQUAL(target_strings(i), result(i))
+			ext_assert_EQUAL(target_strings(i), result(i))
 		next
 	
 	end sub
@@ -45,17 +45,17 @@ namespace ext.tests.strings
 		ext.strings.ReverseCopy(test_strings(), result(), index)
 		
 		for i as integer = lbound(test_strings) to ubound(test_strings)
-			TESTLY_ASSERT_EQUAL(target_strings(i), result(index))
+			ext_assert_EQUAL(target_strings(i), result(index))
 			index += 1
 		next
 	
 	end sub
 	
 	private sub register constructor
-		ext.testly.addSuite("ext-strings-ReverseCopy")
-		ext.testly.addTest("testStringResult", @testStringResult)
-		ext.testly.addTest("testVarLenArrayResult", @testVarLenArrayResult)
-		ext.testly.addTest("testVarLenArrayResultWithIndex", @testVarLenArrayResultWithIndex)
+		ext.tests.addSuite("ext-strings-ReverseCopy")
+		ext.tests.addTest("testStringResult", @testStringResult)
+		ext.tests.addTest("testVarLenArrayResult", @testVarLenArrayResult)
+		ext.tests.addTest("testVarLenArrayResultWithIndex", @testVarLenArrayResultWithIndex)
 	end sub
 
 end namespace

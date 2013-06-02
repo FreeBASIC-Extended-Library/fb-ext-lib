@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/memory/allocator.bi"
 
 static shared s_defctor_count as ext.SizeType = 0
@@ -35,9 +35,9 @@ namespace ext.tests.memory
 
 	    var p = alloc.Allocate(3)
 
-	    TESTLY_ASSERT_TRUE( s_defctor_count = 0 )
-	    TESTLY_ASSERT_EQUAL( s_copyctor_count, 0 )
-	    TESTLY_ASSERT_EQUAL( s_dtor_count, 0 )
+	    ext_assert_TRUE( s_defctor_count = 0 )
+	    ext_assert_EQUAL( s_copyctor_count, 0 )
+	    ext_assert_EQUAL( s_dtor_count, 0 )
 
 	    var tmp = T(420)
 
@@ -45,29 +45,29 @@ namespace ext.tests.memory
     	    alloc.Construct(@p[i], tmp)
 	    next i
 
-	    TESTLY_ASSERT_EQUAL( s_defctor_count, 1 )
-	    TESTLY_ASSERT_EQUAL( s_copyctor_count, 3 )
-	    TESTLY_ASSERT_EQUAL( s_dtor_count, 0 )
+	    ext_assert_EQUAL( s_defctor_count, 1 )
+	    ext_assert_EQUAL( s_copyctor_count, 3 )
+	    ext_assert_EQUAL( s_dtor_count, 0 )
 
 	    for i as integer = 0 to 3-1
     	    alloc.Destroy(@p[i])
 	    next i
 
-	    TESTLY_ASSERT_EQUAL( s_defctor_count, 1 )
-	    TESTLY_ASSERT_EQUAL( s_copyctor_count, 3 )
-	    TESTLY_ASSERT_EQUAL( s_dtor_count, 3 )
+	    ext_assert_EQUAL( s_defctor_count, 1 )
+	    ext_assert_EQUAL( s_copyctor_count, 3 )
+	    ext_assert_EQUAL( s_dtor_count, 3 )
 
 	    alloc.DeAllocate(p, 3)
 
-	    TESTLY_ASSERT_EQUAL( s_defctor_count, 1 )
-	    TESTLY_ASSERT_EQUAL( s_copyctor_count, 3 )
-	    TESTLY_ASSERT_EQUAL( s_dtor_count, 3 )
+	    ext_assert_EQUAL( s_defctor_count, 1 )
+	    ext_assert_EQUAL( s_copyctor_count, 3 )
+	    ext_assert_EQUAL( s_dtor_count, 3 )
 
 	end sub
 
 	private sub register constructor
-		ext.testly.addSuite("ext-memory-allocator")
-		ext.testly.addTest("test", @test)
+		ext.tests.addSuite("ext-memory-allocator")
+		ext.tests.addTest("test", @test)
 	end sub
 
 end namespace

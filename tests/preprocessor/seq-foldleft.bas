@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/detail/common.bi"
 # include once "ext/preprocessor/seq/foldleft.bi"
 # include once "ext/preprocessor/stringize.bi"
@@ -10,13 +10,13 @@ namespace ext.tests.preprocessor
 		# define SEQ (a)(b)(c)(d)
 		# define OP(state, elem) state##elem
 		
-		TESTLY_ASSERT_TRUE( "xabcd" = FBEXT_PP_STRINGIZE(FBEXT_PP_SEQ_FOLDLEFT(OP, x, SEQ)) )
+		ext_assert_TRUE( "xabcd" = FBEXT_PP_STRINGIZE(FBEXT_PP_SEQ_FOLDLEFT(OP, x, SEQ)) )
 	
 	end sub
 	
 	private sub register constructor
-		ext.testly.addSuite("ext-preprocessor-seq-foldleft")
-		ext.testly.addTest("test", @test)
+		ext.tests.addSuite("ext-preprocessor-seq-foldleft")
+		ext.tests.addTest("test", @test)
 	end sub
 
 end namespace

@@ -1,6 +1,6 @@
 # define fbext_NoBuiltinInstanciations() 1
 
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/containers/array.bi"
 
 type UDT
@@ -50,19 +50,19 @@ namespace ext.tests.containers
         var array = fbext_Array( ((UDT)) )
 
         array.PushBack(UDT("one"))
-        TESTLY_ASSERT_TRUE( 1 = array.Size() )
-        TESTLY_ASSERT_TRUE( "one" = array.Front()->s )
-        TESTLY_ASSERT_TRUE( "one" = array.Back()->s )
+        ext_assert_TRUE( 1 = array.Size() )
+        ext_assert_TRUE( "one" = array.Front()->s )
+        ext_assert_TRUE( "one" = array.Back()->s )
 
         array.PushBack(UDT("two"))
-        TESTLY_ASSERT_TRUE( 2 = array.Size() )
-        TESTLY_ASSERT_TRUE( "one" = array.Front()->s )
-        TESTLY_ASSERT_TRUE( "two" = array.Back()->s )
+        ext_assert_TRUE( 2 = array.Size() )
+        ext_assert_TRUE( "one" = array.Front()->s )
+        ext_assert_TRUE( "two" = array.Back()->s )
 
         array.PushBack(UDT("three"))
-        TESTLY_ASSERT_TRUE( 3 = array.Size() )
-        TESTLY_ASSERT_TRUE( "one" = array.Front()->s )
-        TESTLY_ASSERT_TRUE( "three" = array.Back()->s )
+        ext_assert_TRUE( 3 = array.Size() )
+        ext_assert_TRUE( "one" = array.Front()->s )
+        ext_assert_TRUE( "three" = array.Back()->s )
 
     end sub
 
@@ -71,14 +71,14 @@ namespace ext.tests.containers
         var array = fbext_Array( ((UDT)) )
 
         array.Insert(array.End_(), 5, UDT("x"))
-        TESTLY_ASSERT_TRUE( 5 = array.Size() )
+        ext_assert_TRUE( 5 = array.Size() )
 
     end sub
 
     private sub register constructor
-        ext.testly.addSuite("ext-containers-array-udt")
-        ext.testly.addTest("test_arraypushback", @test_arraypushback)
-        ext.testly.addTest("test_arrayinsert", @test_arrayinsert)
+        ext.tests.addSuite("ext-containers-array-udt")
+        ext.tests.addTest("test_arraypushback", @test_arraypushback)
+        ext.tests.addTest("test_arrayinsert", @test_arrayinsert)
     end sub
 
 end namespace

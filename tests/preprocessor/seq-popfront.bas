@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/detail/common.bi"
 # include once "ext/preprocessor/seq/popfront.bi"
 # include once "ext/preprocessor/stringize.bi"
@@ -9,13 +9,13 @@ namespace ext.tests.preprocessor
 	
 		# define SEQ (a)(b)(c)(d)
 		
-		TESTLY_ASSERT_TRUE( "(b)(c)(d)" = FBEXT_PP_STRINGIZE(FBEXT_PP_SEQ_POPFRONT(SEQ)) )
+		ext_assert_TRUE( "(b)(c)(d)" = FBEXT_PP_STRINGIZE(FBEXT_PP_SEQ_POPFRONT(SEQ)) )
 	
 	end sub
 	
 	private sub register constructor
-		ext.testly.addSuite("ext-preprocessor-seq-popfront")
-		ext.testly.addTest("test", @test)
+		ext.tests.addSuite("ext-preprocessor-seq-popfront")
+		ext.tests.addTest("test", @test)
 	end sub
 
 end namespace

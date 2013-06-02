@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/containers/array.bi"
 
 namespace ext.tests.containers.array_
@@ -10,14 +10,14 @@ namespace ext.tests.containers.array_
 	    
 	    array1.Swap_(array2)
 	    
-	    TESTLY_ASSERT_EQUAL( 8, array1.Size() )
-	    TESTLY_ASSERT_EQUAL( 3, array2.Size() )
+	    ext_assert_EQUAL( 8, array1.Size() )
+	    ext_assert_EQUAL( 3, array2.Size() )
 	
 	end sub
 	
 	private sub register constructor
-		ext.testly.addSuite("ext-containers-array-swap")
-		ext.testly.addTest("test_arrayswap", @test_arrayswap)
+		ext.tests.addSuite("ext-containers-array-swap")
+		ext.tests.addTest("test_arrayswap", @test_arrayswap)
 	end sub
 
 end namespace

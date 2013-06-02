@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/strings.bi"
 # include once "ext/containers/bitarray.bi"
 
@@ -11,7 +11,7 @@ namespace ext.tests.bitholder
 
                 ba.load( bt )
 
-                testly_assert_true( bt = ba.dump() )
+                ext_assert_true( bt = ba.dump() )
 
         end sub
 
@@ -22,16 +22,16 @@ namespace ext.tests.bitholder
 
                 ba.load(bt)
 
-                testly_assert_true( ext.bool.true = ba.isSet(9) )
-                testly_assert_true( ext.bool.false = ba.isSet(8) )
-                testly_assert_true( ext.bool.false = ba.isSet(7) )
-                testly_assert_true( ext.bool.false = ba.isSet(6) )
-                testly_assert_true( ext.bool.true = ba.isSet(5) )
-                testly_assert_true( ext.bool.true = ba.isSet(4) )
-                testly_assert_true( ext.bool.true = ba.isSet(3) )
-                testly_assert_true( ext.bool.false = ba.isSet(2) )
-                testly_assert_true( ext.bool.true = ba.isSet(1) )
-                testly_assert_true( ext.bool.true = ba.isSet(0) )
+                ext_assert_true( ext.bool.true = ba.isSet(9) )
+                ext_assert_true( ext.bool.false = ba.isSet(8) )
+                ext_assert_true( ext.bool.false = ba.isSet(7) )
+                ext_assert_true( ext.bool.false = ba.isSet(6) )
+                ext_assert_true( ext.bool.true = ba.isSet(5) )
+                ext_assert_true( ext.bool.true = ba.isSet(4) )
+                ext_assert_true( ext.bool.true = ba.isSet(3) )
+                ext_assert_true( ext.bool.false = ba.isSet(2) )
+                ext_assert_true( ext.bool.true = ba.isSet(1) )
+                ext_assert_true( ext.bool.true = ba.isSet(0) )
 
         end sub
 
@@ -46,16 +46,16 @@ namespace ext.tests.bitholder
                 ba.set(1)
                 ba.set(0)
 
-                testly_assert_true( ext.bool.true = ba.isSet(9) )
-                testly_assert_true( ext.bool.false = ba.isSet(8) )
-                testly_assert_true( ext.bool.false = ba.isSet(7) )
-                testly_assert_true( ext.bool.false = ba.isSet(6) )
-                testly_assert_true( ext.bool.true = ba.isSet(5) )
-                testly_assert_true( ext.bool.true = ba.isSet(4) )
-                testly_assert_true( ext.bool.true = ba.isSet(3) )
-                testly_assert_true( ext.bool.false = ba.isSet(2) )
-                testly_assert_true( ext.bool.true = ba.isSet(1) )
-                testly_assert_true( ext.bool.true = ba.isSet(0) )
+                ext_assert_true( ext.bool.true = ba.isSet(9) )
+                ext_assert_true( ext.bool.false = ba.isSet(8) )
+                ext_assert_true( ext.bool.false = ba.isSet(7) )
+                ext_assert_true( ext.bool.false = ba.isSet(6) )
+                ext_assert_true( ext.bool.true = ba.isSet(5) )
+                ext_assert_true( ext.bool.true = ba.isSet(4) )
+                ext_assert_true( ext.bool.true = ba.isSet(3) )
+                ext_assert_true( ext.bool.false = ba.isSet(2) )
+                ext_assert_true( ext.bool.true = ba.isSet(1) )
+                ext_assert_true( ext.bool.true = ba.isSet(0) )
 
         end sub
 
@@ -74,26 +74,26 @@ namespace ext.tests.bitholder
                 ba.toggle(1)
                 ba.toggle(0)
 
-                testly_assert_true( ext.bool.true = ba.isSet(9) )
-                testly_assert_true( ext.bool.false = ba.isSet(8) )
-                testly_assert_true( ext.bool.false = ba.isSet(7) )
-                testly_assert_true( ext.bool.false = ba.isSet(6) )
-                testly_assert_true( ext.bool.true = ba.isSet(5) )
-                testly_assert_true( ext.bool.true = ba.isSet(4) )
-                testly_assert_true( ext.bool.true = ba.isSet(3) )
-                testly_assert_true( ext.bool.false = ba.isSet(2) )
-                testly_assert_true( ext.bool.true = ba.isSet(1) )
-                testly_assert_true( ext.bool.true = ba.isSet(0) )
+                ext_assert_true( ext.bool.true = ba.isSet(9) )
+                ext_assert_true( ext.bool.false = ba.isSet(8) )
+                ext_assert_true( ext.bool.false = ba.isSet(7) )
+                ext_assert_true( ext.bool.false = ba.isSet(6) )
+                ext_assert_true( ext.bool.true = ba.isSet(5) )
+                ext_assert_true( ext.bool.true = ba.isSet(4) )
+                ext_assert_true( ext.bool.true = ba.isSet(3) )
+                ext_assert_true( ext.bool.false = ba.isSet(2) )
+                ext_assert_true( ext.bool.true = ba.isSet(1) )
+                ext_assert_true( ext.bool.true = ba.isSet(0) )
 
         end sub
 
 
         private sub register constructor
-                ext.testly.addSuite("ext-containers-bitarray")
-                ext.testly.addTest("bitarray dump equality", @ba_dump_eq)
-                ext.testly.addTest("bitarray load accuracy", @ba_load_accuracy)
-                ext.testly.addTest("bitarray set accuracy", @ba_set_accuracy)
-                ext.testly.addTest("bitarray tog accuracy", @ba_tog_accuracy)
+                ext.tests.addSuite("ext-containers-bitarray")
+                ext.tests.addTest("bitarray dump equality", @ba_dump_eq)
+                ext.tests.addTest("bitarray load accuracy", @ba_load_accuracy)
+                ext.tests.addTest("bitarray set accuracy", @ba_set_accuracy)
+                ext.tests.addTest("bitarray tog accuracy", @ba_tog_accuracy)
 
         end sub
 

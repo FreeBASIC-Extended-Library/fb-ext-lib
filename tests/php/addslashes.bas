@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/php.bi"
 
 namespace ext.tests.php_
@@ -13,15 +13,15 @@ namespace ext.tests.php_
     
         ' this is just a call to ext.php.AddCSlashes, so only the characters
         ' passed to it need checking (quote, double-qoute and backslash)..
-        TESTLY_ASSERT_TRUE( !"[\\'] [\\\"] [\\\\]" = ext.php.AddSlashes(!"['] [\"] [\\]") )
+        ext_assert_TRUE( !"[\\'] [\\\"] [\\\\]" = ext.php.AddSlashes(!"['] [\"] [\\]") )
     
     end sub
     
     '' :::::
 	private sub register constructor
-		ext.testly.addSuite("ext-php-addslashes")
-		ext.testly.addTest("API", @API)
-		ext.testly.addTest("Test", @Test)
+		ext.tests.addSuite("ext-php-addslashes")
+		ext.tests.addTest("API", @API)
+		ext.tests.addTest("Test", @Test)
 	end sub
 
 end namespace

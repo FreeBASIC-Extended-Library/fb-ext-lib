@@ -11,14 +11,14 @@
 #include once "testly_case.bi"
 #include once "testly_suite.bi"
 
-namespace ext.Testly
+namespace ext.tests
     namespace Helpers
         '# CURRENT_SUITE
         extern CURRENT_SUITE as Suite ptr
-        
+
         '# CURRENT_TEST
         extern CURRENT_TEST as TestCase ptr
-        
+
     end namespace 'Helpers
 end namespace 'Testly
 

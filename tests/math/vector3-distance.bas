@@ -1,4 +1,4 @@
-# include once "ext/testly.bi"
+# include once "ext/tests.bi"
 # include once "ext/math/vector3.bi"
 
 namespace ext.tests.math
@@ -8,7 +8,7 @@ type Vector as ext.math.fbext_Vector3( ((double)) )
 var shared origin = Vector( 0.0, 0.0, 0.0 )
 
 # define TEST_DISTANCE_FROM_ORIGIN( v, d ) _
-    TESTLY_ASSERT_TRUE( FBEXT_FLOAT_EQUAL( d, (v).Distance(origin) ) )
+    ext_assert_TRUE( FBEXT_FLOAT_EQUAL( d, (v).Distance(origin) ) )
 
     private sub Test
     
@@ -30,8 +30,8 @@ var shared origin = Vector( 0.0, 0.0, 0.0 )
     end sub
     
 	private sub register constructor
-		ext.testly.addSuite("ext-math-vector3-distance")
-		ext.testly.addTest("Test", @Test)
+		ext.tests.addSuite("ext-math-vector3-distance")
+		ext.tests.addTest("Test", @Test)
 	end sub
 
 end namespace
