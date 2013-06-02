@@ -18,7 +18,7 @@ export LIBRARY_DIR := ../../$(LIBRARY_DIR)
 # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ALL_MODULES := algorithms containers conversion config
 ALL_MODULES += file graphics hash json math memory net
-ALL_MODULES += php preprocessor strings
+ALL_MODULES += php preprocessor strings logging
 ALL_MODULES += debug error fbmld misc templates
 ALL_MODULES += xml xstring options database
 database-properties := hasSources usesCustomMakefile

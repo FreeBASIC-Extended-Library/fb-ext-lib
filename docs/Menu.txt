@@ -2,7 +2,7 @@ Format: 1.52
 
 
 Title: FreeBASIC Extended Library
-SubTitle: API Reference 0.3.2
+SubTitle: API Reference 0.5.0
 
 Footer: Copyright (c) 2007-2013 FreeBASIC Extended Library Development Group and Contributors
 Timestamp: Generated on month day, year
@@ -55,6 +55,7 @@ Group: Documentation  {
    File: Common Functionality  (no auto-title, ext/detail/common.bi)
    File: Application Configuration  (no auto-title, ext/config.bi)
    File: Handling Errors  (no auto-title, ext/error.bi)
+   File: Logging  (no auto-title, ext/log.bi)
    File: Detecting Memory Leaks  (no auto-title, ext/fbmld.bi)
    File: JSON  (no auto-title, ext/json.bi)
    File: Memory functions  (no auto-title, ext/memory.bi)
@@ -121,6 +122,7 @@ Group: Documentation  {
       File: file/console.bi  (ext/file/console.bi)
       File: file/directory.bi  (ext/file/directory.bi)
       File: file/file.bi  (ext/file/file.bi)
+      File: file/zipfile.bi  (ext/file/zipfile.bi)
       }  # Group: File
 
    Group: Graphics  {
