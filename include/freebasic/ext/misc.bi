@@ -53,10 +53,16 @@ namespace ext.misc
 
     ''Macro: FBEXT_TIMED_OP_START
     ''Start timing a sequence of events.
+    ''
+    ''Note:
+    ''You should only use this macro once per scope.
     #define FBEXT_TIMED_OP_START var __ext_time_op_in = timer
 
     ''Macro: FBEXT_TIMED_OP_END
     ''Ends timing a sequence of events.
+    ''
+    ''Note:
+    ''You should only use this macro once per scope.
     ''
     ''Returns:
     ''string containing a formatted value of the time difference in seconds.
