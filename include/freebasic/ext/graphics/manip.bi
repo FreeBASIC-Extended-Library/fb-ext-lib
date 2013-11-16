@@ -68,7 +68,7 @@ namespace ext.gfx
     ''
     declare function flipHorizontal ( byval img As const Image Ptr ) As Image ptr
 
-    ''Sub: change_color
+    ''Sub: changeColor
     ''Attempts to change one color to another in a <Image> buffer.
     ''
     ''Parameters:
@@ -78,7 +78,7 @@ namespace ext.gfx
     ''include_alpha - optional flag to determine if the alpha channel is included in the color check, defaults to false.
     ''is_font - optional flag to determine if the buffer is a FBGFX font buffer, defaults to false.
     ''
-    declare sub change_color ( byref img as Image ptr, byval from_ as uinteger, byval to_ as uinteger, byval include_alpha as ext.bool = ext.bool.false, byval is_font as ext.bool = ext.bool.false )
+    declare sub changeColor ( byref img as Image ptr, byval from_ as uinteger, byval to_ as uinteger, byval include_alpha as ext.bool = ext.bool.false, byval is_font as ext.bool = ext.bool.false )
 
     ''Sub: Rotate
     ''Rotates a image buffer.

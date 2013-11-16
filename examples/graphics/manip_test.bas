@@ -20,7 +20,7 @@ myimg->Display 1, 10, PSET_
 sleep
 
 'change pink to yellow, keeping the original alpha and treating it like a font buffer
-change_color( myimg, &hFF00FF, &hFFF00F, ext.false, ext.true )
+changeColor( myimg, &hFF00FF, &hFFF00F, ext.false, ext.true )
 
 cls
 print "New image:"

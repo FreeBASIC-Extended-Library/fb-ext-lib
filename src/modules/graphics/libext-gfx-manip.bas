@@ -70,7 +70,7 @@ namespace ext.gfx
         end function
 
 
-        sub change_color ( byref img as IMAGE ptr, byval from_ as uinteger, byval to_ as uinteger, byval include_alpha as ext.bool = ext.bool.false, byval is_font as ext.bool = ext.bool.false )
+        sub changeColor ( byref img as IMAGE ptr, byval from_ as uinteger, byval to_ as uinteger, byval include_alpha as ext.bool = ext.bool.false, byval is_font as ext.bool = ext.bool.false )
 
                 if img = ext.null then exit sub
                 if img->bpp < 4 then exit sub 'this procedure only operates on 24 & 32 bit bitmaps
