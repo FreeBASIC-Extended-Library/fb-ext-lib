@@ -196,7 +196,7 @@ declare sub getIntegerArray( byref name_ as string, byref subname as string = "i
 ''  <item value="0.0" />
 ''</name>
 ''(end code)
-declare sub getDoubleArray( byref name_ as string, byref subname as string "item", array() as double )
+declare sub getDoubleArray( byref name_ as string, byref subname as string = "item", array() as double )
 
 ''Sub: getStringArray
 ''
@@ -213,7 +213,7 @@ declare sub getDoubleArray( byref name_ as string, byref subname as string "item
 ''  <item>string</item>
 ''</name>
 ''(end code)
-declare sub getStringArray( byref name_ as string, byref subname as string "item", array() as string )
+declare sub getStringArray( byref name_ as string, byref subname as string = "item", array() as string )
 
 ''Sub: setBool
 ''
