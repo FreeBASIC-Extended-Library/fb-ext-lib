@@ -10,21 +10,77 @@
 #ifndef FBEXT_FILE_DIRECTORY_BI__
 #define FBEXT_FILE_DIRECTORY_BI__ -1
 
+#include once "ext/file/detail/common.bi"
+
 ''Namespace: ext
 namespace ext
 
 ''Class: Directory
 ''Perform filesystem operations in a platform independant manner.
+''This object is also <Printable>
 ''
 type Directory
     public:
+    ''Sub: Default constructor
+    ''Creates a Directory object that points to the current directory.
     declare constructor()
+
+    ''Sub: Path constructor
+    ''Creates a Directory object that points to the specified path.
+    ''
+    ''Parameters:
+    ''path - the path to set
+    ''
     declare constructor( byref path as const string )
+
+    ''Sub: Copy Constructor
+    ''Create an Directory object from a previously created Directory
+    ''
+    ''Parameters:
+    ''rhs - the Directory object to copy from
+    ''
     declare constructor( byref rhs as const Directory )
     declare destructor( )
 
+    ''Function: cd
+    ''Changes to the specified directory.
+    ''
+    ''Parameters:
+    ''path - the path to change to
+    ''
+    ''Returns:
+    ''True on success, False on Error
+    ''
     declare function cd( byref path as string ) as bool
+
+    ''Function: cdUp
+    ''Change the directory up one level.
+    ''
+    ''Returns:
+    ''True if successful, False if at the root
+    ''
     declare function cdUp( ) as bool
+
+    ''Function: exists
+    ''Check if the specified file or path exist.
+    ''
+    ''Parameters:
+    ''p - the file or path to check
+    ''
+    ''Returns:
+    ''True if p exists, False if it does not or error.
+    ''
+    declare function exists( byref p as const string ) as bool
+
+    ''Function: activate
+    ''Actually changes the directory in the context of the program so
+    ''other functions operate in this path.
+    ''
+    ''Returns:
+    ''True on Success, False on error
+    ''
+    declare function activate() as bool
+
     declare operator cast() as string
 
     private:
@@ -36,8 +92,10 @@ namespace dir
 
 #if defined(__FB_WIN32__) or defined(__FB_DOS__)
     const SEPERATOR as string = "\"
+    const OTHER_SEPERATOR as string = "/"
 #else
     const SEPERATOR as string = "/"
+    const OTHER_SEPERATOR as string = "\"
 #endif
 
 ''Function: root
@@ -46,21 +104,10 @@ namespace dir
 ''systems this is the root directory of the current drive.
 declare function root () as Directory
 
-''Function: rootPath
-''Returns a string containing the path of the root of the current
-''filesystem. On Unix systems this is "/", on DOS and Windows
-''systems this is the root directory of the current drive.
-declare function rootPath () as string
-
 ''Function: home
 ''Returns a <Directory> object pointing to the current user's
 ''home directory. On DOS systems this is equivalent to <root>.
 declare function home () as Directory
-
-''Function: homePath
-''Returns a string containing the path to the current user's
-''home directory. On DOS systems this is equivalent to <rootPath>.
-declare function homePath () as string
 
 ''Function: temp
 ''Returns a <Directory> object pointing to the system's temporary
@@ -69,11 +116,6 @@ declare function homePath () as string
 ''varies on Windows NT systems but is set in the environment
 ''variable %TEMP%.
 declare function temp () as Directory
-
-''Function: tempPath
-''Returns a string containing the path to the system's temporary
-''directory.
-declare function tempPath () as string
 
 ''Function: toNativeSeperators
 ''Converts all seperators in the passed string to the seperators
