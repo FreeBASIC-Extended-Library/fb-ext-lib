@@ -99,8 +99,7 @@ declare sub sendHTTPheaders( byref s as TCPsocket, byref m as method = method.ge
 ''Attempts to load the specified url into memory.
 ''
 ''Parameters:
-''s - open TCPsocket to the base website from url
-''url - the full url of the file to retrieve
+''url - the full url of the file to retrieve, only supports HTTP not HTTPS
 ''ret_len - will hold the size of the file after retrieval
 ''st - return parameter that will hold the <HTTP_STATUS> of the request.
 ''
@@ -108,20 +107,19 @@ declare sub sendHTTPheaders( byref s as TCPsocket, byref m as method = method.ge
 ''Ubyte pointer to the file or null on error.
 ''This pointer should be deallocated using delete[].
 ''For convienience the memory is allocated ret_len +1 and the final byte is set to null so it may be cast to a zstring ptr if appropriate.
-declare function getRemoteFiletoMemory( byref s as TCPsocket, byref url as string, byref ret_len as SizeType, byref st as HTTP_STATUS = HTTP_STATUS.NONE ) as ubyte ptr
+declare function getRemoteFiletoMemory( byref url as string, byref ret_len as SizeType, byref st as HTTP_STATUS = HTTP_STATUS.NONE ) as ubyte ptr
 
 ''Function: getRemoteFileToDisk
 ''Attempts to download the specified url to a file.
 ''
 ''Parameters:
-''s - open TCPsocket to the base website from url
-''url - the full url of the file to retrieve
+''url - the full url of the file to retrieve, only supports HTTP not HTTPS
 ''filetosave - the name of the file to save under.
 ''
 ''Returns:
 ''<HTTP_STATUS>
 ''
-declare function getRemoteFileToDisk( byref s as TCPsocket, byref url as string, byref filetosave as string ) as HTTP_STATUS
+declare function getRemoteFileToDisk( byref url as string, byref filetosave as string ) as HTTP_STATUS
 
 end namespace
 
