@@ -12,17 +12,7 @@
 
 #include once "ext/detail/common.bi"
 
-#if not __FB_MT__
-    #inclib "ext-threads"
-    #ifdef FBEXT_MULTITHREADED
-        #error "The multithreaded version of the library must be built using the -mt compiler option."
-    #endif
-#else
-    #inclib "ext-threads.mt"
-    #ifndef FBEXT_MULTITHREADED
-        #define FBEXT_MULTITHREADED 1
-    #endif
-#endif
+#inclib "ext-threads"
 
 namespace ext.threads
 
