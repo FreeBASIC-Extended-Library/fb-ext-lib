@@ -39,6 +39,18 @@ constructor Message( byval cm as integer, byval xtra as Mdata ptr = 0, byval cc 
     this.m = cc
 end constructor
 
+function Message.command ( ) as integer
+    return this.c
+end function
+
+function Message.msgdata () as any ptr
+    if this.x = 0 then
+        return 0
+    else
+        return this.x->d
+    end if
+end function
+
 constructor Messages( byval rhs as Message ptr ) export
     this.d = rhs
     this.n = 0

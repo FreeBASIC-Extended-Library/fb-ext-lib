@@ -9,17 +9,15 @@ sub thread_a( byval _cc as any ptr )
 
     while 1
         var m = cc->recv()
-        while m = 0
-            m = cc->recv()
-        wend
-
-        ? "[THREAD_A] Recieved message: " & m->c
-        cc->status(new Message(m->c))
-        if m->c = 0 then
+        if m <> 0 then
+            ? "[THREAD_A] Recieved message: " & m->command
+            cc->status(new Message(m->command))
+            if m->command = 0 then
+                delete m
+                exit while
+            end if
             delete m
-            exit while
         end if
-        delete m
         sleep 10,1
     wend
 
@@ -30,17 +28,15 @@ sub thread_b( byval _cc as any ptr )
 
     while 1
         var m = cc->recv()
-        while m = 0
-            m = cc->recv()
-        wend
-
-        ? "[THREAD_B] Recieved message: " & m->c
-        cc->status(new Message(m->c * 2))
-        if m->c = 0 then
+        if m <> 0 then
+            ? "[THREAD_B] Recieved message: " & m->command
+            cc->status(new Message(m->command * 2))
+            if m->command = 0 then
+                delete m
+                exit while
+            end if
             delete m
-            exit while
         end if
-        delete m
         sleep 10,1
     wend
 
@@ -65,8 +61,8 @@ scope 'main
 
     do
         if r <> 0 then
-            print "[MAIN] Recieved from threads: " & r->c
-            if r->c = 0 then
+            print "[MAIN] Recieved from threads: " & r->command
+            if r->command = 0 then
                 delete r
                 exit do
             end if

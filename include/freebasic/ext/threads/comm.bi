@@ -48,6 +48,28 @@ type Message
     ''cc - optional pointer to a <CommChannel> to use for communicating
     declare constructor( byval cm as integer, byval xtra as Mdata ptr = 0, byval cc as ComChannel_f ptr =0)
     declare destructor()
+
+    ''Function: command
+    ''Get the application dependant command.
+    ''
+    ''Returns:
+    ''Integer command value
+    ''
+    declare function command() as integer
+
+    ''Function: msgdata
+    ''Gets the data associated with this command (if any)
+    ''
+    ''Returns:
+    ''<Null> if no data, otherwise application dependant data pointer.
+    ''
+    ''Notes:
+    ''*Important*: this data pointer is managed by the <Message> object
+    ''and should not be free'd or deleted.
+    ''
+    declare function msgdata() as any ptr
+
+    private:
     c as integer
     x as MData ptr
     m as ComChannel_f ptr
