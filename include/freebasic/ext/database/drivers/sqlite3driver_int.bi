@@ -8,9 +8,14 @@
 'to avoid dependency on the dll on windows.
 '
 
-#ifdef __FB_WIN32__
+#ifndef FBEXT_DATABASE_SQLITE_INT__
+#define FBEXT_DATABASE_SQLITE_INT__ 1
+
 #ifndef EXT_USE_SQLITEDLL
-#inclib "ext-sqlite-3.6.23"
+    #inclib "ext-sqlite-3.6.23"
+#else
+    #inclib "sqlite3"
+#endif
 
 extern "c"
 type sqlite3 as any
@@ -75,26 +80,4 @@ declare function sqlite3_errmsg( byval as sqlite3 ptr ) as const zstring ptr
 
 end extern
 
-#else
-#include once "sqlite3.bi"
-'not defined in fb's sqlite3 header older than 3.7.8
-#ifndef SQLITE_VERSION_NUMBER
-#define SQLITE_VERSION_NUMBER 0
-#endif
-#if SQLITE_VERSION_NUMBER < 3007008
-extern "c"
-declare function sqlite3_prepare_v2 ( byval db_ as sqlite3 ptr, byval zSql_ as const zstring ptr, byval nByte_ as integer, byval ppStmt_ as sqlite3_stmt ptr ptr, byval pzTail_ as const zstring ptr ptr ) as integer
-end extern
-#endif
-#endif
-#else
-#include once "sqlite3.bi"
-#ifndef SQLITE_VERSION_NUMBER
-#define SQLITE_VERSION_NUMBER 0
-#endif
-#if SQLITE_VERSION_NUMBER < 3007008
-extern "c"
-declare function sqlite3_prepare_v2 ( byval db_ as sqlite3 ptr, byval zSql_ as const zstring ptr, byval nByte_ as integer, byval ppStmt_ as sqlite3_stmt ptr ptr, byval pzTail_ as const zstring ptr ptr ) as integer
-end extern
-#endif
 #endif
