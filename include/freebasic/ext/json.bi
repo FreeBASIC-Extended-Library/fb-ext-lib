@@ -102,10 +102,12 @@ namespace ext.json
 
         declare destructor
         private:
-        as double m_number
         as string m_string
-        as bool m_bool
-        m_child as any ptr
+        union
+                as double m_number
+                as bool m_bool
+                m_child as any ptr
+        end union
         m_type as jvalue_type
     end type
 
