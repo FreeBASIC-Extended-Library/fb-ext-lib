@@ -12,6 +12,10 @@
 
 #include once "ext/detail/common.bi"
 
+#ifndef FBEXT_MULTITHREADED
+#print [FBEXT-THREADS] You must use the -mt option to fbc to compile using this module
+#endif
+
 #inclib "ext-threads"
 
 namespace ext.threads
@@ -114,9 +118,31 @@ type CommChannel
         ''Check for any messages from thread B and return the oldest one.
         ''
         ''Returns:
-        ''Null if no <Messages> awaiting, or a <Message> ptr
+        ''Null if no <Message>s awaiting, or a <Message> ptr
         ''that you must free when done with it using delete.
         declare function response( ) as Message ptr
+
+        ''Function: peekA
+        ''Check for any messages from thread B and return a read-only copy
+        ''without removing if from the queue. Useful to check if you
+        ''want to handle the message or let another consumer of messages
+        ''handle it.
+        ''
+        ''Returns:
+        ''Null if no <Message>s awaiting or a <Message> ptr
+        ''*DO NOT DELETE THIS POINTER*
+        declare function peekA() as Message ptr
+
+        ''Function: peekB
+        ''Check for any messages from thread A and return a read-only copy
+        ''without removing if from the queue. Useful to check if you
+        ''want to handle the message or let another consumer of messages
+        ''handle it.
+        ''
+        ''Returns:
+        ''Null if no <Message>s awaiting or a <Message> ptr
+        ''*DO NOT DELETE THIS POINTER*
+        declare function peekB() as Message ptr
 
     private:
         _mess as Messages ptr

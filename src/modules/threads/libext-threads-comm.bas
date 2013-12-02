@@ -107,6 +107,26 @@ sub CommChannel.status( byval m as Message ptr ) export
     mutexunlock _omutex
 end sub
 
+function CommChannel.peekA( ) as Message ptr export
+    mutexlock _omutex
+    dim as Message ptr ret = 0
+    if _omess <> 0 then
+        ret = _omess->d
+    end if
+    mutexunlock _omutex
+    return ret
+end function
+
+function CommChannel.peekB( ) as Message ptr export
+    mutexlock _mutex
+    dim as Message ptr ret = 0
+    if _mess <> 0 then
+        ret = _mess->d
+    end if
+    mutexunlock _mutex
+    return ret
+end function
+
 function CommChannel.recv( ) as Message ptr export
     dim res as Message ptr
     mutexlock _mutex

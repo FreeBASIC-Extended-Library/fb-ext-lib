@@ -21,6 +21,8 @@ sub thread_a( byval _cc as any ptr )
         sleep 10,1
     wend
 
+    ? "[THREAD_A] QUIT"
+
 end sub
 
 sub thread_b( byval _cc as any ptr )
@@ -39,6 +41,8 @@ sub thread_b( byval _cc as any ptr )
         end if
         sleep 10,1
     wend
+
+    ? "[THREAD_B] QUIT"
 
 end sub
 
