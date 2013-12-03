@@ -261,11 +261,9 @@ namespace ext
 	:
 	# endmacro
 
-    # ifndef FBEXT_NO_BUILTIN_INSTANCIATIONS
-    
-        fbext_InstanciateMulti(fbext_SharedPtr, fbext_NumericTypes())
-    
-    # endif
+    '#ifndef fbext_NoBuiltinInstanciations
+       'fbext_InstanciateMulti(fbext_SharedPtr, fbext_NumericTypes())
+    '#endif
 
 end namespace
 

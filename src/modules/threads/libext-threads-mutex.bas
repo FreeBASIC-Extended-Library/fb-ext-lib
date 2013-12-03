@@ -20,24 +20,54 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#include once "ext/memory/sharedptr.bi"
 #include once "ext/threads/mutex.bi"
+
+type mutex_imp
+    declare constructor()
+    declare destructor()
+    m as any ptr
+end type
+
+destructor mutex_imp()
+    mutexdestroy m
+end destructor
+
+constructor mutex_imp()
+    m = mutexcreate
+end constructor
+
+namespace ext
+    fbext_Instanciate(fbext_SharedPtr, ((mutex_imp)))
+end namespace
 
 namespace ext.threads
 
+operator Mutex.let( byref rhs as Mutex )
+    this._m = new fbext_SharedPtr((mutex_imp))(*cast(fbext_SharedPtr((mutex_imp)) ptr, rhs._m))
+end operator
+
+constructor Mutex( byref rhs as Mutex )
+    this = rhs
+end constructor
+
 sub Mutex.lock()
-    mutexlock this._m
+    var m = cast(fbext_SharedPtr((mutex_imp)) ptr,this._m)->get()
+    mutexlock m->m
 end sub
 
 sub Mutex.unlock()
-    mutexunlock this._m
+    var m = cast(fbext_SharedPtr((mutex_imp)) ptr,this._m)->get()
+    mutexunlock m->m
 end sub
 
 constructor Mutex()
-    this._m = mutexcreate
+    this._m = new fbext_SharedPtr((mutex_imp))(new mutex_imp)
 end constructor
 
 destructor Mutex()
-    mutexdestroy this._m
+    var m = cast(fbext_SharedPtr((mutex_imp)) ptr,this._m)
+    delete m
 end destructor
 
 end namespace

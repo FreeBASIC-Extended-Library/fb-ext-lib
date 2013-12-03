@@ -24,6 +24,8 @@ type Mutex
     ''Sub: unlock
     declare sub unlock()
     declare constructor()
+    declare constructor( byref rhs as Mutex )
+    declare operator let( byref rhs as Mutex )
     declare destructor()
 
     private:
