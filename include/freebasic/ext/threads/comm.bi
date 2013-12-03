@@ -11,12 +11,11 @@
 #define __FBEXT_THREADS_COMM_BI -1
 
 #include once "ext/detail/common.bi"
+#include once "ext/threads/detail/common.bi"
 
 #ifndef FBEXT_MULTITHREADED
 #print [FBEXT-THREADS] You must use the -mt option to fbc to compile using this module
 #endif
-
-#inclib "ext-threads"
 
 namespace ext.threads
 
