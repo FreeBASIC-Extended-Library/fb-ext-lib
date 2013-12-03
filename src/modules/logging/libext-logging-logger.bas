@@ -23,8 +23,39 @@
 #include once "ext/log.bi"
 #include once "ext/memory.bi"
 #include once "vbcompat.bi"
-
+#ifdef FBEXT_MULTITHREADED
+#include once "ext/threads/comm.bi"
 namespace ext
+declare sub log_thread ( byval _cc as any ptr )
+end namespace
+#endif
+namespace ext
+
+#ifdef FBEXT_MULTITHREADED
+using threads
+
+type ldata
+    as integer lvl
+    as string file
+    as string msg
+    as integer lineno
+    as integer ch
+    declare constructor(byval l as integer, byval f as string, byval m as string, byval ln as integer, c as integer)
+end type
+
+constructor ldata(byval l as integer, byval f as string, byval m as string, byval ln as integer, c as integer)
+    lvl = l
+    file = f
+    msg = m
+    lineno = ln
+    ch = c
+end constructor
+
+sub ldata_free( byval rhs as any ptr )
+    var r = cast(ldata ptr, rhs)
+    delete r
+end sub
+#endif
 
 type _log_channel
     public:
@@ -35,7 +66,12 @@ type _log_channel
     level as LOGLEVEL
     declare constructor()
     declare destructor()
+    #ifdef FBEXT_MULTITHREADED
+    tid as any ptr
+    cc as threads.CommChannel
+    #endif
 end type
+
 
 constructor _log_channel
     method = LOG_PRINT
@@ -95,9 +131,18 @@ end sub
 sub __init_log () constructor
     __log_nc = 1
     __log_channel = new _log_channel[__log_nc]
+    #ifdef FBEXT_MULTITHREADED
+    __log_channel[0].tid = threadcreate( @log_thread, @__log_channel[0].cc )
+    #endif
 end sub
 
 sub __destroy_log () destructor
+    #ifdef FBEXT_MULTITHREADED
+    for n as uinteger = 0 to __log_nc -1
+        __log_channel[n].cc.send(new Message(-1))
+        threadwait __log_channel[n].tid
+    next
+    #endif
     if __log_channel <> NULL then delete[] __log_channel
     __log_nc = 0
 end sub
@@ -110,8 +155,16 @@ function setNumberOfLogChannels( byval c as uinteger ) as bool
         memcpy(newp,__log_channel,iif(c>__log_nc,__log_nc,c))
         var oldp = __log_channel
         __log_channel = newp
+        var oldc = c- __log_nc
         __log_nc = c
         delete[] oldp
+        #ifdef FBEXT_MULTITHREADED
+        if oldc > 0 then
+            for n as uinteger = __log_nc - (oldc + 1) to __log_nc -1
+                __log_channel[n].tid = threadcreate( @log_thread, @__log_channel[n].cc )
+            next
+        end if
+        #endif
         return FALSE
     end if
     return TRUE
@@ -122,6 +175,15 @@ function iso_datetime( byval t as double ) as string
     return format(t,"yyyy-mm-ddThh:mm:ss")
 
 end function
+
+#ifdef FBEXT_MULTITHREADED
+enum LOG_TCOMM explicit
+    QUIT = -1
+    LOG2PRINT = 0
+    LOG2FILE
+    LOG2CUSTOM
+end enum
+#endif
 
 sub __log( byval lvl as LOGLEVEL, _
             byref _msg_ as const string, _
@@ -138,7 +200,12 @@ sub __log( byval lvl as LOGLEVEL, _
     case LOG_NULL
         return
     case LOG_PRINT
-        print lstr(lvl) & ": " & _msg_
+        var pmsg = lstr(lvl) & ": " & _msg_
+        #ifdef FBEXT_MULTITHREADED
+        __log_channel[channel].cc.send(new Message(LOG_TCOMM.LOG2PRINT,new MData(new ldata(0,"",pmsg,0,0),@ldata_free)))
+        #else
+        print pmsg
+        #endif
     case LOG_FILE
         var fname_ = cast(zstring ptr,__log_channel[channel]._data)
         var fname = ""
@@ -147,18 +214,59 @@ sub __log( byval lvl as LOGLEVEL, _
         else
             fname = command(0) & ".log"
         end if
-        var isodate = ""
+        var pmsg = iso_datetime(now) & " " & lstr(lvl) & " " & _msg_ & " -> " & _file_ & ":" & _line_number_
 
+        #ifdef FBEXT_MULTITHREADED
+        __log_channel[channel].cc.send(new Message(LOG_TCOMM.LOG2FILE,new MData(new ldata(0,fname,pmsg,0,0),@ldata_free)))
+        #else
         var ff = freefile
         open fname for append access write as #ff
-        print #ff, iso_datetime(now) & " " & lstr(lvl) & " " & _msg_ & " -> " & _file_ & ":" & _line_number_
+        print #ff, pmsg
         close #ff
+        #endif
     case LOG_CUSTOM
+        #ifdef FBEXT_MULTITHREADED
+        var pmsg = " " & _msg_
+        pmsg = ltrim(pmsg)
+        var pfile = " " & _file_
+        pfile = ltrim(pfile)
+        __log_channel[channel].cc.send(new Message(LOG_TCOMM.LOG2CUSTOM,new MData(new ldata(lvl,pfile,pmsg,_line_number_,channel),@ldata_free)))
+        #else
         cast(log_custom_sub,__log_channel[channel]._data)(lvl,_msg_,_file_,_line_number_,__log_channel[channel]._fdata)
+        #endif
     end select
 
     end if
 
 end sub
+
+#ifdef FBEXT_MULTITHREADED
+sub log_thread ( byval _cc as any ptr )
+    var cc = cast(threads.CommChannel ptr,_cc)
+
+    do
+    var r = cc->recv()
+    if r <> 0 then
+        var d = cast(ldata ptr,r->msgdata())
+        select case r->command
+        case LOG_TCOMM.QUIT
+            delete r
+            exit do
+        case LOG_TCOMM.LOG2PRINT
+            print d->msg
+        case LOG_TCOMM.LOG2FILE
+            var ff = freefile
+            open d->file for append access write as #ff
+            print #ff, d->msg
+            close #ff
+        case LOG_TCOMM.LOG2CUSTOM
+            cast(log_custom_sub,__log_channel[d->ch]._data)(d->lvl,d->msg,d->file,d->lineno,__log_channel[d->ch]._fdata)
+        end select
+        delete r
+    end if
+    loop
+
+end sub
+#endif
 
 end namespace
