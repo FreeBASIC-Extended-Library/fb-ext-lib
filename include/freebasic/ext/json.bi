@@ -61,6 +61,10 @@ namespace ext.json
         ''Assign this JSONvalue a <JSONobject> value.
         declare constructor( byval o as jobject_f ptr )
 
+        ''Sub: Assignment Operator
+        ''Performs a deep-copy of the rhs JSONvalue.
+        declare operator Let ( byref rhs as const JSONvalue )
+
         ''Sub: <JSONarray> Constructor
         ''Assign this JSONvalue a <JSONarray> value.
         declare constructor( byval a as jarray_f ptr )
@@ -68,6 +72,10 @@ namespace ext.json
         ''Sub: Default Constructor
         ''Assign this JSONvalue a null value.
         declare constructor()
+
+        ''Sub: Copy Constructor
+        ''Deep-copy the value of another JSONvalue
+        declare constructor( byref rhs as const JSONvalue )
 
         ''Function: valueType
         ''Determine what type of content this type contains.
@@ -195,7 +203,7 @@ namespace ext.json
     ''Represents an array of <JSONvalue> objects.
     type JSONarray
         public:
-        ''Sub: Constructor
+        ''Sub: Advanced Constructor
         ''Used when you need to construct your own array.
         ''
         ''Parameters:
@@ -203,7 +211,14 @@ namespace ext.json
         ''i_len - the 1-based length of i
         declare constructor( byval i as JSONvalue ptr ptr, byval i_len as uinteger )
 
-        ''Function: at
+        ''Sub: Simple Constructor
+        ''Build a blank array of size n, the array is prefilled with JSON null values.
+        ''
+        ''Parameters:
+        ''n - <uinteger> the size of the array
+        declare constructor( byval n as uinteger )
+
+        ''Property: at (get)
         ''Retrieve a value from the array.
         ''
         ''Parameters:
@@ -211,7 +226,15 @@ namespace ext.json
         ''
         ''Returns:
         ''<JSONvalue> ptr of the index or null on index error
-        declare function at( byval index as uinteger ) as JSONvalue ptr
+        declare property at( byval index as uinteger ) as JSONvalue ptr
+
+        ''Property: at (set)
+        ''Set/change a value in the array.
+        ''
+        ''Parameters:
+        ''index - the 0 based index to retrieve
+        ''va - pointer to the value to assign
+        declare property at( byval index as uinteger, byref va as JSONvalue ptr )
 
         ''Function: length
         ''Retrieve the number of items in the array.
