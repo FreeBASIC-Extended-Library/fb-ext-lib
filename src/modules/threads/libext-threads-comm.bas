@@ -62,19 +62,19 @@ destructor Messages( ) export
 end destructor
 
 constructor CommChannel export
-    _mutex = mutexcreate
-    _omutex = mutexcreate
+    _mutex = new Mutex
+    _omutex = new Mutex
 end constructor
 
 destructor CommChannel export
     if _mess <> 0 then delete _mess
     if _omess <> 0 then delete _omess
-    mutexdestroy _mutex
-    mutexdestroy _omutex
+    if _mutex <> 0 then delete _mutex
+    if _omutex <> 0 then delete _omutex
 end destructor
 
 sub CommChannel.send( byval m as Message ptr ) export
-    mutexlock _mutex
+    _mutex->lock
     var nm = new Messages(m)
     var stepr = _mess
     var eol = stepr
@@ -87,11 +87,11 @@ sub CommChannel.send( byval m as Message ptr ) export
     else
         eol->n = nm
     end if
-    mutexunlock _mutex
+    _mutex->unlock
 end sub
 
 sub CommChannel.status( byval m as Message ptr ) export
-    mutexlock _omutex
+    _omutex->lock
     var nm = new Messages(m)
     var stepr = _omess
     var eol = stepr
@@ -104,34 +104,34 @@ sub CommChannel.status( byval m as Message ptr ) export
     else
         eol->n = nm
     end if
-    mutexunlock _omutex
+    _omutex->unlock
 end sub
 
 function CommChannel.peekA( ) as Message ptr export
-    mutexlock _omutex
+    _omutex->lock
     dim as Message ptr ret = 0
     if _omess <> 0 then
         ret = _omess->d
     end if
-    mutexunlock _omutex
+    _omutex->unlock
     return ret
 end function
 
 function CommChannel.peekB( ) as Message ptr export
-    mutexlock _mutex
+    _mutex->lock
     dim as Message ptr ret = 0
     if _mess <> 0 then
         ret = _mess->d
     end if
-    mutexunlock _mutex
+    _mutex->unlock
     return ret
 end function
 
 function CommChannel.recv( ) as Message ptr export
     dim res as Message ptr
-    mutexlock _mutex
+    _mutex->lock
         if _mess = 0 then
-            mutexunlock _mutex
+            _mutex->unlock
             return 0
         end if
         var new_mess = _mess->n
@@ -140,16 +140,16 @@ function CommChannel.recv( ) as Message ptr export
         res = _mess->d
         _mess->d = 0
         _mess = new_mess
-    mutexunlock _mutex
+    _mutex->unlock
     delete old_mess
     return res
 end function
 
 function CommChannel.response( ) as Message ptr export
     dim res as Message ptr
-    mutexlock _omutex
+    _omutex->lock
         if _omess = 0 then
-            mutexunlock _omutex
+            _omutex->unlock
             return 0
         end if
         var new_mess = _omess->n
@@ -158,7 +158,7 @@ function CommChannel.response( ) as Message ptr export
         res = _omess->d
         _omess->d = 0
         _omess = new_mess
-    mutexunlock _omutex
+    _omutex->unlock
     delete old_mess
     return res
 end function

@@ -12,6 +12,7 @@
 
 #include once "ext/detail/common.bi"
 #include once "ext/threads/detail/common.bi"
+#include once "ext/threads/mutex.bi"
 
 #ifndef FBEXT_MULTITHREADED
 #print [FBEXT-THREADS] You must use the -mt option to fbc to compile using this module
@@ -145,9 +146,9 @@ type CommChannel
 
     private:
         _mess as Messages ptr
-        _mutex as any ptr
+        _mutex as Mutex ptr
         _omess as Messages ptr
-        _omutex as any ptr
+        _omutex as Mutex ptr
 end type
 
 end namespace
