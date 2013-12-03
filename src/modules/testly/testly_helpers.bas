@@ -22,6 +22,9 @@ namespace ext.tests
         function addSuite(byref suite_name as string) as ext.bool
             dim result as ext.bool
             dim new_suite as Suite ptr
+            if SUITES_LIST = 0 then
+                initialize()
+            end if
 
             '# verify if that suite is already registered
             if (find_suite(SUITES_LIST, suite_name) = 0) then
@@ -78,6 +81,7 @@ namespace ext.tests
         function addTest(byref test_name as string, byref test_func as test_func_t) as ext.bool
             dim result as ext.bool
             dim new_test as TestCase ptr
+            if CURRENT_SUITE = null then return false
 
             '# check if this suite contains a test with that name
             if (find_test(CURRENT_SUITE->tests_list, test_name) = 0) then

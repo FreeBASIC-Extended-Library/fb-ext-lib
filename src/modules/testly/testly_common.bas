@@ -17,12 +17,16 @@ namespace ext.tests
     '# initialize() prepare Testly to be used by the user
     '# it creates the List that will hold all the suites
     '# for safety, this was marked as private
-    private sub initialize() constructor
+    sub initialize() constructor
         '# construct the list that will hold the suites
-        SUITES_LIST = new List
+        if SUITES_LIST = null then
+            SUITES_LIST = new List
+        end if
 
         '# the failures list
-        FAILURES_LIST = new List
+        if FAILURES_LIST = null then
+            FAILURES_LIST = new List
+        end if
     end sub
 
 
