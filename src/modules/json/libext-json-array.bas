@@ -78,12 +78,19 @@ constructor JSONarray( byval n as uinteger )
 end constructor
 
 constructor JSONarray( byref rhs as JSONarray )
+    this = rhs
+end constructor
+
+operator JSONarray.let( byref rhs as JSONarray )
+    if m_child <> 0 then
+        delete[] m_child
+    end if
     m_children = rhs.m_children
     m_child = new JSONvalue ptr[m_children]
     for m as uinteger = 0 to m_children-1
         m_child[m] = new JSONvalue(*rhs.at(m))
     next
-end constructor
+end operator
 
 destructor JSONarray
     if m_children > 0 then

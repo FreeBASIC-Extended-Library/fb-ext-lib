@@ -211,6 +211,8 @@ namespace ext.json
         ''i_len - the 1-based length of i
         declare constructor( byval i as JSONvalue ptr ptr, byval i_len as uinteger )
 
+        declare operator Let ( byref rhs as JSONarray )
+
         ''Sub: Simple Constructor
         ''Build a blank array of size n, the array is prefilled with JSON null values.
         ''
