@@ -39,6 +39,8 @@ namespace ext.gfx.gif
 ''
 declare function load( byref fn as const string, byval t as target_e ) as ext.gfx.Image ptr
 
+declare function loadAll( byref fn as const string, byref num_imgs as uinteger ) as ext.gfx.Image ptr ptr
+
 #ifndef FBEXT_BUILD_NO_GFX_LOADERS
 sub loadGIFdriver() constructor
     var loader = new GraphicsLoader

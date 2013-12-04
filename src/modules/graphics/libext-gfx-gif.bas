@@ -27,6 +27,27 @@
 
 namespace ext.gfx.gif
 
+private function loadFrame( byval tgif as GifFileType ptr, byval fn as uinteger ) as ext.gfx.Image ptr
+
+    var dstc = 0u
+    var srcindex = tgif->SavedImages[fn].RasterBits
+    var cmap = tgif->SColorMap->Colors
+    if tgif->SavedImages[fn].ImageDesc.ColorMap <> null then
+        cmap = tgif->SavedImages[fn].ImageDesc.ColorMap->Colors
+    end if
+    var w = tgif->SavedImages[fn].ImageDesc.Width
+    var h = tgif->SavedImages[fn].ImageDesc.Height
+    var ret = new ext.gfx.Image(w,h)
+    var dst = ret->Pixels
+    for n as uinteger = 0 to (w*h) -1
+        dst[dstc] = rgb(cmap[srcindex[n]].red,cmap[srcindex[n]].green,cmap[srcindex[n]].blue)
+        dstc += 1
+    next
+
+    return ret
+
+end function
+
 function load( byref fn as const string, byval t as target_e ) as ext.gfx.Image ptr
 
     var tgif = DGifOpenFilename(fn)
@@ -34,15 +55,22 @@ function load( byref fn as const string, byval t as target_e ) as ext.gfx.Image 
 
     if DGifSlurp( tgif ) <> GIF_OK then return null
 
-    var ret = new ext.gfx.Image(tgif->SWidth, tgif->SHeight)
-    var dst = ret->Pixels
-    var dstc = 0u
-    var srcindex = tgif->SavedImages[0].RasterBits
-    var cmap = tgif->SColorMap->Colors
+    return loadFrame(tgif,0)
 
-    for n as uinteger = 0 to (tgif->SWidth * tgif->SHeight) -1
-        dst[dstc] = rgb(cmap[srcindex[n]].red,cmap[srcindex[n]].green,cmap[srcindex[n]].blue)
-        dstc += 1
+end function
+
+function loadAll( byref fn as const string, byref num_img as uinteger ) as ext.gfx.Image ptr ptr
+
+    var tgif = DGifOpenFilename(fn)
+    if tgif = 0 then return null
+
+    if DGifSlurp( tgif ) <> GIF_OK then return null
+
+    num_img = tgif->ImageCount
+    var ret = new ext.gfx.Image ptr[num_img]
+
+    for n as long = 0 to num_img -1
+        ret[n] = loadFrame(tgif,n)
     next
 
     return ret
