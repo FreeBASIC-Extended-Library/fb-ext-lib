@@ -24,8 +24,19 @@
 #undef FBEXT_BUILD_NO_GFX_LOADERS
 #endif
 
+''Namespace: ext.gfx.gif
 namespace ext.gfx.gif
 
+''Function: load
+''Loads the first frame in a gif image
+''
+''Parameters:
+''fn - the file name of the GIF image
+''t - the format of image to return (OpenGL or FB)
+''
+''Returns:
+''<ext.gfx.Image> ptr or null on error
+''
 declare function load( byref fn as const string, byval t as target_e ) as ext.gfx.Image ptr
 
 #ifndef FBEXT_BUILD_NO_GFX_LOADERS
