@@ -30,6 +30,9 @@ namespace ext.gfx.gif
 ''Function: load
 ''Loads the first frame in a gif image
 ''
+''Notes:
+''At this time all GIF images width must be a multiple of 2 to load properly
+''
 ''Parameters:
 ''fn - the file name of the GIF image
 ''t - the format of image to return (OpenGL or FB)
@@ -39,6 +42,19 @@ namespace ext.gfx.gif
 ''
 declare function load( byref fn as const string, byval t as target_e ) as ext.gfx.Image ptr
 
+''Function: loadAll
+''Loads all images in a gif image
+''
+''Notes:
+''At this time all GIF images width must be a multiple of 2 to load properly
+''
+''Parameters:
+''fn - the file name of the GIF image
+''num_imgs - returns the number of images
+''
+''Returns:
+''<ext.gfx.Image> ptr array containing the images, delete with delete[] when done
+''
 declare function loadAll( byref fn as const string, byref num_imgs as uinteger ) as ext.gfx.Image ptr ptr
 
 #ifndef FBEXT_BUILD_NO_GFX_LOADERS
