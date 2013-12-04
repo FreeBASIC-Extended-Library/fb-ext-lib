@@ -36,7 +36,9 @@ function LoadImage ( byref filename as const string, byval t as target_e = TARGE
 
     if __driver_ht = null then return null
 
-    var extension = lcase(right(filename,3))
+    var sep = instrrev(filename,".")
+
+    var extension = mid(filename,sep+1)
 
     var loader = __driver_ht->Find(extension)
     if loader = null then
