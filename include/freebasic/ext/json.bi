@@ -218,6 +218,10 @@ namespace ext.json
         ''n - <uinteger> the size of the array
         declare constructor( byval n as uinteger )
 
+        ''Sub: Copy Constructor
+        ''Perform a deep copy of another array
+        declare constructor( byref rhs as JSONarray )
+
         ''Property: at (get)
         ''Retrieve a value from the array.
         ''

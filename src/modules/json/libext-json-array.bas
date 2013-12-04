@@ -77,6 +77,14 @@ constructor JSONarray( byval n as uinteger )
     next
 end constructor
 
+constructor JSONarray( byref rhs as JSONarray )
+    m_children = rhs.m_children
+    m_child = new JSONvalue ptr[m_children]
+    for m as uinteger = 0 to m_children-1
+        m_child[m] = new JSONvalue(*rhs.at(m))
+    next
+end constructor
+
 destructor JSONarray
     if m_children > 0 then
         for n as uinteger = 0 to m_children -1
