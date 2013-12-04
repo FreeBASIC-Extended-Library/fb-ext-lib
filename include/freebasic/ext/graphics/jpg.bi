@@ -44,6 +44,14 @@ sub loadJPGdriver() constructor
     var loader = new GraphicsLoader
     loader->f = @load
     getDriver("jpg",loader)
+
+    loader = new GraphicsLoader
+    loader->f = @load
+    getDriver("jpeg",loader)
+
+    loader = new GraphicsLoader
+    loader->f = @load
+    getDriver("jpe",loader)
 end sub
 #endif
 
