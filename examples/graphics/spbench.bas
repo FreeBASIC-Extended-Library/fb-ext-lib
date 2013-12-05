@@ -2,12 +2,13 @@
 #define fbext_NoBuiltinInstanciations() -1
 #define fbext_no_libjpg -1
 #define FBEXT_NO_LIBFREETYPE -1
+#define s2i(x) cast(fb.image ptr,*(x))
 
 #include once "ext/graphics/sprite.bi"
 #include once "ext/graphics/image.bi"
 #include once "ext/math/random.bi"
 #include once "fbgfx.bi"
-
+using ext.gfx
 
 #define MAX_FRAME 3
 
@@ -28,7 +29,7 @@ else
     s_h = valint(command(2))
 end if
 
-screenres s_w, s_h, 32, , fb.GFX_FULLSCREEN
+screenres s_w, s_h, 32
 
 dim sp() as ext.gfx.Sprite
 chdir exepath()
@@ -47,12 +48,12 @@ while not multikey(fb.sc_escape)
 
         redim preserve sp(sp_next_cnt)
         for n as integer = sp_cnt to sp_next_cnt
-            var x1 = imagecreate(32,32)
-            circle x1,(16,16),10,rgb(255,0,0)
-            var x2 = imagecreate(32,32)
-            circle x2,(16,16),7,rgb(0,255,0)
-            var x3 = imagecreate(32,32)
-            circle x3,(16,16),4,rgb(0,0,255)
+            var x1 = new image(32,32)
+            circle s2i(x1),(16,16),10,rgb(255,0,0)
+            var x2 = new image(32,32)
+            circle s2i(x2),(16,16),7,rgb(0,255,0)
+            var x3 = new image(32,32)
+            circle s2i(x3),(16,16),4,rgb(0,0,255)
             sp(n).Init(MAX_FRAME)
             sp(n).SetImage(1,x1)
             sp(n).SetImage(2,x2)
