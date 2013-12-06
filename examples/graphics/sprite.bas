@@ -7,13 +7,14 @@
 ''accompanying file LICENSE.txt or copy at
 ''http://code.google.com/p/fb-extended-lib/wiki/License)
 
-
+#define FBEXT_NO_EXTERNAL_LIBS 1 'we don't need image support for this
 # include once "ext/graphics/sprite.bi"
-
+#define s2i(x) cast(fb.image ptr,*(x))
 ''This lets us not have to type ext.gfx before every Sprite object.
 using ext.gfx
 
 screenres 640,480,32
+windowtitle "FB-EXT Sprite Example"
 
 ''This is the normal way to dimension a ext.gfx.Sprite object.
 var mySprite1 = Sprite(5)
@@ -28,9 +29,9 @@ mySprite2.Init( 5 )
 ''This loop will make our lead character, a large blue circle.
 for n as uinteger = 0 to 4
 
-    var crcl = imagecreate(100,100,&hFF00FF)
+    var crcl = new image(100,100,rgb(&hff,0,&hff))
 
-    circle crcl, (50,50), 20 + (n*5), &h0000FF,,,, F
+    circle s2i(crcl), (50,50), 20 + (n*5), &h0000FF,,,, F
 
     ''You will notice we reuse the crcl variable name since Sprite becomes
     ''responsible for freeing the image's memory when it is no longer needed.
@@ -41,9 +42,10 @@ next
 ''This loop creates our enemy, a smaller green circle.
 for n as uinteger = 0 to 4
 
-    var crcl2 = imagecreate(50,50,&hFF00FF)
+    var crcl2 = new Image(50,50,rgb(&hff,0,&hff))
 
-    circle crcl2, (25,25), 10 + (n*5), &h00FF00,,,,F
+    circle s2i(crcl2), (25,25), 10 + (n*5), &h00FF00,,,,F
+
     mySprite2.SetImage(n, crcl2)
 
 next
@@ -76,6 +78,7 @@ screenlock
     if mySprite1.isCollided( mySprite2 ) then
         locate 1,1
         print "Boom!"
+        beep
     end if
 screenunlock
 

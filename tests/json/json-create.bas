@@ -20,13 +20,13 @@ namespace ext.tests.json_
 
     end sub
 
-    private sub test_create_array
+    private sub test_create_array_adv
 
     dim j as ext.json.JSONobject
 
     dim as ext.json.JSONvalue ptr ptr arr
 
-    arr = callocate(sizeof(ext.json.JSONvalue ptr)*10)
+    arr = new ext.json.JSONvalue ptr[10]
 
     for n as uinteger = 0 to 9
         arr[n] = new ext.json.JSONvalue(n)
@@ -89,10 +89,19 @@ namespace ext.tests.json_
 
     end sub
 
+    private sub test_create_null_array
+    var test_arr = ext.json.JSONarray(10)
+    for n as uinteger = 0 to 9
+        var tv = test_arr.at(n)
+        EXT_ASSERT_TRUE( tv->valueType() = ext.json.jvalue_type.jnull )
+    next
+    end sub
+
     private sub register constructor
         ext.tests.addSuite("ext-json-create")
         ext.tests.addTest("test_create", @test_create)
-        ext.tests.addTest("test_create_array",@test_create_array)
+        ext.tests.addTest("test_create_array_adv",@test_create_array_adv)
+        ext.tests.addTest("test_create_null_array",@test_create_null_array)
         ext.tests.addTest("test_create_blank",@test_create_blank)
         ext.tests.addTest("test_create_from_string",@test_create_from_string)
         ext.tests.addTest("loadString w/ Array",@test_create_from_string_array)

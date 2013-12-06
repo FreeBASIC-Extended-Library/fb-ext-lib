@@ -40,13 +40,25 @@ operator JSONarray.cast() as string
 
 end operator
 
-function JSONarray.at( byval index as uinteger ) as JSONvalue ptr
+property JSONarray.at( byval index as uinteger ) as JSONvalue ptr
     if index < m_children then
         return m_child[index]
     else
         return null
     end if
-end function
+end property
+
+property JSONarray.at( byval index as uinteger, byref va as JSONvalue ptr )
+    if index < m_children then
+        if m_child[index] = null then
+            m_child[index] = new JSONvalue(*va)
+        else
+            *(m_child[index]) = *va
+        end if
+    else
+        return
+    end if
+end property
 
 function JSONarray.length() as uinteger
     return m_children
@@ -56,6 +68,29 @@ constructor JSONarray( byval i as JSONvalue ptr ptr, byval i_len as uinteger )
     m_children = i_len
     m_child = i
 end constructor
+
+constructor JSONarray( byval n as uinteger )
+    m_children = n
+    m_child = new JSONvalue ptr[m_children]
+    for m as uinteger = 0 to n-1
+        m_child[m] = new JSONvalue()
+    next
+end constructor
+
+constructor JSONarray( byref rhs as JSONarray )
+    this = rhs
+end constructor
+
+operator JSONarray.let( byref rhs as JSONarray )
+    if m_child <> 0 then
+        delete[] m_child
+    end if
+    m_children = rhs.m_children
+    m_child = new JSONvalue ptr[m_children]
+    for m as uinteger = 0 to m_children-1
+        m_child[m] = new JSONvalue(*rhs.at(m))
+    next
+end operator
 
 destructor JSONarray
     if m_children > 0 then

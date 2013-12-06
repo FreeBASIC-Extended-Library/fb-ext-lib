@@ -275,12 +275,12 @@ sub Sprite.SetImage ( byval index as uinteger, byval img as IMAGE ptr )
 
     if img = null then return
     m_lastindex = index
-    if m_imgdata[m_lastindex] <> ext.null then delete m_imgdata[m_lastindex]
+    'if m_imgdata[m_lastindex] <> ext.null then delete m_imgdata[m_lastindex]
     m_imgdata[m_lastindex] = img
 
     m_coldata[m_lastindex] = new image(img->width, img->height, &hFF00FF)
 
-    put *(m_coldata[m_lastindex]), (0,0), *(m_imgdata[m_lastindex]), CUSTOM, @Masker
+    put cast(fb.image ptr,*(m_coldata[m_lastindex])), (0,0), cast(fb.image ptr,*(m_imgdata[m_lastindex])), CUSTOM, @Masker
 
 end sub
 
@@ -293,7 +293,7 @@ sub Sprite.UpdateImage ( byval index as uinteger )
 
     m_coldata[index] = new image(m_imgdata[index]->width, m_imgdata[index]->height, &hFF00FF)
 
-    put *(m_coldata[index]), (0,0), *(m_imgdata[index]), CUSTOM, @Masker
+    put cast(fb.image ptr,*(m_coldata[index])), (0,0), cast(fb.image ptr,*(m_imgdata[index])), CUSTOM, @Masker
 
 end sub
 
@@ -309,7 +309,7 @@ function Sprite.isCollided ( byref spr as Sprite, byval ppcol as PPOPTIONS = use
 
     function = ext.bool.false
 
-    if ext.gfx.collision_rect(*(m_imgdata[m_lastindex]), x1, y1, *(spr.GetImage(useIndex)), x2, y2) then
+    if ext.gfx.collision_rect(cast(fb.image ptr,*(m_imgdata[m_lastindex])), x1, y1, cast(fb.image ptr,*(spr.GetImage(useIndex))), x2, y2) then
 
         if (ppcol = noPP) then return ext.bool.true
 
@@ -319,7 +319,7 @@ function Sprite.isCollided ( byref spr as Sprite, byval ppcol as PPOPTIONS = use
         var cx = x2 - x1
         var cy = y2 - y1
 
-        put *m_temp, (cx,cy), *(spr.GetColMap(useIndex)), CUSTOM, @CMasker
+        put cast(fb.image ptr,*m_temp), (cx,cy), cast(fb.image ptr,*(spr.GetColMap(useIndex))), CUSTOM, @CMasker
 
         var pp = m_temp->Pixels
         for n as uinteger = 0 to (m_temp->height * m_temp->width) - 1

@@ -114,6 +114,25 @@ private function StatusToString( byval s as HTTP_STATUS ) as string
 
 end function
 
+private sub splitURL( byref u as string, byref proto as string, byref host as string, byref path as string )
+    var ouru = u
+    var splat = instr(ouru,"://")
+    if splat > 0 then
+        proto = left(ouru,splat-1)
+        ouru = mid(ouru,splat+3)
+    else
+        proto = "http"
+    end if
+    var slash = instr(ouru,"/")
+    if slash > 0 then
+        host = left(ouru,slash-1)
+        path = mid(ouru,slash)
+    else
+        host = ouru
+        path = "/"
+    end if
+end sub
+
 function readHTTPheaders( byref s as TCPsocket, byref retcode as HTTP_STATUS = HTTP_STATUS.NONE ) as fbext_HashTable((string)) ptr
 
     var ret = new fbext_HashTable((string))
@@ -218,31 +237,31 @@ sub sendHTTPheaders( byref s as TCPsocket, byref m as method = method.get, byval
 
 end sub
 
-function getRemoteFiletoMemory( byref s as TCPsocket, byref url as string, byref ret_len as SizeType, byref st as HTTP_STATUS = HTTP_STATUS.NONE ) as ubyte ptr
+function getRemoteFiletoMemory( byref url as string, byref ret_len as SizeType, byref st as HTTP_STATUS = HTTP_STATUS.NONE ) as ubyte ptr
 
     dim ht as fbext_HashTable((string))
     dim rht as fbext_HashTable((string)) ptr
 
     var host = ""
+    var proto = ""
+    var path = ""
+    var port = 80
 
-    if left(url,7) = "http://" then
-        host = right(url,len(url)-7)
+    splitURL(url,proto,host,path)
+    if lcase(proto) <> "http" then
+        st = 0
+        return 0
     end if
 
-    ' get first slash, everything past that is a path
-    var first_slash = instr( host, "/" )
-    var path = "/"
+    var iport = instr(host,":")
+    if iport > 0 then
+        var thost = left(host,iport-1)
+        port = valint(mid(host,iport+1))
+        host = thost
+    END IF
 
-    ' there's a path.
-    if first_slash > 0 then
-
-        ' take everything past first slash
-        path += mid( host, first_slash + 1 )
-
-        ' cut off path from server name
-        host = left( host, first_slash - 1 )
-
-    end if
+    var s = TCPsocket
+    s.client(host,port)
 
     ht.Insert("Host",host)
     ht.Insert("Connection","close")
@@ -282,11 +301,11 @@ function getRemoteFiletoMemory( byref s as TCPsocket, byref url as string, byref
 
 end function
 
-function getRemoteFileToDisk( byref s as TCPsocket, byref url as string, byref filetosave as string ) as HTTP_STATUS
+function getRemoteFileToDisk( byref url as string, byref filetosave as string ) as HTTP_STATUS
 
     var retlen = 0u
     var st = HTTP_STATUS.NONE
-    var buf = getRemoteFiletoMemory(s,url,retlen,st)
+    var buf = getRemoteFiletoMemory(url,retlen,st)
 
     if buf = null then return HTTP_STATUS.NOT_FOUND
 

@@ -20,7 +20,7 @@ ALL_MODULES := algorithms containers conversion config
 ALL_MODULES += file graphics hash json math memory net
 ALL_MODULES += php preprocessor strings logging
 ALL_MODULES += debug error fbmld misc templates
-ALL_MODULES += xml xstring options database
+ALL_MODULES += xml xstring options database threads
 database-properties := hasSources usesCustomMakefile
 
 # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

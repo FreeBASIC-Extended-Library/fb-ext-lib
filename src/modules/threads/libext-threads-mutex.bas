@@ -20,39 +20,54 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include once "ext/graphics/detail/common.bi"
-#include once "ext/containers/hashtable.bi"
-#include once "ext/debug.bi"
-#define FBEXT_BUILD_NO_GFX_LOADERS
-#include once "ext/graphics/image.bi"
+#include once "ext/memory/sharedptr.bi"
+#include once "ext/threads/mutex.bi"
 
-namespace ext.gfx
+type mutex_imp
+    declare constructor()
+    declare destructor()
+    m as any ptr
+end type
 
-   fbext_Instanciate(fbext_HashTable, ((GraphicsLoader)))
+destructor mutex_imp()
+    mutexdestroy m
+end destructor
 
-extern __driver_ht as fbext_HashTable((GraphicsLoader)) ptr
+constructor mutex_imp()
+    m = mutexcreate
+end constructor
 
-function LoadImage ( byref filename as const string, byval t as target_e = TARGET_FBNEW ) as Image ptr
+namespace ext
+    fbext_Instanciate(fbext_SharedPtr, ((mutex_imp)))
+end namespace
 
-    if __driver_ht = null then return null
+namespace ext.threads
 
-    var sep = instrrev(filename,".")
+operator Mutex.let( byref rhs as Mutex )
+    this._m = new fbext_SharedPtr((mutex_imp))(*cast(fbext_SharedPtr((mutex_imp)) ptr, rhs._m))
+end operator
 
-    var extension = mid(filename,sep+1)
+constructor Mutex( byref rhs as Mutex )
+    this = rhs
+end constructor
 
-    var loader = __driver_ht->Find(extension)
-    if loader = null then
-        FBEXT_DPRINT("GraphicsLoader for " & extension & " not found!")
-        return null
-    end if
+sub Mutex.lock()
+    var m = cast(fbext_SharedPtr((mutex_imp)) ptr,this._m)->get()
+    mutexlock m->m
+end sub
 
-    var ret = loader->f(filename, t)
-    if ret = null orelse ret->isEmpty then
-    FBEXT_DPRINT("GraphicsLoader - Something went wrong loading the file")
-    end if
+sub Mutex.unlock()
+    var m = cast(fbext_SharedPtr((mutex_imp)) ptr,this._m)->get()
+    mutexunlock m->m
+end sub
 
-    return ret
+constructor Mutex()
+    this._m = new fbext_SharedPtr((mutex_imp))(new mutex_imp)
+end constructor
 
-end function
+destructor Mutex()
+    var m = cast(fbext_SharedPtr((mutex_imp)) ptr,this._m)
+    delete m
+end destructor
 
 end namespace

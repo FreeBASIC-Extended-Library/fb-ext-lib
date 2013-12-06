@@ -80,6 +80,9 @@ namespace ext.gfx
 
     constructor Image ( )
     'nop
+    m_img = 0
+    m_gl = 0
+    m_isGL = false
     end constructor
 
     constructor Image ( byval w_ as uinteger, byval h_ as uinteger, byval d_ as any ptr )

@@ -16,6 +16,7 @@
 
 #include once "ext/file/detail/common.bi"
 #include once "ext/file/file.bi"
+#include once "ext/error.bi"
 
 ''Namespace: ext
 namespace ext
@@ -27,7 +28,10 @@ namespace ext
         ''Open a zip archive.
         ''
         ''Parameters:
-        ''zfname - the name of the existing zip archive to open
+        ''zfname - the name of the existing zip archive to open or to create
+        ''
+        ''Notes:
+        ''If there is a problem opening/creating the archive then ext.getError will be set to non-zero.
         ''
         declare constructor ( byref zfname as const string )
 

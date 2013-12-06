@@ -24,6 +24,49 @@
 
 namespace ext.json
 
+operator JSONvalue.Let ( byref rhs as const JSONvalue )
+
+    select case rhs.m_type
+    case jvalue_type.number
+        m_number = rhs.m_number
+    case jvalue_type.jstring
+        m_string = rhs.m_string
+    case jvalue_type.boolean
+        m_bool = rhs.m_bool
+    case jvalue_type.jobject
+        if m_child <> 0 then
+            if m_type = jvalue_type.jobject then
+                delete cast(JSONobject ptr, m_child)
+            else
+                delete cast(JSONarray ptr, m_child)
+            end if
+        end if
+        m_child = new JSONobject
+        cast(JSONobject ptr, m_child)->loadString(*cast(JSONobject ptr,rhs.m_child))
+    case jvalue_type.array
+        if m_child <> 0 then
+            if m_type = jvalue_type.jobject then
+                delete cast(JSONobject ptr, m_child)
+            else
+                delete cast(JSONarray ptr, m_child)
+            end if
+        end if
+        var mar = cast(JSONarray ptr, rhs.m_child)
+        var marl = mar->length
+        var x = new JSONvalue ptr[marl]
+        for n as integer = 0 to marl -1
+            x[n] = new JSONvalue(*(mar->at(n)))
+        next
+        m_child = new JSONarray(x,marl)
+    end select
+    m_type = rhs.m_type
+
+end operator
+
+constructor JSONvalue ( byref rhs as const JSONvalue )
+    this = rhs
+end constructor
+
 constructor JSONvalue ( byval n as double )
     m_number = n
     m_type = jvalue_type.number

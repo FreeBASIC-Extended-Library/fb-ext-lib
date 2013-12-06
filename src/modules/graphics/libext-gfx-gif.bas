@@ -1,5 +1,5 @@
 ''Copyright (c) 2007-2013, FreeBASIC Extended Library Development Group
-''
+''GIFLIB Copyright: (C) 1997 Eric S. Raymond <esr@thyrsus.com>
 ''All rights reserved.
 ''
 ''Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -20,39 +20,62 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include once "ext/graphics/detail/common.bi"
-#include once "ext/containers/hashtable.bi"
-#include once "ext/debug.bi"
-#define FBEXT_BUILD_NO_GFX_LOADERS
+#define FBEXT_BUILD_NO_GFX_LOADERS 1
 #include once "ext/graphics/image.bi"
+#include once "ext/graphics/gif.bi"
+#include once "gif_lib.bi"
 
-namespace ext.gfx
+namespace ext.gfx.gif
 
-   fbext_Instanciate(fbext_HashTable, ((GraphicsLoader)))
+private function loadFrame( byval tgif as GifFileType ptr, byval fn as uinteger ) as ext.gfx.Image ptr
 
-extern __driver_ht as fbext_HashTable((GraphicsLoader)) ptr
-
-function LoadImage ( byref filename as const string, byval t as target_e = TARGET_FBNEW ) as Image ptr
-
-    if __driver_ht = null then return null
-
-    var sep = instrrev(filename,".")
-
-    var extension = mid(filename,sep+1)
-
-    var loader = __driver_ht->Find(extension)
-    if loader = null then
-        FBEXT_DPRINT("GraphicsLoader for " & extension & " not found!")
-        return null
+    var dstc = 0u
+    var srcindex = tgif->SavedImages[fn].RasterBits
+    var cmap = tgif->SColorMap->Colors
+    if tgif->SavedImages[fn].ImageDesc.ColorMap <> null then
+        cmap = tgif->SavedImages[fn].ImageDesc.ColorMap->Colors
     end if
+    var w = tgif->SavedImages[fn].ImageDesc.Width
+    var h = tgif->SavedImages[fn].ImageDesc.Height
+    var ret = new ext.gfx.Image(w,h)
+    var dst = ret->Pixels
+    for n as uinteger = 0 to (w*h) -1
+        dst[dstc] = rgb(cmap[srcindex[n]].red,cmap[srcindex[n]].green,cmap[srcindex[n]].blue)
+        dstc += 1
+    next
 
-    var ret = loader->f(filename, t)
-    if ret = null orelse ret->isEmpty then
-    FBEXT_DPRINT("GraphicsLoader - Something went wrong loading the file")
-    end if
+    return ret
+
+end function
+
+function load( byref fn as const string, byval t as target_e ) as ext.gfx.Image ptr
+
+    var tgif = DGifOpenFilename(fn)
+    if tgif = 0 then return null
+
+    if DGifSlurp( tgif ) <> GIF_OK then return null
+
+    return loadFrame(tgif,0)
+
+end function
+
+function loadAll( byref fn as const string, byref num_img as uinteger ) as ext.gfx.Image ptr ptr
+
+    var tgif = DGifOpenFilename(fn)
+    if tgif = 0 then return null
+
+    if DGifSlurp( tgif ) <> GIF_OK then return null
+
+    num_img = tgif->ImageCount
+    var ret = new ext.gfx.Image ptr[num_img]
+
+    for n as long = 0 to num_img -1
+        ret[n] = loadFrame(tgif,n)
+    next
 
     return ret
 
 end function
 
 end namespace
+

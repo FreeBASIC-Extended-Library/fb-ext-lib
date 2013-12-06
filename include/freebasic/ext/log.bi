@@ -8,6 +8,9 @@
 ''For an example showing how to use this module see https://code.google.com/p/fb-extended-lib/source/browse/examples/logging/log.bas
 ''or check your examples/logging directory.
 ''
+''When using this module in a multithreaded environment all logging
+''happens asynchronously in the background.
+''
 ''About: Code License
 ''Copyright (c) 2007-2013, FreeBASIC Extended Library Development Group
 ''
