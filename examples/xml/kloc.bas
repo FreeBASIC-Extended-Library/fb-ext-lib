@@ -43,8 +43,12 @@ dim shared as ext.File ff
 dim shared num_code as uinteger
 dim shared num_comment as uinteger
 dim shared num_ws as uinteger
+dim shared global_ws as uinteger
+dim shared global_comment as uinteger
+dim shared global_code as uinteger
 dim shared global_lines as uinteger
 dim shared global_files as uinteger
+dim shared global_filesize as ulongint
 
 enum linetype
 unknown
@@ -72,6 +76,7 @@ declare function getFunctionSignature( byref lstr as const string ) as string
 declare function findFunction( byval xnode as ext.xml.node ptr, byval hash as uinteger ) as ext.xml.node ptr
 declare function isType( byval xnode as ext.xml.node ptr, byref lstr as const string ) as linetype
 declare function isPreProcessor( byval xnode as ext.xml.node ptr, byref lstr as const string ) as linetype
+declare sub processParams( byval xnode as ext.xml.node ptr, byref pstr as const string )
 
 using ext
 using misc
@@ -111,7 +116,9 @@ else
 end if
 
 'FBEXT_DPRINT("Counting lines in: " & curdir())
-
+var ptag = xtree.root->appendChild("xml",ext.xml.processingInstruction)
+ptag->attribute("version") = "1.0"
+ptag->attribute("encoding") = "UTF-8"
 xtree.root->appendChild("ext-kloc")
 xtree.root->child("ext-kloc")->attribute("base-href") = base_href
 chdir( base_href )
@@ -132,8 +139,15 @@ var stop_time = timer
 chdir start_dir
 
 var stats = xtree.root->child("ext-kloc")->appendChild("statistics")
-stats->appendChild("lines",text)->setText = str(global_lines)
-stats->appendChild("file-count",text)->setText = str(global_files)
+var lines = stats->appendChild("lines",text)
+lines->setText = str(global_lines)
+lines->attribute("code") = str(global_code)
+lines->attribute("whitespace") = str(global_ws)
+lines->attribute("comments") = str(global_comment)
+var fcstats = stats->appendChild("file-count",text)
+fcstats->setText = str(global_files)
+fcstats->attribute("total_in_bytes") = str(global_filesize)
+fcstats->attribute("avg_file_size") = str(cast(ulongint,global_filesize / global_files))
 stats->appendChild("run-date",text)->setText = date
 stats->appendChild("run-time",text)->setText = time
 var rlstats = stats->appendChild("run-length",text)
@@ -270,6 +284,7 @@ sub AnalyzeFile( byval xnode as ext.xml.node ptr )
         'FBEXT_DPRINT("Processing file: " & file_name)
         file_enc = fileattr( ff.handle, fbFileAttrEncoding )
         file_size = ff.lof
+        global_filesize += file_size
         ln = 0
         while not ff.eof
             file_con = ReadNextLine
@@ -301,18 +316,18 @@ sub AnalyzeFile( byval xnode as ext.xml.node ptr )
     end if
     ff.close
 
-    xnode->attribute("timestamp") = str(file_time)
+    xnode->attribute("timestamp") = format(file_time,"yyyy-mm-ddThh:mm:ss")
 
     var strenc = ""
     select case file_enc
         case fbFileEncodASCII
             strenc = "ASCII"
         case fbFileEncodUTF16
-            strenc = "UTF16"
+            strenc = "UTF-16"
         case fbFileEncodUTF32
-            strenc = "UTF32"
+            strenc = "UTF-32"
         case else
-            strenc = "UTF8"
+            strenc = "UTF-8"
     end select
 
     xnode->attribute("encoding") = strenc
@@ -331,6 +346,51 @@ sub AnalyzeFile( byval xnode as ext.xml.node ptr )
     xnode->child("line-width")->attribute("max-on") = str( max_line_num )
 
     global_lines += num_ws + num_code + num_comment
+    global_code += num_code
+    global_comment += num_comment
+    global_ws += num_ws
+
+end sub
+
+sub processParams( byval xnode as ext.xml.node ptr, byref pstr as const string )
+
+    dim pstrs() as string
+    explode(pstr,",",pstrs())
+    for n as integer = lbound(pstrs) to ubound(pstrs)
+        pstrs(n) = trim(pstrs(n))
+        if pstrs(n) <> "" then
+            dim pwords() as string
+            explode(pstrs(n)," ", pwords())
+            var nt = xnode->appendChild("parameter")
+            var ttype = ""
+            var seen_as = false
+            for m as integer = lbound(pwords) to ubound(pwords)
+                select case lcase(trim(pwords(m)))
+                case "byval"
+                    nt->attribute("pass") = "by value"
+                case "byref"
+                    nt->attribute("pass") = "by reference"
+                case "as"
+                    seen_as = true
+                case else
+                    if seen_as = false then
+                        nt->attribute("name") = trim(pwords(m))
+                    else
+                        ttype = ttype & " " & trim(pwords(m))
+                    end if
+                end select
+            next
+            var hasdef = instr(ttype,"=")
+            if hasdef > 0 then
+                var defs = trim(mid(ttype,hasdef+1))
+                ttype = trim(mid(ttype,1,hasdef-1))
+                nt->attribute("type") = ttype
+                nt->attribute("default-value") = defs
+            else
+                nt->attribute("type") = trim(ttype)
+            end if
+        end if
+    next
 
 end sub
 
@@ -347,6 +407,7 @@ function getLinetype( byval xnode as ext.xml.node ptr, byref lstr as const strin
 
     detect = isType( xnode, lstr )
     if detect = linetype.type_ then return linetype.type_
+    if left(lcase(lstr),8) = "end type" then last_was_in = null
 
     scope
     var detect = isfunction( xnode, lstr )
@@ -365,12 +426,18 @@ function getLinetype( byval xnode as ext.xml.node ptr, byref lstr as const strin
             case asc(":") 'subdecl
                 var nt = findFunction(xnode, ext.hashes.crc32("declare " & trim(lcase(lstr))))
                 if nt = 0 then
-                    nt = xnode->appendChild("sub")
+                    if last_was_in <> null then
+                        if last_was_in->child("functions") = null then last_was_in->appendChild("functions")
+                        nt = last_was_in->child("functions")->appendChild("sub")
+                    else
+                        if xnode->child("functions") = null then xnode->appendChild("functions")
+                        nt = xnode->child("functions")->appendChild("sub")
+                    end if
                 end if
                 last_func = nt
                 nt->attribute("name") = right(detect,len(detect)-3)
                 nt->attribute("defined-on") = str(ln)
-                if nt->attribute("signature-hash") = "" then nt->attribute("signature-hash") = str(ext.hashes.crc32("declare " & trim(lcase(lstr))))
+                if nt->attribute("signature-hash") = "" then nt->attribute("signature-hash") = hex(ext.hashes.crc32("declare " & trim(lcase(lstr))))
                 nt->attribute("signature") = detect
                 select case detect[1] 'calling convention
                     case asc("[") 'none set
@@ -390,12 +457,18 @@ function getLinetype( byval xnode as ext.xml.node ptr, byref lstr as const strin
             case asc(";") 'funcdecl
                 var nt = findFunction(xnode, ext.hashes.crc32("declare " & trim(lcase(lstr))))
                 if nt = 0 then
-                    nt = xnode->appendChild("function")
+                    if last_was_in <> null then
+                        if last_was_in->child("functions") = null then xnode->appendChild("functions")
+                        nt = last_was_in->child("functions")->appendChild("function")
+                    else
+                        if xnode->child("functions") = null then xnode->appendChild("functions")
+                        nt = xnode->child("functions")->appendChild("function")
+                    end if
                 end if
                 last_func = nt
                 nt->attribute("name") = right(detect,len(detect)-3)
                 nt->attribute("defined-on") = str(ln)
-                if nt->attribute("signature-hash") = "" then nt->attribute("signature-hash") = str(ext.hashes.crc32("declare " & trim(lcase(lstr))))
+                if nt->attribute("signature-hash") = "" then nt->attribute("signature-hash") = hex(ext.hashes.crc32("declare " & trim(lcase(lstr))))
                 nt->attribute("signature") = detect
                 select case detect[1] 'calling convention
                     case asc("[") 'fbcall
@@ -418,17 +491,51 @@ function getLinetype( byval xnode as ext.xml.node ptr, byref lstr as const strin
     else 'then declares
         select case detect[0]
             case asc(":") 'subdecl
-                var nt = xnode->appendChild("sub")
+                if xnode->child("functions") = null then xnode->appendChild("functions")
+                var nt = xnode->child("functions")
+                if last_was_in <> null then
+                        if last_was_in->child("functions") = null then last_was_in->appendChild("functions")
+                        nt = last_was_in->child("functions")->appendChild("sub")
+                    else
+                        if xnode->child("functions") = null then xnode->appendChild("functions")
+                        nt = xnode->child("functions")->appendChild("sub")
+                    end if
                 nt->attribute("name") = right(detect,len(detect)-1)
-                nt->attribute("signature-hash") = str(hash)
+                nt->attribute("signature-hash") = hex(hash)
                 nt->attribute("declared-on") = str(ln)
-                nt->attribute("signature-d") = lstr 'detect
+                'nt->attribute("signature-d") = lstr 'detect
+                var lp = instr(lstr,"(")
+                var rp = instrrev(lstr,")")
+                var params = trim(mid(lstr,lp+1,rp-lp-1))
+                if params = "" then params = "none"
+                'nt->attribute("parameters") = params
+                var nc = nt->appendChild("parameters")
+                processParams(nc,params)
+                if nc->children = 0 then nt->removeChild("parameters")
             case asc(";") 'funcdecl
-                var nt = xnode->appendChild("function")
+                if xnode->child("functions") = null then xnode->appendChild("functions")
+                var nt = xnode->child("functions")
+                if last_was_in <> null then
+                        if last_was_in->child("functions") = null then last_was_in->appendChild("functions")
+                        nt = last_was_in->child("functions")->appendChild("function")
+                    else
+                        if xnode->child("functions") = null then xnode->appendChild("functions")
+                        nt = xnode->child("functions")->appendChild("function")
+                    end if
                 nt->attribute("name") = right(detect,len(detect)-1)
-                nt->attribute("signature-hash") = str(hash)
+                nt->attribute("signature-hash") = hex(hash)
                 nt->attribute("declared-on") = str(ln)
-                nt->attribute("signature-d") = lstr 'detect
+                'nt->attribute("signature-d") = lstr 'detect
+                var lp = instr(lstr,"(")
+                var rp = instrrev(lstr,")")
+                var params = trim(mid(lstr,lp+1,rp-lp-1))
+                'nt->attribute("parameters") = params
+                var nc = nt->appendChild("parameters")
+                processParams(nc,params)
+                if nc->children = 0 then nt->removeChild("parameters")
+                var las = instr(rp,lstr,"as")
+                var retp = trim(mid(lstr,las+2))
+                nt->attribute("return-type") = retp
         end select
     end if
 
@@ -442,20 +549,25 @@ end function
 
 private function findFunction( byval xnode as ext.xml.node ptr, byval hash as uinteger ) as ext.xml.node ptr
 
-
-    var sch = xnode->children("sub")
-    var fch = xnode->children("function")
+    dim nt as ext.xml.node ptr
+    if last_was_in <> null then
+        nt = last_was_in
+    else
+        nt = xnode
+    end if
+    var sch = nt->child("functions")->children("sub")
+    var fch = nt->child("functions")->children("function")
 
     if sch > 0 then
         for n as integer = 0 to sch-1
-            if xnode->child("sub",n)->attribute("signature-hash") = str(hash) then return xnode->child("sub",n)
+            if nt->child("functions")->child("sub",n)->attribute("signature-hash") = hex(hash) then return nt->child("functions")->child("sub",n)
         next
     end if
 
 
     if fch > 0 then
         for n as integer = 0 to fch-1
-            if xnode->child("function",n)->attribute("signature-hash") = str(hash) then return xnode->child("function",n)
+            if nt->child("functions")->child("function",n)->attribute("signature-hash") = hex(hash) then return nt->child("functions")->child("function",n)
         next
     end if
 
@@ -549,8 +661,7 @@ function isFunction( byval xnode as ext.xml.node ptr, byref lstr as const string
 
     else
 
-        if (instr(lcase(lstr)," sub ") > 0 orelse instr(lcase(lstr)," function ") > 0) _
-            orelse (instr(lcase(lstr),"sub ") > 0 orelse instr(lcase(lstr),"function ") > 0) _
+        if (instr(lcase(lstr),"sub ") > 0 orelse instr(lcase(lstr),"function ") > 0) _
             ANDALSO left(lcase(lstr),4) <> "type" then
             'its probably a proc
             if (left(lcase(lstr),6) <> "public" orelse left(lcase(lstr),7) <> "private") ANDalso _
@@ -559,10 +670,10 @@ function isFunction( byval xnode as ext.xml.node ptr, byref lstr as const string
             var cal = "[" 'FBCALL 0[, CDECL 1{, PASCAL 2], STDCALL 3}
             var exported = "," ', - 1<
             var whz = 5
-            var wh = instr(lstr," sub ")
+            var wh = instr(lstr,"sub ")
             if wh <1 then wh = instr(lstr,"sub ")
             if wh <1 then
-                wh = instr(lstr," function ")
+                wh = instr(lstr,"function ")
                 if wh <1 then wh = instr(lstr,"function ")
                 whz = 10
                 ret = ";"
@@ -576,8 +687,8 @@ function isFunction( byval xnode as ext.xml.node ptr, byref lstr as const string
             wh3 = instr(wh2+1,newlstr,"(")
             var wh4 = instr(wh2+1,newlstr," ")
             if wh4 < wh3 then swap wh3, wh4
-            var fname = mid(newlstr,wh2+1,wh3-whz)
-            if trim(fname) = "" then return ""
+            var fname = trim(mid(newlstr,wh2+1,wh3-whz))
+            if fname = "" then return ""
 
             if instr(lcase(lstr),"cdecl")>0 then cal = "{"
             if instr(lcase(lstr),"pascal")>0 then cal = "]"
@@ -604,7 +715,7 @@ type testTypeForwarding as integer
 
 function isType( byval xnode as ext.xml.node ptr, byref lstr as const string ) as linetype
 
-    if left(lcase(lstr),4) = "type" then
+    if left(lcase(lstr),5) = "type " then
 
         var ret = trim(right(lstr,len(lstr)-4))
         var spa = instr(ret," ")
@@ -622,6 +733,8 @@ function isType( byval xnode as ext.xml.node ptr, byref lstr as const string ) a
             if wh2 <0 then len(lstr)
             ret = mid(lstr, aaa+3, (wh2-1)-(aaa+3))
             nt->attribute("redirects-to") = trim(ret)
+        else
+            last_was_in = nt
         end if
 
         return linetype.type_
