@@ -110,7 +110,13 @@ namespace ext.xml
 
             return temp & encode_entities(m_text) & "</" & tag & ">"
         case processingInstruction
-            return "<?" & tag & attribute("") & "?>"
+            var temp = "<?" & tag
+            if (m_attributes) then
+                for i as integer = 0 to m_attributes - 1
+                    temp &= " " & *m_attribute[i] & "=""" & encode_entities(*m_value[i]) & """"
+                next
+            end if
+            return temp & "?>"
         case declaration
             return "<!" & tag & attribute("") & ">"
         end select
