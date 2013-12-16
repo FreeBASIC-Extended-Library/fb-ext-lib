@@ -279,6 +279,7 @@ end namespace
 #include once "ext/graphics/bmp.bi"
 #include once "ext/graphics/png.bi"
 #include once "ext/graphics/tga.bi"
+#include once "ext/graphics/gif.bi"
 #endif
 
 #endif
