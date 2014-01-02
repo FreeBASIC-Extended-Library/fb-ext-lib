@@ -11,6 +11,7 @@
 #define __FB_EXT_JSON__ -1
 
 #include once "ext/detail/common.bi"
+#include once "crt/string.bi"
 
 #if not __FB_MT__
     #inclib "ext-json"
@@ -108,6 +109,8 @@ namespace ext.json
         ''Returns the JSON string format of this object.
         declare operator cast () as string
 
+        declare function toBSON( byref buf_len as uinteger ) as ubyte ptr
+
         declare destructor
         private:
         as string m_string
@@ -131,6 +134,7 @@ namespace ext.json
         as JSONvalue ptr value
         declare destructor
         declare operator cast () as string
+        declare function toBSON( byref buf_len as uinteger ) as ubyte ptr
     end type
 
     ''Class: JSONobject
@@ -193,6 +197,18 @@ namespace ext.json
         ''Operator: cast
         ''Convert this object and all children to a JSON string.
         declare operator cast () as string
+
+        ''Function: toBSON
+        ''Returns a pointer to a buffer containing the BSON representation
+        ''of the underlying object or value.
+        ''
+        ''Parameters:
+        ''buf_len - stores the length of the buffer
+        ''
+        ''Notes:
+        ''The pointer returned must be freed using delete[], all JSON types have this method.
+        ''
+        declare function toBSON( byref buf_len as uinteger ) as ubyte ptr
         private:
         m_child as JSONpair ptr ptr
         m_children as uinteger
@@ -249,6 +265,9 @@ namespace ext.json
         ''Operator: cast
         ''Returns the JSON string value of the array and it's contents.
         declare operator cast () as string
+
+        declare function toBSON( byref buf_len as uinteger ) as ubyte ptr
+
         declare destructor
         private:
         m_child as JSONvalue ptr ptr
