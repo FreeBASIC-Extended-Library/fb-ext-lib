@@ -33,6 +33,24 @@ constructor JSONpair( byref k as const string, byval v as JSONvalue ptr )
     value = v
 end constructor
 
+function JSONpair.toBSON( byref buf_len as uinteger ) as ubyte ptr
+
+    var vbuf_len = 0u
+    var vbuf = value->toBSON(vbuf_len)
+
+    buf_len = vbuf_len + len(key) + 1
+    dim ret as ubyte ptr
+    ret = new ubyte[buf_len]
+    ret[0] = vbuf[0]
+    memcpy(@(ret[1]),@(key[0]),len(key))
+    ret[len(key)+1] = 0
+    memcpy(@(ret[len(key)+2]),@(vbuf[1]),vbuf_len-1)
+    delete[] vbuf
+
+    return ret
+
+end function
+
 destructor JSONpair
     key = ""
     if value <> 0 then delete value

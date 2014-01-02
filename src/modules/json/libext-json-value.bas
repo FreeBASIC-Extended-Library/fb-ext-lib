@@ -24,6 +24,67 @@
 
 namespace ext.json
 
+function JSONvalue.toBSON( byref buf_len as uinteger ) as ubyte ptr
+
+    dim as ubyte etype
+    dim as ubyte ptr ret
+
+    select case this.m_type
+    case jvalue_type.number
+        etype = &h01
+        buf_len = 1 + sizeof(m_number)
+        ret = new ubyte[buf_len]
+        ret[0] = etype
+        memcpy(@(ret[1]),@m_number,sizeof(m_number))
+
+    case jvalue_type.jstring
+        etype = &h02
+        buf_len = 1 + sizeof(uinteger) + len(m_string) + 1
+        ret = new ubyte[buf_len]
+        ret[0] = etype
+        *cast(uinteger ptr,@(ret[1])) = cuint(len(m_string)+1)
+        memcpy(@(ret[1+sizeof(uinteger)]),@(m_string[0]),len(m_string))
+        ret[buf_len-1] = 0
+
+    case jvalue_type.boolean
+        etype = &h08
+        buf_len = 2
+        ret = new ubyte[buf_len]
+        ret[0] = etype
+        if m_bool then
+            ret[1] = 1
+        else
+            ret[1] = 0
+        end if
+
+    case jvalue_type.jobject
+        etype = &h03
+        var vret = cast(JSONobject ptr, m_child)->toBSON(buf_len)
+        buf_len += 1
+        ret = new ubyte[buf_len]
+        ret[0] = etype
+        memcpy(@(ret[1]),vret,buf_len-1)
+
+    case jvalue_type.array
+        etype = &h04
+        var vret = cast(JSONarray ptr, m_child)->toBSON(buf_len)
+        buf_len += 1
+        ret = new ubyte[buf_len]
+        ret[0] = etype
+        memcpy(@(ret[1]),vret,buf_len-1)
+
+    case else
+        etype = &h0a
+        buf_len = 1
+        ret = new ubyte[1]
+        ret[0] = etype
+
+    end select
+
+    return ret
+
+end function
+
 operator JSONvalue.Let ( byref rhs as const JSONvalue )
 
     select case rhs.m_type

@@ -28,6 +28,42 @@ fbext_Instanciate( fbExt_Stack, ((integer)) )
 
 namespace ext.json
 
+function JSONobject.toBSON( byref buf_len as uinteger ) as ubyte ptr
+    dim ret as ubyte ptr
+    var total_len = 0u
+    if m_children = 0 then
+        buf_len = sizeof(uinteger)+1
+        ret = new ubyte[buf_len]
+        *cast(uinteger ptr,ret) = buf_len
+        ret[buf_len-1] = 0
+
+    else
+        dim vret_len as uinteger
+        dim vret as ubyte ptr
+        for n as uinteger = 0 to m_children -1
+            vret = m_child[n]->toBSON(vret_len)
+            total_len += vret_len
+            var t_ret = new ubyte[total_len]
+            memcpy(t_ret,ret,total_len-vret_len)
+            memcpy(@(t_ret[total_len-vret_len]),vret,vret_len)
+            delete[] ret
+            ret = t_ret
+            delete[] vret
+        next
+        buf_len = total_len + sizeof(uinteger) + 1
+        var t_ret = new ubyte[buf_len]
+        *(cast(uinteger ptr, t_ret)) = buf_len
+        memcpy(@(t_ret[sizeof(uinteger)]),ret,total_len)
+        delete[] ret
+        ret = t_ret
+        ret[buf_len-1] = 0
+
+    end if
+
+    return ret
+
+end function
+
 function JSONobject.addChild( byref k as const string, byval v as JSONvalue ptr ) as JSONvalue ptr
 
     if m_children > 0 then

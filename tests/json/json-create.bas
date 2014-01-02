@@ -3,6 +3,22 @@
 
 namespace ext.tests.json_
 
+    private sub test_json2bson
+
+        dim j as ext.json.JSONobject
+
+        j.addChild("hello",new ext.json.JSONvalue("world"))
+
+        var bson_len = 0u
+        var bson = j.toBSON(bson_len)
+
+        EXT_ASSERT_TRUE(&h16 = bson_len)
+        EXT_ASSERT_TRUE("hello" = *(cast(zstring ptr, @(bson[5]))))
+        EXT_ASSERT_TRUE("world" = *(cast(zstring ptr, @(bson[15]))))
+        delete[] bson
+
+    end sub
+
     private sub test_create
 
     dim j as ext.json.JSONobject
@@ -106,6 +122,7 @@ namespace ext.tests.json_
         ext.tests.addTest("test_create_from_string",@test_create_from_string)
         ext.tests.addTest("loadString w/ Array",@test_create_from_string_array)
         ext.tests.addTest("loadString w/ Object",@test_create_from_string_obj)
+        ext.tests.addTest("JSON to BSON",@test_json2bson)
     end sub
 
 

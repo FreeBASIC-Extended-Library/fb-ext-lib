@@ -5,6 +5,8 @@ syntax: glob
 *.a
 *.dll
 *.bak
+*.xml
+*.orig
 NULL
 docs/Data/*
 docs/FramedHTML/*
