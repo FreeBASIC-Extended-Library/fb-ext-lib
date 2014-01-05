@@ -227,7 +227,10 @@ namespace ext.json
         ''uuid -> string
         ''md5 -> string
         ''objectid -> hex string
+        ''regexp / dbpointer -> 2 parts joined with chr(7)
         ''binary blobs are base64 encoded strings
+        ''all other number types are mapped to double
+        ''all other types should map to string
         ''
         declare sub fromBSON( byval bson as const ubyte ptr, byval plen as uinteger )
 
