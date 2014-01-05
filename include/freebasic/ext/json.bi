@@ -209,6 +209,28 @@ namespace ext.json
         ''The pointer returned must be freed using delete[], all JSON types have this method.
         ''
         declare function toBSON( byref buf_len as uinteger ) as ubyte ptr
+
+        ''Sub: fromBSON
+        ''Convert a BSON object to a JSON object.
+        ''
+        ''Parameters:
+        ''bson - ubyte ptr to the BSON document
+        ''plen - the size of the bson buffer in bytes
+        ''
+        ''Notes:
+        ''BSON contains several specialized types that
+        ''JSON does not normally support. These types
+        ''are mapped to the best available type to
+        ''prevent information loss.
+        ''
+        ''int64 -> string
+        ''uuid -> string
+        ''md5 -> string
+        ''objectid -> hex string
+        ''binary blobs are base64 encoded strings
+        ''
+        declare sub fromBSON( byval bson as const ubyte ptr, byval plen as uinteger )
+
         private:
         m_child as JSONpair ptr ptr
         m_children as uinteger

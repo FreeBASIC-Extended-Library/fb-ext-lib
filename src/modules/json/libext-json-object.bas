@@ -23,10 +23,194 @@
 #define fbext_NoBuiltinInstanciations() 1
 #include once "ext/json.bi"
 #include once "ext/containers/stack.bi"
+#include once "ext/misc.bi"
+#include once "ext/conversion/base64.bi"
 
 fbext_Instanciate( fbExt_Stack, ((integer)) )
 
 namespace ext.json
+
+private function get_ename_len( byval b as const ubyte ptr ) as uinteger
+    var i = 0u
+    while b[i] <> 0
+        i += 1
+    wend
+    return i + 1
+end function
+
+function get_ename( byval bson as const ubyte ptr, byref i as uinteger ) as string
+    var nlen = get_ename_len(@(bson[i]))
+    var tmp_k = space(nlen-1)
+    memcpy(@(tmp_k[0]),@(bson[i]),nlen-1)
+    i += nlen
+    return tmp_k
+end function
+
+sub JSONobject.fromBSON( byval bson as const ubyte ptr, byval plen as uinteger )
+
+var index = 4u
+dim as ubyte cur_obj = 0
+
+var blen = *(cast(const uinteger ptr, bson))
+
+assert(blen = plen)
+
+while index < plen
+    select case cur_obj
+    case 0: 'invalid obj, means we need to read a new one
+        cur_obj = bson[index]
+        index += 1
+
+    case &h01: '"\x01" e_name double    Floating point
+        var tmp_k = get_ename(bson,index)
+        dim as double tmp_d
+        memcpy(@tmp_d,@(bson[index]),sizeof(double))
+        index += sizeof(double)
+        this.addChild(tmp_k,new JSONvalue(tmp_d))
+        cur_obj = 0
+
+    case &h02, &h0d, &h0e: '"\x02" e_name string    UTF-8 string
+        var tmp_k = get_ename(bson,index)
+        index += 4
+        var tmp_v = get_ename(bson,index)
+        this.addChild(tmp_k,new JSONvalue(tmp_v))
+        cur_obj = 0
+
+    case &h03: '"\x03" e_name document  Embedded document
+        var tmp_k = get_ename(bson,index)
+        var dlen = *(cast(const uinteger ptr,@(bson[index])))
+        var edoc = new JSONobject
+        edoc->fromBSON(@(bson[index]),dlen)
+        index += dlen
+        this.addChild(tmp_k,new JSONvalue(edoc))
+        cur_obj = 0
+
+    case &h04: '"\x04" e_name document  Array
+        var tmp_k = get_ename(bson,index)
+        var dlen = *(cast(const uinteger ptr,@(bson[index])))
+        var edoc = new JSONobject
+        edoc->fromBSON(@(bson[index]),dlen)
+        index += dlen
+        var earr = new JSONarray(edoc->children())
+        for n as integer = 0 to edoc->children()-1
+            earr->at(n) = edoc->child(n)->value
+        next
+        delete edoc
+        this.addChild(tmp_k,new JSONvalue(earr))
+        cur_obj = 0
+
+    case &h05: '"\x05" e_name binary    Binary data
+        var tmp_k = get_ename(bson,index)
+        var blen = *(cast(const uinteger ptr,@(bson[index])))
+        index += 4
+        var subtype = bson[index]
+        index += 1
+        var tmp_r = ""
+        select case subtype
+        case 0,1,2,&h80:
+            tmp_r = ext.conversion.base64.encode(@(bson[index]),blen)
+
+        case 3,4: 'uuid
+            dim tmp_u as ext.misc.UUID
+            for n as integer = 0 to 15
+                tmp_u.d(n) = bson[index+n]
+            next
+            tmp_r = str(tmp_u)
+
+        case 5: '16 byte md5
+            for n as integer = 0 to 15
+                var x = bson[index+n]
+                var xh = hex(x)
+                if len(xh) < 2 then
+                    tmp_r = tmp_r & "0" & xh
+                else
+                    tmp_r = tmp_r & xh
+                end if
+            next
+
+        end select
+        cur_obj = 0
+        this.addChild(tmp_k,new JSONvalue(tmp_r))
+        index += blen
+
+    case &h07: '"\x07" e_name (byte*12)     ObjectId
+        var tmp_k = get_ename(bson,index)
+        var tmp_v = ""
+        for n as integer = 0 to 11
+            var x = bson[index + n]
+            var xh = hex(x)
+            if len(xh) < 2 then xh = "0" & xh
+            tmp_v = tmp_v & xh
+        next
+        index += 12
+        this.addChild(tmp_k,new JSONvalue(tmp_v))
+        cur_obj = 0
+
+    case &h08: '"\x08" e_name "\x00"    Boolean "false"
+               '"\x08" e_name "\x01"    Boolean "true"
+        var tmp_k = get_ename(bson,index)
+        var tb = bson[index]
+        if tb = 0 then
+            this.addChild(tmp_k,new JSONvalue(false))
+        elseif tb = 1 then
+            this.addChild(tmp_k,new JSONvalue(true))
+        end if
+        cur_obj = 0
+        index += 1
+
+    case &h06, &h0a: '"\x0A" e_name   Null value
+        var tmp_k = get_ename(bson,index)
+        cur_obj = 0
+        index += 1
+        this.addChild(tmp_k,new JSONvalue())
+
+    case &h0b: '"\x0B" e_name cstring cstring   Regular expression
+        var tmp_k = get_ename(bson,index)
+        var tmp_r = get_ename(bson,index)
+        var tmp_p = get_ename(bson,index)
+        cur_obj = 0
+        this.addChild(tmp_k,new JSONvalue(tmp_r & chr(7) & tmp_p))
+
+    case &h0c:
+        var tmp_k = get_ename(bson,index)
+        index += 4
+        var tmp_b = get_ename(bson,index)
+        var tmp_v = ""
+        for n as integer = 0 to 11
+            var x = bson[index + n]
+            var xh = hex(x)
+            if len(xh) < 2 then xh = "0" & xh
+            tmp_v = tmp_v & xh
+        next
+        index += 12
+        cur_obj = 0
+        this.addChild(tmp_k,new JSONvalue(tmp_b & chr(7) & tmp_v))
+
+    case &h0f: '"\x0F" e_name code_w_s  JavaScript code w/ scope
+        var tmp_k = get_ename(bson,index)
+        var dlen = *(cast(const uinteger ptr,@(bson[index])))
+        index += dlen
+        cur_obj = 0
+        this.addChild(tmp_k,new JSONvalue("Not Implemented"))
+
+    case &h10: '"\x10" e_name int32     32-bit Integer
+        var tmp_k = get_ename(bson,index)
+        var tmp_v = *(cast(const integer ptr,@(bson[index])))
+        index += 4
+        cur_obj = 0
+        this.addChild(tmp_k,new JSONvalue(cdbl(tmp_v)))
+
+    case &h09, &h11, &h12: '"\x11" e_name int64     Timestamp
+        var tmp_k = get_ename(bson,index)
+        var tmp_v = *(cast(const ulongint ptr,@(bson[index])))
+        index += 8
+        cur_obj = 0
+        this.addChild(tmp_k,new JSONvalue(str(tmp_v)))
+
+    end select
+wend
+
+end sub
 
 function JSONobject.toBSON( byref buf_len as uinteger ) as ubyte ptr
     dim ret as ubyte ptr
