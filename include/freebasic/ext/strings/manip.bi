@@ -1,4 +1,4 @@
-''Title: strings/strmanip.bi
+''Title: strings/manip.bi
 ''
 ''About: License
 ''Copyright (c) 2007-2013, FreeBASIC Extended Library Development Group

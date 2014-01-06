@@ -8,9 +8,9 @@
 # ifndef FBEXT_STRINGS_BI__
 # define FBEXT_STRINGS_BI__ -1
 
-# include once "ext/strings/strmisc.bi"
-# include once "ext/strings/strsplit.bi"
-# include once "ext/strings/strmanip.bi"
+# include once "ext/strings/misc.bi"
+# include once "ext/strings/split.bi"
+# include once "ext/strings/manip.bi"
 # include once "ext/strings/substr.bi"
 
 # endif ' include guard

@@ -21,13 +21,13 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# include once "ext/strings/strmanip.bi"
+# include once "ext/strings/manip.bi"
 # include once "ext/misc.bi"
 # include once "crt/string.bi"
 
 namespace ext.strings
 
-	'' :::::
+    '' :::::
 Sub Replace (subject As String, oldtext As const String, newtext As const String)
   'replaces all occurances of oldtext in subject with newtext
   Dim As Integer n
@@ -40,63 +40,63 @@ Sub Replace (subject As String, oldtext As const String, newtext As const String
   Endif
 End Sub
 
-	'' :::::
-	sub Replace (byref subject as string, oldtext() as const string, byref newtext as const string)
+    '' :::::
+    sub Replace (byref subject as string, oldtext() as const string, byref newtext as const string)
 
-		for i as integer = lbound(oldtext) to ubound(oldtext)
-			ext.strings.Replace(subject, oldtext(i), newtext)
-		next
+        for i as integer = lbound(oldtext) to ubound(oldtext)
+            ext.strings.Replace(subject, oldtext(i), newtext)
+        next
 
-	end sub
+    end sub
 
 
-	'' :::::
-	sub Replace (byref subject as string, oldtext() as const string, newtext() as const string)
+    '' :::::
+    sub Replace (byref subject as string, oldtext() as const string, newtext() as const string)
 
-		var result = subject
+        var result = subject
 
-		var search_size = ubound(oldtext) - lbound(oldtext) + 1
-		var replace_size = ubound(newtext) - lbound(newtext) + 1
+        var search_size = ubound(oldtext) - lbound(oldtext) + 1
+        var replace_size = ubound(newtext) - lbound(newtext) + 1
 
-		var n = FBEXT_MIN(search_size, replace_size)
+        var n = FBEXT_MIN(search_size, replace_size)
 
-		for i as integer = lbound(oldtext) to lbound(oldtext) + n - 1
-			ext.strings.Replace(subject, oldtext(i), newtext(i))
-		next
+        for i as integer = lbound(oldtext) to lbound(oldtext) + n - 1
+            ext.strings.Replace(subject, oldtext(i), newtext(i))
+        next
 
-		if search_size > replace_size then
-			for i as integer = n - 1 to ubound(oldtext)
-				ext.strings.Replace(subject, oldtext(i), "")
-			next
-		end if
+        if search_size > replace_size then
+            for i as integer = n - 1 to ubound(oldtext)
+                ext.strings.Replace(subject, oldtext(i), "")
+            next
+        end if
 
-	end sub
+    end sub
 
-	'' :::::
-	sub replace (subject() as string, byref oldtext as const string, byref newtext as const string)
+    '' :::::
+    sub replace (subject() as string, byref oldtext as const string, byref newtext as const string)
 
-		for i as integer = lbound(subject) to ubound(subject)
-			ext.strings.Replace(subject(i), oldtext, newtext)
-		next
+        for i as integer = lbound(subject) to ubound(subject)
+            ext.strings.Replace(subject(i), oldtext, newtext)
+        next
 
-	end sub
+    end sub
 
-	'' :::::
-	sub replace (subject() as string, oldtext() as const string, byref newtext as const string)
+    '' :::::
+    sub replace (subject() as string, oldtext() as const string, byref newtext as const string)
 
-		for i as integer = lbound(subject) to ubound(subject)
-			ext.strings.Replace(subject(i), oldtext(), newtext)
-		next
+        for i as integer = lbound(subject) to ubound(subject)
+            ext.strings.Replace(subject(i), oldtext(), newtext)
+        next
 
-	end sub
+    end sub
 
-	'' :::::
-	sub replace (subject() as string, oldtext() as const string, newtext() as const string)
+    '' :::::
+    sub replace (subject() as string, oldtext() as const string, newtext() as const string)
 
-		for i as integer = lbound(subject) to ubound(subject)
-			replace(subject(i), oldtext(), newtext())
-		next
+        for i as integer = lbound(subject) to ubound(subject)
+            replace(subject(i), oldtext(), newtext())
+        next
 
-	end sub
+    end sub
 
 end namespace

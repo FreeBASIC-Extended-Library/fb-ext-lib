@@ -39,7 +39,7 @@
 #endif
 
 #include once "ext/config.bi"
-#include once "ext/strings/strmanip.bi"
+#include once "ext/strings/manip.bi"
 #include once "vbcompat.bi"
 
 namespace ext.config
