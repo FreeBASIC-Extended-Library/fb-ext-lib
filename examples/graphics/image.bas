@@ -1,7 +1,7 @@
 ''File: image.bas
 ''Description: Demonstration of ext.gfx.image class with SharedPtr.
 ''
-''Copyright (c) 2007-2012 FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2014 FreeBASIC Extended Library Development Group
 ''
 ''Distributed under the FreeBASIC Extended Library Group license. (See
 ''accompanying file LICENSE.txt or copy at

@@ -1,7 +1,7 @@
 ''Title: hash/sha2.bi
 ''
 ''About: License
-''Copyright (c) 2007-2013, FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
 ''
 ''Copyright (C) 2005, 2007 Olivier Gay <olivier.gay@a3.epfl.ch>
 ''

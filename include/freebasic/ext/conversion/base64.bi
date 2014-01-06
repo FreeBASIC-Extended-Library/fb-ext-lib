@@ -15,7 +15,7 @@
 ''(end code)
 ''
 ''About: Code License
-''Copyright (c) 2007-2013, FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
 ''
 ''Contains code contributed and Copyright (c) 2007, Daniel Verkamp (DrV) http://drv.nu
 ''

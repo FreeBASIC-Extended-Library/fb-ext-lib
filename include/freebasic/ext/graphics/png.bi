@@ -1,7 +1,7 @@
 ''Title: graphics/png.bi
 ''
 ''About: License
-''Copyright (c) 2007-2013, FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
 ''
 ''Contains code contributed and copyright (c) 2007 yetifoot
 ''

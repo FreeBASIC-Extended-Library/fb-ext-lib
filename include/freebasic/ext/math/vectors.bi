@@ -4,7 +4,7 @@
 ''All new programs should use ext/math/vector2.bi for <Vector2> or ext/math/vector3.bi for <Vector3> instead.
 ''
 ''About: License
-''Copyright (c) 2007-2013, FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
 ''
 ''Distributed under the FreeBASIC Extended Library Group license. See
 ''accompanying file LICENSE.txt or copy at

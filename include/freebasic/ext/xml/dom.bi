@@ -9,7 +9,7 @@
 ''look in the examples/xml folder for more examples.
 ''
 ''About: Code License
-''Copyright (c) 2007-2013, FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
 ''
 ''Distributed under the FreeBASIC Extended Library Group license. See
 ''accompanying file LICENSE.txt or copy at

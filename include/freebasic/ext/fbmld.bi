@@ -1,7 +1,7 @@
 ''Title: fbmld.bi
 ''
 ''About: License
-''Copyright (c) 2007-2013, FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
 ''
 '' fbmld (FB Memory Leak Detector) version 0.6
 ''

@@ -5,7 +5,7 @@
 ''that don't necessarily belong anywhere else.
 ''
 ''About: Code License
-''Copyright (c) 2007-2013, FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
 ''
 ''Contains code contributed and Copyright (c) 2007, mr_cha0s: ruben.coder@gmail.com
 ''
