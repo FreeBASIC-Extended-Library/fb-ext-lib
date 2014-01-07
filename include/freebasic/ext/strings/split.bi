@@ -53,18 +53,6 @@ namespace ext.strings
     '' Integer number of delimited strings found.
     ''
     declare function Split overload (byref subject as const string, result() as string, byref delimiter as const string, byval limit as integer) as integer
-
-    '' Function: Split
-    '' !!WRITE ME!! How do i work?
-    ''
-    '' Parameters:
-    '' subject() - array
-    '' result() - results array
-    '' delimiter - delimiter to split strings by.
-    '' limit - maximum number of splits.
-    ''
-    declare function Split (subject() as const string, result() as string, byref delimiter as const string, byval limit as integer) as integer
-
 end namespace
 
 # endif ' include guard

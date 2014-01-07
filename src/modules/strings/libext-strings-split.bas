@@ -25,79 +25,79 @@
 
 namespace ext.strings
 
-	'' :::::
-	function split (byref s as const string, result() as string, byref delimiter as const string, byval limit as integer) as integer
-	
-		type substr__
-		        as integer start, length
-		end type
-		
-		const max_substrings__ = 100000
-	
-		static dt(0 to max_substrings__ - 1) as substr__
-		
-		if 0 = len(delimiter) then return false
-		function = true
-		
-		var ss_count = 0
-		
-		var it = strptr(s)
-		do while it <> strptr(s) + len(s)
-		
-			var found_delim = true
-			
-			' try to match first delimiter char..
-			if *it <> delimiter[0] then
-				found_delim = false
-			
-			' try to match rest of delimiter..
-			elseif len(delimiter) > 1 then
-				var it2 = it + 1
-				for j as integer = 1 to len(delimiter) - 1
-					if *it2 <> delimiter[j] then
-						found_delim = false : exit for
-					end if
-					it2 += 1
-				next
-			
-			end if
-			
-			if not found_delim then
-				it += 1
-			
-			else
-				' returning a maximum number of substrings ?
-				if 0 < limit then
-					if ss_count = limit - 1 then exit do
-				end if
-			
-				var index = it - strptr(s)
-				
-				dt(ss_count).length = index - dt(ss_count).start
-				ss_count += 1
-				dt(ss_count).start = index + len(delimiter)
-				
-				it += len(delimiter)
-			
-			end if
-		
-		loop
-		
-		' last substring is the remaining string..
-		dt(ss_count).length = len(s) - dt(ss_count).start + 1
-		ss_count += 1
-		
-		' returning all but a number of remaining substrings ?
-		if 0 > limit then ss_count -= -limit
-		
-		' fill result array..
-		redim result(0 to ss_count - 1) as string
-		for ss as integer = 0 to ss_count - 1
-			result(ss) = mid(s, dt(ss).start + 1, dt(ss).length)
-		next
-	
-		function = ss_count
+    '' :::::
+    function split (byref s as const string, result() as string, byref delimiter as const string, byval limit as integer) as integer
 
-	end function
+        type substr__
+                as integer start, length
+        end type
+
+        const max_substrings__ = 100000
+
+        static dt(0 to max_substrings__ - 1) as substr__
+
+        if 0 = len(delimiter) then return false
+        function = true
+
+        var ss_count = 0
+
+        var it = strptr(s)
+        do while it <> strptr(s) + len(s)
+
+            var found_delim = true
+
+            ' try to match first delimiter char..
+            if *it <> delimiter[0] then
+                found_delim = false
+
+            ' try to match rest of delimiter..
+            elseif len(delimiter) > 1 then
+                var it2 = it + 1
+                for j as integer = 1 to len(delimiter) - 1
+                    if *it2 <> delimiter[j] then
+                        found_delim = false : exit for
+                    end if
+                    it2 += 1
+                next
+
+            end if
+
+            if not found_delim then
+                it += 1
+
+            else
+                ' returning a maximum number of substrings ?
+                if 0 < limit then
+                    if ss_count = limit - 1 then exit do
+                end if
+
+                var index = it - strptr(s)
+
+                dt(ss_count).length = index - dt(ss_count).start
+                ss_count += 1
+                dt(ss_count).start = index + len(delimiter)
+
+                it += len(delimiter)
+
+            end if
+
+        loop
+
+        ' last substring is the remaining string..
+        dt(ss_count).length = len(s) - dt(ss_count).start + 1
+        ss_count += 1
+
+        ' returning all but a number of remaining substrings ?
+        if 0 > limit then ss_count -= -limit
+
+        ' fill result array..
+        redim result(0 to ss_count - 1) as string
+        for ss as integer = 0 to ss_count - 1
+            result(ss) = mid(s, dt(ss).start + 1, dt(ss).length)
+        next
+
+        function = ss_count
+
+    end function
 
 end namespace ' ext.strings
