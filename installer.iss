@@ -7,8 +7,8 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{D60E6A7A-A036-49DD-AAD7-386B93CD9634}
 AppName=FreeBASIC Extended Library
-AppVersion=0.3.1
-;AppVerName=FreeBASIC Extended Library 0.3.1
+AppVersion=0.5.0
+AppVerName=FreeBASIC Extended Library 0.5.0
 AppPublisher=FreeBASIC Extended Library Development Team
 AppPublisherURL=http://ext.freebasic.net
 AppSupportURL=http://ext.freebasic.net
@@ -21,7 +21,7 @@ AllowNoIcons=yes
 LicenseFile=C:\Projects\ext\COPYING
 InfoBeforeFile=C:\Projects\ext\WIN32-installer.txt
 OutputDir=C:\Users\Ebben\Desktop
-OutputBaseFilename=setup-ext-0-3-1
+OutputBaseFilename=setup-ext-0-5-0
 Compression=lzma2
 SolidCompression=yes
 
@@ -29,7 +29,7 @@ SolidCompression=yes
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: "C:\Projects\ext\inc\*"; DestDir: "{app}\inc"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Projects\ext\include\freebasic\*"; DestDir: "{app}\inc"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Projects\ext\lib\*"; DestDir: "{app}\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Projects\ext\bin\*"; DestDir: "{app}\ext-bin"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Projects\ext\docs\FramedHTML\*"; DestDir: "{app}\docs\ext\html"; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -37,20 +37,12 @@ Source: "C:\Projects\ext\docs\freetype\*"; DestDir: "{app}\docs\ext\freetype"; F
 Source: "C:\Projects\ext\docs\jpeg\*"; DestDir: "{app}\docs\ext\jpeg"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Projects\ext\docs\zlib\*"; DestDir: "{app}\docs\ext\zlib"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Projects\ext\docs\LICENSE.txt"; DestDir: "{app}\docs\ext\"; Flags: ignoreversion 
-Source: "C:\Projects\ext\examples\*.bas"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Projects\ext\examples\*.bi"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Projects\ext\examples\*.db"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Projects\ext\examples\*.bmp"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Projects\ext\examples\*.jpg"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Projects\ext\examples\*.png"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Projects\ext\examples\*.tga"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Projects\ext\examples\*.ttf"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Projects\ext\examples\*.txt"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
-
+Source: "C:\Projects\ext\examples\*"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
 Name: "{group}\{cm:ProgramOnTheWeb,FreeBASIC Extended Library}"; Filename: "http://ext.freebasic.net"
 Name: "{group}\{cm:UninstallProgram,FreeBASIC Extended Library}"; Filename: "{uninstallexe}"
 Name: "{group}\API Reference"; Filename: "{app}\docs\ext\html\index.html"
+Name: "{group}\Examples"; Filename: "{app}\ext-examples"
 
