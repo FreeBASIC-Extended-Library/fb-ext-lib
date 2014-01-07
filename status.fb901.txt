@@ -15,8 +15,9 @@ memory			x
 misc			x
 net				
 options			x
-php				x
+php			x
 strings			
 testly			x
+threads			x
 xml				
 xstring			x
