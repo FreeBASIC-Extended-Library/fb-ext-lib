@@ -24,6 +24,7 @@ OutputDir=C:\Users\Ebben\Desktop
 OutputBaseFilename=setup-ext-0-5-0
 Compression=lzma2
 SolidCompression=yes
+SignedUninstaller=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
