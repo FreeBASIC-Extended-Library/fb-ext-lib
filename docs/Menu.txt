@@ -24,22 +24,22 @@ Don't Index: Files
 
 
 # --------------------------------------------------------------------------
-#
+# 
 # Cut and paste the lines below to change the order in which your files
 # appear on the menu.  Don't worry about adding or removing files, Natural
 # Docs will take care of that.
-#
+# 
 # You can further organize the menu by grouping the entries.  Add a
 # "Group: [name] {" line to start a group, and add a "}" to end it.
-#
+# 
 # You can add text and web links to the menu by adding "Text: [text]" and
 # "Link: [name] ([URL])" lines, respectively.
-#
+# 
 # The formatting and comments are auto-generated, so don't worry about
 # neatness when editing the file.  Natural Docs will clean it up the next
 # time it is run.  When working with groups, just deal with the braces and
 # forget about the indentation and comments.
-#
+# 
 # --------------------------------------------------------------------------
 
 
@@ -61,7 +61,6 @@ Group: Documentation  {
    File: Memory functions  (no auto-title, ext/memory.bi)
    File: Miscellaneous Features  (no auto-title, ext/misc.bi)
    File: Commandline Option Parsing  (no auto-title, ext/options.bi)
-   File: PHP String Functions  (no auto-title, ext/php/strings.bi)
    File: Templates  (no auto-title, ext/templates.bi)
    File: Unit Testing  (no auto-title, ext/tests.bi)
    File: xString  (no auto-title, ext/xstring.bi)
@@ -132,6 +131,7 @@ Group: Documentation  {
       File: graphics/colors.bi  (ext/graphics/colors.bi)
       File: graphics/detail/common.bi  (ext/graphics/detail/common.bi)
       File: graphics/font.bi  (ext/graphics/font.bi)
+      File: graphics/GIF.bi  (ext/graphics/gif.bi)
       File: graphics/image.bi  (ext/graphics/image.bi)
       File: graphics/jpg.bi  (ext/graphics/jpg.bi)
       File: graphics/manip.bi  (ext/graphics/manip.bi)
@@ -180,6 +180,22 @@ Group: Documentation  {
       File: sharedarray.bi  (ext/memory/sharedarray.bi)
       File: sharedptr.bi  (ext/memory/sharedptr.bi)
       }  # Group: Memory
+
+   Group: Multithreading  {
+
+      File: mutex.bi  (ext/threads/mutex.bi)
+      File: threads/comm.bi  (no auto-title, ext/threads/comm.bi)
+      }  # Group: Multithreading
+
+   Group: Net  {
+
+      File: net/detail/common.bi  (ext/net/detail/common.bi)
+      File: net/http.bi  (ext/net/http.bi)
+      File: net/ports.bi  (ext/net/ports.bi)
+      File: net/socket.bi  (ext/net/socket.bi)
+      File: net/tcp.bi  (ext/net/tcp.bi)
+      File: net/udp.bi  (ext/net/udp.bi)
+      }  # Group: Net
 
    Group: Preprocessor  {
 
@@ -302,21 +318,12 @@ Group: Documentation  {
    Group: Strings  {
 
       File: strings/detail/common.bi  (ext/strings/detail/common.bi)
-      File: strings/strmanip.bi  (ext/strings/strmanip.bi)
-      File: strings/strmisc.bi  (ext/strings/strmisc.bi)
-      File: strings/strsplit.bi  (ext/strings/strsplit.bi)
+      File: strings/manip.bi  (ext/strings/manip.bi)
+      File: strings/misc.bi  (ext/strings/misc.bi)
+      File: PHP String Functions  (no auto-title, ext/php/strings.bi)
+      File: strings/split.bi  (ext/strings/split.bi)
       File: strings/substr.bi  (ext/strings/substr.bi)
       }  # Group: Strings
-
-   Group: Net  {
-
-      File: net/detail/common.bi  (ext/net/detail/common.bi)
-      File: net/http.bi  (ext/net/http.bi)
-      File: net/ports.bi  (ext/net/ports.bi)
-      File: net/socket.bi  (ext/net/socket.bi)
-      File: net/tcp.bi  (ext/net/tcp.bi)
-      File: net/udp.bi  (ext/net/udp.bi)
-      }  # Group: Net
 
    Group: Xml  {
 

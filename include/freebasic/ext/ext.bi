@@ -6,10 +6,8 @@
 ''
 ''
 ''About: ext.bi
-''  Inclusion of ext.bi is being deprecated and it's current functionality will be
-''  removed in a future release. All code should include only the headers
-''  it actually uses. Including this file will output a warning message
-''  at compile time.
+''  All code should include only the headers it actually uses. Including
+''  this file will output an error message at compile time.
 ''
 ''(start code)
 ''#include "ext/specific_header.bi"
@@ -48,6 +46,8 @@
 '' Finer grained control of dependant libraries is also available. The relevant defines are:
 '' FBEXT_NO_LIBZ - prevents dependancy on zlib, used by the internal PNG loader included as static library on Windows.
 '' FBEXT_USE_ZLIB_DLL - set this if you want to use zlib1.dll instead of the included static zlib. (only affects Windows)
+'' FBEXT_NO_LIBZIP - prevents dependancy on libzip, used to open Zip files.
+'' FBEXT_NO_LIBGIF - prevents dependancy on libgif, used to load GIF images.
 '' FBEXT_NO_LIBJPG - prevents dependancy on libjpeg, used to load JPG images.
 '' FBEXT_NO_LIBFREETYPE - prevents dependancy on libfreetype, used to load TTF fonts.
 ''
@@ -68,8 +68,7 @@
 '' * Your Operating System Name and Version
 '' * A Google Account (available for free)
 ''
-''Please be as specific and open as possible so we can find the bug and squash it quickly.
-''
+''Please read http://freecode.com/articles/how-to-report-bugs-effectively before reporting issues.
 ''
 ''About: License
 ''Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
@@ -95,27 +94,4 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ''
-#error "Warning: ext/ext.bi is being deprecated. You should include the specific headers you want instead."
-# pragma once
-# ifndef FBEXT_EXT_BI__
-# define FBEXT_EXT_BI__ -1
-
-/' lmf: note the order of least recursion '/
-# include once "ext/preprocessor.bi"
-# include once "ext/memory.bi"
-# include once "ext/algorithms.bi"
-# include once "ext/containers.bi"
-# include once "ext/conversion.bi"
-# include once "ext/debug.bi"
-# include once "ext/error.bi"
-# include once "ext/file.bi"
-# include once "ext/math.bi"
-# include once "ext/graphics.bi"
-# include once "ext/hash.bi"
-# include once "ext/misc.bi"
-# include once "ext/php.bi"
-# include once "ext/strings.bi"
-# include once "ext/xstring.bi"
-# include once "ext/xml.bi"
-
-# endif ' include guard
+#error "Warning: ext/ext.bi is deprecated. You should include the specific headers you want instead."

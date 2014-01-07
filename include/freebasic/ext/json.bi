@@ -58,7 +58,7 @@ namespace ext.json
         ''Assign this JSONvalue a boolean value.
         declare constructor( byval b as bool )
 
-        ''Sub: <JSONobject> Constructor
+        ''Sub: JSONobject Constructor
         ''Assign this JSONvalue a <JSONobject> value.
         declare constructor( byval o as jobject_f ptr )
 
@@ -66,7 +66,7 @@ namespace ext.json
         ''Performs a deep-copy of the rhs JSONvalue.
         declare operator Let ( byref rhs as const JSONvalue )
 
-        ''Sub: <JSONarray> Constructor
+        ''Sub: JSONarray Constructor
         ''Assign this JSONvalue a <JSONarray> value.
         declare constructor( byval a as jarray_f ptr )
 
@@ -223,14 +223,14 @@ namespace ext.json
         ''are mapped to the best available type to
         ''prevent information loss.
         ''
-        ''int64 -> string
-        ''uuid -> string
-        ''md5 -> string
-        ''objectid -> hex string
-        ''regexp / dbpointer -> 2 parts joined with chr(7)
-        ''binary blobs are base64 encoded strings
-        ''all other number types are mapped to double
-        ''all other types should map to string
+        ''int64 - string
+        ''uuid - string
+        ''md5 - string
+        ''objectid - hex string
+        ''regexp / dbpointer - 2 parts joined with chr(7)
+        ''binary blobs - base64 encoded strings
+        ''all other number types - double
+        ''all other types - string
         ''
         declare sub fromBSON( byval bson as const ubyte ptr, byval plen as uinteger )
 
