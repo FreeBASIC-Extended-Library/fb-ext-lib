@@ -1,3 +1,7 @@
+This release does not fully support the latest
+version of FreeBASIC 0.90, the latest supported
+version is 0.24.
+
 On the next screen please provide
 the directory where the
 FreeBASIC install directory is located.

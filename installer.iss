@@ -38,12 +38,13 @@ Source: "C:\Projects\ext\docs\freetype\*"; DestDir: "{app}\docs\ext\freetype"; F
 Source: "C:\Projects\ext\docs\jpeg\*"; DestDir: "{app}\docs\ext\jpeg"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Projects\ext\docs\zlib\*"; DestDir: "{app}\docs\ext\zlib"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Projects\ext\docs\LICENSE.txt"; DestDir: "{app}\docs\ext\"; Flags: ignoreversion 
-Source: "C:\Projects\ext\examples\*"; DestDir: "{app}\ext-examples"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Projects\ext\examples\*"; DestDir: "{app}\examples\ext"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
 Name: "{group}\{cm:ProgramOnTheWeb,FreeBASIC Extended Library}"; Filename: "http://ext.freebasic.net"
 Name: "{group}\{cm:UninstallProgram,FreeBASIC Extended Library}"; Filename: "{uninstallexe}"
 Name: "{group}\API Reference"; Filename: "{app}\docs\ext\html\index.html"
-Name: "{group}\Examples"; Filename: "{app}\ext-examples"
+Name: "{group}\Examples"; Filename: "{app}\examples\ext"
+Name: "{group}\{cm:ProgramOnTheWeb,IRC Support}"; Filename: "http://webchat.freenode.net/?randomnick=1&channels=freebasic-ext"
 
