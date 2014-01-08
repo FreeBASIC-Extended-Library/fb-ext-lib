@@ -160,7 +160,7 @@ namespace ext
 
     ''Constant: FBEXT_MAX_ULONGINT
     ''Maximum allowed value in a ULongInt type.
-    const as ulongint FBEXT_MAX_ULONGINT = 2^(sizeof(ulongint)*8)-1
+    const as ulongint FBEXT_MAX_ULONGINT = &hFFFFFFFFFFFFFFFFull '2^(sizeof(ulongint)*8)-1
 
 
     ''Type: SizeType
