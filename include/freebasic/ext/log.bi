@@ -219,6 +219,28 @@ declare sub __log( byval as LOGLEVEL, _
 
 #define _LOG(l,m,c) ext.__log( ext.##l, (m), __FILE__, __LINE__, (c) )
 
+''namespace: logger
+''Pre-built custom logging modules for various platform specific facilities.
+namespace logger
+
+#ifdef __FB_UNIX__
+    ''sub: useSYSlog
+    ''Uses the standard UNIX syslog facility.
+    ''
+    ''Parameters:
+    '' c - the channel to use syslog on, default is 0
+    ''
+    ''Notes:
+    ''Only available on Unix systems.
+    ''
+    declare sub useSYSlog( byval c as uinteger = 0 )
+#endif
+
+
+
+end namespace
+
+
 end namespace
 
 #endif
