@@ -30,7 +30,7 @@ end extern
 
 #include once "ext/log.bi"
 
-dim shared as ext.bool ___syslog_active
+dim shared as ext.bool __syslog_active
 
 sub __syslog_logger destructor
     if __syslog_active then closelog
@@ -47,10 +47,10 @@ namespace ext.logger
         case _DEBUG
             pri = 7
         case _WARN
-            pri 4
+            pri = 4
         case _INFO
             pri = 6
-        case _ERROR
+        case _FATAL
             pri = 3
         end select
 
@@ -58,12 +58,13 @@ namespace ext.logger
 
     end function
 
-    private sub sys_logger ( byval l as LOGLEVEL, byref _msg_ as const string, byref _filen_ as const string, byval _linen_ as integer, byval _data_ as any ptr )
+    private sub sys_logger (   byval l as LOGLEVEL, byref _msg_ as const string, byref _filen_ as const string, _
+                                byval _linen_ as integer, byval _data_ as any ptr )
 
         if __syslog_active = false then openlog(0,0,0)
         __syslog_active = true
 
-        syslog(loglevlTosyslog(l),"%s:%s %s",cast(zstring ptr,_filen_), cast(zstring ptr,str(_linen_)), cast(zstring ptr,_msg_))
+        syslog(loglevlTosyslog(l),"%s:%s %s",_filen_,str(_linen_),_msg_)
 
     end sub
 
