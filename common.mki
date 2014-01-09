@@ -42,7 +42,7 @@ endif
 
 # get command names and install paths..
 ifeq ($(TARGET),linux)
-    EXEEXT :=
+    EXEEXT := .bin
     RM := rm -rf
     EXE_PFX := ./
     CP := cp -r

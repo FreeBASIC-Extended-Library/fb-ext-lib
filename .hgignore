@@ -1,5 +1,6 @@
 syntax: glob
 *.exe
+*.bin
 *.zip
 *.o
 *.a
@@ -7,6 +8,8 @@ syntax: glob
 *.bak
 *.xml
 *.orig
+*.so
+*.la
 NULL
 docs/Data/*
 docs/FramedHTML/*
