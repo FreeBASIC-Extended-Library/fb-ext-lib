@@ -21,10 +21,10 @@ else
         else
             ifdef windir
                 HOST := win32
-        else
-        ifdef HOME
-            HOST := linux
-        endif
+            else
+                ifdef HOME
+                    HOST := linux
+                endif
             endif
         endif
     endif
@@ -42,7 +42,7 @@ endif
 
 # get command names and install paths..
 ifeq ($(TARGET),linux)
-    EXEEXT := .bin
+    EXE_EXT := .bin
     RM := rm -rf
     EXE_PFX := ./
     CP := cp -r
@@ -98,9 +98,9 @@ MD := mkdir -p
 CD := cd
 
 ifeq ($(VERBOSE),0)
-FBC := @fbc$(EXE_EXT)
+FBC := @fbc
 else
-FBC := fbc$(EXE_EXT)
+FBC := fbc
 endif
 
 INCLUDE_DIR := include/freebasic
