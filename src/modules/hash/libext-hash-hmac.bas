@@ -45,19 +45,38 @@ namespace ext.hashes.hmac
         var ikpad = translate(tkey,&h36,bs)
 
         var p1 = ikpad & msg
+        ? "p1: " & p1
         var p2 = lcase(c(@(p1[0]),len(p1)))
-        var p25 = space(bs/2)
+        ? len(p1)
+        ? "p2: " & p2
+        var p25 = space(len(p2)/2)
         var cnt = 0
         for n as uinteger = 0 to len(p2)-2 step 2
             p25[cnt] = cubyte("&h" & chr(p2[n]) & chr(p2[n+1]))
-            ? hex(p25[cnt]);
+            if p25[cnt] = 0 then print "NULL"
+            print bin(p25[cnt]);
             cnt += 1
-            if cnt >= bs/2 then exit for
+            if cnt >= len(p2)/2 then exit for
         next
         ?
+        var p35l = len(okpad)+(len(p2)/2)
+        var p35 = new ubyte[p35l]
+        for n as uinteger = 0 to len(okpad)-1
+            p35[n] = okpad[n]
+        next
+        cnt = len(okpad)
+        for n as uinteger = 0 to (len(p2)/2) -1
+            p35[cnt] = p2[n]
+            cnt += 1
+        next
         var p3 = okpad & p25
-
-        return lcase(c(@(p3[0]),bs+(bs/2)))
+        ? "p3: " & p3
+        ? len(p2)/2
+        ? len(p3)
+        ? "p35l: " & p35l
+        var ret = lcase(c(p35,p35l))
+        delete[] p35
+        return ret
 
     end function
 
