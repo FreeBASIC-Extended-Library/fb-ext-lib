@@ -23,6 +23,7 @@
 #include once "ext/log.bi"
 #include once "ext/memory.bi"
 #include once "vbcompat.bi"
+#include once "crt/time.bi"
 #ifdef FBEXT_MULTITHREADED
 #include once "ext/threads/comm.bi"
 namespace ext
@@ -172,7 +173,20 @@ end function
 
 function iso_datetime( byval t as double ) as string
 
-    return format(t,"yyyy-mm-ddThh:mm:ss")
+    #ifdef __FB_WIN32__
+        var tzoffset = *__p__timezone()
+        var trailer = "Z"
+    #endif
+    #ifdef __FB_LINUX__
+        var tzoffset = __timezone
+        var trailer = "Z"
+    #endif
+    #ifdef __FB_DOS__
+        var tzoffset = 0
+        var trailer = ""
+    #endif
+
+    return format(DateAdd("s",tzoffset,t),"yyyy-mm-ddThh:mm:ss" & trailer)
 
 end function
 

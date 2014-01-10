@@ -11,6 +11,11 @@
 ''When using this module in a multithreaded environment all logging
 ''happens asynchronously in the background.
 ''
+''When using the LOG_FILE method the time is included in the log message
+''in ISO 8601 format as UTC time NOT local time. See http://en.wikipedia.org/wiki/ISO_8601
+''for more details on ISO 8601. DOS does not know about timezones so all times are
+''localtime.
+''
 ''About: Code License
 ''Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
 ''
