@@ -1,6 +1,6 @@
 # fbext examples Makefile
 
-EX_DIRS := containers database file graphics hash math memory net preprocessor sort strings xml options logging threads
+EX_DIRS := containers database file graphics hash math memory misc net preprocessor sort strings xml options logging threads
 EX_SRCS := $(foreach dir,$(EX_DIRS),$(wildcard $(dir)/*.bas))
 EX_EXES := $(EX_SRCS:%.bas=%$(EXE_EXT))
 
