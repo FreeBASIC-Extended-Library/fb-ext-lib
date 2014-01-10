@@ -7,8 +7,7 @@
 ''accompanying file LICENSE.txt or copy at
 ''http://code.google.com/p/fb-extended-lib/wiki/License
 
-#include once "ext/hash/md5.bi"
-#include once "ext/hash/sha2.bi"
+#include once "ext/hash.bi"
 
 ''Namespace: ext.hashes.hmac
 namespace ext.hashes.hmac
