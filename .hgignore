@@ -15,3 +15,5 @@ docs/Data/*
 docs/FramedHTML/*
 docs/Menu.txt
 tools/*
+*.log
+*.tst
