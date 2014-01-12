@@ -161,7 +161,9 @@ function xInput.get( byval x as uinteger = Pos(), byval y as uinteger = Csrlin()
             End Select
         End If
 
-        Sleep 50
+        if this.callback <> null then
+            this.callback(0,this.callback_data)
+        end if
 
         If Timer > mytimer Then
             this.print_cb(x,y,display & "_",this.print_cb_data)
@@ -173,6 +175,8 @@ function xInput.get( byval x as uinteger = Pos(), byval y as uinteger = Csrlin()
         If timerout > 0 Then
             If Timer > timerout Then Exit Do
         End If
+
+        Sleep 50
 
     Loop Until mykey = Chr(13) Or Len(this.m_temp) = this.maxlength
 

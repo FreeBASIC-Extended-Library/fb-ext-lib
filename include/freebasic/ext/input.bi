@@ -60,6 +60,9 @@ namespace ext
         ''Variable: callback (function ptr)
         ''Can be used as either a verification function or general callback
         ''allowing you to perform other functions in the background.
+        ''Your function should be prepared to handle ch as 0 to allow backgroud
+        ''updating without affecting the input. callback is called before
+        ''print_cb (or the default printer if in use.)
         ''If you return <true> then the character in ch will be added to
         ''the input, if you return <false> it will not and if you return
         ''<invalid> then the get function will exit.

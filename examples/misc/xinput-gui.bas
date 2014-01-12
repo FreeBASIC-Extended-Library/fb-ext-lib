@@ -16,10 +16,6 @@ function updateScreen( byval ch as uinteger, byval data_ as any ptr ) as bool
     return true
 end function
 
-sub myprinter( byval x as uinteger, byval y as uinteger, byref data_ as string, byval _nu as any ptr = 0 )
-    draw string (x,y), data_
-end sub
-
 screenres 320, 240, 32
 windowtitle "Please answer the question."
 
@@ -28,10 +24,7 @@ var x = xInput()
 with x
     .maxLength = 20
     .callback = @updateScreen
-    .print_cb = @myprinter
 end with
-
-updateScreen(0,0)
 
 var yname = x.get(2*8,3*8)
 
@@ -40,6 +33,6 @@ asking = true
 updateScreen(0,0)
 windowtitle "Thank you."
 
-myprinter(2*8,3*8, yname,0)
+draw string (2*8,3*8), yname
 
 sleep
