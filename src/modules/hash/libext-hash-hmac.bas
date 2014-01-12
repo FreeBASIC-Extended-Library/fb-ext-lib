@@ -33,55 +33,52 @@ namespace ext.hashes.hmac
         return ret
     end function
 
-    private function dohmac( byval c as function(byval as any ptr, byval as uinteger) as string, byval bs as uinteger, byref key as const string, byref msg as const string ) as string
+    const BLOCK_SIZE = 64u
+
+    private function dohmac( byval c as function(byval as any ptr, byval as uinteger) as string, byref key as const string, byref msg as const string ) as string
 
         var tkey = ""
-        if len(key) > bs then
+        if len(key) > BLOCK_SIZE then
             tkey = lcase(c(@key[0],len(key)))
-        elseif len(key) < bs then
-            tkey = key + string(bs-len(key),0)
+        else
+            tkey = key & string(BLOCK_SIZE-len(key),0)
         end if
-        var okpad = translate(tkey,&h5C,bs)
-        var ikpad = translate(tkey,&h36,bs)
+        var okpad = translate(tkey,&h5C,BLOCK_SIZE)
+        var ikpad = translate(tkey,&h36,BLOCK_SIZE)
 
         var p1 = ikpad & msg
-        ? "p1: " & p1
-        var p2 = lcase(c(@(p1[0]),len(p1)))
-        ? len(p1)
-        ? "p2: " & p2
-        var p25 = space(len(p2)/2)
-        var cnt = 0
+        var p2 = c(@(p1[0]),len(p1))
+        var p2l = len(p2)/2
+        var p25 = new ubyte[p2l+1]
+        var cnt = 0u
         for n as uinteger = 0 to len(p2)-2 step 2
             p25[cnt] = cubyte("&h" & chr(p2[n]) & chr(p2[n+1]))
-            if p25[cnt] = 0 then print "NULL"
-            print bin(p25[cnt]);
             cnt += 1
-            if cnt >= len(p2)/2 then exit for
+            if cnt >= p2l then
+                exit for
+            end if
         next
-        ?
-        var p35l = len(okpad)+(len(p2)/2)
-        var p35 = new ubyte[p35l]
-        for n as uinteger = 0 to len(okpad)-1
+        p25[p2l] = 0
+        var p35l = BLOCK_SIZE+p2l
+        var p35 = new ubyte[p35l+1]
+        for n as uinteger = 0 to BLOCK_SIZE-1
             p35[n] = okpad[n]
         next
-        cnt = len(okpad)
-        for n as uinteger = 0 to (len(p2)/2) -1
-            p35[cnt] = p2[n]
+        cnt = BLOCK_SIZE
+        for n as uinteger = 0 to p2l -1
+            p35[cnt] = p25[n]
             cnt += 1
         next
-        var p3 = okpad & p25
-        ? "p3: " & p3
-        ? len(p2)/2
-        ? len(p3)
-        ? "p35l: " & p35l
+        p35[p35l] = 0
         var ret = lcase(c(p35,p35l))
         delete[] p35
+        delete[] p25
         return ret
 
     end function
 
     function md5_ ( byref key as const string, byref msg as const string ) as string
-        return dohmac(@ext.hashes.md5.checksum,64,key,msg)
+        return dohmac(@ext.hashes.md5.checksum,key,msg)
     end function
 
     function callsha2( byval m as any ptr, byval l as uinteger ) as string
@@ -89,7 +86,7 @@ namespace ext.hashes.hmac
     end function
 
     function sha256 ( byref key as const string, byref msg as const string ) as string
-        return dohmac(@callsha2,SHA256_BLOCK_SIZE,key,msg)
+        return dohmac(@callsha2,key,msg)
     end function
 
 end namespace
