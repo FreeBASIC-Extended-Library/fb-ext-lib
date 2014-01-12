@@ -162,7 +162,8 @@ function xInput.get( byval x as uinteger = Pos(), byval y as uinteger = Csrlin()
         End If
 
         if this.callback <> null then
-            this.callback(0,this.callback_data)
+            m_temp_ret = this.callback(0,this.callback_data)
+            if m_temp_ret = invalid then exit do
         end if
 
         If Timer > mytimer Then
