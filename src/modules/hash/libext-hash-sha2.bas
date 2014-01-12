@@ -32,305 +32,227 @@ namespace ext.hashes.sha2
 
 function checksum overload ( byref x as string, byval keylen as uinteger = 256 ) as string
 
-	if keylen <> 224 and keylen <> 256 and keylen <> 384 and keylen <> 512 then return "Invalid key length"
-
-	dim as any ptr st
-
-	if keylen < 257 then
-
-		st = new sha256_ctx
-
-	else
-
-		st = new sha512_ctx
-
-	end if
-
-	select case keylen
-	case 224
-		sha224_init(st)
-	case 256
-		sha256_init(st)
-	case 384
-		sha384_init(st)
-	case 512
-		sha512_init(st)
-	end select
-
-	select case keylen
-	case 224
-		sha224_update( st, @(x[0]), len(x) )
-	case 256
-		sha256_update( st, @(x[0]), len(x) )
-	case 384
-		sha384_update( st, @(x[0]), len(x) )
-	case 512
-		sha512_update( st, @(x[0]), len(x) )
-	end select
-
-	var retstr = ""
-
-	select case keylen
-	case 224
-		retstr = space(SHA224_DIGEST_SIZE)
-	case 256
-		retstr = space(SHA256_DIGEST_SIZE)
-	case 384
-		retstr = space(SHA384_DIGEST_SIZE)
-	case 512
-		retstr = space(SHA512_DIGEST_SIZE)
-	end select
-
-	select case keylen
-	case 224
-		sha224_final( st, retstr )
-	case 256
-		sha256_final( st, retstr )
-	case 384
-		sha384_final( st, retstr )
-	case 512
-		sha512_final( st, retstr )
-	end select
-
-	if keylen < 257 then
-
-		delete cast(sha256_ctx ptr, st)
-
-	else
-
-		delete cast(sha512_ctx ptr, st)
-
-	end if
-
-	var real_retstr = ""
-
-	for n as integer = 0 to len(retstr) - 1
-		var remp = lcase(hex(retstr[n]))
-		if len(remp) = 1 then remp = "0" & remp
-		real_retstr = real_retstr & remp
-	next
-
-	return real_retstr
+    return checksum(@(x[0]),len(x),keylen)
 
 end function
 
 '':::
 function checksum ( byref x as ext.File, byval keylen as uinteger = 256, byval blocksize as uinteger = 1048576 ) as string
 
-	if x.open() = true then return "Checksum could not be calculated, error opening file for reading. Error: " & str(x.LastError) & " - " & GetErrorText(x.LastError)
+    if x.open() = true then return "Checksum could not be calculated, error opening file for reading. Error: " & str(x.LastError) & " - " & GetErrorText(x.LastError)
 
-	if keylen <> 224 and keylen <> 256 and keylen <> 384 and keylen <> 512 then return "Invalid key length"
+    if keylen <> 224 and keylen <> 256 and keylen <> 384 and keylen <> 512 then return "Invalid key length"
 
-	dim as any ptr st
+    dim as any ptr st
 
-	if keylen < 257 then
+    if keylen < 257 then
 
-		st = new sha256_ctx
+        st = new sha256_ctx
 
-	else
+    else
 
-		st = new sha512_ctx
+        st = new sha512_ctx
 
-	end if
+    end if
 
-	var len_file = x.lof()
-	dim as uinteger read_size = 0
-	dim as ulongint left_in_file = len_file
+    var len_file = x.lof()
+    dim as uinteger read_size = 0
+    dim as ulongint left_in_file = len_file
 
-	if len_file < blocksize then
-		read_size = len_file
-	else
-		read_size = blocksize
-	end if
+    if len_file < blocksize then
+        read_size = len_file
+    else
+        read_size = blocksize
+    end if
 
 
-	select case keylen
-	case 224
-		sha224_init(st)
-	case 256
-		sha256_init(st)
-	case 384
-		sha384_init(st)
-	case 512
-		sha512_init(st)
-	end select
+    select case keylen
+    case 224
+        sha224_init(st)
+    case 256
+        sha256_init(st)
+    case 384
+        sha384_init(st)
+    case 512
+        sha512_init(st)
+    end select
 
-	dim buffer as ubyte ptr
-	buffer = new ubyte[read_size]
-	if buffer = 0 then return "Checksum could not be calculated, error allocating memory."
+    dim buffer as ubyte ptr
+    buffer = new ubyte[read_size]
+    if buffer = 0 then return "Checksum could not be calculated, error allocating memory."
 
-	while left_in_file >= read_size
+    while left_in_file >= read_size
 
-		x.get( , *buffer, read_size )
+        x.get( , *buffer, read_size )
 
-		select case keylen
-		case 224
-			sha224_update( st, buffer, read_size )
-		case 256
-			sha256_update( st, buffer, read_size )
-		case 384
-			sha384_update( st, buffer, read_size )
-		case 512
-			sha512_update( st, buffer, read_size )
-		end select
+        select case keylen
+        case 224
+            sha224_update( st, buffer, read_size )
+        case 256
+            sha256_update( st, buffer, read_size )
+        case 384
+            sha384_update( st, buffer, read_size )
+        case 512
+            sha512_update( st, buffer, read_size )
+        end select
 
-		left_in_file -= read_size
+        left_in_file -= read_size
 
-	wend
+    wend
 
-	delete[] buffer
+    delete[] buffer
 
-	if left_in_file > 0 then
+    if left_in_file > 0 then
 
-		buffer = new ubyte[left_in_file]
+        buffer = new ubyte[left_in_file]
 
-		x.get(, *buffer, left_in_file )
+        x.get(, *buffer, left_in_file )
 
-		select case keylen
-		case 224
-			sha224_update( st, buffer, left_in_file )
-		case 256
-			sha256_update( st, buffer, left_in_file )
-		case 384
-			sha384_update( st, buffer, left_in_file )
-		case 512
-			sha512_update( st, buffer, left_in_file )
-		end select
+        select case keylen
+        case 224
+            sha224_update( st, buffer, left_in_file )
+        case 256
+            sha256_update( st, buffer, left_in_file )
+        case 384
+            sha384_update( st, buffer, left_in_file )
+        case 512
+            sha512_update( st, buffer, left_in_file )
+        end select
 
-		delete[] buffer
+        delete[] buffer
 
-	end if
+    end if
 
-	x.close()
+    x.close()
 
-	var retstr = ""
+    var retstr = ""
 
-	select case keylen
-	case 224
-		retstr = space(SHA224_DIGEST_SIZE)
-	case 256
-		retstr = space(SHA256_DIGEST_SIZE)
-	case 384
-		retstr = space(SHA384_DIGEST_SIZE)
-	case 512
-		retstr = space(SHA512_DIGEST_SIZE)
-	end select
+    select case keylen
+    case 224
+        retstr = space(SHA224_DIGEST_SIZE)
+    case 256
+        retstr = space(SHA256_DIGEST_SIZE)
+    case 384
+        retstr = space(SHA384_DIGEST_SIZE)
+    case 512
+        retstr = space(SHA512_DIGEST_SIZE)
+    end select
 
-	select case keylen
-	case 224
-		sha224_final( st, retstr )
-	case 256
-		sha256_final( st, retstr )
-	case 384
-		sha384_final( st, retstr )
-	case 512
-		sha512_final( st, retstr )
-	end select
+    select case keylen
+    case 224
+        sha224_final( st, retstr )
+    case 256
+        sha256_final( st, retstr )
+    case 384
+        sha384_final( st, retstr )
+    case 512
+        sha512_final( st, retstr )
+    end select
 
-	if keylen < 257 then
+    if keylen < 257 then
 
-		delete cast(sha256_ctx ptr, st)
+        delete cast(sha256_ctx ptr, st)
 
-	else
+    else
 
-		delete cast(sha512_ctx ptr, st)
+        delete cast(sha512_ctx ptr, st)
 
-	end if
+    end if
 
-	var real_retstr = ""
+    var real_retstr = ""
 
-	for n as integer = 0 to len(retstr) - 1
-		var remp = lcase(hex(retstr[n]))
-		if len(remp) = 1 then remp = "0" & remp
-		real_retstr = real_retstr & remp
-	next
+    for n as integer = 0 to len(retstr) - 1
+        var remp = lcase(hex(retstr[n]))
+        if len(remp) = 1 then remp = "0" & remp
+        real_retstr = real_retstr & remp
+    next
 
-	return real_retstr
+    return real_retstr
 
 end function
 
 '':::
 function checksum ( byval x as any ptr, byval nbytes as uinteger, byval keylen as uinteger = 256 ) as string
 
-	if keylen <> 224 AND keylen <> 256 AND keylen <> 384 AND keylen <> 512 then return "Invalid key length"
+    if keylen <> 224 AND keylen <> 256 AND keylen <> 384 AND keylen <> 512 then return "Invalid key length"
 
-	dim as any ptr st
+    dim as any ptr st
 
-	if keylen < 257 then
+    if keylen < 257 then
 
-		st = new sha256_ctx
+        st = new sha256_ctx
 
-	else
+    else
 
-		st = new sha512_ctx
+        st = new sha512_ctx
 
-	end if
+    end if
 
-	select case keylen
-	case 224
-		sha224_init(st)
-	case 256
-		sha256_init(st)
-	case 384
-		sha384_init(st)
-	case 512
-		sha512_init(st)
-	end select
+    select case keylen
+    case 224
+        sha224_init(st)
+    case 256
+        sha256_init(st)
+    case 384
+        sha384_init(st)
+    case 512
+        sha512_init(st)
+    end select
 
-	select case keylen
-	case 224
-		sha224_update( st, cast( ubyte ptr, x ), nbytes )
-	case 256
-		sha256_update( st, cast( ubyte ptr, x ), nbytes )
-	case 384
-		sha384_update( st, cast( ubyte ptr, x ), nbytes )
-	case 512
-		sha512_update( st, cast( ubyte ptr, x ), nbytes )
-	end select
+    select case keylen
+    case 224
+        sha224_update( st, cast( ubyte ptr, x ), nbytes )
+    case 256
+        sha256_update( st, cast( ubyte ptr, x ), nbytes )
+    case 384
+        sha384_update( st, cast( ubyte ptr, x ), nbytes )
+    case 512
+        sha512_update( st, cast( ubyte ptr, x ), nbytes )
+    end select
 
-	var retstr = ""
+    var retstr = ""
 
-	select case keylen
-	case 224
-		retstr = space(SHA224_DIGEST_SIZE)
-	case 256
-		retstr = space(SHA256_DIGEST_SIZE)
-	case 384
-		retstr = space(SHA384_DIGEST_SIZE)
-	case 512
-		retstr = space(SHA512_DIGEST_SIZE)
-	end select
+    select case keylen
+    case 224
+        retstr = space(SHA224_DIGEST_SIZE)
+    case 256
+        retstr = space(SHA256_DIGEST_SIZE)
+    case 384
+        retstr = space(SHA384_DIGEST_SIZE)
+    case 512
+        retstr = space(SHA512_DIGEST_SIZE)
+    end select
 
-	select case keylen
-	case 224
-		sha224_final( st, retstr )
-	case 256
-		sha256_final( st, retstr )
-	case 384
-		sha384_final( st, retstr )
-	case 512
-		sha512_final( st, retstr )
-	end select
+    select case keylen
+    case 224
+        sha224_final( st, retstr )
+    case 256
+        sha256_final( st, retstr )
+    case 384
+        sha384_final( st, retstr )
+    case 512
+        sha512_final( st, retstr )
+    end select
 
-	if keylen < 257 then
+    if keylen < 257 then
 
-		delete cast(sha256_ctx ptr, st)
+        delete cast(sha256_ctx ptr, st)
 
-	else
+    else
 
-		delete cast(sha512_ctx ptr, st)
+        delete cast(sha512_ctx ptr, st)
 
-	end if
+    end if
 
-	var real_retstr = ""
+    var real_retstr = ""
 
-	for n as integer = 0 to len(retstr) - 1
-		var remp = lcase(hex(retstr[n]))
-		if len(remp) = 1 then remp = "0" & remp
-		real_retstr = real_retstr & remp
-	next
+    for n as integer = 0 to len(retstr) - 1
+        var remp = lcase(hex(retstr[n]))
+        if len(remp) = 1 then remp = "0" & remp
+        real_retstr = real_retstr & remp
+    next
 
-	return real_retstr
+    return real_retstr
 
 end function
 
@@ -507,7 +429,7 @@ dim shared sha512_k(80) as ulongint= _
              &h5fcb6fab3ad6faecULL, &h6c44198c4a475817ULL}
 
 private sub sha256_transf( byval ctx as sha256_ctx ptr, byval message as const ubyte ptr, _
-							byval block_nb as uinteger )
+                            byval block_nb as uinteger )
 
     dim as uinteger w(64)
     dim as uinteger wv(8)
@@ -599,7 +521,7 @@ sub sha256_init( byval ctx as sha256_ctx ptr )
 end sub
 
 sub sha256_update( byval ctx as sha256_ctx ptr, byval message as const ubyte ptr, _
-					byval len_ as uinteger )
+                    byval len_ as uinteger )
 
     dim as uinteger block_nb, new_len, rem_len, tmp_len
     dim as const ubyte ptr shifted_message
@@ -713,7 +635,7 @@ sub sha512_transf( byval ctx as sha512_ctx ptr, byval message as const ubyte ptr
         ctx->h(2) += wv(2): ctx->h(3) += wv(3)
         ctx->h(4) += wv(4): ctx->h(5) += wv(5)
         ctx->h(6) += wv(6): ctx->h(7) += wv(7)
-	next
+    next
 end sub
 
 sub sha512_init( byval ctx as sha512_ctx ptr )
