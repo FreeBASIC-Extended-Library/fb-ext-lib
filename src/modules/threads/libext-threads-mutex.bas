@@ -44,7 +44,11 @@ end namespace
 namespace ext.threads
 
 operator Mutex.let( byref rhs as Mutex )
-    this._m = new fbext_SharedPtr((mutex_imp))(*cast(fbext_SharedPtr((mutex_imp)) ptr, rhs._m))
+    if _m = null then
+        this._m = new fbext_SharedPtr((mutex_imp))(*cast(fbext_SharedPtr((mutex_imp)) ptr, rhs._m))
+    else
+        *cast(fbext_SharedPtr((mutex_imp)) ptr,this._m) = *cast(fbext_SharedPtr((mutex_imp)) ptr,rhs._m)
+    end if
 end operator
 
 constructor Mutex( byref rhs as Mutex )
@@ -66,8 +70,8 @@ constructor Mutex()
 end constructor
 
 destructor Mutex()
-    var m = cast(fbext_SharedPtr((mutex_imp)) ptr,this._m)
-    delete m
+'    var m = cast(fbext_SharedPtr((mutex_imp)) ptr,this._m)
+    delete cast(fbext_SharedPtr((mutex_imp)) ptr,_m)
 end destructor
 
 end namespace
