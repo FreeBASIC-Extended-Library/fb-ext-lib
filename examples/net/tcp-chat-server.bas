@@ -166,9 +166,12 @@ sub client_thread( byval c as any ptr )
     while 1
         'Read socket
         dim cmd as integer
-        cm->socket.get(cmd,1,0.001)
+        if cm->socket.isClosed then
+            cmd = &hDEAD
+        else
+            cm->socket.get(cmd,1,1)
+        end if
 
-        if cm->socket.isClosed then cmd = &hDEAD
 
         select case cmd
         case &hBEEF 'recieved a message

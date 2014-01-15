@@ -52,7 +52,7 @@ function updateScreen( byval ch as uinteger, byval data_ as any ptr ) as bool
     next
 
     var cmd = 0
-    if sckt->get(cmd,1,0.001) <> 0 then
+    if sckt->get(cmd,1,1) <> 0 then
 
         select case cmd
         case &hBEEF,&hD00D 'regular message or join msg
