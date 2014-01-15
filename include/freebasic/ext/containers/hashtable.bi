@@ -458,7 +458,6 @@ namespace ext
     :
     # endmacro
 
-    fbext_InstanciateForBuiltins__(fbext_HashTable)
 
     ''Example: Basic Usage of the HashTable Class
     ''(begin code)
