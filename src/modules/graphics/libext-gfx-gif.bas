@@ -23,6 +23,8 @@
 #define FBEXT_BUILD_NO_GFX_LOADERS 1
 #include once "ext/graphics/image.bi"
 #include once "ext/graphics/gif.bi"
+
+#define __GIFLIB_VER__ 4 'we're using v4 api because that's what .24 supported
 #include once "gif_lib.bi"
 
 namespace ext.gfx.gif
