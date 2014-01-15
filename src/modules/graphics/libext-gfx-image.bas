@@ -191,7 +191,7 @@ namespace ext.gfx
         else
             ret = dest
         end if
-        get (rx1,ry1)-(rx2,ry2), *ret
+        get (rx1,ry1)-(rx2,ry2), ret->m_img
 
         return ret
     end function

@@ -188,7 +188,7 @@ type Image
     ''
     declare const function Pixels( byref num_pixels as uinteger = 0 ) as uinteger ptr
 
-    private:
+    'private:
     declare sub setImage( byval _x_ as FB.IMAGE ptr )
     as bool m_isGL
     m_img as FB.IMAGE ptr
