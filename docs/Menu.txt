@@ -1,8 +1,8 @@
-Format: 1.52
+Format: 1.51
 
 
 Title: FreeBASIC Extended Library
-SubTitle: API Reference 0.5.0
+SubTitle: API Reference 0.5.1
 
 Footer: Copyright (c) 2007-2014 FreeBASIC Extended Library Development Group and Contributors
 Timestamp: Generated on month day, year
@@ -24,22 +24,22 @@ Don't Index: Files
 
 
 # --------------------------------------------------------------------------
-# 
+#
 # Cut and paste the lines below to change the order in which your files
 # appear on the menu.  Don't worry about adding or removing files, Natural
 # Docs will take care of that.
-# 
+#
 # You can further organize the menu by grouping the entries.  Add a
 # "Group: [name] {" line to start a group, and add a "}" to end it.
-# 
+#
 # You can add text and web links to the menu by adding "Text: [text]" and
 # "Link: [name] ([URL])" lines, respectively.
-# 
+#
 # The formatting and comments are auto-generated, so don't worry about
 # neatness when editing the file.  Natural Docs will clean it up the next
 # time it is run.  When working with groups, just deal with the braces and
 # forget about the indentation and comments.
-# 
+#
 # --------------------------------------------------------------------------
 
 
@@ -58,8 +58,6 @@ Group: Documentation  {
    File: Logging  (no auto-title, ext/log.bi)
    File: Detecting Memory Leaks  (no auto-title, ext/fbmld.bi)
    File: JSON  (no auto-title, ext/json.bi)
-   File: Memory functions  (no auto-title, ext/memory.bi)
-   File: Miscellaneous Features  (no auto-title, ext/misc.bi)
    File: Commandline Option Parsing  (no auto-title, ext/options.bi)
    File: Templates  (no auto-title, ext/templates.bi)
    File: Unit Testing  (no auto-title, ext/tests.bi)
@@ -145,6 +143,7 @@ Group: Documentation  {
 
       File: adler32.bi  (ext/hash/adler32.bi)
       File: crc32.bi  (ext/hash/crc32.bi)
+      File: hmac.bi  (ext/hash/hmac.bi)
       File: joaat.bi  (ext/hash/joaat.bi)
       File: md5.bi  (ext/hash/md5.bi)
       File: sha2.bi  (ext/hash/sha2.bi)
@@ -169,8 +168,17 @@ Group: Documentation  {
       File: math/vectors.bi  (ext/math/vectors.bi)
       }  # Group: Math
 
+   Group: Miscellaneous  {
+
+      File: Miscellaneous Features  (no auto-title, ext/misc.bi)
+      File: Date/Time  (no auto-title, ext/datetime.bi)
+      File: xInput  (no auto-title, ext/input.bi)
+      File: UUID  (no auto-title, ext/uuid.bi)
+      }  # Group: Miscellaneous
+
    Group: Memory  {
 
+      File: Memory functions  (no auto-title, ext/memory.bi)
       File: allocate.bi  (ext/memory/allocate.bi)
       File: allocator.bi  (ext/memory/allocator.bi)
       File: arrays.bi  (ext/memory/arrays.bi)

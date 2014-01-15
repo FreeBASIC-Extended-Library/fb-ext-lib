@@ -1,4 +1,4 @@
-''File: ext/input.bi
+''File: input.bi
 ''
 ''About: Code License
 ''Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
