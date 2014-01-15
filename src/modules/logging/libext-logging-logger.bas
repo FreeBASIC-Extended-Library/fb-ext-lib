@@ -22,8 +22,8 @@
 
 #include once "ext/log.bi"
 #include once "ext/memory.bi"
-#include once "vbcompat.bi"
-#include once "crt/time.bi"
+#include once "ext/datetime.bi"
+
 #ifdef FBEXT_MULTITHREADED
 #include once "ext/threads/comm.bi"
 namespace ext
@@ -171,25 +171,6 @@ function setNumberOfLogChannels( byval c as uinteger ) as bool
     return TRUE
 end function
 
-function iso_datetime( byval t as double ) as string
-
-    #ifdef __FB_WIN32__
-        var tzoffset = *__p__timezone()
-        var trailer = "Z"
-    #endif
-    #ifdef __FB_LINUX__
-        var tzoffset = __timezone
-        var trailer = "Z"
-    #endif
-    #ifdef __FB_DOS__
-        var tzoffset = 0
-        var trailer = ""
-    #endif
-
-    return format(DateAdd("s",tzoffset,t),"yyyy-mm-ddThh:mm:ss" & trailer)
-
-end function
-
 #ifdef FBEXT_MULTITHREADED
 enum LOG_TCOMM explicit
     QUIT = -1
@@ -228,7 +209,7 @@ sub __log( byval lvl as LOGLEVEL, _
         else
             fname = command(0) & ".log"
         end if
-        var pmsg = iso_datetime(now) & " " & lstr(lvl) & " " & _msg_ & " -> " & _file_ & ":" & _line_number_
+        var pmsg = datetime.formatAsISO() & " " & lstr(lvl) & " " & _msg_ & " -> " & _file_ & ":" & _line_number_
 
         #ifdef FBEXT_MULTITHREADED
         __log_channel[channel].cc.send(new Message(LOG_TCOMM.LOG2FILE,new MData(new ldata(0,fname,pmsg,0,0),@ldata_free)))
