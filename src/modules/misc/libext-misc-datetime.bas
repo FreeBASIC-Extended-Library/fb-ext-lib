@@ -20,12 +20,13 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#include once "ext/datetime.bi"
 #include once "vbcompat.bi"
 #include once "crt/time.bi"
 
 namespace ext.datetime
 
-function formatAsISO( byval t as double ) as string
+function formatAsISO( byval t as double, byval n as bool ) as string
 
     var our_t = t
     if our_t = 0.0 then our_t = now()
@@ -39,9 +40,20 @@ function formatAsISO( byval t as double ) as string
         var trailer = "Z"
     #endif
     #ifdef __FB_DOS__
-        var tzoffset = 0
-        var trailer = ""
+        return format(our_t,"yyyy-mm-ddThh:mm:ss")
     #endif
+    if n = false then
+        trailer = str(-(tzoffset/(60*60)))
+        var poff = instr(trailer,".")
+        if poff > 0 then
+            var trailer1 = mid(trailer,1,poff-1) & ":"
+            trailer = trailer1 & (cdbl("." & mid(trailer,poff+1)) * 60)
+        else
+            trailer = trailer & ":00"
+        end if
+        if trailer[0] <> asc("-") then trailer = "+" & trailer
+        return format(our_t,"yyyy-mm-ddThh:mm:ss" & trailer)
+    end if
 
     return format(DateAdd("s",tzoffset,our_t),"yyyy-mm-ddThh:mm:ss" & trailer)
 

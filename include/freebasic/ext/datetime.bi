@@ -9,6 +9,8 @@
 ''accompanying file LICENSE.txt or copy at
 ''http://code.google.com/p/fb-extended-lib/wiki/License
 
+#include once "ext/detail/common.bi"
+
 #ifndef FBEXT_MISC_DATETIME_BI__
 #define FBEXT_MISC_DATETIME_BI__ -1
 
@@ -34,11 +36,13 @@ namespace ext.datetime
     ''
     ''Parameters:
     ''t - double representing the date/time, default = now
+    ''n - bool normalize time to UTC, default = true
     ''
     ''Returns:
-    ''String formatted as: yyyy-mm-ddThh:mm:ssZ with the time listed
+    ''Normalized to UTC - String formatted as: yyyy-mm-ddThh:mm:ssZ with the time listed
     ''as UTC on all platforms except DOS.
-    declare function formatAsISO( byval t as double = 0.0 ) as string
+    ''Non-normalized - String formatted as: yyyy-mm-ddThh:mm:ss(+/-)hh:mm
+    declare function formatAsISO( byval t as double = 0.0, byval n as bool = true ) as string
 
 end namespace
 
