@@ -77,7 +77,11 @@ end type
 
 function ZipFile.open( byref zifname as const string ) as File ptr
 
+    #if not __FB_MIN_VERSION__(0,24,0)
     dim as zip_stat_ fileinfo
+    #else
+    dim as zip_stat fileinfo
+    #endif
     zip_stat_init( @fileinfo )
 
     if zip_stat( m_data, zifname, 0, @fileinfo ) = 0 then
