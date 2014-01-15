@@ -59,7 +59,7 @@ ifeq ($(TARGET),linux)
         INC_INSTALL_DIR := $(INSTALL_DIR)/include/freebasic
         LIB_INSTALL_DIR := $(INSTALL_DIR)/lib/freebasic/linux
         # confirm this..
-        DOC_INSTALL_DIR := $(INSTALL_DIR)/doc/libext
+        DOC_INSTALL_DIR := $(INSTALL_DIR)/share/doc/libext
     else
         ifndef INSTALL_DIR
             INSTALL_DIR := /usr/share

@@ -1,5 +1,5 @@
-# Copyright (c) 2009, FreeBASIC Extended Library Development Group
-# 
+# Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
+#
 # Distributed under the FreeBASIC Extended Library Group license. See
 # accompanying file LICENSE.txt or copy at
 # http://code.google.com/p/fb-extended-lib/wiki/License
@@ -34,8 +34,10 @@ show-help:
 	@echo "    install           Installs all modules of the FreeBASIC Extended"
 	@echo "                      Library."
 	@echo "    install-{module}  Installs the module {module}."
+	@echo "    install-docs      Installs the HTML documentation."
 	@echo
 	@echo "other goals:"
+	@echo "    docs              Builds the HTML documentation using NaturalDocs"
 	@echo "    tests             Builds and runs some tests of the FreeBASIC"
 	@echo "                      Extended Library."
 	@echo "    examples          Builds some example programs."
@@ -83,15 +85,14 @@ tests:
 examples:
 	cd $(EXAMPLES_DIR) && $(MAKE)
 
-#.PHONY: install-docs
-#install-docs:
-#	@echo installing documentation files..
-#	@$(MD) -p $(INSTALLDIR)/$(DOCPREFIX)
-#	@$(CP) $(DOCDIR)/HTML $(INSTALLDIR)/$(DOCPREFIX)/ext
+.PHONY: install-docs
+install-docs:
+	cd $(DOCS_DIR) && $(MAKE) install
 
-#.PHONY: docs
-#docs:
-#	cd $(DOCDIR) && $(MAKE)
+
+.PHONY: docs
+docs:
+	cd $(DOCS_DIR) && $(MAKE)
 
 
 # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -114,8 +115,8 @@ clean-examples:
 	@echo Removing example executables..
 	cd $(EXAMPLES_DIR) && $(MAKE) clean
 
-#.PHONY: clean-docs
-#clean-docs:
-#	@echo Removing documentation files..
-#	cd $(DOCDIR) && $(MAKE) clean
+.PHONY: clean-docs
+clean-docs:
+	@echo Removing documentation files..
+	cd $(DOCS_DIR) && $(MAKE) clean
 
