@@ -14,6 +14,10 @@
 #include once "ext/net/tcp.bi"
 #include once "ext/containers/hashtable.bi"
 
+namespace ext
+fbext_Instanciate(fbext_HashTable,((string)))
+end namespace
+
 namespace ext.net
 
 enum method explicit
