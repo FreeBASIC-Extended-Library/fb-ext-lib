@@ -1,26 +1,26 @@
 MODULE		.90.1 Status	git Status
 ==========================================
-config		x
-containers	x
-conversion	x
-database	x
-error		x
-file		-
-graphics	-		-
-hash		x
-json		-
-logging		-	
-math		x
-memory		x
-misc		x
-net		-		-
-options		x
-php		x		-
-strings		-		-
-testly		x		x
-threads		x		x
-xml		-		-		
-xstring		x		x
+config		x               x
+containers	x               x
+conversion	x               x
+database	x               x
+error		x               x
+file		x               x
+graphics	-		        -
+hash		x               -
+json		-               -
+logging		-	            -
+math		x               x
+memory		x               x
+misc		x               x
+net		    -	        	-
+options		x               x
+php		    x       		x
+strings		-		        -
+testly		x		        x
+threads		x		        x
+xml		    -	        	-
+xstring		x		        x
 
 *not every module has been tested with git HEAD at this time.
 **most issues seem to be with the templates library and it's use
