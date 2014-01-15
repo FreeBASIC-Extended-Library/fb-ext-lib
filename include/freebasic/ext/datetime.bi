@@ -12,6 +12,7 @@
 #ifndef FBEXT_MISC_DATETIME_BI__
 #define FBEXT_MISC_DATETIME_BI__ -1
 
+#ifndef FBEXT_MISC
 #if not __FB_MT__
     #inclib "ext-misc"
     #ifdef FBEXT_MULTITHREADED
@@ -22,6 +23,7 @@
     #ifndef FBEXT_MULTITHREADED
         #define FBEXT_MULTITHREADED 1
     #endif
+#endif
 #endif
 
 ''Namespace: ext.datetime

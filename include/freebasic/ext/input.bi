@@ -10,7 +10,19 @@
 #ifndef FBEXT_INPUT_BI__
 #define FBEXT_INPUT_BI__ 1
 
-#include once "ext/misc.bi"
+#ifndef FBEXT_MISC
+#if not __FB_MT__
+    #inclib "ext-misc"
+    #ifdef FBEXT_MULTITHREADED
+        #error "The multithreaded version of the library must be built using the -mt compiler option."
+    #endif
+#else
+    #inclib "ext-misc.mt"
+    #ifndef FBEXT_MULTITHREADED
+        #define FBEXT_MULTITHREADED 1
+    #endif
+#endif
+#endif
 
 ''Namespace: ext
 namespace ext
