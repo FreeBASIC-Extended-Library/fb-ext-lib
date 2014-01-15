@@ -1,5 +1,5 @@
 #include once "pnginc/png_image.bi"
-#include once "ext/memory.bi"
+#include once "ext/memory/allocate.bi"
 #include once "crt.bi"
 
 #define FBEXT_BUILD_NO_GFX_LOADERS -1
