@@ -124,11 +124,11 @@ define CreateCustomBuildRules
 
 .PHONY: $(1) build-$(1)
 $(1) build-$(1):
-	@$(CD) $(1) && $(MAKE) build-$(1)
+	+@$(CD) $(1) && $(MAKE) build-$(1)
 
 .PHONY: clean-$(1)
 clean-$(1):
-	@$(CD) $(1) && $(MAKE) clean-$(1)
+	+@$(CD) $(1) && $(MAKE) clean-$(1)
 
 endef
 
