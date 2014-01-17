@@ -26,9 +26,10 @@
 #define FBEXT_BUILD_NO_GFX_LOADERS
 #include once "ext/graphics/image.bi"
 
-namespace ext.gfx
+using ext.gfx
+fbext_Instanciate(fbext_HashTable, ((GraphicsLoader)))
 
-   fbext_Instanciate(fbext_HashTable, ((GraphicsLoader)))
+namespace ext.gfx
 
 extern __driver_ht as fbext_HashTable((GraphicsLoader)) ptr
 

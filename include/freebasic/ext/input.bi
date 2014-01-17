@@ -10,6 +10,8 @@
 #ifndef FBEXT_INPUT_BI__
 #define FBEXT_INPUT_BI__ 1
 
+#include once "ext/detail/common.bi"
+
 #ifndef FBEXT_MISC
 #if not __FB_MT__
     #inclib "ext-misc"

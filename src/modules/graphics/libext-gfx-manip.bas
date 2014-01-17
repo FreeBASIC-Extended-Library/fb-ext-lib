@@ -145,7 +145,7 @@ namespace ext.gfx
                         for y as integer = 0 to src->height - 1
                                 var dx = 0
                                 for x as integer = src->width - 1 to 0 step -1
-                                        pset *temp_img, (dx, y), point(x,y,*src)
+                                        pset temp_img->m_img, (dx, y), point(x,y,src->m_img)
                                         dx += 1
                                 next x
                         next y

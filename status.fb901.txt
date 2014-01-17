@@ -8,8 +8,8 @@ error		x               x
 file		x               x
 graphics	-		        -
 hash		x               -
-json		-               -
-logging		-	            -
+json		-               x
+logging		-	            x
 math		x               x
 memory		x               x
 misc		x               x

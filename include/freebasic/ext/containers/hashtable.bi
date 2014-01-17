@@ -36,6 +36,8 @@ namespace ext
     declare function m_HTprimes ( byval index as SizeType ) as uinteger
     declare function m_HThash ( byref key_ as const string ) as uinteger
 
+end namespace
+
     # define fbext_HashTable(T_) fbext_TypeID((HashTable) T_)
     # define fbext_HashTableEntry(T_) fbext_TypeID((HashTableEntry) T_)
     # define fbext_HashTableIterator(T_) fbext_TypeID((HashTableIterator) T_)
@@ -44,6 +46,7 @@ namespace ext
     ''
     # macro fbext_HashTable_Declare(T_)
     :
+    namespace ext
         ' forward declaration..
         type fbext_HashTableEntry(T_)##__ as fbext_HashTableEntry(T_)
 
@@ -153,11 +156,13 @@ namespace ext
             m_table         as fbext_HashTableEntry(T_)##__ ptr
 
         end type
+    end namespace
     :
     # endmacro
 
     # macro fbext_HashTable_Define(linkage_, T_)
     :
+    namespace ext
         type fbext_HashTableEntry(T_)
 
             as string key
@@ -281,7 +286,7 @@ namespace ext
             while cindex<= m_tablelength
 
                 if m_table[cindex].value = null then
-            # if fbext_TypeName(T_) = string
+            # if fbext_TypeName(T_) = typeof(STRING)
                     m_table[cindex].value = cast(string ptr, new byte[sizeof(string)])
             # else
                     m_table[cindex].value = new fbext_TypeName(T_)
@@ -309,7 +314,7 @@ namespace ext
             while cindex >= 0
 
                 if m_table[cindex].value = null then
-            # if fbext_TypeName(T_) = string
+            # if fbext_TypeName(T_) = typeof(string)
                     m_table[cindex].value = cast(string ptr, new byte[sizeof(string)])
             # else
                     m_table[cindex].value = new fbext_TypeName(T_)
@@ -340,7 +345,7 @@ namespace ext
             var index = m_IndexFor(thash, m_tablelength)
 
             if m_table[index].value = null then
-        # if fbext_TypeName(T_) = string
+        # if fbext_TypeName(T_) = typeof(STRING)
                 m_table[index].value = cast(string ptr, new byte[sizeof(string)])
         # else
                 m_table[index].value = new fbext_TypeName(T_)
@@ -455,6 +460,7 @@ namespace ext
             next
 
         end sub
+    end namespace
     :
     # endmacro
 
@@ -570,7 +576,5 @@ namespace ext
     ''
     ''end sub
     ''(end code)
-
-end namespace
 
 # endif ' include guard

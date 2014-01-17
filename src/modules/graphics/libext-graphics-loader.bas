@@ -4,11 +4,10 @@
 
 #define FBEXT_BUILD_NO_GFX_LOADERS 1
 #include once "ext/graphics/image.bi"
+using ext.gfx
+fbext_Instanciate(fbext_HashTable, ((GraphicsLoader)))
 
 namespace ext.gfx
-
-
-fbext_Instanciate(fbext_HashTable, ((GraphicsLoader)))
 
 constructor GraphicsLoader
 
