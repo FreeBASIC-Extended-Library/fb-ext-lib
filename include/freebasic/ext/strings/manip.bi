@@ -452,6 +452,62 @@ end namespace
     ''
     declare function UCWordsCopy (byref subject as const string) as string
 
+    ''Function: LTrimAll
+    ''Trims all whitespace characters from the left side of a string.
+    ''
+    ''Notes:
+    ''The default FreeBASIC ltrim function only removes spaces by default.
+    ''
+    ''Parameters:
+    ''s - *const* string to trim whitespace from
+    ''
+    ''Returns:
+    ''New string with whitespace removed from the left side.
+    ''
+    declare function LTrimAll( byref s as const string ) as string
+
+    ''Function: RTrimAll
+    ''Trims all whitespace characters from the right side of a string.
+    ''
+    ''Notes:
+    ''The default FreeBASIC rtrim function only removes spaces by default.
+    ''
+    ''Parameters:
+    ''s - *const* string to trim whitespace from
+    ''
+    ''Returns:
+    ''New string with whitespace removed from the right side.
+    ''
+    declare function RTrimAll( byref s as const string ) as string
+
+    ''Function: TrimAll
+    ''Trims all whitespace characters from the sides of a string.
+    ''
+    ''Notes:
+    ''The default FreeBASIC trim function only removes spaces by default.
+    ''
+    ''Parameters:
+    ''s - *const* string to trim whitespace from
+    ''
+    ''Returns:
+    ''New string with whitespace removed from the sides.
+    ''
+    declare function TrimAll( byref s as const string ) as string
+
+    ''Function: compact
+    ''Compresses whitespace characters in a string down to a single (the first) instance.
+    ''
+    ''Notes:
+    ''compact(chr(32) & chr(9) & "hi" & chr(9) & chr(32)) returns: " hi "
+    ''
+    ''Parameters:
+    ''s - *const* string to compact whitespace in
+    ''
+    ''Returns:
+    ''New string with whitespace compressed.
+    ''
+    declare function compact ( byref s as const string ) as string
+
 end namespace
 
 # endif ' include guard
