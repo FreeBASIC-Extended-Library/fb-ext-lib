@@ -203,7 +203,20 @@ namespace ext
 
         declare destructor ()
 
+        ''Function: getBytesRW
+        ''Get the total number of bytes written or read from this file so far.
+        ''
+        ''Returns:
+        ''ulongint of bytes
         declare function getBytesRW() as ulongint
+
+        ''Property: fileName
+        ''Retrieve the filename this object points to.
+        declare property fileName() as string
+
+        ''Function: Operator Let
+        ''Assign a string to a File object to open the filename in string.
+        declare operator Let ( byref rhs as string )
 
     private:
 

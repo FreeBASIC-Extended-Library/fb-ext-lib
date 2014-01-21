@@ -195,6 +195,10 @@ end sub
 
 namespace ext
 
+    property File.fileName() as string
+        return m_filename
+    end property
+
     function File.getBytesRW() as ulongint
         return m_bytes
     end function
@@ -238,9 +242,9 @@ namespace ext
     end function
 
     '' :::::
-    constructor File ( byref filename as const string, byval acc as ACCESS_TYPE = R )
+    constructor File ( byref filename_ as const string, byval acc as ACCESS_TYPE = R )
 
-        m_filename = filename
+        m_filename = filename_
         m_filehandle = 0
         m_access = acc
         m_lasterror = 0
@@ -252,6 +256,10 @@ namespace ext
         #endif
 
     end constructor
+
+    operator File.Let ( byref fn as string )
+        this = File(fn)
+    end operator
 
     '' :::::
     constructor File ( byval fsd as FileSystemDriver ptr )
@@ -389,13 +397,13 @@ namespace ext
     end property
 
     '' :::::
-    function File.open( byref filename as const string, byval acc as ACCESS_TYPE = R ) as ext.bool
+    function File.open( byref filename_ as const string, byval acc as ACCESS_TYPE = R ) as ext.bool
 
         #ifdef FBEXT_MULTITHREADED
         mutexlock(m_mutex)
         #endif
 
-        m_filename = filename
+        m_filename = filename_
         m_access = acc
 
         #ifdef FBEXT_MULTITHREADED
