@@ -25,7 +25,6 @@
 #include once "ext/graphics/tga.bi"
 #include once "ext/graphics/manip.bi"
 #include once "ext/file/file.bi"
-'#include once "ext/file/console.bi"
 
 #define DEFAULT_ALPHA_VALUE 255
 
@@ -49,22 +48,20 @@ namespace ext.gfx.tga
 declare function rldecode( byval db as ubyte ptr, byval buflen as const uinteger, byval w as integer, byval h as integer, byval bpp as integer ) as ubyte ptr
 declare sub idataToImg( byval data_buf as ubyte ptr, byval img as image ptr, byval bpp as integer )
 
-'dim shared as ext.Console con
+declare function load_mem( byval src as any ptr, byval src_len as SizeType, byval t as target_e ) as ext.gfx.Image ptr
 
 Function load _
         ( _
-                Byref file_name As const string, _
+                Byref hFile as ext.File, _
                 byval t as target_e _
         ) As ext.gfx.Image Ptr
 
-        Dim As ext.FILE  hFile
         dim as Image ptr img
         dim as ubyte ptr fbuf
 
         if t <> TARGET_FBNEW ANDALSO t <> TARGET_OPENGL then return 0
 
-        If hFile.open( file_name ) Then
-                'con.WriteLine("File not loaded")
+        If hFile.open( ) Then
                 Return NULL
         End If
 
@@ -78,7 +75,7 @@ Function load _
 
 End Function
 
-function load_mem( byval src as any ptr, byval src_len as SizeType, byval t as target_e ) as ext.gfx.Image ptr
+private function load_mem( byval src as any ptr, byval src_len as SizeType, byval t as target_e ) as ext.gfx.Image ptr
 
         Dim As FileHeader ptr tga_info
         Dim As Ubyte Ptr  data_buf

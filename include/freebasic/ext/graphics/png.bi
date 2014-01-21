@@ -17,6 +17,7 @@
 
 #include once "ext/detail/common.bi"
 #include once "ext/graphics/detail/common.bi"
+#include once "ext/file/file.bi"
 #include once "fbgfx.bi"
 
 #Ifndef FBEXT_USE_ZLIB_DLL
@@ -52,7 +53,7 @@ end type
 ''Loads a png file.
 ''
 ''Parameters:
-''filename - the png image to load.
+''hFile - File object of the png image to load, see <File>.
 ''target - (optional) the target from target_e to load to, defaults to New FB style Image buffer
 ''
 ''Returns:
@@ -60,26 +61,8 @@ end type
 ''
 declare function load _
     ( _
-        byref filename as const string, _
+        byref hFile as ext.File, _
         byval target   as target_e = TARGET_FBNEW _
-    ) as ext.gfx.Image ptr
-
-''Function: load_mem
-''Loads a png file that has been located in memory.
-''
-''Parameters:
-''buffer - pointer to memory buffer holding the file.
-''buffer_len - the length of the buffer.
-''target - the target from target_e to load to.
-''
-''Returns:
-''<ext.gfx.Image> Pointer to png image in memory.
-''
-declare function load_mem _
-    ( _
-        byval buffer     as any ptr, _
-        byval buffer_len as SizeType, _
-        byval target     as target_e _
     ) as ext.gfx.Image ptr
 
 ''Function: save
@@ -102,7 +85,6 @@ declare function save cdecl alias "png_save" _
 sub loadPNGdriver() constructor
     var loader = new GraphicsLoader
     loader->f = @load
-    loader->fmem = @load_mem
     getDriver("png",loader)
 end sub
 #endif ' FBEXT_BUILD_NO_GFX_LOADERS

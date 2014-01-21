@@ -12,6 +12,7 @@
 #define FBEXT_GFX_GIF_BI__ -1
 
 #include once "ext/detail/common.bi"
+#include once "ext/file/file.bi"
 #include once "ext/graphics/detail/common.bi"
 #include once "fbgfx.bi"
 
@@ -40,7 +41,7 @@ namespace ext.gfx.gif
 ''Returns:
 ''<ext.gfx.Image> ptr or null on error
 ''
-declare function load( byref fn as const string, byval t as target_e ) as ext.gfx.Image ptr
+declare function load( byref hFile as ext.File, byval t as target_e ) as ext.gfx.Image ptr
 
 ''Function: loadAll
 ''Loads all images in a gif image

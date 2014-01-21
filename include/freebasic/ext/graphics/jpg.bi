@@ -11,6 +11,7 @@
 #define FBEXT_GFX_JPG_BI__ -1
 
 #include once "ext/detail/common.bi"
+#include once "ext/file/file.bi"
 #include once "ext/graphics/detail/common.bi"
 #include once "fbgfx.bi"
 
@@ -37,7 +38,7 @@ namespace ext.gfx.jpg
 ''Returns:
 ''<ext.gfx.Image> ptr containing the jpg data. Does not work with grayscale images at this time.
 ''
-declare function load ( byref filename as const string, byval t as target_e ) as ext.gfx.Image ptr
+declare function load ( byref hFile as ext.File, byval t as target_e ) as ext.gfx.Image ptr
 
 #ifndef FBEXT_BUILD_NO_GFX_LOADERS
 sub loadJPGdriver() constructor

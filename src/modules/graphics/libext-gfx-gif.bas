@@ -50,9 +50,10 @@ private function loadFrame( byval tgif as GifFileType ptr, byval fn as uinteger 
 
 end function
 
-function load( byref fn as const string, byval t as target_e ) as ext.gfx.Image ptr
+function load( byref fn as ext.File, byval t as target_e ) as ext.gfx.Image ptr
 
-    var tgif = DGifOpenFilename(fn)
+    var tgif = DGifOpenFilename(fn.fileName)
+    fn.close()
     if tgif = 0 then return null
 
     if DGifSlurp( tgif ) <> GIF_OK then return null

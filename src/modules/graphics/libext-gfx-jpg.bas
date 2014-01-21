@@ -23,6 +23,7 @@
 #define FBEXT_BUILD_NO_GFX_LOADERS 1
 #include once "ext/graphics/image.bi"
 #include once "ext/graphics/jpg.bi"
+#include once "ext/file/file.bi"
 #include once "jpeglib.bi"
 
 #undef null
@@ -33,11 +34,50 @@
 
 namespace ext.gfx.jpg
 
-'':::::
-function load ( byref filename as const string, byval t as target_e ) as ext.gfx.Image ptr
+type jpg_mem_driver
+    as jpeg_source_mgr pub
+    as ubyte ptr f
+    as uinteger fs
+end type
 
-    dim as FILE ptr fp = fopen( strptr(filename), "rb" )
-    if( fp = null ) then return null
+sub init_source_func cdecl ( byval cinfo as j_decompress_ptr )
+    cast(jpg_mem_driver ptr,cinfo->src)->pub.bytes_in_buffer = 0
+end sub
+
+function fill_input_buffer_func cdecl ( byval cinfo as j_decompress_ptr ) as boolean
+
+    var src = cast(jpg_mem_driver ptr,cinfo->src)
+
+    src->pub.next_input_byte = src->f
+    src->pub.bytes_in_buffer = src->fs
+
+    return cTRUE
+
+end function
+
+sub skip_input_data_func cdecl (byval cinfo as j_decompress_ptr, byval num_bytes as long)
+
+    var src = cast(jpg_mem_driver ptr,cinfo->src)
+    src->pub.bytes_in_buffer = 0
+
+end sub
+
+sub term_source_func cdecl ( byval cinfo as j_decompress_ptr )
+
+end sub
+
+'':::::
+function load ( byref hFile as ext.File, byval t as target_e ) as ext.gfx.Image ptr
+
+    if hFile.open() = true then return null
+
+    dim as jpg_mem_driver fbuf
+    fbuf.pub.init_source = @init_source_func
+    fbuf.pub.fill_input_buffer = @fill_input_buffer_func
+    fbuf.pub.skip_input_data = @skip_input_data_func
+    fbuf.pub.resync_to_restart = @jpeg_resync_to_restart
+    fbuf.pub.term_source = @term_source_func
+    fbuf.fs = hFile.toBuffer(fbuf.f)
 
     dim jinfo as jpeg_decompress_struct
     dim jerr as jpeg_error_mgr
@@ -47,7 +87,7 @@ function load ( byref filename as const string, byval t as target_e ) as ext.gfx
 
     jinfo.err = jpeg_std_error( @jerr )
 
-    jpeg_stdio_src( @jinfo, fp )
+    jinfo.src = cast(jpeg_source_mgr ptr,@fbuf)
 
     jpeg_read_header( @jinfo, cTRUE )
 
@@ -79,7 +119,8 @@ function load ( byref filename as const string, byval t as target_e ) as ext.gfx
     jinfo.mem->free_pool( cast(j_common_ptr, @jinfo ), JPOOL_IMAGE )
 jpeg_destroy_decompress( @jinfo )
 
-    fclose( fp )
+    hFile.close()
+    delete[] fbuf.f
 
     return img
 

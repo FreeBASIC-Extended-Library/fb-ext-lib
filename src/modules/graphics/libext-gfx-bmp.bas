@@ -27,13 +27,15 @@
 namespace ext.gfx.bmp
 
     '' :::::
-    function load ( byref filename as const string, byval t as target_e ) as ext.gfx.Image ptr
+    function load ( byref hFile as ext.File, byval t as target_e ) as ext.gfx.Image ptr
 
+        var fn = hFile.fileName
+        hFile.close()
         dim as bmp_header bmh
         dim as integer ff = freefile
         dim as fb.image ptr buffer
 
-        if open( filename, for binary access read, as #ff ) = null then
+        if open( fn, for binary access read, as #ff ) = null then
             get #ff, , bmh
 
             close #ff
@@ -42,7 +44,7 @@ namespace ext.gfx.bmp
 
             if buffer = null then return null
 
-            bload filename, buffer
+            bload fn, buffer
 
         else
             return null

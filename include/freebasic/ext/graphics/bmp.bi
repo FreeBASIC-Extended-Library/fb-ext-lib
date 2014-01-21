@@ -11,6 +11,7 @@
 #define FBEXT_GFX_BMP_BI__ -1
 
 #include once "ext/detail/common.bi"
+#include once "ext/file/file.bi"
 #include once "ext/graphics/detail/common.bi"
 #include once "fbgfx.bi"
 
@@ -61,7 +62,7 @@ namespace ext.gfx.bmp
     ''Returns:
     ''Pointer to <ext.gfx.Image> or null.
     ''
-    declare Function load ( byref filename As const String, byval t as target_e = TARGET_FBNEW ) As ext.gfx.Image Ptr
+    declare Function load ( byref hFile as ext.File, byval t as target_e = TARGET_FBNEW ) As ext.gfx.Image Ptr
 
 #ifndef FBEXT_BUILD_NO_GFX_LOADERS
     sub loadBMPdriver() constructor

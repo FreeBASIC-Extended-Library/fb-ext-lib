@@ -18,6 +18,7 @@
 #include once "ext/detail/common.bi"
 #include once "ext/math/vector2.bi"
 #include once "ext/graphics/detail/common.bi"
+#include once "ext/file/file.bi"
 #include once "fbgfx.bi"
 
 #Ifdef image_bi_dnbii
@@ -246,14 +247,11 @@ end type
     ''
     type GraphicsLoader
         ''Function: f
-        ''Loads an image from a disk file.
-        ''pointer to function taking a string and the target (FB or GL) and returning the <Image> or null on failure
+        ''Loads an image from a <File>.
+        ''pointer to function taking a ext.File and the target (FB or GL) and returning the <Image> or null on failure
         ''
-        f as function( byref as const string, byval as target_e ) as Image ptr
-        ''Function: fmem
-        ''Loads an image that is loaded into memory.
-        ''pointer to function taking a pointer, the buffer's length and the target (FB or GL) and returning the <Image> or null on failure
-        fmem as function( byval idat as any ptr, byval blen as SizeType, byval as target_e ) as Image ptr
+        f as function( byref as ext.File, byval as target_e ) as Image ptr
+        
         declare constructor
         declare operator let( byref rhs as const GraphicsLoader )
     end type
