@@ -24,10 +24,19 @@
 
 namespace ext
 
-private sub _def_print( byval x as uinteger, byval y as uinteger, byref data_ as string, byval _nu as any ptr = NULL )
+private sub _def_print( byval x as uinteger, byval y as uinteger, byref data_ as string, byval _color as any ptr = NULL )
 
-    locate y, x
-    print data_
+    if _color <> 0 then
+        var oldc = color()
+        var newc = *cast(integer ptr,_color)
+        color loword(newc), hiword(newc)
+        locate y, x
+        print data_
+        color loword(oldc), hiword(oldc)
+    else
+        locate y, x
+        print data_
+    end if
 
 end sub
 
@@ -57,7 +66,7 @@ constructor xInput
 
 end constructor
 
-function xInput.get( byval x as uinteger = Pos(), byval y as uinteger = Csrlin() ) as string
+function xInput.get( byval x as uinteger = Pos(), byval y as uinteger = Csrlin(), byref prompt as const string = "" ) as string
 
     Dim As String mykey, blank, display
     Dim As Double mytimer, timerout
@@ -99,7 +108,7 @@ function xInput.get( byval x as uinteger = Pos(), byval y as uinteger = Csrlin()
                     End If
                 End If
 
-                this.print_cb(x,y,blank,this.print_cb_data)
+                this.print_cb(x,y,prompt & blank,this.print_cb_data)
 
             Case Chr(27) '' Escape key, our cancel key
                 If this.cancel Then
@@ -151,15 +160,16 @@ function xInput.get( byval x as uinteger = Pos(), byval y as uinteger = Csrlin()
 
             End Select
 
-            '' time to refresh display
-
-            Select Case this.password
-            Case false '' Not password entry
-                display = this.m_temp
-            Case Else '' Password entry
-                display = String(Len(this.m_temp), "*")
-            End Select
         End If
+
+        '' time to refresh display
+
+        Select Case this.password
+        Case false '' Not password entry
+            display = prompt & this.m_temp
+        Case Else '' Password entry
+            display = prompt & String(Len(this.m_temp), "*")
+        End Select
 
         if this.callback <> null then
             m_temp_ret = this.callback(0,this.callback_data)

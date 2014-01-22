@@ -67,8 +67,11 @@ namespace ext
         ''Passed to print_cb function when called.
         ''
         ''Notes:
-        ''When using the default fbgfx callback this can be set to
+        ''When using the default callbacks this can be set to
         ''a pointer to an integer that will be used as the color.
+        ''In text mode the loword contains the foreground color
+        ''and the hiword contains the background color.
+        ''In graphics mode the value is used as a direct RGB color.
         print_cb_data as any ptr
 
         ''Variable: callback (function ptr)
@@ -92,10 +95,11 @@ namespace ext
         ''Parameters:
         ''x - the x position to start input at, default: fb's pos function
         ''y - the y position to start input at, defalut: fb's csrlin function
+        ''prompt - optional string to print at the beginning of the input
         ''
         ''Returns:
         ''CHR(27) on user cancel or the entered string
-        declare Function get( x as uinteger = Pos(), y as uinteger = Csrlin() ) as string
+        declare Function get( x as uinteger = Pos(), y as uinteger = Csrlin(), byref prompt as const string = "" ) as string
         declare constructor()
 
         Private:
