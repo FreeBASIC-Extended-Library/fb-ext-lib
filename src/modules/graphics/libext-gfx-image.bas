@@ -29,6 +29,8 @@ namespace ext.gfx
 
     constructor Image ( byval w_ as uinteger, byval h_ as uinteger, byval def_color as uinteger = RGBA(255,0,255,255) )
 
+        m_w = w_
+        m_h = h_
         m_img = imagecreate( w_, h_, def_color )
 
     end constructor
