@@ -15,11 +15,10 @@ end constructor
 
 operator GraphicsLoader.let( byref rhs as const GraphicsLoader )
     this.f = rhs.f
-    this.fmem = rhs.fmem
 end operator
 
 operator = ( byref lhs as const GraphicsLoader, byref rhs as const GraphicsLoader ) as integer
-    if lhs.f = rhs.f andalso lhs.fmem = rhs.fmem then
+    if lhs.f = rhs.f then
         return true
     else
         return false
