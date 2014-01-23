@@ -248,6 +248,8 @@ namespace ext
         m_filehandle = 0
         m_access = acc
         m_lasterror = 0
+        m_fsd = NULL
+        m_bytes = 0ull
 
         #ifdef FBEXT_MULTITHREADED
 
@@ -259,6 +261,7 @@ namespace ext
 
     operator File.Let ( byref fn as string )
         this = File(fn)
+        this.m_fsd = NULL
     end operator
 
     '' :::::
@@ -273,7 +276,9 @@ namespace ext
         m_filehandle = 0
         m_access = -1
         m_lasterror = 0
-
+        m_fsd = NULL
+        m_bytes = 0ull
+        
         #ifdef FBEXT_MULTITHREADED
         m_mutex = mutexcreate()
         #endif
