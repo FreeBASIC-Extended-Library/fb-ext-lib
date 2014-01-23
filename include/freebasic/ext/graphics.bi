@@ -18,12 +18,15 @@
 #include once "ext/graphics/sprite.bi"
 #include once "ext/graphics/primitives.bi"
 #include once "ext/graphics/image.bi"
+#include once "ext/graphics/tga.bi"
+#include once "ext/graphics/xpm.bi"
 
 
 #ifndef FBEXT_NO_EXTERNAL_LIBS
 
     #include once "ext/graphics/jpg.bi"
     #include once "ext/graphics/png.bi"
+    #include once "ext/graphics/gif.bi"
 
 #endif
 

@@ -119,7 +119,6 @@ function load ( byref hFile as ext.File, byval t as target_e ) as ext.gfx.Image 
     jinfo.mem->free_pool( cast(j_common_ptr, @jinfo ), JPOOL_IMAGE )
 jpeg_destroy_decompress( @jinfo )
 
-    hFile.close()
     delete[] fbuf.f
 
     return img

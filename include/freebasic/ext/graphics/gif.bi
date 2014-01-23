@@ -1,4 +1,4 @@
-''Title: graphics/GIF.bi
+''Title: graphics/gif.bi
 ''
 ''About: License
 ''Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
