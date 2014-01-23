@@ -47,7 +47,7 @@ function LoadImage ( byref filename as const string, byval t as target_e = TARGE
         return null
     end if
 
-    var ret = loader->f(filename, t)
+    var ret = loader->f(File(filename), t)
     if ret = null orelse ret->isEmpty then
     FBEXT_DPRINT("GraphicsLoader - Something went wrong loading the file")
     end if
