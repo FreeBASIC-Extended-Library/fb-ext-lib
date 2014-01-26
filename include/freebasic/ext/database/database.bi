@@ -9,6 +9,10 @@
 
 #include once "ext/database/driver.bi"
 #include once "ext/detail/common.bi"
+#include once "ext/containers/hashtable.bi"
+
+fbext_Instanciate(fbext_HashTable,((string)))
+
 #if not __FB_MT__
     #inclib "ext-database"
     #ifdef FBEXT_MULTITHREADED
@@ -63,6 +67,18 @@ type Statement
     ''ulongint containing the number of rows affected.
     declare function affectedRows( ) as ulongint
 
+    ''Function: resultSet
+    ''Gets the current row in the statement's result as a HashTable
+    ''with the column name as the key.
+    ''
+    ''Returns:
+    ''Null if no more results, otherwise a HashTable with the result.
+    ''
+    ''Notes:
+    ''The result hashtable should free'd with delete when you are done
+    ''with the set.
+    declare function resultSet( ) as fbext_HashTable((string)) ptr
+    
     ''Function: numColumns
     ''Returns the number of columns in the result set.
     declare function numColumns( ) as integer

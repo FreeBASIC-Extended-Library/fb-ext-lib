@@ -115,6 +115,26 @@ function Statement.execute( ) as StatusCode
     return m_db_driver->stepfunc( m_db_driver )
 end function
 
+function Statement.resultSet( ) as fbext_HashTable((string)) ptr
+
+    if (not m_prepared) then
+        return null
+    end if
+
+    var i = this.numColumns()
+
+    var ret = new fbext_HashTable((string))
+
+    for n as integer = 0 to i-1
+
+        ret->Insert(this.columnName(n),this.columnValue(n))
+
+    next
+
+    return ret
+
+end function
+
 function Statement.affectedRows( ) as ulongint
 
     return m_db_driver->affected_rows( m_db_driver )
