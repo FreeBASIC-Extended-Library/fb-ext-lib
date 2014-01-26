@@ -50,7 +50,7 @@ end type
     declare function sqlite3_bindblob( byval d as DatabaseDriverF ptr, byval coli as integer, byval vali as any ptr, byval lenv as integer ) as StatusCode
     declare function sqlite3_bindnull( byval d as DatabaseDriverF ptr, byval coli as integer ) as StatusCode
 
-function mapS2E( byval c as integer ) as StatusCode
+private function mapS2E( byval c as integer ) as StatusCode
 
     select case c
     case SQLITE_OK
@@ -68,6 +68,114 @@ function mapS2E( byval c as integer ) as StatusCode
     case else
         function = StatusCode.Error
     end select
+
+end function
+
+private function sqlite3_affectedrows( byval d as DatabaseDriverF ptr ) as ulongint
+
+    return culngint(sqlite3_changes(cast(SQLite3DriverInfo ptr,d->driverdata)->db))
+
+end function
+
+private function sqlite3_noresquery( byval d as DatabaseDriverF ptr, byref sql as const string ) as StatusCode
+
+    return mapS2E(sqlite3_exec( cast(SQLite3DriverInfo ptr,d->driverdata)->db, sql, 0, 0, 0 ))
+
+end function
+
+private sub sqlite3_destroydd( byval d as DatabaseDriverF ptr )
+
+    delete cast( SQLite3DriverInfo ptr, d->driverdata )
+
+end sub
+
+private function sqlite3_opendb( byval d as DatabaseDriverF ptr ) as StatusCode
+
+    return mapS2E(sqlite3_open( cast( SQLite3DriverInfo ptr, d->driverdata )->conn_s, @(cast( SQLite3DriverInfo ptr, d->driverdata )->db)))
+
+end function
+
+private function sqlite3_closedb( byval d as DatabaseDriverF ptr ) as StatusCode
+
+    return mapS2E(sqlite3_close( cast( SQLite3DriverInfo ptr, d->driverdata )->db ))
+
+end function
+
+private function sqlite3_prepareD( byval d as DatabaseDriverF ptr, byref sql as const string ) as StatusCode
+
+    var x = mapS2E(sqlite3_prepare_v2( cast( SQLite3DriverInfo ptr, d->driverdata )->db, sql, len(sql)+1, @(cast( SQLite3DriverInfo ptr, d->driverdata )->stmt), 0 ))
+    return x
+
+end function
+
+private function sqlite3_stepD( byval d as DatabaseDriverF ptr ) as StatusCode
+
+    var ret = sqlite3_step( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt )
+    var x = mapS2E(ret)
+    return x
+
+end function
+
+private function sqlite3_numcol( byval d as DatabaseDriverF ptr ) as integer
+
+    return sqlite3_column_count( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt ) 'sqlite3_data_count?
+
+end function
+
+private function sqlite3_colname( byval d as DatabaseDriverF ptr, byval col as integer ) as string
+
+    var temp = *( sqlite3_column_name( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt, col ) )
+    return temp
+
+end function
+
+private function sqlite3_bindint( byval d as DatabaseDriverF ptr, byval coli as integer, byval vali as integer ) as StatusCode
+    return mapS2E(sqlite3_bind_int( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt, coli, vali ))
+end function
+
+private function sqlite3_binddbl( byval d as DatabaseDriverF ptr, byval coli as integer, byval vali as double ) as StatusCode
+    return mapS2E(sqlite3_bind_double( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt, coli, vali ))
+end function
+
+private function sqlite3_bindstr( byval d as DatabaseDriverF ptr, byval coli as integer, byref vali as string ) as StatusCode
+    return mapS2E(sqlite3_bind_text( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt, coli, vali, len(vali), SQLITE_TRANSIENT ))
+end function
+
+private function sqlite3_bindblob( byval d as DatabaseDriverF ptr, byval coli as integer, byval vali as any ptr, byval lenv as integer ) as StatusCode
+    return mapS2E(sqlite3_bind_blob( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt, coli, vali, lenv, SQLITE_TRANSIENT ))
+end function
+
+private function sqlite3_bindNull( byval d as DatabaseDriverF ptr, byval coli as integer ) as StatusCode
+    return mapS2E(sqlite3_bind_null( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt, coli ))
+end function
+
+private function sqlite3_colval( byval d as DatabaseDriverF ptr, byval col as integer ) as string
+
+    var temp = *( sqlite3_column_text( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt, col ) )
+    return temp
+
+end function
+
+private function sqlite3_final( byval d as DatabaseDriverF ptr ) as StatusCode
+    return mapS2E(sqlite3_finalize( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt ))
+end function
+
+private function sqlite3_errors( byval d as DatabaseDriverF ptr ) as string
+
+    var temp = *( sqlite3_errmsg( cast( SQLite3DriverInfo ptr, d->driverdata )->db ) )
+    return temp
+
+end function
+
+private function sqlite3_dbhandle( byval d as DatabaseDriverF ptr ) as any ptr
+
+    return cast( SQLite3DriverInfo ptr, d->driverdata )->db
+
+end function
+
+private function sqlite3_stmthandle( byval d as DatabaseDriverF ptr ) as any ptr
+
+    return cast( SQLite3DriverInfo ptr, d->driverdata )->stmt
 
 end function
 
@@ -92,113 +200,12 @@ function _SQLite3( byref connect as const string ) as DatabaseDriverF ptr
     x->bindstr = @sqlite3_bindstr
     x->bindblob = @sqlite3_bindblob
     x->bindnull = @sqlite3_bindNull
+    x->affected_rows = @sqlite3_affectedrows
     var di = new SQLite3DriverInfo
     di->conn_s = connect
     x->driverdata = di
 
     return x
-
-end function
-
-function sqlite3_noresquery( byval d as DatabaseDriverF ptr, byref sql as const string ) as StatusCode
-
-    return mapS2E(sqlite3_exec( cast(SQLite3DriverInfo ptr,d->driverdata)->db, sql, 0, 0, 0 ))
-
-end function
-
-sub sqlite3_destroydd( byval d as DatabaseDriverF ptr )
-
-    delete cast( SQLite3DriverInfo ptr, d->driverdata )
-
-end sub
-
-function sqlite3_opendb( byval d as DatabaseDriverF ptr ) as StatusCode
-
-    return mapS2E(sqlite3_open( cast( SQLite3DriverInfo ptr, d->driverdata )->conn_s, @(cast( SQLite3DriverInfo ptr, d->driverdata )->db)))
-
-end function
-
-function sqlite3_closedb( byval d as DatabaseDriverF ptr ) as StatusCode
-
-    return mapS2E(sqlite3_close( cast( SQLite3DriverInfo ptr, d->driverdata )->db ))
-
-end function
-
-function sqlite3_prepareD( byval d as DatabaseDriverF ptr, byref sql as const string ) as StatusCode
-
-    var x = mapS2E(sqlite3_prepare_v2( cast( SQLite3DriverInfo ptr, d->driverdata )->db, sql, len(sql)+1, @(cast( SQLite3DriverInfo ptr, d->driverdata )->stmt), 0 ))
-    return x
-
-end function
-
-function sqlite3_stepD( byval d as DatabaseDriverF ptr ) as StatusCode
-
-    var ret = sqlite3_step( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt )
-    var x = mapS2E(ret)
-    return x
-
-end function
-
-function sqlite3_numcol( byval d as DatabaseDriverF ptr ) as integer
-
-    return sqlite3_column_count( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt ) 'sqlite3_data_count?
-
-end function
-
-function sqlite3_colname( byval d as DatabaseDriverF ptr, byval col as integer ) as string
-
-    var temp = *( sqlite3_column_name( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt, col ) )
-    return temp
-
-end function
-
-function sqlite3_bindint( byval d as DatabaseDriverF ptr, byval coli as integer, byval vali as integer ) as StatusCode
-    return mapS2E(sqlite3_bind_int( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt, coli, vali ))
-end function
-
-function sqlite3_binddbl( byval d as DatabaseDriverF ptr, byval coli as integer, byval vali as double ) as StatusCode
-    return mapS2E(sqlite3_bind_double( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt, coli, vali ))
-end function
-
-function sqlite3_bindstr( byval d as DatabaseDriverF ptr, byval coli as integer, byref vali as string ) as StatusCode
-    return mapS2E(sqlite3_bind_text( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt, coli, vali, len(vali), SQLITE_TRANSIENT ))
-end function
-
-function sqlite3_bindblob( byval d as DatabaseDriverF ptr, byval coli as integer, byval vali as any ptr, byval lenv as integer ) as StatusCode
-    return mapS2E(sqlite3_bind_blob( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt, coli, vali, lenv, SQLITE_TRANSIENT ))
-end function
-
-function sqlite3_bindNull( byval d as DatabaseDriverF ptr, byval coli as integer ) as StatusCode
-    return mapS2E(sqlite3_bind_null( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt, coli ))
-end function
-
-function sqlite3_colval( byval d as DatabaseDriverF ptr, byval col as integer ) as string
-
-    var temp = *( sqlite3_column_text( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt, col ) )
-    return temp
-
-end function
-
-function sqlite3_final( byval d as DatabaseDriverF ptr ) as StatusCode
-    return mapS2E(sqlite3_finalize( cast( SQLite3DriverInfo ptr, d->driverdata )->stmt ))
-end function
-
-function sqlite3_errors( byval d as DatabaseDriverF ptr ) as string
-
-    var temp = *( sqlite3_errmsg( cast( SQLite3DriverInfo ptr, d->driverdata )->db ) )
-    return temp
-
-end function
-
-function sqlite3_dbhandle( byval d as DatabaseDriverF ptr ) as any ptr
-
-    return cast( SQLite3DriverInfo ptr, d->driverdata )->db
-
-end function
-
-function sqlite3_stmthandle( byval d as DatabaseDriverF ptr ) as any ptr
-
-    return cast( SQLite3DriverInfo ptr, d->driverdata )->stmt
 
 end function
 

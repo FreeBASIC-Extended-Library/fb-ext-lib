@@ -55,7 +55,7 @@ end type
     'declare function postgres_bindblob( byval d as DatabaseDriverF ptr, byval coli as integer, byval vali as any ptr, byval lenv as integer ) as StatusCode
     'declare function postgres_bindnull( byval d as DatabaseDriverF ptr, byval coli as integer ) as StatusCode
 
-function mapP2E( byval c as integer ) as StatusCode
+private function mapP2E( byval c as integer ) as StatusCode
 
 select case c
     case is > PGRES_COPY_IN
@@ -72,7 +72,7 @@ end select
 
 end function
 
-function postgres_opendb( byval d as DatabaseDriverF ptr ) as StatusCode
+private function postgres_opendb( byval d as DatabaseDriverF ptr ) as StatusCode
 
     var i = cast(PostgreDriverInfo ptr,d->driverdata)
     i->db = PQconnectdb( i->conn_s )
@@ -80,7 +80,7 @@ function postgres_opendb( byval d as DatabaseDriverF ptr ) as StatusCode
 
 end function
 
-function postgres_closedb( byval d as DatabaseDriverF ptr ) as StatusCode
+private function postgres_closedb( byval d as DatabaseDriverF ptr ) as StatusCode
 
     var i = cast(PostgreDriverInfo ptr,d->driverdata)
     PQfinish( i->db )
@@ -89,7 +89,7 @@ function postgres_closedb( byval d as DatabaseDriverF ptr ) as StatusCode
 
 end function
 
-function postgres_prepareD( byval d as DatabaseDriverF ptr, byref sql as const string ) as StatusCode
+private function postgres_prepareD( byval d as DatabaseDriverF ptr, byref sql as const string ) as StatusCode
 
     var i = cast(PostgreDriverInfo ptr,d->driverdata)
     i->res = PQexec( i->db, sql )
@@ -98,11 +98,11 @@ function postgres_prepareD( byval d as DatabaseDriverF ptr, byref sql as const s
 
 end function
 
-function postgres_noresquery( byval d as DatabaseDriverF ptr, byref sql as const string ) as StatusCode
+private function postgres_noresquery( byval d as DatabaseDriverF ptr, byref sql as const string ) as StatusCode
     return d->prepdb(d,sql)
 end function
 
-function postgres_stepD( byval d as DatabaseDriverF ptr ) as StatusCode
+private function postgres_stepD( byval d as DatabaseDriverF ptr ) as StatusCode
 
     var i = cast(PostgreDriverInfo ptr,d->driverdata)
     if i->ep = 0 then 'first run
@@ -120,12 +120,12 @@ function postgres_stepD( byval d as DatabaseDriverF ptr ) as StatusCode
 
 end function
 
-function postgres_numcol( byval d as DatabaseDriverF ptr ) as integer
+private function postgres_numcol( byval d as DatabaseDriverF ptr ) as integer
     var i = cast(PostgreDriverInfo ptr,d->driverdata)
     return PQnfields( i->res )
 end function
 
-function postgres_colname( byval d as DatabaseDriverF ptr, byval col as integer ) as string
+private function postgres_colname( byval d as DatabaseDriverF ptr, byval col as integer ) as string
 
     var i = cast(PostgreDriverInfo ptr,d->driverdata)
     var result = ""
@@ -137,7 +137,7 @@ function postgres_colname( byval d as DatabaseDriverF ptr, byval col as integer 
 
 end function
 
-function postgres_colval( byval d as DatabaseDriverF ptr, byval col as integer ) as string
+private function postgres_colval( byval d as DatabaseDriverF ptr, byval col as integer ) as string
 
     var i = cast(PostgreDriverInfo ptr,d->driverdata)
     var ret = PQgetvalue(i->res,i->st,col)
@@ -147,7 +147,7 @@ function postgres_colval( byval d as DatabaseDriverF ptr, byval col as integer )
 
 end function
 
-function postgres_final( byval d as DatabaseDriverF ptr ) as StatusCode
+private function postgres_final( byval d as DatabaseDriverF ptr ) as StatusCode
 
     var i = cast(PostgreDriverInfo ptr,d->driverdata)
     PQclear(i->res)
@@ -155,7 +155,7 @@ function postgres_final( byval d as DatabaseDriverF ptr ) as StatusCode
 
 end function
 
-function postgres_errors( byval d as DatabaseDriverF ptr ) as string
+private function postgres_errors( byval d as DatabaseDriverF ptr ) as string
 
     var i = cast(PostgreDriverInfo ptr,d->driverdata)
     var test = PQresultErrorMessage(i->res)
@@ -177,21 +177,24 @@ function postgres_errors( byval d as DatabaseDriverF ptr ) as string
 
 end function
 
-function postgres_dbhandle( byval d as DatabaseDriverF ptr ) as any ptr
+private function postgres_dbhandle( byval d as DatabaseDriverF ptr ) as any ptr
     var i = cast(PostgreDriverInfo ptr,d->driverdata)
     return i->db
 end function
 
-function postgres_stmthandle( byval d as DatabaseDriverF ptr ) as any ptr
+private function postgres_stmthandle( byval d as DatabaseDriverF ptr ) as any ptr
     var i = cast(PostgreDriverInfo ptr,d->driverdata)
     return i->res
 end function
 
-sub postgres_destroydd( byval d as DatabaseDriverF ptr )
+private sub postgres_destroydd( byval d as DatabaseDriverF ptr )
     var i = cast(PostgreDriverInfo ptr,d->driverdata)
     delete i
 end sub
 
+private function postgres_affrow( byval d as DatabaseDriverF ptr ) as ulongint
+    return culngint(*PQcmdTuples(cast(PostgreDriverInfo ptr,d->driverdata)->res))
+end function
 
 function _Postgre( byref connect as const string ) as DatabaseDriverF ptr
 
@@ -214,6 +217,7 @@ function _Postgre( byref connect as const string ) as DatabaseDriverF ptr
     x->bindstr = 0'@postgre_bindstr
     x->bindblob = 0'@postgre_bindblob
     x->bindnull = 0'@postgre_bindNull
+    x->affected_rows = @postgres_affrow
     var di = new PostgreDriverInfo
     di->conn_s = connect
     x->driverdata = di

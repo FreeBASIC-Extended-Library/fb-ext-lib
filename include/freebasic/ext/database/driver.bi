@@ -44,7 +44,7 @@ type DBbindDbl as function( byval d as DatabaseDriverF ptr, byval coli as intege
 type DBbindStr as function( byval d as DatabaseDriverF ptr, byval coli as integer, byref vali as string ) as StatusCode
 type DBbindBlob as function( byval d as DatabaseDriverF ptr, byval coli as integer, byval vali as any ptr, byval lenv as integer ) as StatusCode
 type DBbindNull as function( byval d as DatabaseDriverF ptr, byval coli as integer ) as StatusCode
-
+type DBaffrow as function( byval d as DatabaseDriverF ptr ) as ulongint
 
 ''Type: DatabaseDriver
 ''A group of function pointers to enable access to a database.
@@ -69,6 +69,7 @@ type DatabaseDriver
     as DBHandle gethandle
     as STMTHandle sthandle
     as DDdestroy destroy
+    as DBaffrow affected_rows
     as any ptr driverdata
 end type
 

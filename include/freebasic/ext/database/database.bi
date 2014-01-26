@@ -56,6 +56,13 @@ type Statement
     ''Database dependant error code.
     declare function execute( ) as StatusCode
 
+    ''Function: affectedRows
+    ''Get the number of rows that were affected by the SQL statement.
+    ''
+    ''Returns:
+    ''ulongint containing the number of rows affected.
+    declare function affectedRows( ) as ulongint
+
     ''Function: numColumns
     ''Returns the number of columns in the result set.
     declare function numColumns( ) as integer

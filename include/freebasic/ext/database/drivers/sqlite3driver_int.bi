@@ -77,6 +77,7 @@ declare function sqlite3_bind_text( byval as sqlite3_stmt ptr, byval as integer,
 declare function sqlite3_column_text( byval as sqlite3_stmt ptr, byval as integer ) as const zstring ptr
 declare function sqlite3_finalize( byval as sqlite3_stmt ptr ) as integer
 declare function sqlite3_errmsg( byval as sqlite3 ptr ) as const zstring ptr
+declare function sqlite3_changes( byval as sqlite3 ptr ) as integer
 
 end extern
 

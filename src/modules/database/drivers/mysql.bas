@@ -60,8 +60,9 @@ end destructor
     declare function MySQL_binddbl( byval d as DatabaseDriverF ptr, byval coli as integer, byval vali as double ) as StatusCode
     declare function MySQL_bindblob( byval d as DatabaseDriverF ptr, byval coli as integer, byval vali as any ptr, byval lenv as integer ) as StatusCode
     declare function MySQL_bindnull( byval d as DatabaseDriverF ptr, byval coli as integer ) as StatusCode
-
-function mapMY2E( byval c as integer ) as StatusCode
+    declare function MySQL_affrow( byval d as DatabaseDriverF ptr ) as ulongint
+    
+private function mapMY2E( byval c as integer ) as StatusCode
 
     return c
 
@@ -88,6 +89,7 @@ function _MySQL( byref connect as const string ) as DatabaseDriverF ptr
     x->bindstr = 0'@MySQL_bindstr
     x->bindblob = 0'@MySQL_bindblob
     x->bindnull = 0'@MySQL_bindNull
+    x->affected_rows = @MySQL_affrow
     var di = new MySQLDriverInfo
     di->conn_s = connect
     x->driverdata = di
@@ -96,7 +98,7 @@ function _MySQL( byref connect as const string ) as DatabaseDriverF ptr
 
 end function
 
-function MySQL_noresquery( byval d as DatabaseDriverF ptr, byref sql as const string ) as StatusCode
+private function MySQL_noresquery( byval d as DatabaseDriverF ptr, byref sql as const string ) as StatusCode
 
 
     var sqlto = space((len(sql)*2)+1)
@@ -105,13 +107,13 @@ function MySQL_noresquery( byval d as DatabaseDriverF ptr, byref sql as const st
 
 end function
 
-sub MySQL_destroydd( byval d as DatabaseDriverF ptr )
+private sub MySQL_destroydd( byval d as DatabaseDriverF ptr )
 
     delete cast( MySQLDriverInfo ptr, d->driverdata )
 
 end sub
 
-function MySQL_opendb( byval d as DatabaseDriverF ptr ) as StatusCode
+private function MySQL_opendb( byval d as DatabaseDriverF ptr ) as StatusCode
 
     var username = ""
     var passwd = ""
@@ -159,14 +161,14 @@ function MySQL_opendb( byval d as DatabaseDriverF ptr ) as StatusCode
 
 end function
 
-function MySQL_closedb( byval d as DatabaseDriverF ptr ) as StatusCode
+private function MySQL_closedb( byval d as DatabaseDriverF ptr ) as StatusCode
 
     MySQL_close( cast( MySQLDriverInfo ptr, d->driverdata )->db )
     return StatusCode.Ok
 
 end function
 
-function MySQL_prepareD( byval d as DatabaseDriverF ptr, byref sql as const string ) as StatusCode
+private function MySQL_prepareD( byval d as DatabaseDriverF ptr, byref sql as const string ) as StatusCode
 
     var sqlto = space((len(sql)*2)+1)
     var sqltolen = mysql_real_escape_string(cast( MySQLDriverInfo ptr, d->driverdata )->db, sqlto, sql, len(sql))
@@ -178,7 +180,7 @@ function MySQL_prepareD( byval d as DatabaseDriverF ptr, byref sql as const stri
 
 end function
 
-function MySQL_stepD( byval d as DatabaseDriverF ptr ) as StatusCode
+private function MySQL_stepD( byval d as DatabaseDriverF ptr ) as StatusCode
 
     cast( MySQLDriverInfo ptr, d->driverdata )->trow = MySQL_fetch_row( cast( MySQLDriverInfo ptr, d->driverdata )->res )
 
@@ -186,13 +188,13 @@ function MySQL_stepD( byval d as DatabaseDriverF ptr ) as StatusCode
 
 end function
 
-function MySQL_numcol( byval d as DatabaseDriverF ptr ) as integer
+private function MySQL_numcol( byval d as DatabaseDriverF ptr ) as integer
 
     return mysql_num_fields( cast( MySQLDriverInfo ptr, d->driverdata )->res ) 'MySQL_data_count?
 
 end function
 
-function MySQL_colname( byval d as DatabaseDriverF ptr, byval col as integer ) as string
+private function MySQL_colname( byval d as DatabaseDriverF ptr, byval col as integer ) as string
 
     mysql_field_seek( cast( MySQLDriverInfo ptr, d->driverdata )->res, 0 )
 
@@ -209,55 +211,59 @@ function MySQL_colname( byval d as DatabaseDriverF ptr, byval col as integer ) a
 
 end function
 /'
-function MySQL_bindint( byval d as DatabaseDriverF ptr, byval coli as integer, byval vali as integer ) as StatusCode
+private function MySQL_bindint( byval d as DatabaseDriverF ptr, byval coli as integer, byval vali as integer ) as StatusCode
     return mapMY2E(MySQL_bind_int( cast( MySQLDriverInfo ptr, d->driverdata )->stmt, coli, vali ))
 end function
 
-function MySQL_binddbl( byval d as DatabaseDriverF ptr, byval coli as integer, byval vali as double ) as StatusCode
+private function MySQL_binddbl( byval d as DatabaseDriverF ptr, byval coli as integer, byval vali as double ) as StatusCode
     return mapMY2E(MySQL_bind_double( cast( MySQLDriverInfo ptr, d->driverdata )->stmt, coli, vali ))
 end function
 
-function MySQL_bindstr( byval d as DatabaseDriverF ptr, byval coli as integer, byref vali as string ) as StatusCode
+private function MySQL_bindstr( byval d as DatabaseDriverF ptr, byval coli as integer, byref vali as string ) as StatusCode
     return mapMY2E(MySQL_bind_text( cast( MySQLDriverInfo ptr, d->driverdata )->stmt, coli, vali, len(vali), SQLITE_TRANSIENT ))
 end function
 
-function MySQL_bindblob( byval d as DatabaseDriverF ptr, byval coli as integer, byval vali as any ptr, byval lenv as integer ) as StatusCode
+private function MySQL_bindblob( byval d as DatabaseDriverF ptr, byval coli as integer, byval vali as any ptr, byval lenv as integer ) as StatusCode
     return mapMY2E(MySQL_bind_blob( cast( MySQLDriverInfo ptr, d->driverdata )->stmt, coli, vali, lenv, SQLITE_TRANSIENT ))
 end function
 
-function MySQL_bindNull( byval d as DatabaseDriverF ptr, byval coli as integer ) as StatusCode
+private function MySQL_bindNull( byval d as DatabaseDriverF ptr, byval coli as integer ) as StatusCode
     return mapMY2E(MySQL_bind_null( cast( MySQLDriverInfo ptr, d->driverdata )->stmt, coli ))
 end function
 '/
-function MySQL_colval( byval d as DatabaseDriverF ptr, byval col as integer ) as string
+private function MySQL_colval( byval d as DatabaseDriverF ptr, byval col as integer ) as string
 
     var temp = *( cast( MySQLDriverInfo ptr, d->driverdata )->trow[col] )
     return temp
 
 end function
 
-function MySQL_final( byval d as DatabaseDriverF ptr ) as StatusCode
+private function MySQL_final( byval d as DatabaseDriverF ptr ) as StatusCode
     MySQL_free_result( cast( MySQLDriverInfo ptr, d->driverdata )->res )
     return StatusCode.Ok
 end function
 
-function MySQL_errors( byval d as DatabaseDriverF ptr ) as string
+private function MySQL_errors( byval d as DatabaseDriverF ptr ) as string
 
     var temp = *( MySQL_error( cast( MySQLDriverInfo ptr, d->driverdata )->db ) )
     return temp
 
 end function
 
-function MySQL_dbhandle( byval d as DatabaseDriverF ptr ) as any ptr
+private function MySQL_dbhandle( byval d as DatabaseDriverF ptr ) as any ptr
 
     return cast( MySQLDriverInfo ptr, d->driverdata )->db
 
 end function
 
-function MySQL_stmthandle( byval d as DatabaseDriverF ptr ) as any ptr
+private function MySQL_stmthandle( byval d as DatabaseDriverF ptr ) as any ptr
 
     return cast( MySQLDriverInfo ptr, d->driverdata )->res
 
+end function
+
+private function MySQL_affrow( byval d as DatabaseDriverF ptr ) as ulongint
+    return mysql_affected_rows(cast(MySQLDriverInfo ptr,d)->db)
 end function
 
 end namespace

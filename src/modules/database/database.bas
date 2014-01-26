@@ -115,6 +115,12 @@ function Statement.execute( ) as StatusCode
     return m_db_driver->stepfunc( m_db_driver )
 end function
 
+function Statement.affectedRows( ) as ulongint
+
+    return m_db_driver->affected_rows( m_db_driver )
+
+end function
+
 function Statement.numColumns( ) as integer
     return m_db_driver->numcols( m_db_driver )
 end function
