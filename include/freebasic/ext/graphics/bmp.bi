@@ -26,33 +26,6 @@
 
 namespace ext.gfx.bmp
 
-    ''type: FileHeader
-    ''Provided for users wanting to write bmp manipulation routines
-    type FileHeader field = 1
-        as ushort       mark
-        as uinteger     size
-        As ushort       res1, res2
-        As uinteger     offset
-    end type
-
-    ''type: InfoHeader
-    ''Provided for users wanting to write bmp manipulation routines
-    type InfoHeader field = 1
-        as uinteger     size
-        As integer      w, h
-        As short        planes, bitCount
-        As uinteger     compression, sizeImage
-        As integer      ppmX, ppmY
-        As uinteger     used, important
-    end type
-
-    ''type: bmp_header
-    ''Provided for users wanting to write bmp manipulation routines
-    type bmp_header field = 1
-        As FileHeader   bmfh
-        As InfoHeader   bmih
-    end type
-
     ''Function: load
     ''Attempts to load a bitmap to an <ext.gfx.Image>.
     ''

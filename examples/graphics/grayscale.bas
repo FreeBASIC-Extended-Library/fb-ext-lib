@@ -7,16 +7,16 @@
 ''accompanying file LICENSE.txt or copy at
 ''http://code.google.com/p/fb-extended-lib/wiki/License)
 
+#define FBEXT_NO_EXTERNAL_LIBS -1
 #include once "ext/graphics/manip.bi"
 #include once "ext/graphics/bmp.bi"
 #include once "ext/misc.bi"
-#include once "fbgfx.bi"
 
 using ext.gfx
 
 screenres 640, 240, 32
 windowtitle "A simple example of the grayscale function using a Marmot."
-var img1 = bmp.load("marmot.bmp")
+var img1 = bmp.load("marmot24bit.bmp")
 locate 10,1
 print "Photo provided by: http://www.flickr.com/photos/baggis/"
 print
