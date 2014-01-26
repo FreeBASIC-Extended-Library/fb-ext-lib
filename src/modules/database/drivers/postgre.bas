@@ -72,6 +72,16 @@ end select
 
 end function
 
+private function postgres_estr( byval d as DatabaseDriverF ptr, byref e as string ) as string
+
+    var ret = space(len(e)*2)
+
+    PQescapeString(ret,e,len(e))
+
+    return trim(ret)
+
+end function
+
 private function postgres_opendb( byval d as DatabaseDriverF ptr ) as StatusCode
 
     var i = cast(PostgreDriverInfo ptr,d->driverdata)
@@ -218,6 +228,7 @@ function _Postgre( byref connect as const string ) as DatabaseDriverF ptr
     x->bindblob = 0'@postgre_bindblob
     x->bindnull = 0'@postgre_bindNull
     x->affected_rows = @postgres_affrow
+    x->escape_string = @postgres_estr
     var di = new PostgreDriverInfo
     di->conn_s = connect
     x->driverdata = di

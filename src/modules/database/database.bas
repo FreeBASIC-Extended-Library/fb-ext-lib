@@ -32,6 +32,10 @@ constructor Connection ( byref rhs as Connection )
     m_db_driver = rhs.m_db_driver
 end constructor
 
+function Connection.escape ( byref e as string ) as string
+    return m_db_driver->escape_string( m_db_driver, e )
+end function
+
 function Connection.connect( ) as StatusCode
 
     return m_db_driver->opendb( m_db_driver )

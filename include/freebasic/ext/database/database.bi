@@ -142,7 +142,17 @@ type Connection
     ''Returns:
     ''Database dependant error code.
     declare function connect( ) as StatusCode
-    'declare function execute( byref sql as const string, byval callback as dbcallback ) as integer
+
+    ''Function: escape
+    ''Escape potentionally dangerous values from a user provided string
+    ''before passing it to the database.
+    ''
+    ''Parameters:
+    ''e - the string to escape
+    ''
+    ''Returns:
+    ''String with dangerous values stored safely.
+    declare function escape( byref e as string ) as string
 
     ''Function: prepare
     ''Factory method to create <Statement>s

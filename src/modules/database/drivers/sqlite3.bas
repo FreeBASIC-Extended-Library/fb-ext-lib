@@ -21,6 +21,7 @@
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include once "ext/database/drivers/sqlite3.bi"
+#include once "ext/strings/manip.bi"
 namespace ext.database.driver
 
 type SQLite3DriverInfo
@@ -69,6 +70,12 @@ private function mapS2E( byval c as integer ) as StatusCode
         function = StatusCode.Error
     end select
 
+end function
+
+private function sqlite3_escapestring( byval d as DatabaseDriverF ptr, byref e as string ) as string
+    var ret = strings.replaceCopy(e,"'","''")
+    ret = strings.replaceCopy(ret,"''''","''")
+    return ret
 end function
 
 private function sqlite3_affectedrows( byval d as DatabaseDriverF ptr ) as ulongint
@@ -201,6 +208,7 @@ function _SQLite3( byref connect as const string ) as DatabaseDriverF ptr
     x->bindblob = @sqlite3_bindblob
     x->bindnull = @sqlite3_bindNull
     x->affected_rows = @sqlite3_affectedrows
+    x->escape_string = @sqlite3_escapestring
     var di = new SQLite3DriverInfo
     di->conn_s = connect
     x->driverdata = di

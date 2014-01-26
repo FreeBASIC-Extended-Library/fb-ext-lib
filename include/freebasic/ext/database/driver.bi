@@ -45,6 +45,7 @@ type DBbindStr as function( byval d as DatabaseDriverF ptr, byval coli as intege
 type DBbindBlob as function( byval d as DatabaseDriverF ptr, byval coli as integer, byval vali as any ptr, byval lenv as integer ) as StatusCode
 type DBbindNull as function( byval d as DatabaseDriverF ptr, byval coli as integer ) as StatusCode
 type DBaffrow as function( byval d as DatabaseDriverF ptr ) as ulongint
+type DBescape as function( byval d as DatabaseDriverF ptr, byref e as string ) as string
 
 ''Type: DatabaseDriver
 ''A group of function pointers to enable access to a database.
@@ -70,6 +71,7 @@ type DatabaseDriver
     as STMTHandle sthandle
     as DDdestroy destroy
     as DBaffrow affected_rows
+    as DBescape escape_string
     as any ptr driverdata
 end type
 

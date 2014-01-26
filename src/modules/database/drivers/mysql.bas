@@ -68,6 +68,16 @@ private function mapMY2E( byval c as integer ) as StatusCode
 
 end function
 
+private function mysql_estr( byval d as DatabaseDriverF ptr, byref e as string ) as string
+
+    var ret = space(len(e)*2)
+
+    mysql_real_escape_string(cast( MySQLDriverInfo ptr, d->driverdata )->db,ret,e,len(e))
+
+    return trim(ret)
+
+end function
+
 function _MySQL( byref connect as const string ) as DatabaseDriverF ptr
 
     var x = new DatabaseDriverF
@@ -90,6 +100,7 @@ function _MySQL( byref connect as const string ) as DatabaseDriverF ptr
     x->bindblob = 0'@MySQL_bindblob
     x->bindnull = 0'@MySQL_bindNull
     x->affected_rows = @MySQL_affrow
+    x->escape_string = @mysql_estr
     var di = new MySQLDriverInfo
     di->conn_s = connect
     x->driverdata = di
@@ -100,10 +111,7 @@ end function
 
 private function MySQL_noresquery( byval d as DatabaseDriverF ptr, byref sql as const string ) as StatusCode
 
-
-    var sqlto = space((len(sql)*2)+1)
-    var sqltolen = mysql_real_escape_string(cast( MySQLDriverInfo ptr, d->driverdata )->db, sqlto, sql, len(sql))
-    return mapMY2E(MySQL_real_query( cast(MySQLDriverInfo ptr,d->driverdata)->db, sqlto, sqltolen ))
+    return mapMY2E(MySQL_real_query( cast(MySQLDriverInfo ptr,d->driverdata)->db, sql, len(sql) ))
 
 end function
 
