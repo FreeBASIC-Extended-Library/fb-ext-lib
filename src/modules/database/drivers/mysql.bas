@@ -196,14 +196,9 @@ end function
 
 private function MySQL_colname( byval d as DatabaseDriverF ptr, byval col as integer ) as string
 
-    mysql_field_seek( cast( MySQLDriverInfo ptr, d->driverdata )->res, 0 )
-
     var result = ""
-    dim as mysql_field ptr f
 
-    for n as integer = 0 to col
-        f = mysql_fetch_field( cast( MySQLDriverInfo ptr, d->driverdata )->res )
-    next
+    var f = mysql_fetch_field_direct( cast( MySQLDriverInfo ptr, d->driverdata )->res, col )
 
     result = *(f->name)
 
