@@ -178,10 +178,7 @@ end function
 
 private function MySQL_prepareD( byval d as DatabaseDriverF ptr, byref sql as const string ) as StatusCode
 
-    var sqlto = space((len(sql)*2)+1)
-    var sqltolen = mysql_real_escape_string(cast( MySQLDriverInfo ptr, d->driverdata )->db, sqlto, sql, len(sql))
-
-    mysql_real_query( cast( MySQLDriverInfo ptr, d->driverdata )->db, sqlto, sqltolen )
+    mysql_real_query( cast( MySQLDriverInfo ptr, d->driverdata )->db, sql, len(sql) )
 
     cast( MySQLDriverInfo ptr, d->driverdata )->res = mysql_store_result( cast( MySQLDriverInfo ptr, d->driverdata )->db )
     return StatusCode.Ok
