@@ -342,10 +342,10 @@ enum parser_state
     end_object
 end enum
 
-private function parse_string( byref j as const string, byval i as uinteger, byref end_ as uinteger ) as string
+private function parse_string( byref j as const ubyte ptr, byval i as uinteger, byref end_ as uinteger ) as string
     var ret = ""
     var n = i
-    while j[n] <> JSON_QUOTE andalso n <= len(j) -1
+    while j[n] <> JSON_QUOTE andalso j[n] <> 0
         ret = ret & chr(j[n])
         n += 1
     wend
@@ -353,9 +353,9 @@ private function parse_string( byref j as const string, byval i as uinteger, byr
     return ret
 end function
 
-declare function parse_array( byref j as const string, byval i as uinteger, byref end_ as uinteger ) as JSONarray ptr
+declare function parse_array( byref j as const ubyte ptr, byval i as uinteger, byref end_ as uinteger ) as JSONarray ptr
 
-private function parse_object( byval t as JSONobject ptr, byref j as const string, byval i as uinteger, byref end_ as uinteger = 0 ) as JSONobject ptr
+private function parse_object( byval t as JSONobject ptr, byref j as const ubyte ptr, byval i as uinteger, byref end_ as uinteger = 0 ) as JSONobject ptr
 
     dim pstate as fbext_Stack( ((integer)) )
     pstate.Push(begin_object)
@@ -368,9 +368,9 @@ private function parse_object( byval t as JSONobject ptr, byref j as const strin
 
     var n = i
 
-    while n <= len(j)-1
+    while j[n] <> 0
 
-    if n > len(j)-1 then exit while
+    'if n > len(j)-1 then exit while
         if j[n] = JSON_CLOS_B then exit while
         if j[n] = JSON_QUOTE then
             if str1 = "" then
@@ -474,7 +474,7 @@ private function parse_object( byval t as JSONobject ptr, byref j as const strin
 
 end function
 
-private function parse_array( byref j as const string, byval i as uinteger, byref end_ as uinteger ) as JSONarray ptr
+private function parse_array( byref j as const ubyte ptr, byval i as uinteger, byref end_ as uinteger ) as JSONarray ptr
 
     dim arr() as JSONvalue ptr
 
@@ -484,7 +484,7 @@ private function parse_array( byref j as const string, byval i as uinteger, byre
 
     var str1 = ""
 
-    while n <= len(j)-1
+    while j[n] <> 0
 
         if j[n] = JSON_CLOS_A then exit while
         if j[n] = JSON_QUOTE then
@@ -582,17 +582,46 @@ private function parse_array( byref j as const string, byval i as uinteger, byre
 
 end function
 
+function JSONobject.loadFile( byref f as File ) as JSONobject ptr
+
+    var unused = 0u
+    dim as ubyte ptr fbuf
+    if f.open() = true then return null
+    var fbuf_len = f.toBuffer(fbuf)
+
+    for n as uinteger = 0 to fbuf_len-1
+
+        if not FBEXT_CHAR_IS_WHITESPACE(fbuf[n]) then
+            if fbuf[n] = JSON_OPEN_B then
+                parse_object(@this,fbuf,n+1,unused)
+                return @this
+            end if
+            if fbuf[n] = JSON_OPEN_A then
+                var arr = parse_array(fbuf,n+1,unused)
+                addChild("",new JSONvalue(arr))
+                return @this
+            end if
+        end if
+
+    next
+
+    delete[] fbuf
+
+    return @this
+
+end function
+
 function JSONobject.loadString( byref jstr as const string ) as JSONobject ptr
     var unused = 0u
     for n as uinteger = 0 to len(jstr)-1
 
         if not FBEXT_CHAR_IS_WHITESPACE(jstr[n]) then
             if jstr[n] = JSON_OPEN_B then
-                parse_object(@this,jstr,n+1,unused)
+                parse_object(@this,cast(ubyte ptr,@(jstr[0])),n+1,unused)
                 return @this
             end if
             if jstr[n] = JSON_OPEN_A then
-                var arr = parse_array(jstr,n+1,unused)
+                var arr = parse_array(cast(ubyte ptr,@(jstr[0])),n+1,unused)
                 addChild("",new JSONvalue(arr))
                 return @this
             end if

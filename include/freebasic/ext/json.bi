@@ -11,6 +11,7 @@
 #define __FB_EXT_JSON__ -1
 
 #include once "ext/detail/common.bi"
+#include once "ext/file/file.bi"
 #include once "crt/string.bi"
 
 #if not __FB_MT__
@@ -143,6 +144,14 @@ namespace ext.json
     ''named "", you would get the array by calling `array = obj.child("")`
     type JSONobject
         public:
+        ''Function: loadFile
+        ''Loads the JSON document from the <File> passed.
+        ''
+        ''Returns:
+        ''Pointer to this object for chaining.
+        ''Null may be returned on error.
+        declare function loadFile( byref f as File ) as JSONobject ptr
+
         ''Function: loadString
         ''Loads the JSON document passed as a string.
         ''
