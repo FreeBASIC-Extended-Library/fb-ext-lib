@@ -56,4 +56,24 @@ function LoadImage ( byref filename as const string, byval t as target_e = TARGE
 
 end function
 
+function LoadImage( byref fn as File, byref filetype as string = "", byval t as target_e = TARGET_FBNEW ) as Image ptr
+
+    var ret = null
+
+    if __driver_ht = null then return null
+
+    var sep = right(fn.fileName,3)
+    if sep = "" andalso filetype = "" then return null
+
+    if sep = "" then sep = filetype
+
+    var loader = __driver_ht->Find(sep)
+    if loader = null then return null
+
+    ret = loader->f(fn,t)
+    
+    return ret
+
+end function
+
 end namespace

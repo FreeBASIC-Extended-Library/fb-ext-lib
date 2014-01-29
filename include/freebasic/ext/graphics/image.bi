@@ -239,7 +239,20 @@ end type
     ''Returns:
     ''Pointer to <Image> with a FBGFX or OpenGL-compatible buffer, free with delete when done.
     ''
-    declare function LoadImage ( byref filename as const string, byval t as target_e = TARGET_FBNEW ) as Image ptr
+    declare function LoadImage overload ( byref filename as const string, byval t as target_e = TARGET_FBNEW ) as Image ptr
+
+    ''Function: LoadImage
+    ''Loads a generic <File> to a FBGFX buffer.
+    ''See <LoadImage> for notes.
+    ''
+    ''Parameters:
+    ''fn - <File> to load image from
+    ''filetype - optional extension of image if cannot be determined automatically, i.e. <File> points to memory.
+    ''target - optional <target_e> (Default: TARGET_FBNEW) which format to load image in.
+    ''
+    ''Returns:
+    ''Pointer to <Image> with buffer (free with delete) or null on error.
+    declare function LoadImage ( byref fn as File, byref filetype as string = "", byval t as target_e = TARGET_FBNEW ) as Image ptr
 
     ''Type: GraphicsLoader
     ''Driver for loading graphics of potentially any format
