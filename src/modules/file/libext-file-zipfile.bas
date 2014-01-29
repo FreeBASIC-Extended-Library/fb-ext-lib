@@ -95,6 +95,7 @@ function ZipFile.open( byref zifname as const string ) as File ptr
         md->fsopen = @MFzip_open
         md->fsclose(md)
         md->fsclose = @MFzip_close
+        md->driverdata = zfsd
 
         return new File(md)
     else
