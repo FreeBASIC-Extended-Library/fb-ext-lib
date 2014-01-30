@@ -72,6 +72,7 @@ enum LOG_METHODS
     LOG_NULL
     LOG_PRINT
     LOG_FILE
+    LOG_FILE_XML
     LOG_CUSTOM
 end enum
 
@@ -110,7 +111,7 @@ declare function setNumberOfLogChannels( byval c as uinteger ) as bool
 ''Parameters:
 ''c - *Optional* The log channel to change, can be completely omitted (comma and all) for default channel
 ''lm - the <LOG_METHODS> to use
-''s - for LOG_FILE this is the filename (is optional, default is command(0).log, recommended to set to a writable file.), for LOG_CUSTOM this is the method to call *Not Used for other <LOG_METHODS>*
+''s - for LOG_FILE / LOG_FILE_XML this is the filename (is optional, default is command(0).log, recommended to set to a writable file.), for LOG_CUSTOM this is the method to call *Not Used for other <LOG_METHODS>*
 ''fd - pointer for arbitrary data to be passed to the LOG_CUSTOM method.
 ''ff - function to be used to free custom data when logger is finalized.
 declare sub setLogMethod overload ( byval as LOG_METHODS, byval as any ptr = 0, byval as any ptr = 0, byval as any ptr = 0 )

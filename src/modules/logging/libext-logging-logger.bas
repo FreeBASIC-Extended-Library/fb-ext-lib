@@ -23,6 +23,7 @@
 #include once "ext/log.bi"
 #include once "ext/memory.bi"
 #include once "ext/datetime.bi"
+#include once "ext/xml/dom.bi"
 
 #ifdef FBEXT_MULTITHREADED
 #include once "ext/threads/comm.bi"
@@ -30,6 +31,9 @@ namespace ext
 declare sub log_thread ( byval _cc as any ptr )
 end namespace
 #endif
+
+dim shared __xml_log as ext.xml.tree ptr
+
 namespace ext
 
 #ifdef FBEXT_MULTITHREADED
@@ -41,15 +45,17 @@ type ldata
     as string msg
     as integer lineno
     as integer ch
-    declare constructor(byval l as integer, byval f as string, byval m as string, byval ln as integer, c as integer)
+    as string __file
+    declare constructor(byval l as integer, byval f as string, byval m as string, byval ln as integer, byval c as integer, byref _file as string = "")
 end type
 
-constructor ldata(byval l as integer, byval f as string, byval m as string, byval ln as integer, c as integer)
+constructor ldata(byval l as integer, byval f as string, byval m as string, byval ln as integer, byval c as integer, byref _file as string = "")
     lvl = l
     file = f
     msg = m
     lineno = ln
     ch = c
+    __file = _file
 end constructor
 
 sub ldata_free( byval rhs as any ptr )
@@ -176,6 +182,7 @@ enum LOG_TCOMM explicit
     QUIT = -1
     LOG2PRINT = 0
     LOG2FILE
+    LOG2XML
     LOG2CUSTOM
 end enum
 #endif
@@ -212,12 +219,40 @@ sub __log( byval lvl as LOGLEVEL, _
         var pmsg = datetime.formatAsISO() & " " & lstr(lvl) & " " & _msg_ & " -> " & _file_ & ":" & _line_number_
 
         #ifdef FBEXT_MULTITHREADED
-        __log_channel[channel].cc.send(new Message(LOG_TCOMM.LOG2FILE,new MData(new ldata(0,fname,pmsg,0,0),@ldata_free)))
+        __log_channel[channel].cc.send(new Message(LOG_TCOMM.LOG2FILE,new MData(new ldata(lvl,"",pmsg,0,0,fname),@ldata_free)))
         #else
         var ff = freefile
         open fname for append access write as #ff
         print #ff, pmsg
         close #ff
+        #endif
+    case LOG_FILE_XML
+        var fname_ = cast(zstring ptr,__log_channel[channel]._data)
+        var fname = ""
+        if fname_ <> 0 then
+            fname = *fname_
+        else
+            fname = command(0) & ".log.xml"
+        end if
+        #ifdef FBEXT_MULTITHREADED
+        __log_channel[channel].cc.send(new Message(LOG_TCOMM.LOG2XML,new MData(new ldata(lvl,_file_,_msg_,_line_number_,channel,fname),@ldata_free)))
+        #else
+        if __xml_log = 0 then
+            __xml_log = new ext.xml.tree
+            __xml_log->load(fname)
+        end if
+        dim as xml.node ptr par
+        if __xml_log->root->children() = 0 then
+            par = __xml_log->root->appendChild("log")
+        else
+            par = __xml_log->root->child(0)
+        end if
+        var child = par->appendChild(lstr(lvl),xml.node_type_e.text)
+        child->attribute("datetime") = datetime.formatAsISO()
+        child->attribute("file") = _file_
+        child->attribute("line-number") = str(_line_number_)
+        child->setText = _msg_
+        __xml_log->unload(fname)
         #endif
     case LOG_CUSTOM
         #ifdef FBEXT_MULTITHREADED
@@ -251,9 +286,26 @@ sub log_thread ( byval _cc as any ptr )
             print d->msg
         case LOG_TCOMM.LOG2FILE
             var ff = freefile
-            open d->file for append access write as #ff
+            open d->__file for append access write as #ff
             print #ff, d->msg
             close #ff
+        case LOG_TCOMM.LOG2XML
+            if __xml_log = 0 then
+                __xml_log = new ext.xml.tree
+                __xml_log->load(d->__file)
+            end if
+            dim as xml.node ptr par
+            if __xml_log->root->children() = 0 then
+                par = __xml_log->root->appendChild("log")
+            else
+                par = __xml_log->root->child(0)
+            end if
+            var child = par->appendChild(lstr(d->lvl),xml.node_type_e.text)
+            child->attribute("datetime") = datetime.formatAsISO()
+            child->attribute("file") = d->file
+            child->attribute("line-number") = str(d->lineno)
+            child->setText = d->msg
+            __xml_log->unload(d->__file)
         case LOG_TCOMM.LOG2CUSTOM
             cast(log_custom_sub,__log_channel[d->ch]._data)(d->lvl,d->msg,d->file,d->lineno,__log_channel[d->ch]._fdata)
         end select
