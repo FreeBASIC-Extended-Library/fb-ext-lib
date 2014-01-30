@@ -67,6 +67,7 @@ end enum
 ''LOG_NULL - Do absolutely nothing.
 ''LOG_PRINT - Print the log message to the console.
 ''LOG_FILE - Write the log messages to a file, set with <setLogMethod>
+''LOG_FILE_XML - Write the log messages to a XML formatted file.
 ''LOG_CUSTOM - Write your own logger function
 enum LOG_METHODS
     LOG_NULL
