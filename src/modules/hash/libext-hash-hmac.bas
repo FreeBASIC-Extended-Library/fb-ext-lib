@@ -39,7 +39,7 @@ namespace ext.hashes.hmac
 
         var tkey = ""
         if len(key) > BLOCK_SIZE then
-            tkey = lcase(c(@key[0],len(key)))
+            tkey = lcase(c(cast(ubyte ptr,@key[0]),len(key)))
         else
             tkey = key & string(BLOCK_SIZE-len(key),0)
         end if
