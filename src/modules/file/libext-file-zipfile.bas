@@ -65,7 +65,10 @@ end function
 private sub MFzip_close ( byval t as FileSystemDriver ptr )
         var x = cast(ZipFileSystemDriver ptr, t->driverdata)
         zipfile_fre(x->d)
-        if x <> 0 then delete x
+end sub
+
+private sub MFzip_free( byval x as any ptr )
+    if x <> 0 then delete cast(ZipFileSystemDriver ptr,x)
 end sub
 
 type __zf_MemoryFileDriver
@@ -92,6 +95,7 @@ function ZipFile.open( byref zifname as const string ) as File ptr
         zfsd->dlen = x->dlen
         zfsd->z = m_data
         zfsd->f = zifname
+        zfsd->ff = @MFzip_free
         md->fsopen = @MFzip_open
         md->fsclose(md)
         md->fsclose = @MFzip_close
