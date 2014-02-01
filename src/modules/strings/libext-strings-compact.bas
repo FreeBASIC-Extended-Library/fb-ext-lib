@@ -21,8 +21,8 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#include once "ext/algorithms/detail/common.bi"
 #include once "crt/ctype.bi"
-#include once "crt/string.bi"
 
 namespace ext.strings
 
