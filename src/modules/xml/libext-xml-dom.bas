@@ -22,14 +22,12 @@
 
 #include once "ext/xml/dom.bi"
 #include once "ext/error.bi"
-
-#include once "crt.bi"
-#undef NULL
+#include once "ext/algorithms/detail/common.bi"
 
 '' zero-terminated strncpy
-private function strnztcpy(byval dest as ubyte ptr, byval src as ubyte ptr, byval n as size_t) as ubyte ptr
+private function strnztcpy(byval dest as ubyte ptr, byval src as const ubyte ptr, byval n as uinteger) as ubyte ptr
     dest[n] = 0
-    return strncpy(dest, src, n)
+    return ext.strncpy(dest, cptr(const zstring ptr, src), n)
 end function
 
 namespace ext.xml

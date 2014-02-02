@@ -1,5 +1,5 @@
 # include once "ext/php.bi"
-# include once "crt/string.bi" ' for memcpy
+# include once "ext/algorithms/detail/common.bi"
 
 
 namespace ext.php
@@ -31,23 +31,23 @@ namespace ext.php
         
         var result = space(result_size)
         var dst = cast(ubyte ptr, strptr(result))
-        ..memcpy(dst, strptr(strings(lb)), len(strings(lb)))
+        memcpy(dst, strptr(strings(lb)), len(strings(lb)))
         dst += len(strings(lb))
         
         if (strptr(glue) <> null) then
             for i as integer = (lb + 1) to ub
-                ..memcpy(dst, strptr(glue), len(glue))
+                memcpy(dst, strptr(glue), len(glue))
                 dst += len(glue)
                 
                 var l = len(strings(i))
-                ..memcpy(dst, strptr(strings(i)), l)
+                memcpy(dst, strptr(strings(i)), l)
                 dst += l
             next
         
         else
             for i as integer = (lb + 1) to ub
                 var l = len(strings(i))
-                ..memcpy(dst, strptr(strings(i)), l)
+                memcpy(dst, strptr(strings(i)), l)
                 dst += l
             next
         

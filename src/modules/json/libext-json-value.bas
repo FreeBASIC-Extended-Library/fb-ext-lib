@@ -21,6 +21,7 @@
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include once "ext/json.bi"
+#include once "ext/algorithms/detail/common.bi"
 
 namespace ext.json
 

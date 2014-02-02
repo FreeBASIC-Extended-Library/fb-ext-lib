@@ -97,7 +97,7 @@ namespace ext.xml
     '' Returns:
     '' integer, the number of characters the UTF-8 character occupied while encoded.
     ''
-    declare function decode_utf8(byval src as zstring ptr, byref u as integer) as integer
+    declare function decode_utf8(byval src as const zstring ptr, byref u as integer) as integer
 
 end namespace
 

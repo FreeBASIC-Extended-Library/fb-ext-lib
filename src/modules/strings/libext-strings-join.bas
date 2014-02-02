@@ -21,7 +21,7 @@
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # include once "ext/strings.bi"
-# include once "crt/string.bi"
+# include once "ext/algorithms/detail/common.bi"
 
 namespace ext.strings
 

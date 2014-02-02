@@ -20,7 +20,7 @@
 ''NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# include once "crt/string.bi"
+#include once "ext/algorithms/detail/common.bi"
 
 namespace ext.strings
 

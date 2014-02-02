@@ -21,8 +21,8 @@
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # include once "ext/strings.bi"
+# include once "ext/algorithms/detail/common.bi"
 # include once "detail/strings.bi"
-# include once "crt/string.bi"
 
 namespace ext.strings
 
@@ -47,8 +47,8 @@ namespace ext.strings
 		var finalsize = len(subject) - length + len(replacement)
 		var result = space(finalsize)
 		
-		var src = strptr(subject)
-		var dst = strptr(result)
+		var src = @subject[0]
+		var dst = @result[0]
 		
 		' copy before the replacement point..
 		if 0 < offset then
@@ -62,9 +62,10 @@ namespace ext.strings
 		src += offset + length
 		
 		' copy after the replacement text ?
-		if src <> strptr(subject) + len(subject) then
+		var eol = @subject[len(subject)]
+		if src <> eol then
 			dst += len(replacement)
-			memcpy(dst, src, @subject[len(subject)] - src)
+			memcpy(dst, src, eol - src)
 		end if
 		
 		subject = result

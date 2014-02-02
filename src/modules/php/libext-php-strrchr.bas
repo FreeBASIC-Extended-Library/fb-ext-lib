@@ -1,5 +1,5 @@
 # include once "ext/php.bi"
-# include once "crt/string.bi" ' for memcpy
+# include once "ext/algorithms/detail/common.bi"
 
 namespace ext.php
 
@@ -34,7 +34,7 @@ namespace ext.php
         if (first <> it) then
             var result_size = last - it
             var result = space(result_size)
-            ..memcpy(strptr(result), it, result_size)
+            memcpy(strptr(result), it, result_size)
             return result
         end if
         

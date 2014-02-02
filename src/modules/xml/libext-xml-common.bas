@@ -43,7 +43,7 @@ namespace ext.xml
                     temp &= "&#" & text[i] & ";"
                 elseif text[i] and &b10000000 then
                     dim as integer u
-                    i += decode_utf8(@text[i], u) - 1
+                    i += decode_utf8(cptr(const zstring ptr, @text[i]), u) - 1
                     temp &= "&#" & u & ";"
                 else
                     temp &= chr(text[i])
@@ -131,7 +131,7 @@ namespace ext.xml
         return dst
     end function
 
-    function decode_utf8(byval src as zstring ptr, byref u as integer) as integer
+    function decode_utf8(byval src as const zstring ptr, byref u as integer) as integer
         dim as integer n
 
         if     (src[0] and &b11111000) = &b11110000 then
