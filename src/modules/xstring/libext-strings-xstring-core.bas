@@ -115,10 +115,9 @@ namespace ext.strings
 	end operator
 
 	'' :::::
-	operator & ( byref lhs as xstring, byref rhs as xstring ) as xstring
-		var tmp = lhs
-		tmp &= rhs
-		return tmp
+	operator & ( byref lhs as const xstring, byref rhs as const xstring ) as xstring
+		var tmp = cast(const string,lhs)
+		return tmp & rhs
 	end operator
 
 	'' :::::
