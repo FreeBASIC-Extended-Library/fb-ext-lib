@@ -36,7 +36,7 @@
 		linkage_ sub UninitializedFillN ( byval first as fbext_TypeName(T_) ptr, byval n as SizeType, byref x as const fbext_TypeName(T_) )
 		
 			for i as SizeType = n to 1 step -1
-			# if fbext_TypeName(T_) = string
+			# if FBEXT_IS_STRING(fbext_TypeName(T_))
 			    clear *first, 0, sizeof(string)
 			    *first = x
 			# else

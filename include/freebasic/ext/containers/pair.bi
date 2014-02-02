@@ -86,14 +86,6 @@ namespace ext
     end constructor
 
     linkage_ destructor fbext_Pair((T_)(C_)) ( )
-    ' <stylin> these are redundant; fbc will take care of it
-    #if typeof(fbext_Pair((T_)(C_))ftype) = string
-        this.first = ""
-    #endif
-
-    #if typeof(fbext_Pair((T_)(C_))stype) = string
-        this.second = ""
-    #endif
     end destructor
 
     linkage_ operator fbext_Pair((T_)(C_)).Let( byref rhs as const fbext_Pair((T_)(C_)) )

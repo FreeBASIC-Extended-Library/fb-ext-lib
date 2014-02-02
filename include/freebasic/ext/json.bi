@@ -12,7 +12,6 @@
 
 #include once "ext/detail/common.bi"
 #include once "ext/file/file.bi"
-#include once "crt/string.bi"
 
 #if not __FB_MT__
     #inclib "ext-json"

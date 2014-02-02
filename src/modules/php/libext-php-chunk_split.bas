@@ -1,5 +1,5 @@
 # include once "ext/php.bi"
-# include once "crt/string.bi" ' for memcpy
+# include once "ext/algorithms/detail/common.bi"
 
 
 namespace ext.php
@@ -25,17 +25,17 @@ namespace ext.php
         dim dst as ubyte ptr = strptr(result)
         
         for s as integer = 1 to splitcount
-            ..memcpy(dst, src, length)
+            memcpy(dst, src, length)
             src += length
             dst += length
-            ..memcpy(dst, strptr(ending), len(ending))
+            memcpy(dst, strptr(ending), len(ending))
             dst += len(ending)
         next
         
         if (remaining) then
-            ..memcpy(dst, src, remaining)
+            memcpy(dst, src, remaining)
             dst += remaining
-            ..memcpy(dst, strptr(ending), len(ending))
+            memcpy(dst, strptr(ending), len(ending))
         end if
         
         return result

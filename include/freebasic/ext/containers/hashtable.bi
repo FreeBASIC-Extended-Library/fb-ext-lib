@@ -286,7 +286,7 @@ end namespace
             while cindex<= m_tablelength
 
                 if m_table[cindex].value = null then
-            # if fbext_TypeName(T_) = typeof(STRING)
+            # if FBEXT_IS_STRING(fbext_TypeName(T_))
                     m_table[cindex].value = cast(string ptr, new byte[sizeof(string)])
             # else
                     m_table[cindex].value = new fbext_TypeName(T_)
@@ -314,7 +314,7 @@ end namespace
             while cindex >= 0
 
                 if m_table[cindex].value = null then
-            # if fbext_TypeName(T_) = typeof(string)
+            # if FBEXT_IS_STRING(fbext_TypeName(T_))
                     m_table[cindex].value = cast(string ptr, new byte[sizeof(string)])
             # else
                     m_table[cindex].value = new fbext_TypeName(T_)
@@ -345,7 +345,7 @@ end namespace
             var index = m_IndexFor(thash, m_tablelength)
 
             if m_table[index].value = null then
-        # if fbext_TypeName(T_) = typeof(STRING)
+        # if FBEXT_IS_STRING(fbext_TypeName(T_))
                 m_table[index].value = cast(string ptr, new byte[sizeof(string)])
         # else
                 m_table[index].value = new fbext_TypeName(T_)
@@ -431,7 +431,7 @@ end namespace
                     m_table[index].hash = 0
                     m_table[index].key = ""
                     m_entryCount -= 1
-            # if fbext_TypeName(T_) = string
+            # if FBEXT_IS_STRING(fbext_TypeName(T_))
                     delete cast(byte ptr, m_table[index].value)
             # else
                     delete m_table[index].value

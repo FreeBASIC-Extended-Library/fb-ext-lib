@@ -479,12 +479,12 @@ namespace ext
     '' :::::
     linkage_ constructor fbext_Array(( T_)( Allocator_)) ( byval n as SizeType )
 
-    # if FBEXT_IS_STRING( fbext_TypeID( T_) )
+    # if FBEXT_IS_STRING(fbext_TypeName(T_))
         constructor(n, "")
-    # elseif FBEXT_IS_SIMPLE( fbext_TypeID( T_) )
+    # elseif FBEXT_IS_SIMPLE(fbext_TypeName(T_))
         constructor(n, 0)
     # else
-        constructor(n, fbext_TypeName( T_)())
+        constructor(n, fbext_TypeName(T_)())
     # endif
 
     end constructor

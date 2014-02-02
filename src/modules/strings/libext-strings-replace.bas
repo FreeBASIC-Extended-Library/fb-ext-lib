@@ -23,7 +23,6 @@
 
 # include once "ext/strings/manip.bi"
 # include once "ext/misc.bi"
-# include once "crt/string.bi"
 
 namespace ext.strings
 

@@ -41,7 +41,7 @@
 		linkage_ function UninitializedCopy ( byval first as const fbext_TypeName(T_) ptr, byval last as const fbext_TypeName(T_) ptr, byval result as fbext_TypeName(T_) ptr ) as fbext_TypeName(T_) ptr
 		
 			do while first <> last
-			# if fbext_TypeID(T_) = string
+			# if FBEXT_IS_STRING(fbext_TypeName(T_))
 			    clear *result, 0, sizeof(string)
 			    *result = *first
 			' FB BUG [2212554] workaround.

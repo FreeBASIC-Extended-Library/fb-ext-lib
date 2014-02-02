@@ -21,8 +21,8 @@
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define fbext_NoBuiltinInstanciations() -1
+# include once "ext/algorithms/detail/common.bi"
 # include once "ext/math/matrix.bi"
-# include once "crt/string.bi" ' for memcpy
 
 namespace ext.math
 fbext_Instanciate(fbext_Vector2, ((single)))
@@ -65,7 +65,7 @@ fbext_Instanciate(fbext_Vector4, ((single)))
 
     '' :::::
     constructor matrix ( byref x as matrix )
-        ..memcpy(@m(0), @x.m(0), sizeof(single) * 16)
+        memcpy(@m(0), @x.m(0), sizeof(single) * 16)
     end constructor
 
     '' :::::
@@ -142,7 +142,7 @@ fbext_Instanciate(fbext_Vector4, ((single)))
         tmp_m(14) = (mat.m(12) * this.m(2))+(mat.m(13) * this.m(6))+(mat.m(14) * this.m(10))+(mat.m(15) * this.m(14))
         tmp_m(15) = (mat.m(12) * this.m(3))+(mat.m(13) * this.m(7))+(mat.m(14) * this.m(11))+(mat.m(15) * this.m(15))
 
-        ..memcpy(@this.m(0), @tmp_m(0), 16 * sizeof(single))
+        memcpy(@this.m(0), @tmp_m(0), 16 * sizeof(single))
 
     end operator
 
@@ -322,7 +322,7 @@ fbext_Instanciate(fbext_Vector4, ((single)))
         tmp_m(13) = -(this.m(12) * this.m(4)) - (this.m(13) * this.m(5)) - (this.m(14) * this.m(6))
         tmp_m(14) = -(this.m(12) * this.m(8)) - (this.m(13) * this.m(9)) - (this.m(14) * this.m(10))
 
-        ..memcpy(@this.m(0), @tmp_m(0), sizeof(single) * 16)
+        memcpy(@this.m(0), @tmp_m(0), sizeof(single) * 16)
 
     end sub
 

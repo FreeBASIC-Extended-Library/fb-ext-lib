@@ -246,7 +246,7 @@ namespace ext
     '' Returns a boolean expression that can be used in preprocessor #if
     '' (and it's variants) statements.
     ''
-    # define FBEXT_IS_INTRINSIC(T_) (FBEXT_IS_NUMERIC(T_) or (T_ = string))
+    # define FBEXT_IS_INTRINSIC(T_) (FBEXT_IS_NUMERIC(T_) or (typeof(T_) = typeof(string)))
 
     '' Macro: FBEXT_IS_SIMPLE
     '' Determines a type's simplicity (a type is simple if it is an intrinsic
@@ -261,7 +261,7 @@ namespace ext
     ''
     # define FBEXT_IS_SIMPLE(T_) (FBEXT_IS_NUMERIC(T_))
 
-    # define FBEXT_IS_STRING(T_) (typeof( T_) = string)
+    # define FBEXT_IS_STRING(T_) (typeof(T_) = typeof(string))
 
 end namespace
 

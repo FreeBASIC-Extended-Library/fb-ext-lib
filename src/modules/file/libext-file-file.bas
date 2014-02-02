@@ -36,7 +36,7 @@ sub File.print( byref data_ as fbext_TypeName(T_) )
     #endif
 
     if m_fsd <> null then
-        #if fbext_TypeName(T_) = string
+        #if FBEXT_IS_STRING(fbext_TypeName(T_))
         generic_print(m_fsd,cast(ubyte ptr,@data_[0]),len(data_))
         #else
         generic_print(m_fsd,cast(ubyte ptr,@data_),sizeof(data_))
@@ -98,7 +98,7 @@ sub File.get( byval filepos as longint = -1, byref data_ as fbext_TypeName(T_), 
     mutexlock(m_mutex)
     #endif
 
-    #if fbext_TypeName(T_) = string
+    #if FBEXT_IS_STRING(fbext_TypeName(T_))
         if filepos = -1 then
             if m_fsd <> null then
                 m_bytes = m_fsd->fsget(m_fsd,0,cast(ubyte ptr,@data_),amount*len(data_))
@@ -151,7 +151,7 @@ sub File.put( byval filepos as longint = -1, byref data_ as fbext_TypeName(T_), 
     mutexlock(m_mutex)
     #endif
 
-    #if fbext_TypeName(T_) = string
+    #if FBEXT_IS_STRING(fbext_TypeName(T_))
         if filepos = -1 then
             if m_fsd <> null then
                 m_bytes = m_fsd->fsput(m_fsd,0,cast(ubyte ptr,@data_),amount*len(data_))
