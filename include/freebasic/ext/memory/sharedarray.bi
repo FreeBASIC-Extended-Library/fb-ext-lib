@@ -211,10 +211,10 @@ namespace ext
 		linkage_ destructor fbext_SharedPtrArray(T_) ( )
 		
 			if m_refcount then
-				ASSERT( 0 < *m_refcount )
+				ASSERT( 0 <= *m_refcount )
 				*m_refcount -= 1
 				
-				if 0 = *m_refcount then
+				if 0 >= *m_refcount then
 					ASSERT( null <> m_p )
 					
 					if m_destroy then
