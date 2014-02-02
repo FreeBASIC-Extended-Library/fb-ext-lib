@@ -87,11 +87,11 @@ namespace ext
 
     linkage_ destructor fbext_Pair((T_)(C_)) ( )
     ' <stylin> these are redundant; fbc will take care of it
-    #if typeof(fbext_Pair((T_)(C_))ftype) = string
+    #if FBEXT_IS_STRING(fbext_Pair((T_)(C_))ftype)
         this.first = ""
     #endif
 
-    #if typeof(fbext_Pair((T_)(C_))stype) = string
+    #if FBEXT_IS_STRING(fbext_Pair((T_)(C_))stype)
         this.second = ""
     #endif
     end destructor

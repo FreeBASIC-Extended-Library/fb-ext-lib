@@ -18,14 +18,12 @@
 	# macro fbext_Construct_Declare(T_)
 	:
 	namespace ext
-	# if fbext_TypeID(T_) = string
+	# if FBEXT_IS_STRING(fbext_TypeName(T_))
 		declare sub Construct overload ( byval p as fbext_TypeName(T_) ptr, byref x as const fbext_TypeName(T_) = "" )
 	# elseif FBEXT_IS_SIMPLE(fbext_TypeName(T_))
 		declare sub Construct overload ( byval p as fbext_TypeName(T_) ptr, byref x as const fbext_TypeName(T_) = 0 )
-	
 	# else
 		declare sub Construct overload ( byval p as fbext_TypeName(T_) ptr, byref x as const fbext_TypeName(T_) = fbext_TypeName(T_)() )
-	
 	# endif
 	end namespace
 	:
@@ -36,7 +34,7 @@
 	# macro fbext_Construct_Define(linkage_, T_)
 	:
 	namespace ext
-	# if fbext_TypeID(T_) = string
+	# if FBEXT_IS_STRING(fbext_TypeName(T_))
 		'' :::::
 		linkage_ sub Construct ( byval p as fbext_TypeName(T_) ptr, byref x as const fbext_TypeName(T_) )
 			clear *p, 0, sizeof(string)
@@ -47,7 +45,6 @@
 		linkage_ sub Construct ( byval p as fbext_TypeName(T_) ptr, byref x as const fbext_TypeName(T_) )
 			*p = x
 		end sub
-		
 	# else
 		'' :::::
 		linkage_ sub Construct ( byval p as fbext_TypeName(T_) ptr, byref x as const fbext_TypeName(T_) )
@@ -74,7 +71,7 @@
 	# macro fbext_Destroy_Define(linkage_, T_)
 	:
 	namespace ext
-	# if fbext_TypeID(T_) = string
+	# if FBEXT_IS_STRING(fbext_TypeName(T_))
 		'' :::::
 		linkage_ sub Destroy ( byval p as fbext_TypeName(T_) ptr )
 			*p = ""
