@@ -40,7 +40,7 @@ end extern
 	:
 	# endmacro
 
-	# define fbext_Operatino(T_) fbext_TypeID((Operation) T_)
+	# define fbext_Operation(T_) fbext_TypeID((Operation) T_)
 	# macro fbext_Operation_Declare(T_)
 	:
 		'' Type: Operation
