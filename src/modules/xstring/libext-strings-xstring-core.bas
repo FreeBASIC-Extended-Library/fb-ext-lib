@@ -110,7 +110,7 @@ namespace ext.strings
 	end operator
 
 	'' :::::
-	operator + ( byref lhs as xstring, byref rhs as xstring ) as xstring
+	operator + ( byref lhs as const xstring, byref rhs as const xstring ) as xstring
 		return lhs & rhs
 	end operator
 
@@ -121,8 +121,8 @@ namespace ext.strings
 	end operator
 
 	'' :::::
-	operator - ( byref lhs as xstring, byref rhs as xstring ) as xstring
-		return lhs.ReplaceCopy(rhs, "")
+	operator - ( byref lhs as const xstring, byref rhs as const xstring ) as xstring
+		return strings.ReplaceCopy(cast(string,lhs),cast(string,rhs), "")
 	end operator
 
 	'' :::::
@@ -131,37 +131,37 @@ namespace ext.strings
 	end operator
 
 	'' :::::
-	operator * ( byref lhs as xstring, byref rhs as integer ) as xstring
-		return lhs.Repeat(rhs)
+	operator * ( byref lhs as const xstring, byref rhs as integer ) as xstring
+		return strings.repeat(lhs.m_str,rhs)
 	end operator
 
 	'' :::::
-	operator = ( byref lhs as xstring, byref rhs as xstring ) as integer
+	operator = ( byref lhs as const xstring, byref rhs as const xstring ) as integer
 		return lhs.m_str = rhs.m_str
 	end operator
 
 	'' :::::
-	operator <> ( byref lhs as xstring, byref rhs as xstring ) as integer
+	operator <> ( byref lhs as const xstring, byref rhs as const xstring ) as integer
 		return lhs.m_str <> rhs.m_str
 	end operator
 
 	'' :::::
-	operator > ( byref lhs as xstring, byref rhs as xstring ) as integer
+	operator > ( byref lhs as const xstring, byref rhs as const xstring ) as integer
 		return lhs.m_str > rhs.m_str
 	end operator
 
 	'' :::::
-	operator < ( byref lhs as xstring, byref rhs as xstring ) as integer
+	operator < ( byref lhs as const xstring, byref rhs as const xstring ) as integer
 		return lhs.m_str < rhs.m_str
 	end operator
 
 	'' :::::
-	operator >= ( byref lhs as xstring, byref rhs as xstring ) as integer
+	operator >= ( byref lhs as const xstring, byref rhs as const xstring ) as integer
 		return lhs.m_str >= rhs.m_str
 	end operator
 
 	'' :::::
-	operator <= ( byref lhs as xstring, byref rhs as xstring ) as integer
+	operator <= ( byref lhs as const xstring, byref rhs as const xstring ) as integer
 		return lhs.m_str <= rhs.m_str
 	end operator
 
