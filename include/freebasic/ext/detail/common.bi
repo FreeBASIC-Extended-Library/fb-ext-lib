@@ -262,6 +262,7 @@ namespace ext
     # define FBEXT_IS_SIMPLE(T_) (FBEXT_IS_NUMERIC(T_))
 
     # define FBEXT_IS_STRING(T_) (typeof(T_) = typeof(string))
+    # define FBEXT_IS_BYTE_OR_UBYTE(T_) ((typeof(T_) = typeof(byte)) or (typeof(T_) = typeof(ubyte)))
 
 end namespace
 

@@ -33,12 +33,11 @@
 	# macro fbext_Fill_Define(linkage_, T_)
 	:
     namespace ext
-	# if fbext_TypeName(T_) = byte or fbext_TypeName(T_) = ubyte
+	# if FBEXT_IS_BYTE_OR_UBYTE(fbext_TypeName(T_))
 		'' :::::
 		linkage_ sub Fill ( byval first as fbext_TypeName(T_) ptr, byval last as fbext_TypeName(T_) ptr, byref x as const fbext_TypeName(T_) )
 			memset(first, x, last - first)
 		end sub
-	
 	# else
 		'' :::::
 		linkage_ sub Fill ( byval first as fbext_TypeName(T_) ptr, byval last as fbext_TypeName(T_) ptr, byref x as const fbext_TypeName(T_) )
@@ -49,7 +48,6 @@
 			loop
 		
 		end sub
-	
 	# endif
     end namespace
 	:
