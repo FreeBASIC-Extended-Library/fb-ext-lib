@@ -114,7 +114,7 @@ end namespace
             ''Returns:
             ''ptr to String containing the key associated with a value or "" if the value was not found.
             ''
-            declare function Find ( byref value as const fbext_TypeName(T_) ptr ) as string
+            declare function Find ( byval value as const fbext_TypeName(T_) ptr ) as string
 
             ''Sub: ForEach
             ''Iterates through the table calling the passed subroutine with each key pair.
@@ -388,7 +388,7 @@ end namespace
         end function
 
         '' :::::
-        linkage_ function fbext_HashTable(T_).Find ( byref value as const fbext_TypeName(T_) ptr ) as string
+        linkage_ function fbext_HashTable(T_).Find ( byval value as const fbext_TypeName(T_) ptr ) as string
 
             var retval = ""
 
