@@ -49,7 +49,7 @@
     '' Parameters:
     ''  T_ - a template parameter.
     ''
-    ''  *fbext_TypeName* is used to transform a template type parameter into an
+    ''  *fbext_TypeID* is used to transform a template type parameter into an
     ''  identifier suitable for a macro name.
     ''
     ''  For example, *fbext_TypeID((MyNamespace)(MyType))* expands to
