@@ -7,7 +7,6 @@
 ''accompanying file LICENSE.txt or copy at
 ''http://code.google.com/p/fb-extended-lib/wiki/License)
 
-#include once "crt/string.bi"
 #include once "ext/graphics.bi"
 #include once "ext/math.bi"
 #include once "fbgfx.bi"
