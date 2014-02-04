@@ -37,9 +37,10 @@ namespace ext.database.driver
 '' * SELECT * FROM table_name WHERE colname = value; The where clause is optional. Does not support retrieving only certain columns, must be *
 '' * UPDATE table_name SET col1name = value, col2name = value, ... WHERE col1name = value; The where clause is optional.
 '' * INSERT INTO table_name VALUES ( val1, val2, ... ); Column specification not supported and ignored if found, number of values must match number of columns.
+'' * DELETE FROM table_name WHERE colname = value; The where clause is optional.
 ''
 ''Notes:
-''When using a WHERE clause at this time only one predicate is supporeted.
+''When using a WHERE clause at this time only one predicate is supported.
 ''To create an in-memory only database use the connection string ::memory::
 declare function _XML( byref conn as const string ) as DatabaseDriver ptr
 

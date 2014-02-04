@@ -79,6 +79,35 @@ private function create_table ( byval db as XMLdatabase ptr, byref query as stri
     return Xderr.NO_ERROR
 end function
 
+'DELETE FROM table_name WHERE colname = value;
+private function delete_from ( byval db as XMLdatabase ptr, byref query as string ) as Xderr
+
+    db->lasttable = db->docroot->root->child(query)
+    if db->lasttable = 0 then return Xderr.INVALID
+
+    db->affected_rows = 0
+    db->index = 0
+
+    while 1
+
+    if db->lasttable->children() = 0 then exit while
+
+        if db->where_clause <> "" then
+            if do_where(db) = false then exit while
+            'don't increment index here otherwise will skip next row
+            db->lasttable->removeChild(db->index)
+            db->affected_rows += 1
+        else
+            db->lasttable->removeChild(0)
+            db->affected_rows += 1
+        end if
+
+    wend
+
+    return Xderr.NO_ERROR
+
+end function
+
 'INSERT INTO table_name VALUES (value1, value2, value3, ...);
 'table_name;value1;value2;value3
 private function insert_into ( byval db as XMLdatabase ptr, byref query as string ) as Xderr
@@ -185,6 +214,18 @@ public function query_noresults ( byval db as XMLdatabase ptr, byref query as co
     if db = 0 then return Xderr.INVALID
 
     db->affected_rows = 0
+    db->where_clause = ""
+
+    if left(query,11) = "DELETE FROM" then
+        var res = trim(right(query,len(query)-11))
+        var wh = instr(res,"WHERE")
+        if wh > 0 then
+            db->where_clause = trim(right(res,len(res)-wh-5))
+            db->where_clause = trim(left(db->where_clause,len(db->where_clause)-1))
+            res = trim(mid(res,1,wh-1))
+        end if
+        return delete_from(db,res)
+    end if
 
     if left(query,12) = "CREATE TABLE" then
         db->where_clause = query
