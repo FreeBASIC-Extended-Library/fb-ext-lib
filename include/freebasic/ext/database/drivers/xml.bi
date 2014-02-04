@@ -29,6 +29,18 @@ namespace ext.database.driver
 ''Function: _XML
 ''Returns a pointer to a <DatabaseDriver> populated to allow access to a Ext XML database.
 ''Connect string is filename of database to open.
+''This driver recognizes a subset of SQL.
+''
+''SQL supported:
+'' * CREATE TABLE table_name ( col1name type, col2name type, ... ); type is ignored as all values are stored as text but should be included.
+'' * DROP TABLE table_name;
+'' * SELECT * FROM table_name WHERE colname = value; The where clause is optional. Does not support retrieving only certain columns, must be *
+'' * UPDATE table_name SET col1name = value, col2name = value, ... WHERE col1name = value; The where clause is optional.
+'' * INSERT INTO table_name VALUES ( val1, val2, ... ); Column specification not supported and ignored if found, number of values must match number of columns.
+''
+''Notes:
+''When using a WHERE clause at this time only one predicate is supporeted.
+''To create an in-memory only database use the connection string ::memory::
 declare function _XML( byref conn as const string ) as DatabaseDriver ptr
 
 end namespace
