@@ -1,5 +1,5 @@
 ''File: console_ex.bas
-''Description: Demonstration of ext.Console object.
+''Description: Demonstration of ext.console functions.
 ''
 ''Copyright (c) 2007-2014 FreeBASIC Extended Library Development Group
 ''
@@ -9,16 +9,14 @@
 
 # include once "ext/file/console.bi"
 
-var myConsole = ext.Console
-
 var x = "Hello World!"
 
 for n as integer = 0 to len(x) - 1
 
-	myConsole.Write( x[n] )
+	ext.console.Write( x[n] )
 
 next
 
-myConsole.Write(!"\n")
+ext.console.Write(!"\n")
 
-myConsole.WriteLine("From the FreeBASIC Extended Library!")
+ext.console.WriteLine("From the FreeBASIC Extended Library!")

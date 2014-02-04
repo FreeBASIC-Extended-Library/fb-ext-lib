@@ -25,83 +25,103 @@
 
 namespace ext
 
+    dim shared __Console as Console_ ptr
+
+    private sub make_console () constructor
+        __Console = new Console_()
+    end sub
+
+    private sub destroy_console() destructor
+        if __Console <> 0 then delete __Console
+    end sub
+
+    namespace console
+        function ReadLine() as string
+            return __Console->ReadLine()
+        end function
+
+        # macro fbext_realConsoleWrite_Define(linkage_, T_)
+        :
+        sub Write( byref x as fbext_TypeName(T_) )
+            __Console->Write(x)
+        end sub
+
+        sub WriteLine( byref x as fbext_TypeName(T_) )
+            __Console->WriteLine(x)
+        end sub
+        :
+        # endmacro
+
+        fbext_InstanciateMulti(fbext_realConsoleWrite, fbext_NumericTypes() (((string))) )
+        
+    end namespace
+
     '' :::::
-    constructor Console ( byval io as ConsoleIO = con_stdout )
+    constructor Console_ ( )
     
-    	# ifdef FBEXT_MULTITHREADED
-    		m_mutex = mutexcreate()
-    	# endif
-    
-    	m_filehandle = freefile
-    	m_mode = io
-    
-    	select case m_mode
-    	case con_stdout
-    		m_lasterror = Open cons ( For OUTPUT, as m_filehandle )
-    
-    	case con_stdin
-    		m_lasterror = Open cons ( For INPUT, as m_filehandle )
-    
-    	case else
-    		m_lasterror = -1
-    	end select
-    
+        # ifdef FBEXT_MULTITHREADED
+            m_mutex = mutexcreate()
+        # endif
+        
     end constructor
     
     '' :::::
-    destructor Console ( )
+    destructor Console_ ( )
     
-    	# ifdef FBEXT_MULTITHREADED
-    	mutexdestroy( m_mutex )
-    	# endif
+        # ifdef FBEXT_MULTITHREADED
+        mutexdestroy( m_mutex )
+        # endif
     
-    	print #m_filehandle, ""
-    	close #m_filehandle
+        if m_filehandlei <> 0 then close #m_filehandlei
+        if m_filehandleo <> 0 then close #m_filehandleo
     
     end destructor
+
+    sub Console_.m_oi()
+        m_filehandlei = freefile
+        m_lasterror = open cons(for input, as #m_filehandlei)
+    end sub
+
+    sub Console_.m_oo()
+        m_filehandleo = freefile
+        m_lasterror = open cons(for output, as #m_filehandleo)
+    end sub
     
     '' :::::
-    function Console.ReadLine( ) as string
+    function Console_.ReadLine( ) as string
     
-    	# ifdef FBEXT_MULTITHREADED
-    	mutexlock( m_mutex )
-    	# endif
+        # ifdef FBEXT_MULTITHREADED
+        mutexlock( m_mutex )
+        # endif
+
+        if m_filehandlei = 0 then m_oi
+        
+        var x = ""
     
-    	if m_mode <> con_stdin then 
-    		m_lasterror = -1
-    	# ifdef FBEXT_MULTITHREADED
-    	mutexunlock( m_mutex )
-    	# endif
-    		return ""
+        line input #m_filehandlei, x
     
-    	end if
+        # ifdef FBEXT_MULTITHREADED
+        mutexunlock( m_mutex )
+        # endif
     
-    	var x = ""
-    
-    	line input #m_filehandle, x
-    
-    	# ifdef FBEXT_MULTITHREADED
-    	mutexunlock( m_mutex )
-    	# endif
-    
-    	return x
+        return x
     
     end function
     
     '' :::::
-    property Console.LastError( ) as integer
+    property Console_.LastError( ) as integer
     
-    	# ifdef FBEXT_MULTITHREADED
-    	mutexlock( m_mutex )
-    	# endif
+        # ifdef FBEXT_MULTITHREADED
+        mutexlock( m_mutex )
+        # endif
     
-    	var x = m_lasterror
+        var x = m_lasterror
     
-    	# ifdef FBEXT_MULTITHREADED
-    	mutexunlock( m_mutex )
-    	# endif
+        # ifdef FBEXT_MULTITHREADED
+        mutexunlock( m_mutex )
+        # endif
     
-    	return x
+        return x
     
     end property
     
@@ -110,44 +130,36 @@ namespace ext
         ' linkage_ is ignored, always public.
         
         '' :::::
-        sub Console.WriteLine ( byref x as fbext_TypeName(T_) )
+        sub Console_.WriteLine ( byref x as fbext_TypeName(T_) )
         
-        	# ifdef FBEXT_MULTITHREADED
+            # ifdef FBEXT_MULTITHREADED
+            mutexlock( m_mutex )
+            # endif
+
+            if m_filehandleo = 0 then m_oo
+            
+            print #m_filehandleo, x & !"\n";
         
-        	# endif
-        
-        	if m_mode <> con_stdout then 
-        		m_lasterror = -1
-        
-        	else
-        		print #m_filehandle, x & !"\n";
-        
-        	end if
-        
-        	# ifdef FBEXT_MULTITHREADED
-        
-        	# endif
+            # ifdef FBEXT_MULTITHREADED
+            mutexunlock( m_mutex )
+            # endif
         
         end sub
         
         '' :::::
-        sub Console.Write ( byref x as fbext_TypeName(T_) )
+        sub Console_.Write ( byref x as fbext_TypeName(T_) )
         
-        	# ifdef FBEXT_MULTITHREADED
+            # ifdef FBEXT_MULTITHREADED
+            mutexlock( m_mutex )
+            # endif
+
+            if m_filehandleo = 0 then m_oo
+
+            print #m_filehandleo, x;
         
-        	# endif
-        
-        	if m_mode <> con_stdout then
-        		m_lasterror = -1
-        
-        	else
-        		print #m_filehandle, x;
-        
-        	end if
-        
-        	# ifdef FBEXT_MULTITHREADED
-        
-        	# endif
+            # ifdef FBEXT_MULTITHREADED
+            mutexunlock( m_mutex )
+            # endif
         
         end sub
     :
