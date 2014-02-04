@@ -7,6 +7,8 @@ ifeq ($(MT), 1)
 	DSMYL := libext-database-driver-mysql.mt.a
 	DSPGO := postgre.mt.o
 	DSPGL := libext-database-driver-postgre.mt.a
+	DXMLO := xml.mt.o
+	DXMLL := libext-database-driver-xml.mt.a
 else
 	DLIB := libext-database.a
 	DOBJ := database.o
@@ -16,9 +18,11 @@ else
 	DSMYL := libext-database-driver-mysql.a
 	DSPGO := postgre.o
 	DSPGL := libext-database-driver-postgre.a
+	DXMLO := xml..o
+	DXMLL := libext-database-driver-xml.a
 endif
 
-build-database : ../../../lib/$(TARGET)/$(DLIB) ../../../lib/$(TARGET)/$(DS3L) ../../../lib/$(TARGET)/$(DSMYL) ../../../lib/$(TARGET)/$(DSPGL)
+build-database : ../../../lib/$(TARGET)/$(DLIB) ../../../lib/$(TARGET)/$(DS3L) ../../../lib/$(TARGET)/$(DSMYL) ../../../lib/$(TARGET)/$(DSPGL) ../../../lib/$(TARGET)/$(DXMLL)
 
 ../../../lib/$(TARGET)/$(DLIB) : $(DOBJ)
 	$(FBC) $(FBC_LFLAGS) -i ../../../include/freebasic $(DOBJ) -x ../../../lib/$(TARGET)/$(DLIB)
@@ -43,6 +47,12 @@ drivers/$(DSPGO) : drivers/postgre.bas ../../../include/freebasic/ext/database/d
 
 ../../../lib/$(TARGET)/$(DSPGL) : drivers/$(DSPGO)
 	$(FBC) $(FBC_LFLAGS) $(IF $(MT),-mt) -i ../../../include/freebasic -x ../../../lib/$(TARGET)/$(DSPGL) drivers/$(DSPGO)
+
+drivers/$(DXMLO) : drivers/xml.bas ../../../include/freebasic/ext/database/driver.bi ../../../include/freebasic/ext/database/drivers/xml.bi
+	$(FBC) $(FBC_CFLAGS) $(IF $(MT),-mt) -i ../../../include/freebasic drivers/xml.bas -o drivers/$(DXMLO)
+
+../../../lib/$(TARGET)/$(DXMLL) : drivers/$(DXMLO)
+	$(FBC) $(FBC_LFLAGS) $(IF $(MT),-mt) -i ../../../include/freebasic -x ../../../lib/$(TARGET)/$(DXMLL) drivers/$(DXMLO)
 
 clean-database :
 	$(RM) -f database*.o drivers/*.o
