@@ -32,6 +32,9 @@ constructor XMLdatabase ( byref fn as const string = "::memory::" )
     if dbfile <> "::memory::" then
         docroot->load(dbfile)
     end if
+    #ifdef FBEXT_MULTITHREADED
+    _mutex = mutexcreate
+    #endif
 end constructor
 
 destructor XMLdatabase
@@ -41,6 +44,9 @@ destructor XMLdatabase
         end if
         delete docroot
     end if
+    #ifdef FBEXT_MULTITHREADED
+    mutexdestroy _mutex
+    #endif
 end destructor
 
 private function do_where( byval db as XMLdatabase ptr ) as ext.bool
@@ -213,6 +219,10 @@ public function query_noresults ( byval db as XMLdatabase ptr, byref query as co
 
     if db = 0 then return Xderr.INVALID
 
+    #ifdef FBEXT_MULTITHREADED
+        mutexlock db->_mutex
+    #endif
+
     db->affected_rows = 0
     db->where_clause = ""
 
@@ -224,7 +234,11 @@ public function query_noresults ( byval db as XMLdatabase ptr, byref query as co
             db->where_clause = trim(left(db->where_clause,len(db->where_clause)-1))
             res = trim(mid(res,1,wh-1))
         end if
-        return delete_from(db,res)
+        var ret = delete_from(db,res)
+        #ifdef FBEXT_MULTITHREADED
+        mutexunlock db->_mutex
+        #endif
+        return ret
     end if
 
     if left(query,12) = "CREATE TABLE" then
@@ -241,12 +255,20 @@ public function query_noresults ( byval db as XMLdatabase ptr, byref query as co
             if instr(ic+1,xq,",") < 1 then exit while
         wend
         res = left(res,len(res)-1)
-        return create_table(db,res)
+        var ret = create_table(db,res)
+        #ifdef FBEXT_MULTITHREADED
+        mutexunlock db->_mutex
+        #endif
+        return ret
     end if
 
     if left(query,10) = "DROP TABLE" then
         var res = trim(left(right(query,len(query)-10),len(query)-11))
-        return drop_table(db,res)
+        var ret = drop_table(db,res)
+        #ifdef FBEXT_MULTITHREADED
+        mutexunlock db->_mutex
+        #endif
+        return ret
     end if
 
     if left(query,11) = "INSERT INTO" then
@@ -266,7 +288,11 @@ public function query_noresults ( byval db as XMLdatabase ptr, byref query as co
             end if
         next
         var x = tbln & ";" & strings.join(values(),";")
-        return insert_into(db,x)
+        var ret = insert_into(db,x)
+        #ifdef FBEXT_MULTITHREADED
+        mutexunlock db->_mutex
+        #endif
+        return ret
     end if
 
     if left(query,6) = "UPDATE" then
@@ -290,9 +316,17 @@ public function query_noresults ( byval db as XMLdatabase ptr, byref query as co
             end if
         next
         var x = tbln & ";" & strings.join(values(),";")
-        return update(db,x)
+        var ret = update(db,x)
+        #ifdef FBEXT_MULTITHREADED
+        mutexunlock db->_mutex
+        #endif
+        return ret
 
     end if
+
+    #ifdef FBEXT_MULTITHREADED
+        mutexunlock db->_mutex
+    #endif
 
     return Xderr.INVALID
 
@@ -301,6 +335,10 @@ end function
 public function query_res ( byval db as XMLdatabase ptr, byref query as const string ) as Xderr
 
     if db = 0 then return Xderr.INVALID
+
+    #ifdef FBEXT_MULTITHREADED
+    mutexlock db->_mutex
+    #endif
 
     db->affected_rows = 0
 
@@ -319,27 +357,52 @@ public function query_res ( byval db as XMLdatabase ptr, byref query as const st
         if db->where_clause[len(db->where_clause)-1] = asc(";") then
             db->where_clause = trim(left(db->where_clause,len(db->where_clause)-1))
         end if
-        return select_from(db,tblname)
+        var ret = select_from(db,tblname)
+        #ifdef FBEXT_MULTITHREADED
+            mutexunlock db->_mutex
+        #endif
+        return ret
     end if
+
+    #ifdef FBEXT_MULTITHREADED
+        mutexunlock db->_mutex
+    #endif
 
     return Xderr.INVALID
 end function
 
 public function result_step ( byval db as XMLdatabase ptr ) as Xderr
+    #ifdef FBEXT_MULTITHREADED
+        mutexlock db->_mutex
+    #endif
     if db->where_clause <> "" then
         db->index += 1
-        if do_where(db) = false then return Xderr.END_OF_QUERY
+        if do_where(db) = false then
+            #ifdef FBEXT_MULTITHREADED
+            mutexunlock db->_mutex
+            #endif
+            return Xderr.END_OF_QUERY
+        end if
     else
         db->index += 1
         if db->index >= db->lasttable->children() then
             db->index = 0
+            #ifdef FBEXT_MULTITHREADED
+            mutexunlock db->_mutex
+            #endif
             return Xderr.END_OF_QUERY
         end if
     end if
+    #ifdef FBEXT_MULTITHREADED
+        mutexunlock db->_mutex
+    #endif
     return Xderr.MORE_RESULTS
 end function
 
 public function result_column overload ( byval db as XMLdatabase ptr, byref colname as string ) as string
+    #ifdef FBEXT_MULTITHREADED
+        mutexlock db->_mutex
+    #endif
     var x = db->lasttable->child(db->index)
     var ret = ""
     for n as uinteger = 0 to x->children -1
@@ -348,19 +411,43 @@ public function result_column overload ( byval db as XMLdatabase ptr, byref coln
             exit for
         end if
     next
+    #ifdef FBEXT_MULTITHREADED
+        mutexunlock db->_mutex
+    #endif
     return ret
 end function
 
 public function result_column overload ( byval db as XMLdatabase ptr, byval i as uinteger ) as string
-    return db->lasttable->child(db->index)->child(i)->getText
+    #ifdef FBEXT_MULTITHREADED
+        mutexlock db->_mutex
+    #endif
+    var ret = db->lasttable->child(db->index)->child(i)->getText
+    #ifdef FBEXT_MULTITHREADED
+        mutexunlock db->_mutex
+    #endif
+    return ret
 end function
 
 public function result_columns ( byval db as XMLDatabase ptr ) as uinteger
-    return db->lasttable->child(db->index)->children
+    #ifdef FBEXT_MULTITHREADED
+        mutexlock db->_mutex
+    #endif
+    var ret = db->lasttable->child(db->index)->children
+    #ifdef FBEXT_MULTITHREADED
+        mutexunlock db->_mutex
+    #endif
+    return ret
 end function
 
 public function result_colname ( byval db as XMLDatabase ptr, byval i as uinteger ) as string
-    return db->lasttable->child(db->index)->child(i)->attribute("name")
+    #ifdef FBEXT_MULTITHREADED
+        mutexlock db->_mutex
+    #endif
+    var ret = db->lasttable->child(db->index)->child(i)->attribute("name")
+    #ifdef FBEXT_MULTITHREADED
+        mutexunlock db->_mutex
+    #endif
+    return ret
 end function
 
 end namespace

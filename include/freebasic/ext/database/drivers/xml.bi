@@ -63,6 +63,9 @@ type XMLdatabase
     as uinteger index
     as uinteger affected_rows
     as string dbfile
+    #ifdef FBEXT_MULTITHREADED
+    _mutex as any ptr
+    #endif
     declare constructor ( byref fn as const string = "::memory::" )
     declare destructor
 end type
