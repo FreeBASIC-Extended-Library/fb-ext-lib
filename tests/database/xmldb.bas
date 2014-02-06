@@ -56,7 +56,7 @@ private sub verify_update
 
 end sub
 
-private sub do_select
+private sub do_select_all
 
     var db = new XMLdatabase
     EXT_ASSERT_TRUE(query_noresults(db,create_t) = Xderr.NO_ERROR)
@@ -77,12 +77,75 @@ private sub do_select
     
 end sub
 
+private sub do_select_some
+
+    var db = new XMLdatabase
+    EXT_ASSERT_TRUE(query_noresults(db,create_t) = Xderr.NO_ERROR)
+    EXT_ASSERT_TRUE(query_noresults(db,i_one) = Xderr.NO_ERROR)
+    EXT_ASSERT_TRUE(query_noresults(db,i_two) = Xderr.NO_ERROR)
+    EXT_ASSERT_TRUE(query_noresults(db,i_three) = Xderr.NO_ERROR)
+    EXT_ASSERT_TRUE(query_noresults(db,i_one) = Xderr.NO_ERROR)
+
+    var r = query_res(db,"SELECT * FROM testing_table WHERE second_column = two;")
+    var c = 0
+    do while r = Xderr.MORE_RESULTS
+    c += 1
+    r = result_step(db)
+    loop
+
+    EXT_ASSERT_TRUE(2 = c)
+
+    delete db
+    
+end sub
+
+private sub do_delete_some
+
+    var db = new XMLdatabase
+
+    EXT_ASSERT_TRUE(query_noresults(db,create_t) = Xderr.NO_ERROR)
+
+    EXT_ASSERT_TRUE(query_noresults(db,i_one) = Xderr.NO_ERROR)
+    EXT_ASSERT_TRUE(query_noresults(db,i_two) = Xderr.NO_ERROR)
+    EXT_ASSERT_TRUE(query_noresults(db,i_three) = Xderr.NO_ERROR)
+    EXT_ASSERT_TRUE(query_noresults(db,i_one) = Xderr.NO_ERROR)
+
+    EXT_ASSERT_TRUE(query_noresults(db,"DELETE FROM testing_table WHERE second_column = two;") = Xderr.NO_ERROR)
+
+    EXT_ASSERT_TRUE(2 = db->affected_rows)
+
+    delete db
+    
+end sub
+
+private sub do_delete_all
+
+    var db = new XMLdatabase
+
+    EXT_ASSERT_TRUE(query_noresults(db,create_t) = Xderr.NO_ERROR)
+
+    EXT_ASSERT_TRUE(query_noresults(db,i_one) = Xderr.NO_ERROR)
+    EXT_ASSERT_TRUE(query_noresults(db,i_two) = Xderr.NO_ERROR)
+    EXT_ASSERT_TRUE(query_noresults(db,i_three) = Xderr.NO_ERROR)
+    EXT_ASSERT_TRUE(query_noresults(db,i_one) = Xderr.NO_ERROR)
+
+    EXT_ASSERT_TRUE(query_noresults(db,"DELETE FROM testing_table;") = Xderr.NO_ERROR)
+    
+    EXT_ASSERT_TRUE(4 = db->affected_rows)
+
+    delete db
+    
+end sub
+
 sub register constructor
     ext.tests.addSuite("ext-database-xml")
     ext.tests.addTest("verify schema",@verify_schema)
     ext.tests.addTest("verify insertion",@verify_insertion)
     ext.tests.addTest("verify update",@verify_update)
-    ext.tests.addTest("select all",@do_select)
+    ext.tests.addTest("select all",@do_select_all)
+    ext.tests.addTest("select some",@do_select_some)
+    ext.tests.addTest("delete some",@do_delete_some)
+    ext.tests.addTest("delete all",@do_delete_all)
 end sub
 
 end namespace
