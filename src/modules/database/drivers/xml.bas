@@ -57,7 +57,7 @@ function xmldb_escape( byref x as string ) as string
 end function
 
 private function strip_quotes( byref x as string ) as string
-    var ret = x
+    var ret = trim(x)
     if len(ret) > 1 then
         if ret[0] = asc("'") then ret = right(ret,len(ret)-1)
         if ret[len(ret)-1] = asc("'") then ret = left(ret,len(ret)-1)
@@ -389,8 +389,10 @@ public function query_res ( byval db as XMLdatabase ptr, byref query as const st
             res = ""
         end if
         db->where_clause = trim(right(res,len(res)-6))
-        if db->where_clause[len(db->where_clause)-1] = asc(";") then
-            db->where_clause = trim(left(db->where_clause,len(db->where_clause)-1))
+        if db->where_clause <> "" then
+            if db->where_clause[len(db->where_clause)-1] = asc(";") then
+                db->where_clause = trim(left(db->where_clause,len(db->where_clause)-1))
+            end if
         end if
         var ret = select_from(db,tblname)
         #ifdef FBEXT_MULTITHREADED
