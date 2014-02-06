@@ -18,7 +18,7 @@ else
 	DSMYL := libext-database-driver-mysql.a
 	DSPGO := postgre.o
 	DSPGL := libext-database-driver-postgre.a
-	DXMLO := xml..o
+	DXMLO := xml.o
 	DXMLL := libext-database-driver-xml.a
 endif
 
