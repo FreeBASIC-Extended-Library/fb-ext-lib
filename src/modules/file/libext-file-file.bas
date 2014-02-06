@@ -445,14 +445,18 @@ namespace ext
             var ret = 0
 
             select case m_access
-            case 0
+            case ACCESS_TYPE.R
             ret = ..open(m_filename, for binary, ACCESS READ, as m_filehandle)
 
-            case 1
+            case ACCESS_TYPE.W
             ret = ..open(m_filename, for binary, ACCESS WRITE, as m_filehandle)
 
-            case 2
+            case ACCESS_TYPE.RW
             ret = ..open(m_filename, for binary, ACCESS READ WRITE, as m_filehandle)
+
+            case ACCESS_TYPE.A
+            ret = ..open(m_filename, for binary, ACCESS WRITE, as m_filehandle)
+            seek =-1
 
             end select
 

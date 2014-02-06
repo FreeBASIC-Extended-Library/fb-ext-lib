@@ -32,12 +32,14 @@ namespace ext
         ''R - Open the file read-only.
         ''W - Open the file for write access.
         ''RW - Open the file for reading and writing.
+        ''A - Open the file with the cursor set to the end.
         ''
         enum ACCESS_TYPE
 
             R = 0
             W
             RW
+            A
 
         end enum
 
