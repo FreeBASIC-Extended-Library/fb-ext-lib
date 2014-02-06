@@ -77,5 +77,6 @@ declare function result_column overload ( byval db as XMLdatabase ptr, byref col
 declare function result_column overload ( byval db as XMLdatabase ptr, byval i as uinteger ) as string
 declare function result_columns ( byval db as XMLDatabase ptr ) as uinteger
 declare function result_step ( byval db as XMLdatabase ptr ) as Xderr
+declare function xmldb_escape( byref x as string ) as string
 
 end namespace

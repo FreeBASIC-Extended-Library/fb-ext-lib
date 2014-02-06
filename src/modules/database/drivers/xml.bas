@@ -22,6 +22,7 @@
 
 #include once "ext/xml/dom.bi"
 #include once "ext/database/drivers/xml.bi"
+#include once "ext/strings/manip.bi"
 #include once "ext/strings/split.bi"
 #include once "ext/error.bi"
 
@@ -49,6 +50,11 @@ destructor XMLdatabase
     mutexdestroy _mutex
     #endif
 end destructor
+
+function xmldb_escape( byref x as string ) as string
+    var ret = strings.replaceCopy(x,",","&x" & hex(asc(",")) & ";")
+    return ret
+end function
 
 private function strip_quotes( byref x as string ) as string
     var ret = x
@@ -560,6 +566,10 @@ function xcolv ( byval d as DatabaseDriverF ptr, byval col as integer ) as strin
     return xml_.result_column(db,col)
 end function
 
+private function xesc( byval d as DatabaseDriverF ptr, byref e as string ) as string
+    return xml_.xmldb_escape(e)
+end function
+
 function _XML( byref conn as const string ) as DatabaseDriver ptr
 
     var ret = new DatabaseDriver
@@ -574,6 +584,7 @@ function _XML( byref conn as const string ) as DatabaseDriver ptr
     ret->colname = @xcoln
     ret->colval = @xcolv
     ret->geterr = @xerror
+    ret->escape_string = @xesc
     ret->driverdata = new xml_.XMLdatabase(conn)
     return ret
 
