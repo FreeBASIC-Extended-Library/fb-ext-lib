@@ -4,7 +4,7 @@ FBC_LFLAGS := -p ../bin -p ../lib/$(TARGET)
 TESTS_MAIN := main$(EXE_EXT)
 
 
-TESTS_DIRS := preprocessor algorithms strings containers math sort php hash memory xml conversion misc file json
+TESTS_DIRS := database preprocessor algorithms strings containers math sort php hash memory xml conversion misc file json
 
 
 TESTS_SRCS := $(foreach dir,$(TESTS_DIRS),$(wildcard $(dir)/*.bas))
