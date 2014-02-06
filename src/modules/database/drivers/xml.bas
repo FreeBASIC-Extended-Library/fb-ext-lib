@@ -23,6 +23,7 @@
 #include once "ext/xml/dom.bi"
 #include once "ext/database/drivers/xml.bi"
 #include once "ext/strings/split.bi"
+#include once "ext/error.bi"
 
 namespace ext.database.drivers.xml_
 
@@ -49,12 +50,21 @@ destructor XMLdatabase
     #endif
 end destructor
 
+private function strip_quotes( byref x as string ) as string
+    var ret = x
+    if len(ret) > 1 then
+        if ret[0] = asc("'") then ret = right(ret,len(ret)-1)
+        if ret[len(ret)-1] = asc("'") then ret = left(ret,len(ret)-1)
+    end if
+    return ret
+end function
+
 private function do_where( byval db as XMLdatabase ptr ) as ext.bool
 
     var t = db->lasttable
     var i = instr(db->where_clause,"=")
-    var coln = trim(left(db->where_clause,i-1))
-    var colv = trim(mid(db->where_clause,i+1))
+    var coln = strip_quotes(trim(left(db->where_clause,i-1)))
+    var colv = strip_quotes(trim(mid(db->where_clause,i+1)))
     for n as uinteger = db->index to t->children -1
         var row = db->lasttable->child(n)
         for m as uinteger = 0 to row->children -1
@@ -124,8 +134,7 @@ private function insert_into ( byval db as XMLdatabase ptr, byref query as strin
     if db->lasttable = 0 then return Xderr.INVALID
     strings.explode(db->lasttable->attribute("columns"),";",cols())
     if ubound(cols) <> (ubound(vals)-1) then
-        ? "problem detected with"
-        ? query
+        setError(6500,"The number of values in the query does not match the number of columns in the table.")
         return Xderr.INVALID
     end if
     var x = db->lasttable->appendChild("row")
@@ -153,7 +162,10 @@ private function update ( byval db as XMLdatabase ptr, byref query as string ) a
     dim valx() as string
     strings.explode(query,";",vals())
     db->lasttable = db->docroot->root->child(vals(0))
-    if db->lasttable = 0 then return Xderr.INVALID
+    if db->lasttable = 0 then
+        setError(6501,"The table could not be found in the database.")
+        return Xderr.INVALID
+    end if
     strings.explode(db->lasttable->attribute("columns"),";",cols())
     
     if db->where_clause <> "" then
@@ -165,12 +177,14 @@ private function update ( byval db as XMLdatabase ptr, byref query as string ) a
             for n as uinteger = 0 to ubound(cols)-1
                 for z as uinteger = 1 to ubound(vals)
                     strings.explode(vals(z),"=",valx())
+                    valx(0) = strip_quotes(valx(0))
                     if valx(1)[len(valx(1))-1] = asc(";") then
                         valx(1) = trim(left(valx(1),len(valx(1))-1))
                     end if
+                    valx(1) = strip_quotes(valx(1))
                     var c = row->child("column",n)
                     if c->attribute("name") = trim(valx(0)) then
-                        c->setText = trim(valx(1))
+                        c->setText = valx(1)
                         db->affected_rows += 1
                     end if
                 next
@@ -186,12 +200,14 @@ private function update ( byval db as XMLdatabase ptr, byref query as string ) a
             for n as uinteger = 1 to ubound(vals)
                 for z as uinteger = 0 to x->children() -1
                     strings.explode(vals(n),"=",valx())
+                    valx(0) = strip_quotes(valx(0))
                     if valx(1)[len(valx(1))-1] = asc(";") then
                         valx(1) = trim(left(valx(1),len(valx(1))-1))
                     end if
+                    valx(1) = strip_quotes(valx(1))
                     var c = x->child("column",z)
                     if c->attribute("name") = trim(valx(0)) then
-                        c->setText = trim(valx(1))
+                        c->setText = valx(1)
                         db->affected_rows += 1
                     end if
                 next
@@ -204,8 +220,14 @@ end function
 'SELECT * FROM table_name WHERE colname=value;
 'table_name
 private function select_from ( byval db as XMLdatabase ptr, byref query as string ) as Xderr
-    if query = "" then return Xderr.INVALID
+    if query = "" then
+        setError(6502,"The table name was not able to be determined.")
+        return Xderr.INVALID
+    end if
     db->lasttable = db->docroot->root->child(query)
+    if db->lasttable = 0 then
+        setError(6501,"The table could not be found in the database.")
+    end if
     db->index = 0
     if db->where_clause <> "" then
         if do_where(db) = false then return Xderr.END_OF_QUERY
@@ -217,7 +239,10 @@ end function
 
 public function query_noresults ( byval db as XMLdatabase ptr, byref query as const string ) as Xderr
 
-    if db = 0 then return Xderr.INVALID
+    if db = 0 then
+        setError(6499,"A valid XMLdatabase object is required.")
+        return Xderr.INVALID
+    end if
 
     #ifdef FBEXT_MULTITHREADED
         mutexlock db->_mutex
@@ -334,7 +359,11 @@ end function
 
 public function query_res ( byval db as XMLdatabase ptr, byref query as const string ) as Xderr
 
-    if db = 0 then return Xderr.INVALID
+    if db = 0 then
+        setError(6499,"A valid XMLdatabase object is required.")
+        return Xderr.INVALID
+    end if
+
 
     #ifdef FBEXT_MULTITHREADED
     mutexlock db->_mutex
@@ -368,6 +397,7 @@ public function query_res ( byval db as XMLdatabase ptr, byref query as const st
         mutexunlock db->_mutex
     #endif
 
+    setError(6504,"An invalid or unsupported SQL function was called.")
     return Xderr.INVALID
 end function
 
@@ -414,6 +444,7 @@ public function result_column overload ( byval db as XMLdatabase ptr, byref coln
     #ifdef FBEXT_MULTITHREADED
         mutexunlock db->_mutex
     #endif
+    setError(6505,"The specified column was not found in this table.")
     return ret
 end function
 
@@ -421,6 +452,10 @@ public function result_column overload ( byval db as XMLdatabase ptr, byval i as
     #ifdef FBEXT_MULTITHREADED
         mutexlock db->_mutex
     #endif
+    if i >= db->lasttable->child(db->index)->children() then
+        setError(6506,"Index out of Range")
+        return ""
+    end if
     var ret = db->lasttable->child(db->index)->child(i)->getText
     #ifdef FBEXT_MULTITHREADED
         mutexunlock db->_mutex
@@ -443,6 +478,10 @@ public function result_colname ( byval db as XMLDatabase ptr, byval i as uintege
     #ifdef FBEXT_MULTITHREADED
         mutexlock db->_mutex
     #endif
+    if i >= db->lasttable->child(db->index)->children() then
+        setError(6506,"Index out of Range")
+        return ""
+    end if
     var ret = db->lasttable->child(db->index)->child(i)->attribute("name")
     #ifdef FBEXT_MULTITHREADED
         mutexunlock db->_mutex
@@ -467,6 +506,11 @@ function mapx2d ( byval e as xml_.Xderr ) as StatusCode
     case else
         return StatusCode.Error
     end select
+end function
+
+function xerror ( byval d as DatabaseDriverF ptr ) as string
+    var e = getError()
+    return getErrorText(e)
 end function
 
 function xopen ( byval d as  DatabaseDriverF ptr ) as StatusCode
@@ -529,6 +573,7 @@ function _XML( byref conn as const string ) as DatabaseDriver ptr
     ret->numcols = @xcols
     ret->colname = @xcoln
     ret->colval = @xcolv
+    ret->geterr = @xerror
     ret->driverdata = new xml_.XMLdatabase(conn)
     return ret
 
