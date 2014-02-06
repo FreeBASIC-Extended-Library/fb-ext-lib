@@ -105,7 +105,11 @@ end function
 private function delete_from ( byval db as XMLdatabase ptr, byref query as string ) as Xderr
 
     db->lasttable = db->docroot->root->child(query)
-    if db->lasttable = 0 then return Xderr.INVALID
+    if db->lasttable = 0 then
+        ? query
+        setError(6501,"The table could not be found in the database.")
+        return Xderr.INVALID
+    end if
 
     db->affected_rows = 0
     db->index = 0
@@ -137,7 +141,10 @@ private function insert_into ( byval db as XMLdatabase ptr, byref query as strin
     dim cols() as string
     strings.explode(query,";",vals())
     db->lasttable = db->docroot->root->child(vals(0))
-    if db->lasttable = 0 then return Xderr.INVALID
+    if db->lasttable = 0 then
+        setError(6501,"The table could not be found in the database.")
+        return Xderr.INVALID
+    end if
     strings.explode(db->lasttable->attribute("columns"),";",cols())
     if ubound(cols) <> (ubound(vals)-1) then
         setError(6500,"The number of values in the query does not match the number of columns in the table.")
@@ -264,6 +271,9 @@ public function query_noresults ( byval db as XMLdatabase ptr, byref query as co
             db->where_clause = trim(right(res,len(res)-wh-5))
             db->where_clause = trim(left(db->where_clause,len(db->where_clause)-1))
             res = trim(mid(res,1,wh-1))
+        end if
+        if res[len(res)-1] = asc(";") then
+            res = left(res,len(res)-1)
         end if
         var ret = delete_from(db,res)
         #ifdef FBEXT_MULTITHREADED
