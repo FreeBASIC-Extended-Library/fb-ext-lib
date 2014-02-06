@@ -240,7 +240,7 @@ end function
 public function query_noresults ( byval db as XMLdatabase ptr, byref query as const string ) as Xderr
 
     if db = 0 then
-        setError(6499,"A valid XMLdatabase object is required.")
+        setError(6503,"A valid XMLdatabase object is required.")
         return Xderr.INVALID
     end if
 
