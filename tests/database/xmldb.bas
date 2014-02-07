@@ -10,6 +10,11 @@ const as string i_one = "INSERT INTO testing_table VALUES ( one, two, three );"
 const as string i_two = "INSERT INTO testing_table VALUES ( 1, 2, 3 );"
 const as string i_three = "INSERT INTO testing_table VALUES ( one1, two2, three3 );"
 const as string up_t = "UPDATE testing_table SET second_column = 'four' WHERE second_column = two;"
+const as string selectall_t = "SELECT * FROM testing_table;"
+const as string selectsome_t = "SELECT * FROM testing_table WHERE second_column = two;"
+const as string deletesome_t = "DELETE FROM testing_table WHERE second_column = two;"
+const as string deleteall_t = "DELETE FROM testing_table;"
+const as string droptable_t = "DROP TABLE testing_table;"
 
 private sub verify_schema
 
@@ -64,7 +69,7 @@ private sub do_select_all
     EXT_ASSERT_TRUE(query_noresults(db,i_two) = Xderr.NO_ERROR)
     EXT_ASSERT_TRUE(query_noresults(db,i_three) = Xderr.NO_ERROR)
 
-    var r = query_res(db,"SELECT * FROM testing_table;")
+    var r = query_res(db,selectall_t)
     var c = 0
     do while r = Xderr.MORE_RESULTS
     c += 1
@@ -86,7 +91,7 @@ private sub do_select_some
     EXT_ASSERT_TRUE(query_noresults(db,i_three) = Xderr.NO_ERROR)
     EXT_ASSERT_TRUE(query_noresults(db,i_one) = Xderr.NO_ERROR)
 
-    var r = query_res(db,"SELECT * FROM testing_table WHERE second_column = two;")
+    var r = query_res(db,selectsome_t)
     var c = 0
     do while r = Xderr.MORE_RESULTS
     c += 1
@@ -110,7 +115,7 @@ private sub do_delete_some
     EXT_ASSERT_TRUE(query_noresults(db,i_three) = Xderr.NO_ERROR)
     EXT_ASSERT_TRUE(query_noresults(db,i_one) = Xderr.NO_ERROR)
 
-    EXT_ASSERT_TRUE(query_noresults(db,"DELETE FROM testing_table WHERE second_column = two;") = Xderr.NO_ERROR)
+    EXT_ASSERT_TRUE(query_noresults(db,deletesome_t) = Xderr.NO_ERROR)
 
     EXT_ASSERT_TRUE(2 = db->affected_rows)
 
@@ -129,12 +134,40 @@ private sub do_delete_all
     EXT_ASSERT_TRUE(query_noresults(db,i_three) = Xderr.NO_ERROR)
     EXT_ASSERT_TRUE(query_noresults(db,i_one) = Xderr.NO_ERROR)
 
-    EXT_ASSERT_TRUE(query_noresults(db,"DELETE FROM testing_table;") = Xderr.NO_ERROR)
+    EXT_ASSERT_TRUE(query_noresults(db,deleteall_t) = Xderr.NO_ERROR)
     
     EXT_ASSERT_TRUE(4 = db->affected_rows)
 
     delete db
     
+end sub
+
+private sub drop_table
+
+    var db = new XMLdatabase
+
+    EXT_ASSERT_TRUE(query_noresults(db,create_t) = Xderr.NO_ERROR)
+
+    EXT_ASSERT_TRUE(query_noresults(db,i_one) = Xderr.NO_ERROR)
+    EXT_ASSERT_TRUE(query_noresults(db,i_two) = Xderr.NO_ERROR)
+    EXT_ASSERT_TRUE(query_noresults(db,i_three) = Xderr.NO_ERROR)
+    EXT_ASSERT_TRUE(query_noresults(db,i_one) = Xderr.NO_ERROR)
+
+    EXT_ASSERT_TRUE(query_noresults(db,droptable_t) = Xderr.NO_ERROR)
+    EXT_ASSERT_TRUE(db->docroot->root->children() = 0)
+
+    delete db
+
+end sub
+
+private sub escape_vals
+
+    var test_str = "one,two,three"
+    var escaped_str = xmldb_escape(test_str)
+    EXT_ASSERT_TRUE("one&#x2C;two&#x2C;three" = escaped_str)
+    var unescaped = xml.decode_entities(escaped_str)
+    EXT_ASSERT_TRUE(test_str = unescaped)
+
 end sub
 
 sub register constructor
@@ -146,6 +179,8 @@ sub register constructor
     ext.tests.addTest("select some",@do_select_some)
     ext.tests.addTest("delete some",@do_delete_some)
     ext.tests.addTest("delete all",@do_delete_all)
+    ext.tests.addTest("drop table",@drop_table)
+    ext.tests.addTest("escaping bad characters",@escape_vals)
 end sub
 
 end namespace
