@@ -52,7 +52,7 @@ destructor XMLdatabase
 end destructor
 
 function xmldb_escape( byref x as string ) as string
-    var ret = strings.replaceCopy(x,",","&x" & hex(asc(",")) & ";")
+    var ret = strings.replaceCopy(x,",","&#x" & hex(asc(",")) & ";")
     return ret
 end function
 
