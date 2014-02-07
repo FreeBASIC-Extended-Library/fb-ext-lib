@@ -107,16 +107,32 @@ namespace ext.strings
 
 		' FB Built-in string commands
 		'' Sub: Trim
-		'' Trims whitespace from both sides of the XString object
+		'' Trims spaces from both sides of the XString object
 		declare sub Trim ( )
 
 		'' Sub: LTrim
-		'' Trims whitespace from the left side of a XString object
+		'' Trims spaces from the left side of a XString object
 		declare sub LTrim ( )
 
 		'' Sub: RTrim
-		'' Trims whitespace from the right side of a XString object
+		'' Trims spaces from the right side of a XString object
 		declare sub RTrim ( )
+
+		''Sub: TrimAll
+		''Trims all whitespace from both sides of the XString
+		declare sub TrimAll ( )
+
+		''Sub: LTrimAll
+		''Trims all whitespace from the left side of the XString
+		declare sub LTrimAll ( )
+
+		''Sub: RTrimAll
+		''Trims all whitespace from the right side of the XString
+		declare sub RTrimAll ( )
+
+		''Sub: Compact
+		''Reduces repeated whitespace to only 1 instance.
+		declare sub Compact ( )
 
 		'' Function: Instr
 		'' Searchs a string for the first occurence of a substring

@@ -165,4 +165,21 @@ namespace ext.strings
 		return lhs.m_str <= rhs.m_str
 	end operator
 
+	'' :::::
+	sub xstring.trimall
+		m_str = ext.strings.trimall(m_str)
+	end sub
+
+	sub xstring.rtrimall
+		m_str = ext.strings.rtrimall(m_str)
+	end sub
+
+	sub xstring.ltrimall
+		m_str = ext.strings.ltrimall(m_str)
+	end sub
+
+	sub xstring.compact
+		m_str = ext.strings.compact(m_str)
+	end sub
+
 end namespace 'ext.strings
