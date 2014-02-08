@@ -66,6 +66,7 @@ namespace ext
             dim as uinteger retl
             tempf->get(,retl,1)
             tempf->close()
+            delete tempf
             return retl
         end if
         return 0ull
