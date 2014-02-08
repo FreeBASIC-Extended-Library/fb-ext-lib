@@ -59,7 +59,14 @@ namespace ext
     private function egzlof( byval t as FileSystemDriver ptr ) as ulongint
         var gzd = cast(gzfile_data ptr,t->driverdata)
         if gzd->a <> ACCESS_TYPE.R then
-            return 0ull
+            var tempf = new File(gzd->f)
+            if tempf->open() = true then return 0ull
+            var tempfl = tempf->lof()
+            tempf->seek = tempfl - 4
+            dim as uinteger retl
+            tempf->get(,retl,1)
+            tempf->close()
+            return retl
         end if
         return 0ull
     end function
