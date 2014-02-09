@@ -171,6 +171,17 @@ namespace ext.gfx
     ''
     declare sub Intensify( byval dst as IMAGE ptr, byval src as const IMAGE ptr, byref positx as integer, byref posity as integer, byref intensity as integer )
 
+    ''Function: Gradient
+    ''Generates a horizontal or vertical gradient between two colors.
+    ''
+    ''Parameters:
+    ''from_c - the color to start at the left/top
+    ''to_c - the color to end with at the right/bottom
+    ''w - if non zero will generate a horizontal gradient
+    ''h - if w is 0 and h is nonzero will generate a vertical gradient
+    ''
+    declare function Gradient( byval from_c as uinteger, byval to_c as uinteger, byval w as uinteger = 0, byval h as uinteger = 0 ) as Image ptr
+
 end namespace 'ext.gfx
 
 #endif 'FBEXT_GFX_MANIP_BI__

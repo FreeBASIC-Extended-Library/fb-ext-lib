@@ -69,6 +69,52 @@ namespace ext.gfx
 
         end function
 
+function gradient( byval from_c as uinteger, byval to_c as uinteger, byval w as uinteger = 0, byval h as uinteger = 0 ) as Image ptr
+
+    dim as Image ptr ret
+    if w <> 0 then
+        ret = new Image(w,1)
+    elseif h <> 0 then
+        ret = new Image(1,h)
+    else
+        return 0
+    end if
+    var minw = iif(w<>0,w,h)
+    var bt = csng(&hff and to_c)
+    var bc = csng(&hff and from_c)
+    var bdiff = (bt - bc) / minw
+
+    var gt = csng((&hff00 and to_c) shr 8)
+    var gc = csng((&hff00 and from_c) shr 8)
+    var gdiff = (gt - gc) / minw
+
+    var rt = csng((&hff0000 and to_c ) shr 16 )
+    var rc = csng((&hff0000 and from_c) shr 16)
+    var rdiff = (rt - rc) / minw
+
+    var next_c = from_c
+    var n = 0u
+    
+    while n < minw
+        if w <> 0 then
+            *(ret->Pixels() + 0 * ret->pitch + n * ret->bpp) = next_c
+            'pset ret,(n,0),next_c
+        else
+            *(ret->Pixels() + n * ret->pitch + 0 * ret->bpp) = next_c
+            'pset ret,(0,n),next_c
+        end if
+        rc = rc+ rdiff
+        gc = gc + gdiff
+        bc = bc + bdiff
+        
+        next_c = rgb(cubyte(rc),cubyte(gc),cubyte(bc))
+        n += 1
+    wend
+    
+    return ret
+
+end function
+
 
         sub changeColor ( byref img as IMAGE ptr, byval from_ as uinteger, byval to_ as uinteger, byval include_alpha as ext.bool = ext.bool.false, byval is_font as ext.bool = ext.bool.false )
 
