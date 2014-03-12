@@ -9,12 +9,12 @@ sub dimensions cdecl alias "png_dimensions" _
 		byref w        as uinteger, _
 		byref h        as uinteger _
 	)
-	
+
 	dim as integer i = any
-	dim as FILE ptr hfile = fopen( strptr( filename ), "rb" )
+	dim as FILE ptr hfile = fopen( filename, "rb" )
 	dim as ubyte sig(0 to 7)
 	dim as uinteger tmp1 = any, tmp2 = any
-	
+
 	if hfile = NULL then
 		exit sub
 	end if
@@ -35,7 +35,7 @@ sub dimensions cdecl alias "png_dimensions" _
 		fclose( hfile )
 		exit sub
 	end if
-	
+
 	if fread( @tmp1, 1, 4, hfile ) <> 4 then
 		fclose( hfile )
 		exit sub
