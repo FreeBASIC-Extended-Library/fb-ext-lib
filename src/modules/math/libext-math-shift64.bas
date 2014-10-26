@@ -21,6 +21,9 @@
 ''SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 function shl64( byval ovar as ulongint, byval sbits as integer ) as ulongint
+#if 1
+    return ovar shl sbits
+#else
     dim as ulongint nvar
     asm
         movq mm0, qword ptr[ovar]
@@ -30,9 +33,13 @@ function shl64( byval ovar as ulongint, byval sbits as integer ) as ulongint
         emms
     end asm
     return nvar
+#endif
 end function
 
 function shr64( byval ovar as ulongint, byval sbits as integer ) as ulongint
+#if 1
+    return ovar shr sbits
+#else
     dim as ulongint nvar
     asm
         movq mm0, qword ptr[ovar]
@@ -42,4 +49,5 @@ function shr64( byval ovar as ulongint, byval sbits as integer ) as ulongint
         emms
     end asm
     return nvar
+#endif
 end function
