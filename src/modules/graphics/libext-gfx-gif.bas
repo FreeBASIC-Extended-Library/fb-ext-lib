@@ -50,7 +50,7 @@ private function loadFrame( byval tgif as GifFileType ptr, byval fn as uinteger 
 
 end function
 
-private function gif_input_func( byval g as GifFileType ptr, byval b as GifByteType ptr, byval s as integer ) as integer
+private function gif_input_func cdecl ( byval g as GifFileType ptr, byval b as GifByteType ptr, byval s as long ) as long
 
     var f = cast(File ptr,g->userData)
     f->get(,*b,s)
@@ -63,7 +63,7 @@ function load( byref fn as ext.File, byval t as target_e ) as ext.gfx.Image ptr
     if fn.open() = true then return null
 
     var tgif = DGifOpen(@fn,@gif_input_func)
-    
+
     if tgif = 0 then return null
 
     if DGifSlurp( tgif ) <> GIF_OK then return null

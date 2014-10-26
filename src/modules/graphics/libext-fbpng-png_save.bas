@@ -40,19 +40,19 @@ function save cdecl alias "png_save" _
 	end if
 
 	if bpp <> 4 then
-		DEBUGPRINT( "Only 32 bit images allowed" ) 
+		DEBUGPRINT( "Only 32 bit images allowed" )
 		return 1
 	end if
 
-	hfile = fopen( strptr( filename ), "wb" )
+	hfile = fopen( filename, "wb" )
 	if hfile = NULL then
-		DEBUGPRINT( "Could not open file for write" ) 
+		DEBUGPRINT( "Could not open file for write" )
 		return 1
-	end if	
+	end if
 
 	if fwrite( @png_sig(0), 1, 8, hfile ) <> 8 then
 		fclose( hfile )
-		DEBUGPRINT( "Write failure" ) 
+		DEBUGPRINT( "Write failure" )
 		return 1
 	end if
 
@@ -74,7 +74,7 @@ function save cdecl alias "png_save" _
 
 	if fwrite( @IHDR(0), 1, 25, hfile ) <> 25 then
 		fclose( hfile )
-		DEBUGPRINT( "Write failure" ) 
+		DEBUGPRINT( "Write failure" )
 		return 1
 	end if
 
@@ -103,7 +103,7 @@ function save cdecl alias "png_save" _
 			p2 += 4
 		next x
 	next y
-	
+
 	dim as integer sz = 0
 	dim as any ptr cmp = 0
 
@@ -115,7 +115,7 @@ function save cdecl alias "png_save" _
 	if compress( cmp, @destlen, buffer, sz ) <> 0 then
 		deallocate( buffer )
 		deallocate( cmp )
-		DEBUGPRINT( "Compress failure" ) 
+		DEBUGPRINT( "Compress failure" )
 		return 1
 	end if
 
@@ -128,14 +128,14 @@ function save cdecl alias "png_save" _
 	if fwrite( @IDAT(0), 1, 8, hfile ) <> 8 then
 		fclose( hfile )
 		deallocate( cmp )
-		DEBUGPRINT( "Write failure" ) 
+		DEBUGPRINT( "Write failure" )
 		return 1
 	end if
 
 	if fwrite( cmp, 1, destlen, hfile ) <> destlen then
 		fclose( hfile )
 		deallocate( cmp )
-		DEBUGPRINT( "Write failure" ) 
+		DEBUGPRINT( "Write failure" )
 		return 1
 	end if
 
@@ -145,10 +145,10 @@ function save cdecl alias "png_save" _
 	deallocate( cmp )
 
 	put_u32( @IDAT(0), crc )
-	
+
 	if fwrite( @IDAT(0), 1, 4, hfile ) <> 4 then
 		fclose( hfile )
-		DEBUGPRINT( "Write failure" ) 
+		DEBUGPRINT( "Write failure" )
 		return 1
 	end if
 
@@ -157,22 +157,22 @@ function save cdecl alias "png_save" _
 
 	if fwrite( @IEND(0), 1, 8, hfile ) <> 8 then
 		fclose( hfile )
-		DEBUGPRINT( "Write failure" ) 
+		DEBUGPRINT( "Write failure" )
 		return 1
 	end if
 
 	crc = crc32( 0, @IEND(4), 4 )
 
 	put_u32( @IEND(0), crc )
-	
+
 	if fwrite( @IEND(0), 1, 4, hfile ) <> 4 then
 		fclose( hfile )
-		DEBUGPRINT( "Write failure" ) 
+		DEBUGPRINT( "Write failure" )
 		return 1
 	end if
 
 	fclose( hfile )
 
-end function 
+end function
 
 end namespace 'ext.gfx.png

@@ -24,6 +24,7 @@
 #include once "ext/graphics/image.bi"
 #include once "ext/graphics/jpg.bi"
 #include once "ext/file/file.bi"
+#define __JPEGLIB_VER__  6
 #include once "jpeglib.bi"
 
 #undef null

@@ -40,8 +40,8 @@ namespace ext.strings
 
         var ss_count = 0
 
-        var it = strptr(s)
-        do while it <> strptr(s) + len(s)
+        var it = @s[0]
+        do while it <> @s[0] + len(s)
 
             var found_delim = true
 
@@ -70,7 +70,7 @@ namespace ext.strings
                     if ss_count = limit - 1 then exit do
                 end if
 
-                var index = it - strptr(s)
+                var index = it - @s[0]
 
                 dt(ss_count).length = index - dt(ss_count).start
                 ss_count += 1

@@ -27,34 +27,34 @@ namespace ext.strings
 
 	'' :::::
 	function repeat (byval ascii_code as integer, byval n as integer) as string
-	
+
 		if 0 = n then return ""
-		
+
 		return string(n, ascii_code)
-	
+
 	end function
-	
+
 	'' :::::
 	function repeat (byref s as const string, byval n as integer) as string
-	
+
 		if 0 = len(s) then return ""
 		if 0 = n then return ""
-		
+
 		' single char string ?
 		if 1 = len(s) then return string(n, s[0])
-		
+
 		var result = space(len(s) * n)
-		
+
 		var src = strptr(s)
-		var dst = strptr(result)
-		
+		var dst = @result[0]
+
 		for r as integer = 1 to n
 			memcpy(dst, src, len(s))
 			dst += len(s)
 		next
-		
+
 		return result
-	
+
 	end function
 
 end namespace

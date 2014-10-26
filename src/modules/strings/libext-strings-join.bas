@@ -39,14 +39,14 @@ namespace ext.strings
 		finalsize += len(glue) * (numstrings - 1)
 
 		var result = space(finalsize)
-		var dst = strptr(result)
+		var dst = cast(ubyte ptr,@result[0])
 
 		for i as integer = lbound(s) to ubound(s)
-			memcpy(dst, strptr(s(i)), len(s(i)))
+			memcpy(dst, @(s(i)[0]), len(s(i)))
 			dst += len(s(i))
 
 			if 0 < len(glue) then
-				memcpy(dst, strptr(glue), len(glue))
+				memcpy(dst, @glue[0], len(glue))
 				dst += len(glue)
 			end if
 		next

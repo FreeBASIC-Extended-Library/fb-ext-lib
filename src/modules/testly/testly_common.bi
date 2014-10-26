@@ -25,8 +25,8 @@ namespace ext.tests
     end type
 
     '# library constructors
-    declare sub initialize() constructor
-    declare sub terminate() destructor
+    declare sub initialize() 'constructor
+    declare sub terminate() 'destructor
 
     declare function log_failure(byref as string, byref as string, byref as string, _
                     byval as uinteger, byref as string, byval as ext.bool = false) as ext.bool
