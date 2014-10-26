@@ -32,7 +32,7 @@ namespace ext.gfx.xpm
 ''
 ''Returns:
 ''<ext.gfx.Image> ptr on success or NULL on error
-declare function load ( byref fn as File ) as Image ptr
+declare function load ( byref fn as File, byval t as target_e = TARGET_FBNEW ) as Image ptr
 
 #ifndef FBEXT_BUILD_NO_GFX_LOADERS
 sub loadXPMdriver() constructor

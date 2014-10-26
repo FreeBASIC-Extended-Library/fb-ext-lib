@@ -34,7 +34,7 @@ type xpm_color
     as uinteger co
 end type
 
-public function load( byref fn as File ) as Image ptr
+public function load( byref fn as File, byval t as target_e = TARGET_FBNEW ) as Image ptr
 
     var xf = fn
 
