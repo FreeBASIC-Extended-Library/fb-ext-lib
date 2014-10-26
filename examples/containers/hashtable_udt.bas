@@ -35,14 +35,14 @@ namespace ns
 
 end namespace
 
-namespace ext
+'namespace ext
 	using ns
     ' Instanciate an ext.HashTable class used to store ns.PersonInfo element
     ' values. Note that this macro must be used in namespace ext, and that the
     ' fully qualified type name is required.
     fbext_Instanciate(fbext_HashTable, ((PersonInfo)))
 
-end namespace
+'end namespace
 
 using ns
     ' Create a hashtable with a minimize size of 10 elements.

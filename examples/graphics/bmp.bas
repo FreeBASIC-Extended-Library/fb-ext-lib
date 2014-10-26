@@ -1,6 +1,6 @@
 #define FBEXT_NO_EXTERNAL_LIBS -1
 #include once "ext/graphics/bmp.bi"
-
+using ext
 screenres 640, 480, 24
 
 var b1 = ext.gfx.bmp.load(ext.File("marmot1bit.bmp"))

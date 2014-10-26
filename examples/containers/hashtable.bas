@@ -9,6 +9,8 @@
 
 # include once "ext/containers/hashtable.bi"
 
+fbext_Instanciate(fbext_HashTable, ((single)))
+
 using ext
 
 var myHT = fbext_HashTable((single))(16)
@@ -34,7 +36,7 @@ print "Count after insertion: " & myHT.count
 
 print "One: " & *(myHT.find("One"))
 
-print "Removing Tacos" 
+print "Removing Tacos"
 myHT.remove("Tacos")
 
 print "Two: " & *(myHT.find("Two"))

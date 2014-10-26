@@ -1,5 +1,7 @@
 # include once "ext/containers/hashtable.bi"
 
+fbext_Instanciate(fbext_HashTable, ((integer)))
+
 declare sub MyIterator ( byref key as const string, byval value as integer ptr )
 
 var MyHT = ext.FBEXT_HASHTABLE((integer))(150)
