@@ -180,7 +180,7 @@ private function update ( byval db as XMLdatabase ptr, byref query as string ) a
         return Xderr.INVALID
     end if
     strings.explode(db->lasttable->attribute("columns"),";",cols())
-    
+
     if db->where_clause <> "" then
         db->index = 0
         var e = do_where(db)
@@ -340,7 +340,7 @@ public function query_noresults ( byval db as XMLdatabase ptr, byref query as co
 
         var res = trim(right(query,len(query)-6))
         var i = instr(res," ")
-        
+
         var tbln = left(res,i-1)
         i = instr(i+1,res," ")
         res = trim(right(res,len(res)-i))
@@ -462,7 +462,9 @@ public function result_column overload ( byval db as XMLdatabase ptr, byref coln
     #ifdef FBEXT_MULTITHREADED
         mutexunlock db->_mutex
     #endif
-    setError(6505,"The specified column was not found in this table.")
+    if(ret = "") then
+        setError(6505,"The specified column was not found in this table.")
+    end if
     return ret
 end function
 
