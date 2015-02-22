@@ -338,14 +338,14 @@ fbext_Instanciate(fbext_Vector4, ((single)))
     '' :::::
     function matrix.PlanarProjection( byref lightpos as vec4f, byref plane as vec4f ) as matrix
 
+	var projected_matrix = matrix()
+
         with plane
             var xx = .x * lightpos.x
             var yy = .y * lightpos.y
             var zz = .z * lightpos.z
             var ww = .w * lightpos.w
             var dot = xx + yy + zz + ww
-
-            var projected_matrix = matrix()
 
             projected_matrix.m( 0) = dot - xx
             projected_matrix.m( 1) = -lightpos.y * .x
