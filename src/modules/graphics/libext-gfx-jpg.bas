@@ -56,7 +56,7 @@ function fill_input_buffer_func cdecl ( byval cinfo as j_decompress_ptr ) as boo
 
 end function
 
-sub skip_input_data_func cdecl (byval cinfo as j_decompress_ptr, byval num_bytes as integer)
+sub skip_input_data_func cdecl (byval cinfo as j_decompress_ptr, byval num_bytes as long)
 
     var src = cast(jpg_mem_driver ptr,cinfo->src)
     src->pub.bytes_in_buffer = 0
