@@ -278,7 +278,7 @@ namespace ext
         m_lasterror = 0
         m_fsd = NULL
         m_bytes = 0ull
-        
+
         #ifdef FBEXT_MULTITHREADED
         m_mutex = mutexcreate()
         #endif
@@ -425,11 +425,15 @@ namespace ext
     end property
 
     '' :::::
-    function File.open() as ext.bool
+    function File.open(byval acc as ACCESS_TYPE = R) as ext.bool
 
         #ifdef FBEXT_MULTITHREADED
         mutexlock(m_mutex)
         #endif
+
+        if(m_access <> acc) then
+          m_access = acc
+        end if
 
         if m_fsd <> null then
         #ifdef FBEXT_MULTITHREADED
@@ -581,4 +585,3 @@ namespace ext
     end destructor
 
 end namespace ' ext
-

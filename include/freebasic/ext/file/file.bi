@@ -64,10 +64,13 @@ namespace ext
         ''Function: open
         ''Opens the file specified to the constructor.
         ''
+        ''Parameters:
+        ''*Optional* acc - one of <ACCESS_TYPE>
+        ''
         ''Returns:
         ''ext.false on success, ext.true on failure.
         ''
-        declare function open() as ext.bool
+        declare function open(byval acc as ACCESS_TYPE = R) as ext.bool
 
         ''Sub: close
         ''Closes access to a disk file.
