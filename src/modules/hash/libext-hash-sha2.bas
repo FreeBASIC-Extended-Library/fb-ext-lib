@@ -554,7 +554,7 @@ end sub
 
 sub sha256_final( byval ctx as sha256_ctx ptr, byval digest as zstring ptr )
 
-    dim as uinteger block_nb, pm_len, len_b
+    dim as ulong block_nb, pm_len, len_b
 
     block_nb = (1 + abs((SHA256_BLOCK_SIZE - 9) _
                      < (ctx->_len mod SHA256_BLOCK_SIZE)))
@@ -683,7 +683,7 @@ end sub
 
 sub sha512_final( byval ctx as sha512_ctx ptr, byval digest as zstring ptr )
 
-    dim as uinteger block_nb, pm_len, len_b
+    dim as ulong block_nb, pm_len, len_b
 
     block_nb = 1 + abs((SHA512_BLOCK_SIZE - 17) _
                      < (ctx->_len mod SHA512_BLOCK_SIZE))
@@ -753,7 +753,7 @@ end sub
 
 sub sha384_final( byval ctx as sha384_ctx ptr, byval digest as zstring ptr )
 
-    dim as uinteger block_nb, pm_len, len_b
+    dim as ulong block_nb, pm_len, len_b
 
     block_nb = (1 + abs((SHA384_BLOCK_SIZE - 17) _
                      < (ctx->_len mod SHA384_BLOCK_SIZE)))
@@ -820,7 +820,7 @@ end sub
 
 sub sha224_final( byval ctx as sha224_ctx ptr, byval digest as zstring ptr )
 
-    dim as uinteger block_nb, pm_len, len_b
+    dim as ulong block_nb, pm_len, len_b
 
     block_nb = (1 + abs((SHA224_BLOCK_SIZE - 9) _
                      < (ctx->_len mod SHA224_BLOCK_SIZE)))

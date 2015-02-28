@@ -20,7 +20,7 @@ extern "C"
     declare function memcmp ( byval s1 as const any ptr, byval s2 as const any ptr, byval size as uinteger ) as long
     declare function memmove ( byval dst as any ptr, byval src as const any ptr, byval size as integer ) as any ptr
     declare sub qsort ( byval p as any ptr, byval n as integer, byval elemsize as integer, byval comp as function ( byval as const any ptr, byval as const any ptr ) as integer )
-    declare function memset ( byval dst as any ptr, byval value as integer, byval size as integer ) as any ptr
+    declare function memset ( byval dst as any ptr, byval value as long, byval size as ulong ) as any ptr
     declare function strncpy (byval dst as zstring ptr, byval src as const zstring ptr, byval n as uinteger) as zstring ptr
 end extern
 
