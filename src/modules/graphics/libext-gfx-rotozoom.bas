@@ -155,7 +155,14 @@ namespace ext.gfx
 
     end sub
 
-
+#ifdef __FB_64BIT__
+  sub RotoZoomASM( byref dst as IMAGE ptr = 0, byref src as const IMAGE ptr, byval positx as integer, byval posity as integer, byref angle as integer, byref zoomx as single, byref zoomy as single = 0, byval transcol as uinteger  = &hffff00ff )
+  end sub
+#else
+  #ifdef __FB_ARM__
+    sub RotoZoomASM( byref dst as IMAGE ptr = 0, byref src as const IMAGE ptr, byval positx as integer, byval posity as integer, byref angle as integer, byref zoomx as single, byref zoomy as single = 0, byval transcol as uinteger  = &hffff00ff )
+    end sub
+  #else
     sub RotoZoomASM( byref dst as IMAGE ptr = 0, byref src as const IMAGE ptr, byval positx as integer, byval posity as integer, byref angle as integer, byref zoomx as single, byref zoomy as single = 0, byval transcol as uinteger  = &hffff00ff )
 
         'Rotozoom for 32-bit FB.Image by Dr_D(Dave Stanley) and yetifoot(Simon Nash)
@@ -379,5 +386,6 @@ namespace ext.gfx
         end asm
 
     end sub
-
+  #endif
+#endif
 end namespace 'ext.gfx
