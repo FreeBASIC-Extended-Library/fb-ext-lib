@@ -26,7 +26,7 @@
 namespace ext
 
 constructor ZipFile( byref zfname as const string )
-    var erz = 0
+    dim as long erz = 0
     m_data = zip_open( zfname, ZIP_CREATE, @erz )
     if erz > 0 then
         ext.setError(100,"Error opening/creating zipfile: " & erz)
