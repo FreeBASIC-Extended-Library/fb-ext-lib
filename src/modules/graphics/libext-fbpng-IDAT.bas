@@ -51,13 +51,13 @@ function IDAT_compile _
 
 		.IDAT = NULL
 		.IDAT_len = 0
-		
+
 		i = chunk_find( png_image, "IDAT", 0 )
 		while i <> -1
 			.IDAT_len += .chunk[i]->length
 			i = chunk_find( png_image, "IDAT", i + 1 )
 		wend
-		
+
 		if .IDAT_len > 0 then
 			.IDAT = callocate( .IDAT_len )
 			if .IDAT <> NULL then
@@ -87,13 +87,13 @@ function IDAT_uncompress _
 	) as integer
 
 	dim as integer predict_len = IDAT_calc( png_image )
-	dim as integer dest_len    = (predict_len * 1.2) + 12
+	dim as ulong dest_len    = (predict_len * 1.2) + 12
 	dim as any ptr dest        = callocate( dest_len )
 
 	function = 1
 
 	with png_image
-	
+
 		if dest <> NULL then
 			if uncompress( dest, @dest_len, .IDAT, .IDAT_len ) = 0 then
 				if dest_len = predict_len then
@@ -101,12 +101,12 @@ function IDAT_uncompress _
 				end if
 			end if
 		end if
-		
+
 		deallocate( .IDAT )
 
 		.IDAT = dest
 		.IDAT_len = dest_len
-		
+
 	end with
 
 end function

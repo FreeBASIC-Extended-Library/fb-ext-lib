@@ -104,13 +104,13 @@ function save cdecl alias "png_save" _
 		next x
 	next y
 
-	dim as integer sz = 0
+	dim as ulong sz = 0
 	dim as any ptr cmp = 0
 
 	sz = ((w * 4) + 1) * h
 	cmp = callocate( sz + 500 )
 
-	dim as integer destlen = sz + 500
+	dim as ulong destlen = sz + 500
 
 	if compress( cmp, @destlen, buffer, sz ) <> 0 then
 		deallocate( buffer )
