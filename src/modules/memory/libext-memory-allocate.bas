@@ -35,19 +35,19 @@ function callocateAligned _
 	end if
 
 	dim as any ptr result = any
-	dim as integer real_size = any
+	dim as uinteger real_size = any
 
-	real_size = size + sizeof( any ptr ) + &HF
+	real_size = size + sizeof( any ptr ) + cast(uinteger,&HF)
 
 	result = callocate( real_size )
-	
+
 	if result <> NULL then
 		dim as any ptr orig_p = result
 		result += sizeof( any ptr ) + &HF
-		*cast( long ptr, @result ) and= not &HF
+		*cast( uinteger ptr, @result ) and= not cast(uinteger,&HF)
 		cptr(any ptr ptr, result)[-1] = orig_p
 	end if
-	
+
 	function = result
 
 end function

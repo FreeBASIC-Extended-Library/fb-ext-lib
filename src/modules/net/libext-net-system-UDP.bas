@@ -31,7 +31,7 @@ namespace ext.net
         byref result as uinteger _
         ) as integer
 
-        dim as uInteger res = new_socket( AF_INET, SOCK_DGRAM, IPPROTO_IP )
+        dim as long res = new_socket( AF_INET, SOCK_DGRAM, IPPROTO_IP )
         if( res = SOCKET_ERROR ) then
             return FAILED_INIT
         end if
@@ -66,7 +66,7 @@ namespace ext.net
         byval port_ as integer _
         ) as integer
 
-        dim as uInteger res = new_socket( AF_INET, SOCK_DGRAM, IPPROTO_IP )
+        dim as long res = new_socket( AF_INET, SOCK_DGRAM, IPPROTO_IP )
         if( res = SOCKET_ERROR ) then
             return FAILED_INIT
         end if
@@ -83,7 +83,7 @@ namespace ext.net
         byval ip as integer _
         ) as integer
 
-        dim as uInteger res = new_socket( AF_INET, SOCK_DGRAM, IPPROTO_IP )
+        dim as long res = new_socket( AF_INET, SOCK_DGRAM, IPPROTO_IP )
         if( res = SOCKET_ERROR ) then
             return FAILED_INIT
         end if
