@@ -40,6 +40,13 @@ ifndef TARGET
     TARGET := $(HOST)
 endif
 
+# infer target bit depth from host OS
+ifndef BITS
+  BITS := $(shell fbc -version\
+                  | grep 'bit'\
+                  | awk '{ gsub(/(\(|\)|bit)/,"",$$10); print $$10 }')
+endif
+
 # get command names and install paths..
 ifeq ($(TARGET),linux)
     EXE_EXT := .bin

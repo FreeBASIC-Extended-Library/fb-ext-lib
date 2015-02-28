@@ -49,7 +49,11 @@ AUTO_BUILT_MODULES := $(filter-out $(CUSTOM_BUILT_MODULES),$(BUILDABLE_MODULES))
 #  COMPILER FLAGS & LINKER FLAGS
 # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # paths aren't included here to allow ./*/Makefile to reuse these..
-export FBC_CFLAGS := -c -w all $(if $(MT),-mt)
+ifeq ($(BITS),64)
+	export FBC_CFLAGS := -c -w all $(if $(MT),-mt) -asm intel
+else
+	export FBC_CFLAGS := -c -w all $(if $(MT),-mt)
+endif
 export FBC_LFLAGS := -lib $(if $(MT),-mt)
 
 ifndef NDEBUG
@@ -193,4 +197,3 @@ uninstall-base:
 
 # generate build targets.
 $(foreach mod,$(ALL_MODULES),$(eval $(call CreateAutoInstallRules,$(mod))))
-
