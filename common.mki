@@ -47,6 +47,22 @@ ifndef BITS
                   | awk '{ gsub(/(\(|\)|bit)/,"",$$10); print $$10 }')
 endif
 
+#infer target architecture
+ifndef ARCH
+	ifeq ($(TARGET),win32)
+		ARCH := x86
+		ARCH_RAW := x86
+	else
+		ARCH_RAW := $(shell fbc -print target\
+												| awk '{gsub(/([a-z]+-|_64)/,"",$$1); print $$1;}')
+		ifeq ($(ARCH_RAW),x86)
+			ARCH := x86
+		else
+			ARCH := arm
+			endif
+	endif
+endif
+
 # get command names and install paths..
 ifeq ($(TARGET),linux)
     EXE_EXT := .bin

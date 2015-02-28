@@ -50,9 +50,17 @@ AUTO_BUILT_MODULES := $(filter-out $(CUSTOM_BUILT_MODULES),$(BUILDABLE_MODULES))
 # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # paths aren't included here to allow ./*/Makefile to reuse these..
 ifeq ($(BITS),64)
-	export FBC_CFLAGS := -c -w all $(if $(MT),-mt) -asm intel
+	ifeq ($(ARCH),x86)
+		export FBC_CFLAGS := -c -w all $(if $(MT),-mt) -asm intel
+	else
+		export FBC_CFLAGS := -c -w all $(if $(MT),-mt) -asm att
+	endif
 else
-	export FBC_CFLAGS := -c -w all $(if $(MT),-mt)
+	ifeq ($(ARCH),x86)
+		export FBC_CFLAGS := -c -w all $(if $(MT),-mt)
+	else
+		export FBC_CFLAGS := -c -w all $(if $(MT),-mt) -asm att
+	endif
 endif
 export FBC_LFLAGS := -lib $(if $(MT),-mt)
 
