@@ -3,10 +3,14 @@ ifeq ($(MT), 1)
 	DOBJ := database.mt.o
 	DS3O := sqlite3.mt.o
 	DS3L := libext-database-driver-sqlite3.mt.a
+ifdef USE_MYSQL
 	DSMYO := mysql.mt.o
 	DSMYL := libext-database-driver-mysql.mt.a
+endif
+ifdef USE_POSTGRE
 	DSPGO := postgre.mt.o
 	DSPGL := libext-database-driver-postgre.mt.a
+endif
 	DXMLO := xml.mt.o
 	DXMLL := libext-database-driver-xml.mt.a
 else
@@ -14,10 +18,14 @@ else
 	DOBJ := database.o
 	DS3O := sqlite3.o
 	DS3L := libext-database-driver-sqlite3.a
+ifdef USE_MYSQL
 	DSMYO := mysql.o
 	DSMYL := libext-database-driver-mysql.a
+endif
+ifdef USE_POSTGRES
 	DSPGO := postgre.o
 	DSPGL := libext-database-driver-postgre.a
+endif
 	DXMLO := xml.o
 	DXMLL := libext-database-driver-xml.a
 endif
@@ -36,17 +44,20 @@ drivers/$(DS3O) : drivers/sqlite3.bas ../../../include/freebasic/ext/database/dr
 ../../../lib/$(TARGET)/$(DS3L) : drivers/$(DS3O)
 	$(FBC) $(FBC_LFLAGS) $(IF $(MT),-mt) -i ../../../include/freebasic -x ../../../lib/$(TARGET)/$(DS3L) drivers/$(DS3O)
 
+ifdef USE_MYSQL
 drivers/$(DSMYO) : drivers/mysql.bas ../../../include/freebasic/ext/database/driver.bi ../../../include/freebasic/ext/database/drivers/mysql.bi
 	$(FBC) $(FBC_CFLAGS) $(IF $(MT),-mt) -i ../../../include/freebasic drivers/mysql.bas -o drivers/$(DSMYO)
 
 ../../../lib/$(TARGET)/$(DSMYL) : drivers/$(DSMYO)
 	$(FBC) $(FBC_LFLAGS) $(IF $(MT),-mt) -i ../../../include/freebasic -x ../../../lib/$(TARGET)/$(DSMYL) drivers/$(DSMYO)
-
+endif
+ifdef USE_POSTGRES
 drivers/$(DSPGO) : drivers/postgre.bas ../../../include/freebasic/ext/database/driver.bi ../../../include/freebasic/ext/database/drivers/postgre.bi
 	$(FBC) $(FBC_CFLAGS) $(IF $(MT),-mt) -i ../../../include/freebasic drivers/postgre.bas -o drivers/$(DSPGO)
 
 ../../../lib/$(TARGET)/$(DSPGL) : drivers/$(DSPGO)
 	$(FBC) $(FBC_LFLAGS) $(IF $(MT),-mt) -i ../../../include/freebasic -x ../../../lib/$(TARGET)/$(DSPGL) drivers/$(DSPGO)
+endif
 
 drivers/$(DXMLO) : drivers/xml.bas ../../../include/freebasic/ext/database/driver.bi ../../../include/freebasic/ext/database/drivers/xml.bi
 	$(FBC) $(FBC_CFLAGS) $(IF $(MT),-mt) -i ../../../include/freebasic drivers/xml.bas -o drivers/$(DXMLO)
