@@ -64,6 +64,8 @@ Other options available to the makefile are:
 	EXX - use EXX=1 to add null pointer and out of bounds checking.
 	OPT - use OPT="other fbc options" to add options to the compilers
 		command line.
+	USE_MYSQL - Build the MySQL Database Driver, requires mysql/mysql.bi in include path.
+	USE_POSTGRES - Build the Postgres Database Driver, requires postgres header in path.
 
 [Building the examples]
 
