@@ -31,7 +31,7 @@ function JSONvalue.toBSON( byref buf_len as uinteger ) as ubyte ptr
     dim as ubyte ptr ret
 
     select case this.m_type
-    case jvalue_type.number
+    case jvalue_type.jnumber
         etype = &h01
         buf_len = 1 + sizeof(m_number)
         ret = new ubyte[buf_len]
@@ -47,7 +47,7 @@ function JSONvalue.toBSON( byref buf_len as uinteger ) as ubyte ptr
         memcpy(@(ret[1+sizeof(uinteger)]),@(m_string[0]),len(m_string))
         ret[buf_len-1] = 0
 
-    case jvalue_type.boolean
+    case jvalue_type.jboolean
         etype = &h08
         buf_len = 2
         ret = new ubyte[buf_len]
@@ -66,7 +66,7 @@ function JSONvalue.toBSON( byref buf_len as uinteger ) as ubyte ptr
         ret[0] = etype
         memcpy(@(ret[1]),vret,buf_len-1)
 
-    case jvalue_type.array
+    case jvalue_type.jarray
         etype = &h04
         var vret = cast(JSONarray ptr, m_child)->toBSON(buf_len)
         buf_len += 1
@@ -89,11 +89,11 @@ end function
 operator JSONvalue.Let ( byref rhs as const JSONvalue )
 
     select case rhs.m_type
-    case jvalue_type.number
+    case jvalue_type.jnumber
         m_number = rhs.m_number
     case jvalue_type.jstring
         m_string = rhs.m_string
-    case jvalue_type.boolean
+    case jvalue_type.jboolean
         m_bool = rhs.m_bool
     case jvalue_type.jobject
         if m_child <> 0 then
@@ -105,7 +105,7 @@ operator JSONvalue.Let ( byref rhs as const JSONvalue )
         end if
         m_child = new JSONobject
         cast(JSONobject ptr, m_child)->loadString(*cast(JSONobject ptr,rhs.m_child))
-    case jvalue_type.array
+    case jvalue_type.jarray
         if m_child <> 0 then
             if m_type = jvalue_type.jobject then
                 delete cast(JSONobject ptr, m_child)
@@ -131,7 +131,7 @@ end constructor
 
 constructor JSONvalue ( byval n as double )
     m_number = n
-    m_type = jvalue_type.number
+    m_type = jvalue_type.jnumber
 end constructor
 
 constructor JSONvalue ( byref s as const string )
@@ -141,7 +141,7 @@ end constructor
 
 constructor JSONvalue ( byval b as bool )
     m_bool = b
-    m_type = jvalue_type.boolean
+    m_type = jvalue_type.jboolean
 end constructor
 
 constructor JSONvalue ( byval o as JSONobject ptr )
@@ -151,7 +151,7 @@ end constructor
 
 constructor JSONvalue ( byval a as JSONarray ptr )
     m_child = a
-    m_type = jvalue_type.array
+    m_type = jvalue_type.jarray
 end constructor
 
 constructor JSONvalue
@@ -163,13 +163,13 @@ operator JSONvalue.cast() as string
     select case m_type
     case jvalue_type.jobject
         ret = *(cast(JSONobject ptr,m_child))
-    case jvalue_type.array
+    case jvalue_type.jarray
         ret = *(cast(JSONarray ptr,m_child))
     case jvalue_type.jstring
         ret = !"\"" & m_string & !"\""
-    case jvalue_type.number
+    case jvalue_type.jnumber
         ret = str(m_number)
-    case jvalue_type.boolean
+    case jvalue_type.jboolean
         if m_bool then
             ret = "true"
         else
@@ -186,7 +186,7 @@ function JSONvalue.valueType() as jvalue_type
 end function
 
 function JSONvalue.getArray() as JSONarray ptr
-    if m_type = jvalue_type.array then
+    if m_type = jvalue_type.jarray then
         return m_child
     else
         return null
@@ -210,7 +210,7 @@ function JSONvalue.getString() as string
 end function
 
 function JSONvalue.getNumber() as double
-    if m_type = jvalue_type.number then
+    if m_type = jvalue_type.jnumber then
         return m_number
     else
         return 0
@@ -218,7 +218,7 @@ function JSONvalue.getNumber() as double
 end function
 
 function JSONvalue.getBool() as bool
-    if m_type = jvalue_type.boolean then
+    if m_type = jvalue_type.jboolean then
         return m_bool
     else
         return bool.invalid
@@ -231,7 +231,7 @@ destructor JSONvalue
         m_string = ""
     case jvalue_type.jobject
         delete cast(JSONobject ptr,m_child)
-    case jvalue_type.array
+    case jvalue_type.jarray
         delete cast(JSONarray ptr,m_child)
     end select
 end destructor

@@ -34,9 +34,9 @@ namespace ext.json
         jnull = 0
         jobject
         jstring
-        array
-        number
-        boolean
+        jarray
+        jnumber
+        jboolean
     end enum
 
     type jarray_f as JSONarray
