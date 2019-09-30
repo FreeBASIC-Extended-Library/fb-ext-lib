@@ -30,7 +30,7 @@ function BloomFilter.load( byref fname as const string ) as ext.bool
     dim size_f as uinteger
     if open( fname, for binary, access read, as #f) = 0 then
         size_f = lof(f)
-        x = new uinteger[size_f/4]
+        x = new uinteger[size_f\4]
         if x = 0 then return ext.bool.true
         get #f, ,*x,size_f/4
         close #f

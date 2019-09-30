@@ -136,7 +136,7 @@ namespace ext
             m_size = 0
 
         else
-            var min_units = int((num + (bitsPerStorage - 1)) / bitsPerStorage)
+            dim min_units as uinteger = int((num + (bitsPerStorage - 1)) / bitsPerStorage)
 
             m_bits = new SizeType[min_units]
             m_size = num

@@ -48,7 +48,7 @@ namespace ext.hashes.hmac
 
         var p1 = ikpad & msg
         var p2 = c(@(p1[0]),len(p1))
-        var p2l = len(p2)/2
+        dim p2l as uinteger = int(len(p2)/2)
         var p25 = new ubyte[p2l+1]
         var cnt = 0u
         for n as uinteger = 0 to len(p2)-2 step 2
