@@ -45,7 +45,7 @@ sub init_source_func cdecl ( byval cinfo as j_decompress_ptr )
     cast(jpg_mem_driver ptr,cinfo->src)->pub.bytes_in_buffer = 0
 end sub
 
-function fill_input_buffer_func cdecl ( byval cinfo as j_decompress_ptr ) as boolean
+function fill_input_buffer_func cdecl ( byval cinfo as j_decompress_ptr ) as jpeg_boolean
 
     var src = cast(jpg_mem_driver ptr,cinfo->src)
 
