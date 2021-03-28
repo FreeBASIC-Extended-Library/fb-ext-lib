@@ -142,7 +142,7 @@ type VRegex
 
     private:
         as zstring ptr error_string
-        as integer error_offset
+        as long error_offset
         declare function add( byref rhs as string ) as VRegex ptr
         declare function checkFlags() as uinteger
         declare function reduceLines( byref rhs as string ) as string

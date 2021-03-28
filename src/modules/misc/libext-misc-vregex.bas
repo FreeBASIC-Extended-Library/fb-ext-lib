@@ -239,11 +239,11 @@ sub VRegex.compile()
         pcre_free(re)
     end if
     if re_study <> 0 then
-        pcre_free_study(re_study)
+        pcre_free_study(cast(pcre_extra ptr, re_study))
     end if
     re = pcre_compile(pattern,checkFlags(),@error_string,@error_offset,0)
     if re <> 0 then
-        re_study = pcre_study(re,PCRE_STUDY_JIT_COMPILE,@error_string)
+        re_study = cast(pcre_extra__ ptr, pcre_study(re,PCRE_STUDY_JIT_COMPILE,@error_string))
     else
         re_study = 0
     end if
@@ -255,7 +255,7 @@ destructor VRegex()
         pcre_free(re)
     end if
     if re_study <> 0 then
-        pcre_free_study(re_study)
+        pcre_free_study(cast(pcre_extra ptr, re_study))
     end if
 end destructor
 
@@ -269,7 +269,7 @@ function VRegex.test( byref rhs as string ) as bool
     end if
 
     dim result as bool
-    var errors = pcre_exec(re,re_study,rhs,len(rhs),0,checkFlags(),0,0)
+    var errors = pcre_exec(re, cast(pcre_extra ptr, re_study), rhs, len(rhs), 0, checkFlags(), 0, 0)
     if errors >= 0 then
         result = true
     else
@@ -283,25 +283,25 @@ function VRegex.replace( byref source as string, byref v as string ) as string
     COMPILE_IF_DIRTY
     var buf = ""
     var cmatches = 8
-    var matches = new integer[cmatches]
+    var matches = new long[cmatches]
     var errors = 0
     runregex:
-    errors = pcre_exec(re,re_study,source,len(source),0,0,matches,cmatches)
+    errors = pcre_exec(re, cast(pcre_extra ptr, re_study), source, len(source), 0, 0, matches, cmatches)
     if errors < 0 then
         error_string = @"No matches found or other error, code in offset."
         error_offset = errors
-        setError(&hff00 OR cast(uinteger,errors),*error_string)
+        setError(&hff00 OR cast(uinteger,errors), *error_string)
         delete[] matches
         return source
     elseif errors = 0 then
         delete[] matches
         cmatches *= 2
-        matches = new integer[cmatches]
+        matches = new long[cmatches]
         goto runregex
     end if
     var last_i = 1
     for n as integer = 0 to (errors*2)-1 step 2
-        buf = buf & mid(source,last_i,matches[n]) & v & mid(source,matches[n+1]+1)
+        buf = buf & mid(source, last_i, matches[n]) & v & mid(source, matches[n+1]+1)
         last_i = matches[n] + len(v) + 1
     next
 
