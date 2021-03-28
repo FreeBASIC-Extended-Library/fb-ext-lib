@@ -32,7 +32,11 @@ function formatAsISO( byval t as double, byval n as bool ) as string
     if our_t = 0.0 then our_t = now()
 
     #ifdef __FB_WIN32__
-        var tzoffset = *__p__timezone()
+        #ifndef __FB_64BIT__
+            var tzoffset = *(__p__timezone())
+        #else
+            var tzoffset = _timezone
+        #endif
         var trailer = "Z"
     #endif
     #ifdef __FB_UNIX__
