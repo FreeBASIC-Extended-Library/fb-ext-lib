@@ -1,6 +1,6 @@
 #pragma once
 
-#define SOCKET_ERROR (-1)
+#define SOCKET_ERROR (&hFFFFFFFF)
 
 #define AF_INET 2
 #define PF_INET 2

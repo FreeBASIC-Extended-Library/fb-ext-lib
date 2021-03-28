@@ -112,7 +112,7 @@ namespace ext.net
 
     declare function base_HTTP_path( byref thing as string ) as string
 
-    const as integer NOT_AN_IP = -1
+    const as uinteger NOT_AN_IP = &hFFFFFFFF
 
     #define new_socket socket_
 
