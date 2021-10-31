@@ -23,12 +23,12 @@ namespace ext.tests.json_
 
     var o1 = j.child("object1")
     ext_assert_TRUE_ERROR( o1 <> null )
-    ext_assert_TRUE( o1->valueType() = ext.json.jvalue_type.number )
+    ext_assert_TRUE( o1->valueType() = ext.json.jvalue_type.jnumber )
     ext_assert_TRUE( o1->getNumber() = 1 )
 
     var o2 = j.child("object2")
     ext_assert_TRUE_ERROR( o2 <> null )
-    ext_assert_TRUE( o2->valueType() = ext.json.jvalue_type.number )
+    ext_assert_TRUE( o2->valueType() = ext.json.jvalue_type.jnumber )
     ext_assert_TRUE( o2->getNumber() = 2 )
 
     end sub
@@ -77,7 +77,7 @@ namespace ext.tests.json_
         var v = j.child("PI")
         ext_assert_TRUE(v <> null)
 
-        ext_assert_TRUE(v->valueType = ext.json.jvalue_type.number)
+        ext_assert_TRUE(v->valueType = ext.json.jvalue_type.jnumber)
         ext_assert_TRUE(v->getNumber = 3.141e-10)
 
     end sub

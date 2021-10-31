@@ -7,7 +7,7 @@ namespace ext.tests.preprocessor
 
 	private sub test
 	
-		# define SEQ (a)(b)(c)(d)
+		# define SEQ ((a)(b)(c)(d))
 		
 		ext_assert_TRUE( "(a, b, c, d)" = FBEXT_PP_STRINGIZE((FBEXT_PP_SEQ_ENUM(SEQ))) )
 	
