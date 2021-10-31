@@ -155,7 +155,7 @@ namespace ext
         ''data_ - the variable to retrieve the data into.
         ''amount - optional amount of data to retrieve, defaults to 1.
         ''
-        declare sub get( byval filepos as longint = -1, byref data_ as fbext_TypeName(T_), byval amount as integer = 1 )
+        declare sub get( byval filepos as longint = -1, byref data_ as fbext_TypeName(T_), byval amount as uinteger = 1 )
     :
     # endmacro
 
@@ -169,7 +169,7 @@ namespace ext
         ''data_ - the data to place in the file.
         ''amount - optional amount of data to place, defaults to 1.
         ''
-        declare sub put( byval filepos as longint = -1, byref data_ as fbext_TypeName(T_), byval amount as integer = 1 )
+        declare sub put( byval filepos as longint = -1, byref data_ as fbext_TypeName(T_), byval amount as uinteger = 1 )
     :
     # endmacro
 

@@ -264,10 +264,10 @@ namespace ext.gfx
         return m_img
     end operator
 
-    function Image.Pixels( byref num_pixels as uinteger = 0 ) as uinteger ptr
+    function Image.Pixels( byref num_pixels as uinteger = 0 ) as ulong ptr
         if m_isGL = false then
             num_pixels = m_img->width * m_img->height
-            return FBEXT_FBGFX_PIXELPTR(uinteger,m_img)
+            return FBEXT_FBGFX_PIXELPTR(ulong,m_img)
         else
             num_pixels = m_w * m_h
             return m_gl

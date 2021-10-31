@@ -92,7 +92,7 @@ end sub
 ' linkage_ ignore, always public.
 
 '' :::::
-sub File.get( byval filepos as longint = -1, byref data_ as fbext_TypeName(T_), byval amount as integer = 1 )
+sub File.get( byval filepos as longint = -1, byref data_ as fbext_TypeName(T_), byval amount as uinteger = 1 )
 
     #ifdef FBEXT_MULTITHREADED
     mutexlock(m_mutex)
@@ -145,7 +145,7 @@ end sub
 ' linkage_ ignore, always public.
 
 '' :::::
-sub File.put( byval filepos as longint = -1, byref data_ as fbext_TypeName(T_), byval amount as integer = 1 )
+sub File.put( byval filepos as longint = -1, byref data_ as fbext_TypeName(T_), byval amount as uinteger = 1 )
 
     #ifdef FBEXT_MULTITHREADED
     mutexlock(m_mutex)

@@ -221,13 +221,13 @@
     '' A preprocessor sequence of unsigned integral types.
     ''
     # define fbext_UnsignedIntegralTypes() _
-        (((ubyte)))(((ushort)))(((uinteger)))(((ulongint)))
+        (((ubyte)))(((ushort)))(((ulong)))(((uinteger)))(((ulongint)))
     
     '' Macro: fbext_SignedIntegralTypes
     '' A preprocessor sequence of signed integral types.
     ''
     # define fbext_SignedIntegralTypes() _
-        (((byte)))(((short)))(((integer)))(((longint)))
+        (((byte)))(((short)))(((long)))(((integer)))(((longint)))
     
     '' Macro: fbext_IntegralTypes
     '' A preprocessor sequence of integral types.

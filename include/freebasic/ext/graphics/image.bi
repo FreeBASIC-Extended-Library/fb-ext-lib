@@ -187,7 +187,7 @@ type Image
     ''Returns:
     ''Uinteger ptr to image data.
     ''
-    declare const function Pixels( byref num_pixels as uinteger = 0 ) as uinteger ptr
+    declare const function Pixels( byref num_pixels as uinteger = 0 ) as ulong ptr
 
     'private:
     declare sub setImage( byval _x_ as FB.IMAGE ptr )
