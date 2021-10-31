@@ -133,11 +133,11 @@ operator JSONarray.let( byref rhs as JSONarray )
 end operator
 
 destructor JSONarray
-    if m_children > 0 then
+    if m_children > 0 and m_child <> null then
         for n as uinteger = 0 to m_children -1
             delete m_child[n]
         next
-        deallocate m_child
+        delete[] m_child
     end if
 end destructor
 
