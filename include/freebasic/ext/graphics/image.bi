@@ -193,7 +193,7 @@ type Image
     declare sub setImage( byval _x_ as FB.IMAGE ptr )
     as bool m_isGL
     m_img as FB.IMAGE ptr
-    m_gl as uinteger ptr
+    m_gl as ulong ptr
     as uinteger m_w, m_h
 
 end type

@@ -24,12 +24,24 @@
 #include once "ext/graphics/manip.bi"
 #include once "ext/graphics/primitives.bi"
 
+#ifndef __FB_X86__
+    #ifndef __EXT_NO_ASM_PRIMITIVES__
+        #define __EXT_NO_ASM_PRIMITIVES__ 1
+    #endif
+#endif
+
+#ifdef __FB_64BIT__
+    #ifndef __EXT_NO_ASM_PRIMITIVES__
+        #define __EXT_NO_ASM_PRIMITIVES__ 1
+    #endif
+#endif
+
 namespace ext.gfx
 
     '' :::::
-    sub Triangle ( byval dst as Image ptr = 0, byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval x3 as integer, byval y3 as integer, byval col as uinteger = rgba(255,255,255,255) )
+    sub Triangle ( byval dst as Image ptr = 0, byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval x3 as integer, byval y3 as integer, byval col as ulong = rgba(255,255,255,255) )
 
-        dim as uinteger ptr dstptr
+        dim as ulong ptr dstptr
 
         dim as integer x, y, dw, dh
 
@@ -42,7 +54,7 @@ namespace ext.gfx
             screeninfo dw,dh
         else
             dstptr = dst->Pixels
-            dw=dst->width
+            dw = dst->width
             dh = dst->height
         end if
 
@@ -129,7 +141,7 @@ namespace ext.gfx
                     if sx<0 then sx = 0
                     if ex>dw-1 then ex=dw-1
                     for x = sx to ex
-                        *cast(uinteger ptr, cast(ubyte ptr, dstptr) + y * dst->pitch + x * dst->bpp) = col
+                        *cast(ulong ptr, cast(ubyte ptr, dstptr) + y * dst->pitch + x * dst->bpp) = col
                     next
                 end if
                 lx += d1
@@ -145,7 +157,7 @@ namespace ext.gfx
                     if sx<0 then sx = 0
                     if ex>dw-1 then ex=dw-1
                     for x = sx to ex
-                        *cast(uinteger ptr, cast(ubyte ptr, dstptr) + y * dst->pitch + x * dst->bpp) = col
+                        *cast(ulong ptr, cast(ubyte ptr, dstptr) + y * dst->pitch + x * dst->bpp) = col
                     next
                 end if
                 lx += d2
@@ -156,14 +168,15 @@ namespace ext.gfx
 
     end sub
 
-    sub Triangle( byval dst as Image ptr = 0, byref p1 as ext.math.vec2i, byref p2 as ext.math.vec2i, byref p3 as ext.math.vec2i, byval col as uinteger = rgba(255,255,255,255) )
+    sub Triangle( byval dst as Image ptr = 0, byref p1 as ext.math.vec2i, byref p2 as ext.math.vec2i, byref p3 as ext.math.vec2i, byval col as ulong = rgba(255,255,255,255) )
 
         Triangle( dst, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, col )
 
     end sub
 
 
-    sub TriangleASM( byval dst as Image ptr = 0, byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval x3 as integer, byval y3 as integer, byval col as uinteger = rgba(255,255,255,255) )
+#ifndef __EXT_NO_ASM_PRIMITIVES__
+    sub TriangleASM( byval dst as Image ptr = 0, byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval x3 as integer, byval y3 as integer, byval col as ulong = rgba(255,255,255,255) )
 
         dim as any ptr dstptr
         dim as integer dw, dh, dp
@@ -354,10 +367,24 @@ namespace ext.gfx
 
     end sub
 
-    sub TriangleASM( byval dst as Image ptr = 0, byref p1 as ext.math.vec2i, byref p2 as ext.math.vec2i, byref p3 as ext.math.vec2i, byval col as uinteger = rgba(255,255,255,255) )
+    sub TriangleASM( byval dst as Image ptr = 0, byref p1 as ext.math.vec2i, byref p2 as ext.math.vec2i, byref p3 as ext.math.vec2i, byval col as ulong = rgba(255,255,255,255) )
 
         TriangleASM( dst, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, col )
 
     end sub
+
+    #else
+
+    #print ** ASM Primitives Disabled **
+
+    sub TriangleASM( byval dst as Image ptr = 0, byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval x3 as integer, byval y3 as integer, byval col as ulong = rgba(255,255,255,255) )
+        Triangle(dst, x1, y1, x2, y2, x3, y3, col)
+    end sub
+
+    sub TriangleASM( byval dst as Image ptr = 0, byref p1 as ext.math.vec2i, byref p2 as ext.math.vec2i, byref p3 as ext.math.vec2i, byval col as ulong = rgba(255,255,255,255) )
+        Triangle( dst, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, col )
+    end sub
+
+    #endif '__EXT_NO_ASM_PRIMITIVES__
 
 end namespace 'ext.gfx

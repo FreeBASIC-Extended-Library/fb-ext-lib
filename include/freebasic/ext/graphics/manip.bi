@@ -73,12 +73,12 @@ namespace ext.gfx
     ''
     ''Parameters:
     ''img - <Image> buffer to work on.
-    ''from_ - uinteger representation of the color to change.
-    ''to_ - uinteger representation of the color to change to.
+    ''from_ - ulong representation of the color to change.
+    ''to_ - ulong representation of the color to change to.
     ''include_alpha - optional flag to determine if the alpha channel is included in the color check, defaults to false.
     ''is_font - optional flag to determine if the buffer is a FBGFX font buffer, defaults to false.
     ''
-    declare sub changeColor ( byref img as Image ptr, byval from_ as uinteger, byval to_ as uinteger, byval include_alpha as ext.bool = ext.bool.false, byval is_font as ext.bool = ext.bool.false )
+    declare sub changeColor ( byref img as Image ptr, byval from_ as ulong, byval to_ as ulong, byval include_alpha as ext.bool = ext.bool.false, byval is_font as ext.bool = ext.bool.false )
 
     ''Sub: Rotate
     ''Rotates a image buffer.
@@ -180,7 +180,7 @@ namespace ext.gfx
     ''w - if non zero will generate a horizontal gradient
     ''h - if w is 0 and h is nonzero will generate a vertical gradient
     ''
-    declare function Gradient( byval from_c as uinteger, byval to_c as uinteger, byval w as uinteger = 0, byval h as uinteger = 0 ) as Image ptr
+    declare function Gradient( byval from_c as ulong, byval to_c as ulong, byval w as ulong = 0, byval h as ulong = 0 ) as Image ptr
 
 end namespace 'ext.gfx
 

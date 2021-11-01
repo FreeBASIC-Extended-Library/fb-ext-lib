@@ -29,7 +29,7 @@ sub AlphaBlit( byval dst as IMAGE ptr, byval src as const IMAGE ptr, byref posit
 
     if (src = null) then exit sub
 
-    static as uinteger ptr dstptr, srcptr
+    static as ulong ptr dstptr, srcptr
     static as integer srcc, dstc
     dim as integer iwidth = src->width
     dim as integer iheight= src->height
@@ -61,7 +61,7 @@ sub AlphaBlit( byval dst as IMAGE ptr, byval src as const IMAGE ptr, byref posit
                     if dst = 0 then
                         dstc = dstptr[ (yput * dw ) + xput ]
                     else
-                        dstc = *cast(uinteger ptr, cast(ubyte ptr, dstptr) + yput * dst->pitch + xput * dst->bpp )
+                        dstc = *cast(ulong ptr, cast(ubyte ptr, dstptr) + yput * dst->pitch + xput * dst->bpp )
                     end if
 
                     dr = ( ( dstc shr 16 ) and 255 )
@@ -69,7 +69,7 @@ sub AlphaBlit( byval dst as IMAGE ptr, byval src as const IMAGE ptr, byref posit
                     db = ( ( dstc        ) and 255 )
                     da = ( ( dstc shr 24 ) and 255 )
 
-                    srcc = *cast(uinteger ptr, cast(ubyte ptr, srcptr) + y * src->pitch + x * src->bpp )
+                    srcc = *cast(ulong ptr, cast(ubyte ptr, srcptr) + y * src->pitch + x * src->bpp )
                     sr = ( ( srcc shr 16 ) and 255 )
                     sg = ( ( srcc shr  8 ) and 255 )
                     sb = ( ( srcc        ) and 255 )
@@ -108,13 +108,13 @@ sub AlphaBlit( byval dst as IMAGE ptr, byval src as const IMAGE ptr, byref posit
                         if dst = 0 then
                             dstptr[ (yput * dw ) + xput ] = rgba( sr, sg, sb, sa )
                         else
-                            *cast(uinteger ptr, cast(ubyte ptr, dstptr) + yput * dst->pitch + xput * dst->bpp) = rgba( sr, sg, sb, sa )
+                            *cast(ulong ptr, cast(ubyte ptr, dstptr) + yput * dst->pitch + xput * dst->bpp) = rgba( sr, sg, sb, sa )
                         end if
                     else
                         if dst = 0 then
                             dstptr[ (yput * dw ) + xput ] = rgba( dr, dg, db, da )
                         else
-                            *cast(uinteger ptr, cast(ubyte ptr, dstptr) + yput * dst->pitch + xput * dst->bpp) = rgba( dr, dg, db, da )
+                            *cast(ulong ptr, cast(ubyte ptr, dstptr) + yput * dst->pitch + xput * dst->bpp) = rgba( dr, dg, db, da )
                         end if
                     end if
 

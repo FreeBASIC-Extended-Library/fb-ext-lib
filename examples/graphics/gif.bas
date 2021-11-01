@@ -5,6 +5,7 @@ var ic = 0u
 var fn = command(1)
 var t = command(2)
 if fn = "" then fn = "test.gif"
+print "Loading " + curdir()  + "\" + fn
 if t <> "" then
     var i = ext.gfx.gif.load(fn,ext.gfx.TARGET_FBNEW)
     windowtitle "Press any key to close"
@@ -29,5 +30,9 @@ else
             sleep
         end if
         delete[] i
+    else
+        print "could not load image"
     end if
 end if
+
+sleep

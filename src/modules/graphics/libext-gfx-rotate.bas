@@ -34,8 +34,8 @@ namespace ext.gfx
         static as integer x, mx, y, my, col, dw, dh, xput, yput
         static as single nytc, nyts
         static as ext.math.matrix tmat
-        static as uinteger transcol
-        static as uinteger ptr dstptr, srcptr
+        static as ulong transcol
+        static as ulong ptr dstptr, srcptr
 
         transcol = rgba(255,0,255,0)
 
@@ -86,7 +86,7 @@ namespace ext.gfx
 
                         if mx>-1 and my>-1 and mx<src->width and my<src->height then
 
-                            col = *cast(uinteger ptr, cast(ubyte ptr, srcptr) + my * src->pitch + mx * src->bpp )
+                            col = *cast(ulong ptr, cast(ubyte ptr, srcptr) + my * src->pitch + mx * src->bpp )
                         else
                             col = transcol
                         end if
@@ -96,7 +96,7 @@ namespace ext.gfx
                                 dstptr[ (yput * dw ) + xput ] = col
                             end if
                         else
-                            *cast(uinteger ptr, cast(ubyte ptr, dstptr) + yput * dst->pitch + xput * dst->bpp) = col
+                            *cast(ulong ptr, cast(ubyte ptr, dstptr) + yput * dst->pitch + xput * dst->bpp) = col
                         end if
 
                     end if

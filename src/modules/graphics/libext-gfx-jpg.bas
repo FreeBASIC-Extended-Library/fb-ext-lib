@@ -24,6 +24,35 @@
 #include once "ext/graphics/image.bi"
 #include once "ext/graphics/jpg.bi"
 #include once "ext/file/file.bi"
+
+#ifndef NO_HACKS
+#Include Once "crt.bi"
+
+Extern "C"
+
+Declare Function __acrt_iob_func (ByVal index As ULong) As FILE Ptr
+
+Function __acrt_iob_func(ByVal index As ULong) As FILE Ptr
+   Return @(__iob_func()[index])
+End Function
+
+Declare Function __imp___acrt_iob_func (ByVal index As ULong) As FILE Ptr
+
+Function __imp___acrt_iob_func(ByVal index As ULong) As FILE Ptr
+   Return @(__iob_func()[index])
+End Function
+
+End Extern
+
+#Undef stdin
+#Undef stdout
+#Undef stderr
+
+#Define stdin (__acrt_iob_func(STDIN_FILENO_))
+#Define stdout (__acrt_iob_func(STDOUT_FILENO))
+#define stderr (__acrt_iob_func(STDERR_FILENO))
+#endif
+
 #define __JPEGLIB_VER__  6
 #include once "jpeglib.bi"
 

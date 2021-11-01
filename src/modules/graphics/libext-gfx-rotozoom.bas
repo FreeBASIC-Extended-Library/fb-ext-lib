@@ -32,9 +32,9 @@ namespace ext.gfx
         static as single nxtc, nxts, nytc, nyts
         static as integer sw2, sh2, dw, dh
         static as single tc,ts
-        static as uinteger ptr dstptr, srcptr
+        static as ulong ptr dstptr, srcptr
         static as integer xput, yput, startx, endx, starty, endy
-        static as uinteger transcol
+        static as ulong transcol
         static as integer x(3), y(3), xa, xb, ya, yb
 
         if zoomx <= 0 or zoomy <= 0 then exit sub
@@ -132,7 +132,7 @@ namespace ext.gfx
                         my = (nytc + nxts) + sh2
 
                         if mx>-1 and my>-1 and mx<src->width and my<src->height then
-                            col = *cast(uinteger ptr, cast(ubyte ptr, srcptr) + my * src->pitch + mx * src->bpp )
+                            col = *cast(ulong ptr, cast(ubyte ptr, srcptr) + my * src->pitch + mx * src->bpp )
                         else
                             col = transcol
                         end if
@@ -142,7 +142,7 @@ namespace ext.gfx
                                 dstptr[ (yput * dw ) + xput ] = col
                             end if
                         else
-                            *cast(uinteger ptr, cast(ubyte ptr, dstptr) + yput * dst->pitch + xput * dst->bpp) = col
+                            *cast(ulong ptr, cast(ubyte ptr, dstptr) + yput * dst->pitch + xput * dst->bpp) = col
                         end if
 
                     end if

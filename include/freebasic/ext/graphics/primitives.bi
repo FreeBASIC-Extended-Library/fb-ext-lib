@@ -33,7 +33,7 @@ namespace ext.gfx
     ''See Also:
     ''<Drawing a Triangle>
     ''
-    declare sub Triangle overload ( byval dst as Image ptr = 0, byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval x3 as integer, byval y3 as integer, byval col as uinteger = rgba(255,255,255,255) )
+    declare sub Triangle overload ( byval dst as Image ptr = 0, byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval x3 as integer, byval y3 as integer, byval col as ulong = rgba(255,255,255,255) )
 
 
     ''Sub: Triangle
@@ -51,7 +51,7 @@ namespace ext.gfx
     ''
     ''<vector2d>
     ''
-    declare sub Triangle( byval dst as Image ptr = 0, byref p1 as ext.math.vec2i, byref p2 as ext.math.vec2i, byref p3 as ext.math.vec2i, byval col as uinteger = rgba(255,255,255,255) )
+    declare sub Triangle( byval dst as Image ptr = 0, byref p1 as ext.math.vec2i, byref p2 as ext.math.vec2i, byref p3 as ext.math.vec2i, byval col as ulong = rgba(255,255,255,255) )
 
     ''Example: Drawing a Triangle
     ''(begin code)
@@ -106,9 +106,9 @@ namespace ext.gfx
     ''(end code)
     ''
 
-    declare sub TriangleASM overload ( byval dst as Image ptr = 0, byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval x3 as integer, byval y3 as integer, byval col as uinteger = rgba(255,255,255,255) )
+    declare sub TriangleASM overload ( byval dst as Image ptr = 0, byval x1 as integer, byval y1 as integer, byval x2 as integer, byval y2 as integer, byval x3 as integer, byval y3 as integer, byval col as ulong = rgba(255,255,255,255) )
 
-    declare sub TriangleASM( byval dst as Image ptr = 0, byref p1 as ext.math.vec2i, byref p2 as ext.math.vec2i, byref p3 as ext.math.vec2i, byval col as uinteger = rgba(255,255,255,255) )
+    declare sub TriangleASM( byval dst as Image ptr = 0, byref p1 as ext.math.vec2i, byref p2 as ext.math.vec2i, byref p3 as ext.math.vec2i, byval col as ulong = rgba(255,255,255,255) )
 
 end namespace 'ext.gfx
 

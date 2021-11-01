@@ -27,7 +27,7 @@
 namespace ext.gfx
 
         union _color_t
-        as uinteger colour 'color value
+        as ulong colour 'color value
         type
                 as ubyte b 'color blue  component
                 as ubyte g 'color green component
@@ -50,18 +50,18 @@ namespace ext.gfx
                 var ret = ret_img->Pixels
                 dim luma as _color_t
 
-                for y as uinteger = 0 to img->height
-                        for x as uinteger = 0 to img->width
-                                luma.colour = *cast( uinteger ptr, cast( ubyte ptr, src ) + y * img->pitch + x * img->bpp )
+                for y as ulong = 0 to img->height
+                        for x as ulong = 0 to img->width
+                                luma.colour = *cast( ulong ptr, cast( ubyte ptr, src ) + y * img->pitch + x * img->bpp )
                                 if skip_trans = true and luma.r = 255 and luma.g = 0 and luma.b = 255 then
-                                        *cast( uinteger ptr, cast( ubyte ptr, ret ) + y * img->pitch + x * img->bpp ) = luma.colour
+                                        *cast( ulong ptr, cast( ubyte ptr, ret ) + y * img->pitch + x * img->bpp ) = luma.colour
                                 else
                                         'TRAAAAAANSFORM!!!!!
                                         var tmp = cubyte((luma.r * red_m) + _
                                                          (luma.g * gre_m) + _
                                                          (luma.b * blu_m))
                                         luma.r = tmp : luma.g = tmp : luma.b = tmp
-                                        *cast( uinteger ptr, cast( ubyte ptr, ret ) + y * img->pitch + x * img->bpp ) = luma.colour
+                                        *cast( ulong ptr, cast( ubyte ptr, ret ) + y * img->pitch + x * img->bpp ) = luma.colour
                                 end if
                         next x
                 next y
@@ -69,7 +69,7 @@ namespace ext.gfx
 
         end function
 
-function gradient( byval from_c as uinteger, byval to_c as uinteger, byval w as uinteger = 0, byval h as uinteger = 0 ) as Image ptr
+function gradient( byval from_c as ulong, byval to_c as ulong, byval w as ulong = 0, byval h as ulong = 0 ) as Image ptr
 
     dim as Image ptr ret
     if w <> 0 then
@@ -116,7 +116,7 @@ function gradient( byval from_c as uinteger, byval to_c as uinteger, byval w as 
 end function
 
 
-        sub changeColor ( byref img as IMAGE ptr, byval from_ as uinteger, byval to_ as uinteger, byval include_alpha as ext.bool = ext.bool.false, byval is_font as ext.bool = ext.bool.false )
+        sub changeColor ( byref img as IMAGE ptr, byval from_ as ulong, byval to_ as ulong, byval include_alpha as ext.bool = ext.bool.false, byval is_font as ext.bool = ext.bool.false )
 
                 if img = ext.null then exit sub
                 if img->bpp < 4 then exit sub 'this procedure only operates on 24 & 32 bit bitmaps
@@ -125,16 +125,16 @@ end function
                 var height_ = img->height
                 var len_data = pitch_ * height_
                 var pixelptr = img->Pixels
-                dim start_data as uinteger = 0
+                dim start_data as ulong = 0
 
                 if (is_font = ext.bool.true) then
                         start_data = pitch_
 
                 end if
 
-                for n as uinteger = start_data to len_data -1
+                for n as ulong = start_data to len_data -1
 
-                        var cur_color = cuint(0)
+                        var cur_color = culng(0)
                         if include_alpha = ext.bool.true then
                                 cur_color = pixelptr[n]
 
@@ -172,7 +172,7 @@ end function
                 p1 = cptr( ubyte ptr, img->Pixels ) + ((img->height - 1) * img->pitch)
                 p2 = cptr( ubyte ptr, temp_img->Pixels )
 
-                for y as integer = 0 to img->height - 1
+                for y as ulong = 0 to img->height - 1
                         memcpy( p2, p1, img->pitch )
                         p1 -= img->pitch
                         p2 += img->pitch
@@ -187,10 +187,10 @@ end function
 
                 var temp_img = new image( src->width, src->height )
 
-                for d as integer = 0 to src->bpp - 1
-                        for y as integer = 0 to src->height - 1
+                for d as ulong = 0 to src->bpp - 1
+                        for y as ulong = 0 to src->height - 1
                                 var dx = 0
-                                for x as integer = src->width - 1 to 0 step -1
+                                for x as ulong = src->width - 1 to 0 step -1
                                         pset temp_img->m_img, (dx, y), point(x,y,src->m_img)
                                         dx += 1
                                 next x

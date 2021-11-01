@@ -30,8 +30,8 @@ sub Blur( byref dst as IMAGE ptr, byref src as const IMAGE ptr, byref blur_level
 
     if ( dst = null ) OR ( src = null ) then exit sub
 
-    dim as uinteger ptr srcptr = src->Pixels
-    dim as uinteger ptr dstptr = dst->Pixels
+    dim as ulong ptr srcptr = src->Pixels
+    dim as ulong ptr dstptr = dst->Pixels
 
     static as integer xstart, xend, ystart, yend, hits, r, g, b, c
 
@@ -43,9 +43,9 @@ sub Blur( byref dst as IMAGE ptr, byref src as const IMAGE ptr, byref blur_level
 
     end if
 
-    for y as integer = 0 to dst->height - 1
+    for y as ulong = 0 to dst->height - 1
 
-        for x as integer = 0 to dst->width - 1
+        for x as ulong = 0 to dst->width - 1
 
             xstart = x - blur_level
             xend = x + blur_level
@@ -81,7 +81,7 @@ sub Blur( byref dst as IMAGE ptr, byref src as const IMAGE ptr, byref blur_level
 
                     hits += 1
 
-                    c = *cast( uinteger ptr, cast( ubyte ptr, srcptr ) + y2 * src->pitch + x2 * src->bpp )
+                    c = *cast( ulong ptr, cast( ubyte ptr, srcptr ) + y2 * src->pitch + x2 * src->bpp )
 
                     r += ( c shr 16 ) and &hFF
                     g += ( c shr  8 ) and &hFF
@@ -95,7 +95,7 @@ sub Blur( byref dst as IMAGE ptr, byref src as const IMAGE ptr, byref blur_level
             g \= hits
             b \= hits
 
-            *cast( uinteger ptr, cast( ubyte ptr, dstptr ) + y * dst->pitch + x * dst->bpp ) = rgb( r, g, b )
+            *cast( ulong ptr, cast( ubyte ptr, dstptr ) + y * dst->pitch + x * dst->bpp ) = rgb( r, g, b )
 
         next
 

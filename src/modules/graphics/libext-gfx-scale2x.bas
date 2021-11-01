@@ -27,12 +27,12 @@ namespace ext.gfx
 
 sub Scale2X( byref dst as image ptr = 0, byref src as const image ptr, byref positx as integer, byref posity as integer )
 
-    dim as uinteger ptr srcptr = src->Pixels
+    dim as ulong ptr srcptr = src->Pixels
 
-    static as uinteger ptr dstptr
+    static as ulong ptr dstptr
 
     static as integer x2, y2, b, d, e, f, h, e0, e1, e2, e3, dw, dh
-    static as uinteger transcol
+    static as ulong transcol
 
     if dst = 0 then
         dstptr = screenptr
@@ -54,27 +54,27 @@ sub Scale2X( byref dst as image ptr = 0, byref src as const image ptr, byref pos
             y2 = (y * 2) + posity
 
             if y>0 then
-                b = *cast(uinteger ptr, cast(ubyte ptr, srcptr) + (y-1) * src->pitch + (x) * src->bpp)
+                b = *cast(ulong ptr, cast(ubyte ptr, srcptr) + (y-1) * src->pitch + (x) * src->bpp)
             else
                 b = 0
             end if
 
             if x>0 then
-                d = *cast(uinteger ptr, cast(ubyte ptr, srcptr) + (y) * src->pitch + (x-1) * src->bpp)
+                d = *cast(ulong ptr, cast(ubyte ptr, srcptr) + (y) * src->pitch + (x-1) * src->bpp)
             else
                 d = 0
             end if
 
-            e = *cast(uinteger ptr, cast(ubyte ptr, srcptr) + (y) * src->pitch + (x) * src->bpp)
+            e = *cast(ulong ptr, cast(ubyte ptr, srcptr) + (y) * src->pitch + (x) * src->bpp)
 
             if x<src->width-1 then
-                f = *cast(uinteger ptr, cast(ubyte ptr, srcptr) + (y) * src->pitch + (x+1) * src->bpp)
+                f = *cast(ulong ptr, cast(ubyte ptr, srcptr) + (y) * src->pitch + (x+1) * src->bpp)
             else
                 f = 0
             end if
 
             if y<src->height-1 then
-                h = *cast(uinteger ptr, cast(ubyte ptr, srcptr) + (y+1) * src->pitch + (x) * src->bpp)
+                h = *cast(ulong ptr, cast(ubyte ptr, srcptr) + (y+1) * src->pitch + (x) * src->bpp)
             else
                 h = 0
             end if
@@ -146,19 +146,19 @@ sub Scale2X( byref dst as image ptr = 0, byref src as const image ptr, byref pos
             else
 
                 if x2<dst->width and y2<dst->height then
-                    *cast(uinteger ptr, cast(ubyte ptr, dstptr) + (y2) * dst->pitch + (x2) * dst->bpp) = e0
+                    *cast(ulong ptr, cast(ubyte ptr, dstptr) + (y2) * dst->pitch + (x2) * dst->bpp) = e0
                 end if
 
                 if x2<dst->width-1 and y2<dst->height then
-                    *cast(uinteger ptr, cast(ubyte ptr, dstptr) + (y2) * dst->pitch + (x2+1) * dst->bpp) = e1
+                    *cast(ulong ptr, cast(ubyte ptr, dstptr) + (y2) * dst->pitch + (x2+1) * dst->bpp) = e1
                 end if
 
                 if x2<dst->width and y2<dst->height-1 then
-                    *cast(uinteger ptr, cast(ubyte ptr, dstptr) + (y2+1) * dst->pitch + (x2) * dst->bpp) = e2
+                    *cast(ulong ptr, cast(ubyte ptr, dstptr) + (y2+1) * dst->pitch + (x2) * dst->bpp) = e2
                 end if
 
                 if x2<dst->width-1 and y2<dst->height-1 then
-                    *cast(uinteger ptr, cast(ubyte ptr, dstptr) + (y2+1) * dst->pitch + (x2+1) * dst->bpp) = e3
+                    *cast(ulong ptr, cast(ubyte ptr, dstptr) + (y2+1) * dst->pitch + (x2+1) * dst->bpp) = e3
                 end if
 
             end if

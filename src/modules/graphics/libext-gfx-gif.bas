@@ -27,6 +27,15 @@
 #define __GIFLIB_VER__ 4 'we're using v4 api because that's what .24 supported
 #include once "gif_lib.bi"
 
+#ifndef __FB_FIXED_GIFLIB__
+#undef DGifOpenFileName
+#undef DGifOpen
+extern "C"
+    declare function DGifOpenFileName(byval GifFileName as const zstring ptr, byval err_c as long ptr) as GifFileType ptr
+    declare function DGifOpen(byval userPtr as any ptr, byval readFunc as InputFunc, byval err_c as long ptr) as GifFileType ptr
+end extern
+#endif
+
 namespace ext.gfx.gif
 
 private function loadFrame( byval tgif as GifFileType ptr, byval fn as uinteger ) as ext.gfx.Image ptr
@@ -60,13 +69,24 @@ end function
 
 function load( byref fn as ext.File, byval t as target_e ) as ext.gfx.Image ptr
 
-    if fn.open() = true then return null
+    if fn.open() = true then 
+        'print "1 didn't open file"
+        return null
+    end if
 
-    var tgif = DGifOpen(@fn,@gif_input_func)
+    dim as long dgif_error
+    var tgif = DGifOpen(@fn,@gif_input_func, @dgif_error)
 
-    if tgif = 0 then return null
+    if tgif = 0 then 
+        'print "1 tgif is 0, error is: ", *(GifErrorString())
+        return null
+    end if
 
-    if DGifSlurp( tgif ) <> GIF_OK then return null
+    var slurp_ret = DGifSlurp( tgif )
+    if slurp_ret <> GIF_OK then 
+        'print "1 slurp_ret is: ", slurp_ret
+        return null
+    end if
 
     fn.close()
 
@@ -76,10 +96,21 @@ end function
 
 function loadAll( byref fn as const string, byref num_img as uinteger ) as ext.gfx.Image ptr ptr
 
-    var tgif = DGifOpenFilename(fn)
-    if tgif = 0 then return null
+    dim as long dgif_error
+    var tgif = DGifOpenFilename(fn, @dgif_error)
+    
+    if tgif = 0 then 
+        'print "2 tgif is 0, error is: ", *(GifErrorString())
+        return null
+    end if
+    
+    var slurp_ret = DGifSlurp( tgif )
+    
+    if slurp_ret <> GIF_OK then 
+        'print "2 slurp_ret is: ", slurp_ret
+        return null
 
-    if DGifSlurp( tgif ) <> GIF_OK then return null
+    end if
 
     num_img = tgif->ImageCount
     var ret = new ext.gfx.Image ptr[num_img]

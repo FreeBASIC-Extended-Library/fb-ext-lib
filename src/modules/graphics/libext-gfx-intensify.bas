@@ -29,8 +29,8 @@ sub Intensify( byval dst as IMAGE ptr, byval src as const IMAGE ptr, byref posit
 
     if src = null then exit sub
 
-    static as uinteger ptr dstptr, srcptr
-    static as uinteger transcol = RGBA(255,0,255,0)
+    static as ulong ptr dstptr, srcptr
+    static as ulong transcol = RGBA(255,0,255,0)
     static as integer srcc
     dim as integer iwidth = src->width
     dim as integer iheight= src->height
@@ -58,7 +58,7 @@ sub Intensify( byval dst as IMAGE ptr, byval src as const IMAGE ptr, byref posit
 
                 if xput>-1 and xput<dw then
 
-                    srcc = *cast(uinteger ptr, cast(ubyte ptr, srcptr) + y * src->pitch + x * src->bpp )
+                    srcc = *cast(ulong ptr, cast(ubyte ptr, srcptr) + y * src->pitch + x * src->bpp )
 
                     sr = ( ( srcc shr 16 ) and 255 )
                     sg = ( ( srcc shr  8 ) and 255 )
@@ -90,7 +90,7 @@ sub Intensify( byval dst as IMAGE ptr, byval src as const IMAGE ptr, byref posit
                         if dst = 0 then
                             dstptr[ (yput * dw ) + xput ] = rgba( sr, sg, sb, sa )
                         else
-                            *cast(uinteger ptr, cast(ubyte ptr, dstptr) + yput * dst->pitch + xput * dst->bpp) = rgba( sr, sg, sb, sa )
+                            *cast(ulong ptr, cast(ubyte ptr, dstptr) + yput * dst->pitch + xput * dst->bpp) = rgba( sr, sg, sb, sa )
                         end if
                     end if
 
