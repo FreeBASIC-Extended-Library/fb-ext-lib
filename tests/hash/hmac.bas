@@ -8,21 +8,17 @@ const HMAC_TEST_STRING = "The quick brown fox jumps over the lazy dog"
 private sub test_hmacmd5
 
     var empty = lcase(ext.hashes.hmac.md5("",""))
-    var test = lcase(ext.hashes.hmac.md5("key",HMAC_TEST_STRING))
+    var test = lcase(ext.hashes.hmac.md5("key", HMAC_TEST_STRING))
 
     EXT_ASSERT_TRUE("74e6f7298a9c2d168935f58c001bad88" = empty)
     EXT_ASSERT_TRUE("80070713463e7749b90c2dc24911e275" = test)
-
-    ?
-    ? empty
-    ? test
 
 end sub
 
 private sub test_hmacsha256
 
     var empty = lcase(ext.hashes.hmac.sha256("",""))
-    var test = lcase(ext.hashes.hmac.sha256("key",HMAC_TEST_STRING))
+    var test = lcase(ext.hashes.hmac.sha256("key", HMAC_TEST_STRING))
 
     ?
     ? empty

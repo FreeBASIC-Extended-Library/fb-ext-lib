@@ -33,7 +33,7 @@ namespace ext.hashes.hmac
         return ret
     end function
 
-    const BLOCK_SIZE = 64u
+    const BLOCK_SIZE = 64ul
 
     private function dohmac( byval c as function(byval as any ptr, byval as uinteger) as string, byref key as const string, byref msg as const string ) as string
 
@@ -48,7 +48,7 @@ namespace ext.hashes.hmac
 
         var p1 = ikpad & msg
         var p2 = c(@(p1[0]),len(p1))
-        dim p2l as uinteger = int(len(p2)/2)
+        dim p2l as ulong = int(len(p2)/2)
         var p25 = new ubyte[p2l+1]
         var cnt = 0u
         for n as uinteger = 0 to len(p2)-2 step 2
@@ -59,8 +59,8 @@ namespace ext.hashes.hmac
             end if
         next
         p25[p2l] = 0
-        var p35l = BLOCK_SIZE+p2l
-        var p35 = new ubyte[p35l+1]
+        var p35l = BLOCK_SIZE + p2l
+        var p35 = new ubyte[p35l + 1]
         for n as uinteger = 0 to BLOCK_SIZE-1
             p35[n] = okpad[n]
         next
@@ -70,7 +70,7 @@ namespace ext.hashes.hmac
             cnt += 1
         next
         p35[p35l] = 0
-        var ret = lcase(c(p35,p35l))
+        var ret = lcase(c(p35, p35l))
         delete[] p35
         delete[] p25
         return ret
@@ -82,7 +82,7 @@ namespace ext.hashes.hmac
     end function
 
     function callsha2( byval m as any ptr, byval l as uinteger ) as string
-        return ext.hashes.sha2(m,l)
+        return ext.hashes.sha2(m, l, ext.hashes.SHA256)
     end function
 
     function sha256 ( byref key as const string, byref msg as const string ) as string

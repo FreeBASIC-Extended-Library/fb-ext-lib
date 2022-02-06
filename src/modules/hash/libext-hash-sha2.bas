@@ -30,14 +30,14 @@
 namespace ext.hashes
 
 
-function sha2 overload ( byref x as string, byval keylen as uinteger = 256 ) as string
+function sha2 overload ( byref x as string, byval keylen as sha2_keylen = SHA256 ) as string
 
     return sha2(@(x[0]),len(x),keylen)
 
 end function
 
 '':::
-function sha2 ( byref x as ext.File, byval keylen as uinteger = 256, byval blocksize as uinteger = 1048576 ) as string
+function sha2 ( byref x as ext.File, byval keylen as sha2_keylen = SHA256, byval blocksize as uinteger = 1048576 ) as string
 
     if x.open() = true then return "Checksum could not be calculated, error opening file for reading. Error: " & str(x.LastError) & " - " & GetErrorText(x.LastError)
 
@@ -67,13 +67,13 @@ function sha2 ( byref x as ext.File, byval keylen as uinteger = 256, byval block
 
 
     select case keylen
-    case 224
+    case SHA224
         sha224_init(st)
-    case 256
+    case SHA256
         sha256_init(st)
-    case 384
+    case SHA384
         sha384_init(st)
-    case 512
+    case SHA512
         sha512_init(st)
     end select
 
@@ -86,13 +86,13 @@ function sha2 ( byref x as ext.File, byval keylen as uinteger = 256, byval block
         x.get( , *buffer, read_size )
 
         select case keylen
-        case 224
+        case SHA224
             sha224_update( st, buffer, read_size )
-        case 256
+        case SHA256
             sha256_update( st, buffer, read_size )
-        case 384
+        case SHA384
             sha384_update( st, buffer, read_size )
-        case 512
+        case SHA512
             sha512_update( st, buffer, read_size )
         end select
 
@@ -109,13 +109,13 @@ function sha2 ( byref x as ext.File, byval keylen as uinteger = 256, byval block
         x.get(, *buffer, left_in_file )
 
         select case keylen
-        case 224
+        case SHA224
             sha224_update( st, buffer, left_in_file )
-        case 256
+        case SHA256
             sha256_update( st, buffer, left_in_file )
-        case 384
+        case SHA384
             sha384_update( st, buffer, left_in_file )
-        case 512
+        case SHA512
             sha512_update( st, buffer, left_in_file )
         end select
 
@@ -128,24 +128,24 @@ function sha2 ( byref x as ext.File, byval keylen as uinteger = 256, byval block
     var retstr = ""
 
     select case keylen
-    case 224
+    case SHA224
         retstr = space(SHA224_DIGEST_SIZE)
-    case 256
+    case SHA256
         retstr = space(SHA256_DIGEST_SIZE)
-    case 384
+    case SHA384
         retstr = space(SHA384_DIGEST_SIZE)
-    case 512
+    case SHA512
         retstr = space(SHA512_DIGEST_SIZE)
     end select
 
     select case keylen
-    case 224
+    case SHA224
         sha224_final( st, retstr )
-    case 256
+    case SHA256
         sha256_final( st, retstr )
-    case 384
+    case SHA384
         sha384_final( st, retstr )
-    case 512
+    case SHA512
         sha512_final( st, retstr )
     end select
 
@@ -172,7 +172,7 @@ function sha2 ( byref x as ext.File, byval keylen as uinteger = 256, byval block
 end function
 
 '':::
-function sha2 ( byval x as any ptr, byval nbytes as uinteger, byval keylen as uinteger = 256 ) as string
+function sha2 ( byval x as any ptr, byval nbytes as uinteger, byval keylen as sha2_keylen = SHA256 ) as string
 
     if keylen <> 224 AND keylen <> 256 AND keylen <> 384 AND keylen <> 512 then return "Invalid key length"
 
@@ -189,48 +189,48 @@ function sha2 ( byval x as any ptr, byval nbytes as uinteger, byval keylen as ui
     end if
 
     select case keylen
-    case 224
+    case SHA224
         sha224_init(st)
-    case 256
+    case SHA256
         sha256_init(st)
-    case 384
+    case SHA384
         sha384_init(st)
-    case 512
+    case SHA512
         sha512_init(st)
     end select
 
     select case keylen
-    case 224
+    case SHA224
         sha224_update( st, cast( ubyte ptr, x ), nbytes )
-    case 256
+    case SHA256
         sha256_update( st, cast( ubyte ptr, x ), nbytes )
-    case 384
+    case SHA384
         sha384_update( st, cast( ubyte ptr, x ), nbytes )
-    case 512
+    case SHA512
         sha512_update( st, cast( ubyte ptr, x ), nbytes )
     end select
 
     var retstr = ""
 
     select case keylen
-    case 224
+    case SHA224
         retstr = space(SHA224_DIGEST_SIZE)
-    case 256
+    case SHA256
         retstr = space(SHA256_DIGEST_SIZE)
-    case 384
+    case SHA384
         retstr = space(SHA384_DIGEST_SIZE)
-    case 512
+    case SHA512
         retstr = space(SHA512_DIGEST_SIZE)
     end select
 
     select case keylen
-    case 224
+    case SHA224
         sha224_final( st, retstr )
-    case 256
+    case SHA256
         sha256_final( st, retstr )
-    case 384
+    case SHA384
         sha384_final( st, retstr )
-    case 512
+    case SHA512
         sha512_final( st, retstr )
     end select
 
@@ -286,10 +286,10 @@ end function
 
 #macro PACK32(_str, x)
 
-    *(x) =   cast(uinteger, *((_str) + 3)      ) _
-           OR cast(uinteger, *((_str) + 2) shl  8)  _
-           OR cast(uinteger, *((_str) + 1) shl 16)   _
-           OR cast(uinteger, *((_str) + 0) shl 24)
+    *(x) =   cast(ulong, *((_str) + 3)      ) _
+           OR cast(ulong, *((_str) + 2) shl  8)  _
+           OR cast(ulong, *((_str) + 1) shl 16)   _
+           OR cast(ulong, *((_str) + 0) shl 24)
 #endmacro
 
 #macro UNPACK64(x, _str)
@@ -348,11 +348,11 @@ end function
     wv(h) = t1 + t2
 #endmacro
 
-dim shared sha224_h0(8) as uinteger => _
+dim shared sha224_h0(8) as ulong => _
             {&hc1059ed8, &h367cd507, &h3070dd17, &hf70e5939, _
              &hffc00b31, &h68581511, &h64f98fa7, &hbefa4fa4}
 
-dim shared sha256_h0(8) as uinteger => _
+dim shared sha256_h0(8) as ulong => _
             {&h6a09e667, &hbb67ae85, &h3c6ef372, &ha54ff53a, _
              &h510e527f, &h9b05688c, &h1f83d9ab, &h5be0cd19}
 
@@ -368,7 +368,7 @@ dim shared sha512_h0(8) as ulongint => _
              &h510e527fade682d1ULL, &h9b05688c2b3e6c1fULL, _
              &h1f83d9abfb41bd6bULL, &h5be0cd19137e2179ULL}
 
-dim shared sha256_k(64) as uinteger => _
+dim shared sha256_k(64) as ulong => _
             {&h428a2f98, &h71374491, &hb5c0fbcf, &he9b5dba5, _
              &h3956c25b, &h59f111f1, &h923f82a4, &hab1c5ed5, _
              &hd807aa98, &h12835b01, &h243185be, &h550c7dc3, _
@@ -431,9 +431,9 @@ dim shared sha512_k(80) as ulongint= _
 private sub sha256_transf( byval ctx as sha256_ctx ptr, byval message as const ubyte ptr, _
                             byval block_nb as uinteger )
 
-    dim as uinteger w(64)
-    dim as uinteger wv(8)
-    dim as uinteger t1, t2
+    dim as ulong w(64)
+    dim as ulong wv(8)
+    dim as ulong t1, t2
     dim sub_block as const ubyte ptr
 
     for i as integer = 0 to block_nb -1
