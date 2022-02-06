@@ -27,14 +27,14 @@
 namespace ext.hashes
 
     '' :::::
-    function joaat ( byref xStr as const string ) as uinteger
+    function joaat ( byref xStr as const string ) as ulong
 
         return joaat( cast(zstring ptr,strptr(xStr)), len(xStr) )
 
     end function
 
     '' :::::
-    function joaat ( byval src__ as const any ptr, byval len_b as uinteger, byval seed as uinteger = 0 ) as uinteger
+    function joaat ( byval src__ as const any ptr, byval len_b as uinteger, byval seed as ulong = 0 ) as ulong
 
         if (src__ = NULL) or (len_b < 1) then return 0
 

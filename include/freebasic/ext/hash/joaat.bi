@@ -25,7 +25,7 @@ namespace ext.hashes
     ''Returns:
     ''uinteger containing the hash.
     ''
-    declare function joaat overload ( byref xStr as const string ) as uinteger
+    declare function joaat overload ( byref xStr as const string ) as ulong
 
     ''Function: joaat
     ''Calculates the Jenkins One At A Time hash of a memory buffer.
@@ -38,7 +38,7 @@ namespace ext.hashes
     ''Returns:
     ''uinteger containing the hash.
     ''
-    declare function joaat ( byval src as const any ptr, byval len_b as uinteger, byval seed as uinteger = 0 ) as uinteger
+    declare function joaat ( byval src as const any ptr, byval len_b as uinteger, byval seed as ulong = 0 ) as ulong
 
     ''Function: joaat64
     ''Calculates the 64 bit Jenkins One At A Time hash of a string.
