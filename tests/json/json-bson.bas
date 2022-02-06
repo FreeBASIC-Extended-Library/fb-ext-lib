@@ -3,11 +3,11 @@
 
 namespace ext.tests.json_bson
 
-private sub test_bson2json
+    private sub test_bson2json
 
         dim j as ext.json.JSONobject
         j.addChild("hello",new ext.json.JSONvalue("world"))
-        var bson_len = 0u
+        var bson_len = 0ul
         var bson = j.toBSON(bson_len)
 
         dim b as ext.json.JSONobject
@@ -16,7 +16,7 @@ private sub test_bson2json
         delete[] bson
 
         var s = b.child("hello")->getString()
-
+        
         EXT_ASSERT_TRUE("world" = s)
         EXT_ASSERT_TRUE(1 = b.children())
 
@@ -28,7 +28,7 @@ private sub test_bson2json
 
         j.addChild("hello",new ext.json.JSONvalue("world"))
 
-        var bson_len = 0u
+        var bson_len = 0ul
         var bson = j.toBSON(bson_len)
 
         EXT_ASSERT_TRUE(&h16 = bson_len)
@@ -44,7 +44,7 @@ private sub test_bson2json
         dim j as ext.json.JSONobject
         j.loadString(test_str)
 
-        var bson_len = 0u
+        var bson_len = 0ul
         var bson = j.toBSON(bson_len)
 
         dim b as ext.json.JSONobject
@@ -69,7 +69,7 @@ private sub test_bson2json
         dim j as ext.json.JSONobject
         j.loadString(test_str)
 
-        var bson_len = 0u
+        var bson_len = 0ul
         var bson = j.toBSON(bson_len)
 
         dim b as ext.json.JSONobject

@@ -46,12 +46,12 @@ function get_ename( byval bson as const ubyte ptr, byref i as uinteger ) as stri
     return tmp_k
 end function
 
-sub JSONobject.fromBSON( byval bson as const ubyte ptr, byval plen as uinteger )
+sub JSONobject.fromBSON( byval bson as const ubyte ptr, byval plen as ulong )
 
 var index = 4u
 dim as ubyte cur_obj = 0
 
-var blen = *(cast(const uinteger ptr, bson))
+var blen = *(cast(const ulong ptr, bson))
 
 assert(blen = plen)
 
@@ -78,7 +78,7 @@ while index < plen
 
     case &h03: '"\x03" e_name document  Embedded document
         var tmp_k = get_ename(bson,index)
-        var dlen = *(cast(const uinteger ptr,@(bson[index])))
+        var dlen = *(cast(const ulong ptr,@(bson[index])))
         var edoc = new JSONobject
         edoc->fromBSON(@(bson[index]),dlen)
         index += dlen
@@ -87,7 +87,7 @@ while index < plen
 
     case &h04: '"\x04" e_name document  Array
         var tmp_k = get_ename(bson,index)
-        var dlen = *(cast(const uinteger ptr,@(bson[index])))
+        var dlen = *(cast(const ulong ptr,@(bson[index])))
         var edoc = new JSONobject
         edoc->fromBSON(@(bson[index]),dlen)
         index += dlen
@@ -101,7 +101,7 @@ while index < plen
 
     case &h05: '"\x05" e_name binary    Binary data
         var tmp_k = get_ename(bson,index)
-        var blen = *(cast(const uinteger ptr,@(bson[index])))
+        var blen = *(cast(const ulong ptr,@(bson[index])))
         index += 4
         var subtype = bson[index]
         index += 1
@@ -188,14 +188,14 @@ while index < plen
 
     case &h0f: '"\x0F" e_name code_w_s  JavaScript code w/ scope
         var tmp_k = get_ename(bson,index)
-        var dlen = *(cast(const uinteger ptr,@(bson[index])))
+        var dlen = *(cast(const ulong ptr,@(bson[index])))
         index += dlen
         cur_obj = 0
         this.addChild(tmp_k,new JSONvalue("Not Implemented"))
 
     case &h10: '"\x10" e_name int32     32-bit Integer
         var tmp_k = get_ename(bson,index)
-        var tmp_v = *(cast(const integer ptr,@(bson[index])))
+        var tmp_v = *(cast(const long ptr,@(bson[index])))
         index += 4
         cur_obj = 0
         this.addChild(tmp_k,new JSONvalue(cdbl(tmp_v)))
@@ -212,17 +212,17 @@ wend
 
 end sub
 
-function JSONobject.toBSON( byref buf_len as uinteger ) as ubyte ptr
+function JSONobject.toBSON( byref buf_len as ulong ) as ubyte ptr
     dim ret as ubyte ptr
     var total_len = 0u
     if m_children = 0 then
-        buf_len = sizeof(uinteger)+1
+        buf_len = sizeof(ulong)+1
         ret = new ubyte[buf_len]
-        *cast(uinteger ptr,ret) = buf_len
+        *cast(ulong ptr,ret) = buf_len
         ret[buf_len-1] = 0
 
     else
-        dim vret_len as uinteger
+        dim vret_len as ulong
         dim vret as ubyte ptr
         for n as uinteger = 0 to m_children -1
             vret = m_child[n]->toBSON(vret_len)
@@ -234,10 +234,10 @@ function JSONobject.toBSON( byref buf_len as uinteger ) as ubyte ptr
             ret = t_ret
             delete[] vret
         next
-        buf_len = total_len + sizeof(uinteger) + 1
+        buf_len = total_len + sizeof(ulong) + 1
         var t_ret = new ubyte[buf_len]
-        *(cast(uinteger ptr, t_ret)) = buf_len
-        memcpy(@(t_ret[sizeof(uinteger)]),ret,total_len)
+        *(cast(ulong ptr, t_ret)) = buf_len
+        memcpy(@(t_ret[sizeof(ulong)]),ret,total_len)
         delete[] ret
         ret = t_ret
         ret[buf_len-1] = 0

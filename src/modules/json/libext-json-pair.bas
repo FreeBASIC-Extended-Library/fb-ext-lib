@@ -34,9 +34,9 @@ constructor JSONpair( byref k as const string, byval v as JSONvalue ptr )
     value = v
 end constructor
 
-function JSONpair.toBSON( byref buf_len as uinteger ) as ubyte ptr
+function JSONpair.toBSON( byref buf_len as ulong ) as ubyte ptr
 
-    var vbuf_len = 0u
+    var vbuf_len = 0ul
     var vbuf = value->toBSON(vbuf_len)
 
     buf_len = vbuf_len + len(key) + 1

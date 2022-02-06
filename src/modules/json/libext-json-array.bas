@@ -25,17 +25,17 @@
 
 namespace ext.json
 
-function JSONarray.toBSON( byref buf_len as uinteger ) as ubyte ptr
+function JSONarray.toBSON( byref buf_len as ulong ) as ubyte ptr
     dim ret as ubyte ptr
     var total_len = 0u
     if m_children = 0 then
-        buf_len = sizeof(uinteger)+1
+        buf_len = sizeof(ulong)+1
         ret = new ubyte[buf_len]
-        *cast(uinteger ptr,ret) = buf_len
+        *cast(ulong ptr,ret) = buf_len
         ret[buf_len-1] = 0
 
     else
-        dim vret_len as uinteger
+        dim vret_len as ulong
         dim vret as ubyte ptr
         for n as uinteger = 0 to m_children -1
             var new_v = new JSONvalue(*m_child[n])
@@ -50,10 +50,10 @@ function JSONarray.toBSON( byref buf_len as uinteger ) as ubyte ptr
             ret = t_ret
             delete[] vret
         next
-        buf_len = total_len + sizeof(uinteger) + 1
+        buf_len = total_len + sizeof(ulong) + 1
         var t_ret = new ubyte[buf_len]
-        *(cast(uinteger ptr, t_ret)) = buf_len
-        memcpy(@(t_ret[sizeof(uinteger)]),ret,total_len)
+        *(cast(ulong ptr, t_ret)) = buf_len
+        memcpy(@(t_ret[sizeof(ulong)]),ret,total_len)
         delete[] ret
         ret = t_ret
         ret[buf_len-1] = 0

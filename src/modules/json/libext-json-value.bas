@@ -25,7 +25,7 @@
 
 namespace ext.json
 
-function JSONvalue.toBSON( byref buf_len as uinteger ) as ubyte ptr
+function JSONvalue.toBSON( byref buf_len as ulong ) as ubyte ptr
 
     dim as ubyte etype
     dim as ubyte ptr ret

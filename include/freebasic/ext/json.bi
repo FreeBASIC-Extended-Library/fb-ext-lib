@@ -109,7 +109,7 @@ namespace ext.json
         ''Returns the JSON string format of this object.
         declare operator cast () as string
 
-        declare function toBSON( byref buf_len as uinteger ) as ubyte ptr
+        declare function toBSON( byref buf_len as ulong ) as ubyte ptr
 
         declare destructor
         private:
@@ -134,7 +134,7 @@ namespace ext.json
         as JSONvalue ptr value
         declare destructor
         declare operator cast () as string
-        declare function toBSON( byref buf_len as uinteger ) as ubyte ptr
+        declare function toBSON( byref buf_len as ulong ) as ubyte ptr
     end type
 
     ''Class: JSONobject
@@ -216,7 +216,7 @@ namespace ext.json
         ''Notes:
         ''The pointer returned must be freed using delete[], all JSON types have this method.
         ''
-        declare function toBSON( byref buf_len as uinteger ) as ubyte ptr
+        declare function toBSON( byref buf_len as ulong ) as ubyte ptr
 
         ''Sub: fromBSON
         ''Convert a BSON object to a JSON object.
@@ -240,7 +240,7 @@ namespace ext.json
         ''all other number types - double
         ''all other types - string
         ''
-        declare sub fromBSON( byval bson as const ubyte ptr, byval plen as uinteger )
+        declare sub fromBSON( byval bson as const ubyte ptr, byval plen as ulong )
 
         private:
         m_child as JSONpair ptr ptr
@@ -299,7 +299,7 @@ namespace ext.json
         ''Returns the JSON string value of the array and it's contents.
         declare operator cast () as string
 
-        declare function toBSON( byref buf_len as uinteger ) as ubyte ptr
+        declare function toBSON( byref buf_len as ulong ) as ubyte ptr
 
         declare destructor
         private:
