@@ -15,8 +15,8 @@ using ext.gfx
 
 const as integer scrX = 320, scrY = 240
 screenres scrX, scrY, 32, ,FB.GFX_HIGH_PRIORITY
-var back = LoadImage("fbextlogo.jpg")
-var fore = LoadImage("test.png")
+var back = new Image(100,100,rgba(10,100,10,255))
+var fore = new Image(100,100,rgba(100,10,100,255))
 dim as integer alpha
 
 

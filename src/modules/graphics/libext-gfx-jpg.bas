@@ -133,7 +133,7 @@ function load ( byref hFile as ext.File, byval t as target_e ) as ext.gfx.Image 
 
     var dst = cast(byte ptr, img->Pixels)
 
-    dim as integer bpp
+    dim as long bpp
     screeninfo ,,,bpp
 
     do while jinfo.output_scanline < jinfo.output_height

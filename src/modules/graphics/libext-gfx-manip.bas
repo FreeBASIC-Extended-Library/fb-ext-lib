@@ -190,7 +190,7 @@ end function
                 for d as ulong = 0 to src->bpp - 1
                         for y as ulong = 0 to src->height - 1
                                 var dx = 0
-                                for x as ulong = src->width - 1 to 0 step -1
+                                for x as longint = src->width - 1 to 0 step -1
                                         pset temp_img->m_img, (dx, y), point(x,y,src->m_img)
                                         dx += 1
                                 next x

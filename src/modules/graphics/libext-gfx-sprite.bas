@@ -31,7 +31,7 @@ fbext_instanciate(vector2, ((single)))
 namespace ext.gfx
 
 '' :::::
-static function Sprite.Masker ( byval src_color as uinteger, byval dest_color as uinteger, byval xx as any ptr ) as uinteger
+static function Sprite.Masker ( byval src_color as ulong, byval dest_color as ulong, byval xx as any ptr ) as ulong
 
     if (src_color AND &h00ffffff) = &hff00ff then return 0
 
@@ -40,7 +40,7 @@ static function Sprite.Masker ( byval src_color as uinteger, byval dest_color as
 end function
 
 '' :::::
-static function Sprite.CMasker ( byval src_color as uinteger, byval dest_color as uinteger, byval xx as any ptr ) as uinteger
+static function Sprite.CMasker ( byval src_color as ulong, byval dest_color as ulong, byval xx as any ptr ) as ulong
 
     if src_color = &hffFFff and dest_color = &hffFFff then return &hFF0000
 

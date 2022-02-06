@@ -253,8 +253,8 @@ public:
 
     'Externally needed but still private
     declare function GetColMap( byval index as uinteger ) as IMAGE ptr
-    declare static function Masker ( byval src_color as uinteger, byval dest_color as uinteger, byval xx as any ptr ) as uinteger
-    declare static function CMasker ( byval src_color as uinteger, byval dest_color as uinteger, byval xx as any ptr ) as uinteger
+    declare static function Masker ( byval src_color as ulong, byval dest_color as ulong, byval xx as any ptr ) as ulong
+    declare static function CMasker ( byval src_color as ulong, byval dest_color as ulong, byval xx as any ptr ) as ulong
 
 private:
 

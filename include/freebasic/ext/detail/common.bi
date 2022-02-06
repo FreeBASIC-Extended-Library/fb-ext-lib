@@ -264,6 +264,17 @@ namespace ext
     # define FBEXT_IS_STRING(T_) (typeof(T_) = typeof(string))
     # define FBEXT_IS_BYTE_OR_UBYTE(T_) ((typeof(T_) = typeof(byte)) or (typeof(T_) = typeof(ubyte)))
 
+    type int8 as byte
+    type uint8 as ubyte
+    type int16 as short
+    type uint16 as ushort
+    type int32 as long
+    type uint32 as ulong
+    type int64 as longint
+    type uint64 as ulongint
+    type float32 as single
+    type float64 as double
+
 end namespace
 
 # endif ' include guard

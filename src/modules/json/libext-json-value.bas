@@ -40,11 +40,11 @@ function JSONvalue.toBSON( byref buf_len as uinteger ) as ubyte ptr
 
     case jvalue_type.jstring
         etype = &h02
-        buf_len = 1 + sizeof(uinteger) + len(m_string) + 1
+        buf_len = 1 + sizeof(ulong) + len(m_string) + 1
         ret = new ubyte[buf_len]
         ret[0] = etype
-        *cast(uinteger ptr,@(ret[1])) = cuint(len(m_string)+1)
-        memcpy(@(ret[1+sizeof(uinteger)]),@(m_string[0]),len(m_string))
+        *cast(ulong ptr,@(ret[1])) = culng(len(m_string)+1)
+        memcpy(@(ret[1+sizeof(ulong)]),@(m_string[0]),len(m_string))
         ret[buf_len-1] = 0
 
     case jvalue_type.jboolean

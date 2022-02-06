@@ -25,21 +25,21 @@
 
 namespace ext.gfx
 '' :::::
-sub Intensify( byval dst as IMAGE ptr, byval src as const IMAGE ptr, byref positx as integer, byref posity as integer, byref intensity as integer )
+sub Intensify( byval dst as IMAGE ptr, byval src as const IMAGE ptr, byref positx as ext.int32, byref posity as ext.int32, byref intensity as ext.int32 )
 
     if src = null then exit sub
 
-    static as ulong ptr dstptr, srcptr
-    static as ulong transcol = RGBA(255,0,255,0)
-    static as integer srcc
-    dim as integer iwidth = src->width
-    dim as integer iheight= src->height
-    static as integer dw, dh, xput, yput
-    static as integer sr, sg, sb, sa, na
+    static as ext.uint32 ptr dstptr, srcptr
+    static as ext.uint32 transcol = RGBA(255,0,255,0)
+    static as ext.uint32 srcc
+    dim as ext.int32 iwidth = src->width
+    dim as ext.int32 iheight= src->height
+    static as ext.int32 dw, dh, xput, yput
+    static as ext.int32 sr, sg, sb, sa, na
 
     if dst = 0 then
         dstptr = screenptr
-        screeninfo dw,dh
+        screeninfo dw, dh
     else
         dstptr = dst->Pixels
         dw = dst->width
@@ -48,17 +48,17 @@ sub Intensify( byval dst as IMAGE ptr, byval src as const IMAGE ptr, byref posit
 
     srcptr = src->Pixels
 
-    for y as integer = 0 to iheight-1
+    for y as ext.int32 = 0 to iheight-1
 
         yput = y + posity
         if yput>-1 and yput<dh then
 
-            for x as integer = 0 to iwidth-1
+            for x as ext.int32 = 0 to iwidth-1
                 xput = x + positx
 
                 if xput>-1 and xput<dw then
 
-                    srcc = *cast(ulong ptr, cast(ubyte ptr, srcptr) + y * src->pitch + x * src->bpp )
+                    srcc = *cast(ext.uint32 ptr, cast(ext.uint8 ptr, srcptr) + y * src->pitch + x * src->bpp )
 
                     sr = ( ( srcc shr 16 ) and 255 )
                     sg = ( ( srcc shr  8 ) and 255 )
@@ -90,7 +90,7 @@ sub Intensify( byval dst as IMAGE ptr, byval src as const IMAGE ptr, byref posit
                         if dst = 0 then
                             dstptr[ (yput * dw ) + xput ] = rgba( sr, sg, sb, sa )
                         else
-                            *cast(ulong ptr, cast(ubyte ptr, dstptr) + yput * dst->pitch + xput * dst->bpp) = rgba( sr, sg, sb, sa )
+                            *cast(ext.uint32 ptr, cast(ext.uint8 ptr, dstptr) + yput * dst->pitch + xput * dst->bpp) = rgba( sr, sg, sb, sa )
                         end if
                     end if
 

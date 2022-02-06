@@ -169,7 +169,7 @@ namespace ext.gfx
     ''posity - the y position to place the scaled sprite.
     ''intensity - the amount to darken/brighten the image.
     ''
-    declare sub Intensify( byval dst as IMAGE ptr, byval src as const IMAGE ptr, byref positx as integer, byref posity as integer, byref intensity as integer )
+    declare sub Intensify( byval dst as IMAGE ptr, byval src as const IMAGE ptr, byref positx as ext.int32, byref posity as ext.int32, byref intensity as ext.int32 )
 
     ''Function: Gradient
     ''Generates a horizontal or vertical gradient between two colors.
