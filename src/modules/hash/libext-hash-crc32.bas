@@ -24,9 +24,9 @@
 
 namespace ext.hashes
 
-function crc32 ( byval buf as const any ptr, byval buf_len as uinteger, byval crc as uinteger ) as uinteger
+function crc32 ( byval buf as const any ptr, byval buf_len as uinteger, byval crc as ulong ) as ulong
 
-	static crc_table(256) as uinteger => { _
+	static crc_table(256) as ulong => { _
 	&h00000000, &h77073096, &hee0e612c, &h990951ba, &h076dc419, &h706af48f, _
 	&he963a535, &h9e6495a3, &h0edb8832, &h79dcb8a4, &he0d5e91e, &h97d2d988, _
 	&h09b64c2b, &h7eb17cbd, &he7b82d07, &h90bf1d91, &h1db71064, &h6ab020f2, _
@@ -71,8 +71,8 @@ function crc32 ( byval buf as const any ptr, byval buf_len as uinteger, byval cr
 	&h54de5729, &h23d967bf, &hb3667a2e, &hc4614ab8, &h5d681b02, &h2a6f2b94, _
 	&hb40bbe37, &hc30c8ea1, &h5a05df1b, &h2d02ef8d }
 
-	dim c as uinteger
-	dim n as uinteger
+	dim c as ulong
+	dim n as ulong
 	var buf_ = cast(ubyte ptr, buf)
 
 	c = crc xor &hffffffff
@@ -89,7 +89,7 @@ function crc32 ( byval buf as const any ptr, byval buf_len as uinteger, byval cr
    
 end function 
 
-function crc32 ( byref buf as const string ) as uinteger
+function crc32 ( byref buf as const string ) as ulong
 
 	return crc32( strptr(buf), len(buf), 0 )
 

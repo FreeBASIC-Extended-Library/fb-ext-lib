@@ -77,12 +77,12 @@ namespace ext.hashes.hmac
 
     end function
 
-    function md5_ ( byref key as const string, byref msg as const string ) as string
-        return dohmac(@ext.hashes.md5.checksum,key,msg)
+    function md5 ( byref key as const string, byref msg as const string ) as string
+        return dohmac(@ext.hashes.md5,key,msg)
     end function
 
     function callsha2( byval m as any ptr, byval l as uinteger ) as string
-        return ext.hashes.sha2.checksum(m,l)
+        return ext.hashes.sha2(m,l)
     end function
 
     function sha256 ( byref key as const string, byref msg as const string ) as string

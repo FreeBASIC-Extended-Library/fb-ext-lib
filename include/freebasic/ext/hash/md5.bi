@@ -13,57 +13,57 @@
 #include once "ext/detail/common.bi"
 #include once "ext/file/file.bi"
 
-''Namespace: ext.hashes.md5
-namespace ext.hashes.md5
+''Namespace: ext.hashes
+namespace ext.hashes
 
 ''About: High Level API
 
-''Function: checksum
+''Function: md5
 ''
 ''Parameters:
 ''x - string containing the data you wish to retrieve the checksum of.
 ''
-declare function checksum overload ( byref x as string ) as string
+declare function md5 overload ( byref x as string ) as string
 
-''Function: checksum
+''Function: md5
 ''
 ''Parameters:
 ''x - <File> containing the data you wish to retrieve the checksum of.
 ''blocksize - (Optional) size of data to read from disk.
 ''
-declare function checksum ( byref x as ext.File, byval blocksize as uinteger = 1048576 ) as string
+declare function md5 ( byref x as ext.File, byval blocksize as uinteger = 1048576 ) as string
 
-''Function: checksum
+''Function: md5
 ''
 ''Parameters:
 ''x - pointer containing the data you wish to retrieve the checksum of.
 ''nbytes - the number of bytes that can be read from x.
 ''
-declare function checksum ( byval x as any ptr, byval nbytes as uinteger ) as string
+declare function md5 ( byval x as any ptr, byval nbytes as uinteger ) as string
 
 ''About: Low Level API
 
-''Type: State
+''Type: md5_State
 ''Represents the internal state needed by the low level md5 functions.
 ''
 ''See Also:
 ''<init> <append> <finish>
 ''
-type state
-	as uinteger count(2)	' message length in bits, lsw first
-    as uinteger abcd(4)		' digest buffer
+type md5_state
+	as ulong count(2)	' message length in bits, lsw first
+    as ulong abcd(4)		' digest buffer
     as ubyte buf(64)
 end type
 
-''Sub: init
+''Sub: md5_init
 ''Initializes a MD5 state to a known good value.
 ''
 ''Parameters:
 ''pms - pointer to state to initialize.
 ''
-declare sub init( byval pms as state ptr )
+declare sub md5_init( byval pms as md5_state ptr )
 
-''Sub: append
+''Sub: md5_append
 ''Adds the checksum of the data passed to the current state.
 ''
 ''Parameters:
@@ -71,12 +71,12 @@ declare sub init( byval pms as state ptr )
 ''data_ - const ptr to the data to checksum
 ''nbytes - the number of bytes available in data_
 ''
-declare sub append( byval pms as state ptr, byval data_ as const ubyte ptr, byval nbytes as integer )
+declare sub md5_append( byval pms as md5_state ptr, byval data_ as const ubyte ptr, byval nbytes as integer )
 
-''Function: finish
+''Function: md5_finish
 ''Apply last minute values to the state passed and return the checksum.
 ''
-declare function finish ( byval pms as state ptr ) as string
+declare function md5_finish ( byval pms as md5_state ptr ) as string
 
 end namespace
 

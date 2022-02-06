@@ -25,9 +25,9 @@ namespace ext.hashes
 	''crc - optional value to initialize the hash with, defaults to 0
 	''
 	''Returns:
-	''uinteger containing the hash.
+	''ulong containing the hash.
 	''
-	declare function crc32 overload ( byval buf As const any ptr, byval buf_len as uinteger, byval crc as uinteger = 0 ) As uinteger
+	declare function crc32 overload ( byval buf As const any ptr, byval buf_len as uinteger, byval crc as ulong = 0 ) As ulong
 
 	''Function: crc32
 	''Calculates the 32 bit cyclic redundancy check of a string.
@@ -36,9 +36,9 @@ namespace ext.hashes
 	''buf - string to hash.
 	''
 	''Returns:
-	''uinteger containing the hash.
+	''ulong containing the hash.
 	''
-	declare function crc32 ( byref buf as const string ) as uinteger
+	declare function crc32 ( byref buf as const string ) as ulong
 
 end namespace ' ext.hashes
 

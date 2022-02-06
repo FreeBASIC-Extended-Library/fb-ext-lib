@@ -27,17 +27,17 @@
 #include once "ext/error.bi"
 #include once "ext/math/detail/common.bi"
 
-namespace ext.hashes.sha2
+namespace ext.hashes
 
 
-function checksum overload ( byref x as string, byval keylen as uinteger = 256 ) as string
+function sha2 overload ( byref x as string, byval keylen as uinteger = 256 ) as string
 
-    return checksum(@(x[0]),len(x),keylen)
+    return sha2(@(x[0]),len(x),keylen)
 
 end function
 
 '':::
-function checksum ( byref x as ext.File, byval keylen as uinteger = 256, byval blocksize as uinteger = 1048576 ) as string
+function sha2 ( byref x as ext.File, byval keylen as uinteger = 256, byval blocksize as uinteger = 1048576 ) as string
 
     if x.open() = true then return "Checksum could not be calculated, error opening file for reading. Error: " & str(x.LastError) & " - " & GetErrorText(x.LastError)
 
@@ -172,7 +172,7 @@ function checksum ( byref x as ext.File, byval keylen as uinteger = 256, byval b
 end function
 
 '':::
-function checksum ( byval x as any ptr, byval nbytes as uinteger, byval keylen as uinteger = 256 ) as string
+function sha2 ( byval x as any ptr, byval nbytes as uinteger, byval keylen as uinteger = 256 ) as string
 
     if keylen <> 224 AND keylen <> 256 AND keylen <> 384 AND keylen <> 512 then return "Invalid key length"
 

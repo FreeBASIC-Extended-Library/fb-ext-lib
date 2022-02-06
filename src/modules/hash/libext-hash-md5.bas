@@ -96,23 +96,23 @@
 #define T63 &h2ad7d2bb
 #define T64 &heb86d391
 
-namespace ext.hashes.md5
+namespace ext.hashes
 
 '':::
-function checksum overload ( byref x as string ) as string
+function md5 overload ( byref x as string ) as string
 
-	dim st as state
+	dim st as md5_state
 
-	init(@st)
+	md5_init(@st)
 
-	append( @st, @(x[0]), len(x) )
+	md5_append( @st, @(x[0]), len(x) )
 
-	return finish( @st )
+	return md5_finish( @st )
 
 end function
 
 '':::
-function checksum ( byref x as ext.File, byval blocksize as uinteger = 1048576 ) as string
+function md5 ( byref x as ext.File, byval blocksize as uinteger = 1048576 ) as string
 
 	if x.open() = true then return "Checksum could not be calculated, error opening file for reading. Error: " & str(x.LastError) & " - " & GetErrorText(x.LastError)
 
@@ -127,9 +127,9 @@ function checksum ( byref x as ext.File, byval blocksize as uinteger = 1048576 )
 	end if
 
 
-	dim st as state
+	dim st as md5_state
 
-	init(@st)
+	md5_init(@st)
 
 	dim buffer as ubyte ptr
 	buffer = new ubyte[read_size]
@@ -139,7 +139,7 @@ function checksum ( byref x as ext.File, byval blocksize as uinteger = 1048576 )
 
 		x.get( , *buffer, read_size )
 
-		append( @st, buffer, read_size )
+		md5_append( @st, buffer, read_size )
 
 		left_in_file -= read_size
 
@@ -153,7 +153,7 @@ function checksum ( byref x as ext.File, byval blocksize as uinteger = 1048576 )
 
 		x.get(, *buffer, left_in_file )
 
-		append( @st, buffer, left_in_file )
+		md5_append( @st, buffer, left_in_file )
 
 		delete[] buffer
 
@@ -161,31 +161,31 @@ function checksum ( byref x as ext.File, byval blocksize as uinteger = 1048576 )
 
 	x.close()
 
-	return finish(@st)
+	return md5_finish(@st)
 
 end function
 
 '':::
-function checksum ( byval x as any ptr, byval nbytes as uinteger ) as string
+function md5 ( byval x as any ptr, byval nbytes as uinteger ) as string
 
-	dim st as state
+	dim st as md5_state
 
-	init(@st)
+	md5_init(@st)
 
-	append(@st, cast( ubyte ptr, x ), nbytes )
+	md5_append(@st, cast( ubyte ptr, x ), nbytes )
 
-	return finish(@st)
+	return md5_finish(@st)
 
 end function
 
-private sub process( byval pms as state ptr, byval data_ as const ubyte ptr )
+private sub md5_process( byval pms as md5_state ptr, byval data_ as const ubyte ptr )
 
-    dim as uinteger	a = pms->abcd(0), b = pms->abcd(1), _
+    dim as ulong	a = pms->abcd(0), b = pms->abcd(1), _
 	c = pms->abcd(2), d = pms->abcd(3), t
 
-	dim as uinteger X2(16)
+	dim as ulong X2(16)
     dim as const ubyte ptr xp = data_
-    dim as const uinteger ptr X
+    dim as const ulong ptr X
 	dim as integer iy = 0
 
 	while iy < 16
@@ -333,7 +333,7 @@ private sub process( byval pms as state ptr, byval data_ as const ubyte ptr )
 end sub
 
 
-sub init( byval pms as state ptr )
+sub md5_init( byval pms as md5_state ptr )
 
     pms->count(0) = 0
 	pms->count(1) = 0
@@ -345,12 +345,12 @@ sub init( byval pms as state ptr )
 end sub
 
 
-sub append( byval pms as state ptr, byval data_ as const ubyte ptr, byval nbytes as integer )
+sub md5_append( byval pms as md5_state ptr, byval data_ as const ubyte ptr, byval nbytes as integer )
 
     dim as const ubyte ptr p = data_
     dim as integer left_ = nbytes
     dim as integer offset = (pms->count(0) shr 3) AND 63
-    dim as uinteger nbits = (nbytes shl 3)
+    dim as ulong nbits = (nbytes shl 3)
 
     if (nbytes <= 0) then return
 
@@ -369,12 +369,12 @@ sub append( byval pms as state ptr, byval data_ as const ubyte ptr, byval nbytes
 
 		p += copy
 		left_ -= copy
-		process(pms, @pms->buf(0))
+		md5_process(pms, @pms->buf(0))
     end if
 
     ' Process full blocks.
 	while left_ >= 64
-    	process(pms, p)
+    	md5_process(pms, p)
 		p += 64
 		left_ -= 64
 	wend
@@ -385,7 +385,7 @@ sub append( byval pms as state ptr, byval data_ as const ubyte ptr, byval nbytes
 
 end sub
 
-function finish ( byval pms as state ptr ) as string
+function md5_finish ( byval pms as md5_state ptr ) as string
 
 	dim as ubyte digest(16)
     dim as ubyte pad(64)
@@ -406,10 +406,10 @@ function finish ( byval pms as state ptr ) as string
 	next
 
     ' Pad to 56 bytes mod 64.
-    append( pms, @pad(0), ((55 - (pms->count(0) shr 3)) AND 63) + 1)
+    md5_append( pms, @pad(0), ((55 - (pms->count(0) shr 3)) AND 63) + 1)
 
     ' Append the length.
-    append( pms, @data_(0), 8)
+    md5_append( pms, @data_(0), 8)
 
     var cnt = 0
 

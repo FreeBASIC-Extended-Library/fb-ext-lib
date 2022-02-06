@@ -12,7 +12,7 @@
 ''Namespace: ext.hashes.hmac
 namespace ext.hashes.hmac
 
-    declare function md5_ ( byref key as const string, byref msg as const string ) as string
+    declare function md5 ( byref key as const string, byref msg as const string ) as string
 
     declare function sha256 ( byref key as const string, byref msg as const string ) as string
 

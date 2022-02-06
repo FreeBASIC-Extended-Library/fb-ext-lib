@@ -25,9 +25,9 @@ namespace ext.hashes
 	''adler - optional value to initalize the hash with, defaults to 0
 	''
 	''Returns:
-	''uinteger containing the hash.
+	''ulong containing the hash.
 	''
-	declare function adler32 overload ( byval buf As const any ptr, byval buf_len as uinteger, byval adler as uinteger = 0 ) As uinteger
+	declare function adler32 overload ( byval buf As const any ptr, byval buf_len as uinteger, byval adler as ulong = 0 ) As ulong
 
 	''Function: adler32
 	''Returns the adler32 hash of a string.
@@ -36,9 +36,9 @@ namespace ext.hashes
 	''buf - the string to hash.
 	''
 	''Returns:
-	''uinteger containing the hash.
+	''ulong containing the hash.
 	''
-	declare function adler32 overload ( byref buf as const string ) as uinteger
+	declare function adler32 overload ( byref buf as const string ) as ulong
 
 end namespace ' ext.hashes
 

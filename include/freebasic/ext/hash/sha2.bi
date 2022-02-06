@@ -25,43 +25,43 @@
 #include once "ext/detail/common.bi"
 #include once "ext/file/file.bi"
 
-''Namespace: ext.hashes.sha2
-namespace ext.hashes.sha2
+''Namespace: ext.hashes
+namespace ext.hashes
 
 ''About: High Level API
 
-''Function: checksum
+''Function: sha2
 ''
 ''Parameters:
 ''x - string containing the data you wish to retrieve the checksum of.
 ''keylen - the length of the key you wish to calculate, defaults to 256.
 ''
-declare function checksum overload ( byref x as string, byval keylen as uinteger = 256 ) as string
+declare function sha2 overload ( byref x as string, byval keylen as uinteger = 256 ) as string
 
-''Function: checksum
+''Function: sha2
 ''
 ''Parameters:
 ''x - <File> containing the data you wish to retrieve the checksum of.
 ''keylen - the length of the key you wish to calculate, defaults to 256.
 ''blocksize - (Optional) size of data to read from disk.
 ''
-declare function checksum ( byref x as ext.File, byval keylen as uinteger = 256, byval blocksize as uinteger = 1048576 ) as string
+declare function sha2 ( byref x as ext.File, byval keylen as uinteger = 256, byval blocksize as uinteger = 1048576 ) as string
 
-''Function: checksum
+''Function: sha2
 ''
 ''Parameters:
 ''x - pointer containing the data you wish to retrieve the checksum of.
 ''nbytes - the number of bytes that can be read from x.
 ''keylen - the length of the key you wish to calculate, defaults to 256.
 ''
-declare function checksum ( byval x as any ptr, byval nbytes as uinteger, byval keylen as uinteger = 256 ) as string
+declare function sha2 ( byval x as any ptr, byval nbytes as uinteger, byval keylen as uinteger = 256 ) as string
 
 
 
 type sha256_ctx
     as uinteger tot_len, _len
     as ubyte block(2 * SHA256_BLOCK_SIZE)
-    as uinteger h(8)
+    as ulong h(8)
 end type
 
 type sha224_ctx as sha256_ctx

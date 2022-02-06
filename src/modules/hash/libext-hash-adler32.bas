@@ -25,11 +25,11 @@
 namespace ext.hashes
 
 	'' :::::
-	function adler32 overload ( byval buf_ as const any ptr, byval buf_len as uinteger, byval adler as uinteger ) as uinteger
+	function adler32 overload ( byval buf_ as const any ptr, byval buf_len as uinteger, byval adler as ulong ) as ulong
 	
 		var buf = cast(ubyte ptr, buf_)
-		dim s1 as uinteger
-		dim s2 as uinteger
+		dim s1 as ulong
+		dim s2 as ulong
 		dim n as integer
 	
 		s1 = adler and 65535
@@ -45,7 +45,7 @@ namespace ext.hashes
 	end function 
 	
 	'' :::::
-	function adler32 overload ( byref buf as const string ) as uinteger
+	function adler32 overload ( byref buf as const string ) as ulong
 	
 		return adler32( strptr(buf), len(buf), 0 )
 	
