@@ -6,6 +6,6 @@ using ext
 
 for n as integer = 1 to ( __FB_ARGC__ - 1 )
 
-	print hashes.md5.checksum( File(command(n)) ) & " *" & command(n)
+	print hashes.md5( File(command(n)) ) & " *" & command(n)
 	
 next

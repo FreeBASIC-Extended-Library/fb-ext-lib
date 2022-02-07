@@ -2,4 +2,4 @@
 #include once "ext/hash.bi"
 using ext
 
-print hashes.sha2.checksum( command() ) & " *-"
+print hashes.sha2( command() ) & " *-"

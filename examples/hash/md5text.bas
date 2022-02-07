@@ -3,4 +3,4 @@
 #include once "ext/hash.bi"
 using ext
 
-print hashes.md5.checksum( command() ) & " *-"
+print hashes.md5( command() ) & " *-"

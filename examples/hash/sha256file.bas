@@ -5,6 +5,6 @@ using ext
 
 for n as integer = 1 to ( __FB_ARGC__ - 1 )
 
-	print hashes.sha2.checksum( File(command(n)) ) & " *" & command(n)
+	print hashes.sha2( File(command(n)) ) & " *" & command(n)
 	
 next
