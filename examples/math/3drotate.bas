@@ -11,7 +11,7 @@
 #include once "ext/math.bi"
 #include once "fbgfx.bi"
 
-declare function Sort cdecl ( byval elm1 as any ptr, byval elm2 as any ptr ) as integer
+declare function Sort cdecl ( byval elm1 as const any ptr, byval elm2 as const any ptr ) as long
 
 using ext.math
 using ext.gfx
@@ -303,7 +303,7 @@ delete[] obj.tvertices
 delete[] obj.pvertices
 
 
-function Sort cdecl ( byval elm1 as any ptr, byval elm2 as any ptr ) as integer
+function Sort cdecl ( byval elm1 as const any ptr, byval elm2 as const any ptr ) as long
     
     return sgn( (cptr(render_struct ptr, elm1)->midpoint) - (cptr(render_struct ptr, elm2)->midpoint) )
     
