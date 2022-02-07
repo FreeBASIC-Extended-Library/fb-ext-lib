@@ -1,5 +1,5 @@
-FBC_CFLAGS := -g -i ../include/freebasic
-FBC_LFLAGS := -p $(LIBRARY_DIR)
+FBC_CFLAGS := -g -i ../include/freebasic -enullptr -w all
+FBC_LFLAGS := -p ../$(LIBRARY_DIR) -p ../$(BINARY_DIR)
 
 ifeq ($(ARCH), x86)
 	ifeq ($(BITS),64)

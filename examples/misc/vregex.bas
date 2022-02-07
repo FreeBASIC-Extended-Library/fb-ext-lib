@@ -1,3 +1,4 @@
+#define PCRE_STATIC
 #include once "ext/vregex.bi"
 
 using ext

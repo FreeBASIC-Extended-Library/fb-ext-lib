@@ -22,6 +22,7 @@
 
 #include once "ext/vregex.bi"
 #include once "ext/error.bi"
+#define PCRE_STATIC
 #include once "pcre.bi"
 
 namespace ext

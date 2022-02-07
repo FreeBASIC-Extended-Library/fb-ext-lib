@@ -66,6 +66,7 @@ Other options available to the makefile are:
 		command line.
 	USE_MYSQL - Build the MySQL Database Driver, requires mysql/mysql.bi in include path.
 	USE_POSTGRES - Build the Postgres Database Driver, requires postgres header in path.
+	BITS - use BITS=32 or BITS=64 to override the default target
 
 [Building the examples]
 

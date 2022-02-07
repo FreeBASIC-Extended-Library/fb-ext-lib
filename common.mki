@@ -140,7 +140,7 @@ endif
 INCLUDE_DIR := include/freebasic
 SOURCE_DIR := src
 LIBRARY_DIR := lib/$(TARGET)
-BINARY_DIR := bin
+BINARY_DIR := bin/$(TARGET)
 TESTS_DIR := tests
 DOCS_DIR := docs
 EXAMPLES_DIR := examples
