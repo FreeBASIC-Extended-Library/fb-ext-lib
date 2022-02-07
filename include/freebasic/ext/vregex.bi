@@ -140,9 +140,10 @@ type VRegex
     declare function multiple( byref rhs as string ) as VRegex ptr
     declare function alt( byref rhs as string ) as VRegex ptr
 
+    
+    as zstring ptr error_string
+    as long error_offset
     private:
-        as zstring ptr error_string
-        as long error_offset
         declare function add( byref rhs as string ) as VRegex ptr
         declare function checkFlags() as uinteger
         declare function reduceLines( byref rhs as string ) as string
