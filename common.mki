@@ -47,6 +47,12 @@ ifndef BITS
                   | awk '{ gsub(/(\(|\)|bit)/,"",$$10); print $$10 }')
 endif
 
+ifeq ($(TARGET), win32)
+    ifeq ($(BITS), 64)
+        TARGET := win64
+    endif
+endif
+
 #infer target architecture
 ifndef ARCH
 	ifeq ($(TARGET),win32)
