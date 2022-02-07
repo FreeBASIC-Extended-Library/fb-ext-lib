@@ -49,22 +49,14 @@ AUTO_BUILT_MODULES := $(filter-out $(CUSTOM_BUILT_MODULES),$(BUILDABLE_MODULES))
 #  COMPILER FLAGS & LINKER FLAGS
 # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # paths aren't included here to allow ./*/Makefile to reuse these..
-ifneq ($(ARCH),arm)
+ifeq ($(ARCH), x86)
 	ifeq ($(BITS),64)
-		ifeq ($(ARCH),x86)
-			export FBC_CFLAGS := -c -w all $(if $(MT),-mt) -asm intel
-		else
-			export FBC_CFLAGS := -c -w all $(if $(MT),-mt) -asm att
-		endif
+		export FBC_CFLAGS := -c -w all $(if $(MT),-mt) -asm intel -arch x86-64
 	else
-		ifeq ($(ARCH),x86)
-			export FBC_CFLAGS := -c -w all $(if $(MT),-mt)
-		else
-			export FBC_CFLAGS := -c -w all $(if $(MT),-mt) -asm att
-		endif
+		export FBC_CFLAGS := -c -w all $(if $(MT),-mt) -arch 586
 	endif
 else
-	export FBC_CFLAGS := -c -w all $(if $(MT),-mt)
+	export FBC_CFLAGS := -c -w all $(if $(MT),-mt) -asm att
 endif
 export FBC_LFLAGS := -lib $(if $(MT),-mt)
 

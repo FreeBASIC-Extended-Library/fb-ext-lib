@@ -1,5 +1,13 @@
 FBC_CFLAGS := -g -i ../include/freebasic
-FBC_LFLAGS := -p ../bin/win64 -p ../lib/$(TARGET)
+FBC_LFLAGS := -p $(LIBRARY_DIR)
+
+ifeq ($(ARCH), x86)
+	ifeq ($(BITS),64)
+		FBC_CFLAGS += -arch x86-64
+	else
+		FBC_CFLAGS += -arch 586
+	endif
+endif
 
 TESTS_MAIN := main$(EXE_EXT)
 
