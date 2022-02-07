@@ -22,7 +22,12 @@
 
 #include once "ext/datetime.bi"
 #include once "vbcompat.bi"
+#ifdef __FB_WIN32__
+#define WIN32_LEAN_AND_MEAN
+#include once "windows.bi"
+#else
 #include once "crt/time.bi"
+#endif
 
 namespace ext.datetime
 
@@ -32,11 +37,9 @@ function formatAsISO( byval t as double, byval n as bool ) as string
     if our_t = 0.0 then our_t = now()
 
     #ifdef __FB_WIN32__
-        #ifndef __FB_64BIT__
-            var tzoffset = *(__p__timezone())
-        #else
-            var tzoffset = _timezone
-        #endif
+        dim tz as _TIME_ZONE_INFORMATION
+        GetTimeZoneInformation(@tz)
+        var tzoffset = tz.Bias * 60
         var trailer = "Z"
     #endif
     #ifdef __FB_UNIX__
