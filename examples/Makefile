@@ -5,7 +5,7 @@ EX_SRCS := $(foreach dir,$(EX_DIRS),$(wildcard $(dir)/*.bas))
 EX_EXES := $(EX_SRCS:%.bas=%$(EXE_EXT))
 
 FBC_CFLAGS := -g -i ../$(INCLUDE_DIR) -w all -enullptr 
-FBC_LFLAGS := -p ../$(LIBRARY_DIR) -p ../$(BINARY_DIR) -l msvcrt -l msvcrt
+FBC_LFLAGS := -p ../$(LIBRARY_DIR) -p ../$(BINARY_DIR)
 
 ifeq ($(ARCH), x86)
 	ifeq ($(BITS),64)
