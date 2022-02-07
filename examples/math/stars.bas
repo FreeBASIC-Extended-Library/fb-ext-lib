@@ -25,7 +25,7 @@ Const as integer LENS = (SCR_W+SCR_H)\2
 screenres SCR_W,SCR_H,32
 
 
-Function vertex_sort Cdecl ( Byval elm1 As Any Ptr, Byval elm2 As Any Ptr ) As Integer
+Function vertex_sort Cdecl ( Byval elm1 As const Any Ptr, Byval elm2 As const Any Ptr ) As long
     Return Sgn( (Cptr(vec3f Ptr, elm2)->z) - (Cptr(vec3f Ptr, elm1)->z) )
 End Function
 
