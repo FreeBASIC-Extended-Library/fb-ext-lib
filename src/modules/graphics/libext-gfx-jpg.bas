@@ -25,7 +25,8 @@
 #include once "ext/graphics/jpg.bi"
 #include once "ext/file/file.bi"
 
-#ifndef NO_HACKS
+#ifdef __FB_WIN32__ 
+#ifdef __FB_64BIT__
 #Include Once "crt.bi"
 
 Extern "C"
@@ -51,6 +52,7 @@ End Extern
 #Define stdin (__acrt_iob_func(STDIN_FILENO_))
 #Define stdout (__acrt_iob_func(STDOUT_FILENO))
 #define stderr (__acrt_iob_func(STDERR_FILENO))
+#endif
 #endif
 
 #define __JPEGLIB_VER__  6

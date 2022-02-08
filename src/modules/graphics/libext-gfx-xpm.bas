@@ -31,7 +31,7 @@ namespace ext.gfx.xpm
 
 type xpm_color
     as string ch
-    as uinteger co
+    as ulong co
 end type
 
 public function load( byref fn as File, byval t as target_e = TARGET_FBNEW ) as Image ptr
@@ -58,10 +58,10 @@ public function load( byref fn as File, byval t as target_e = TARGET_FBNEW ) as 
         specs(0) = trim(specs(0))
     end if
 
-    var xwidth = cuint(specs(0))
-    var xheight = cuint(specs(1))
-    var xcolors = cuint(specs(2))
-    var xcpp = cuint(specs(3))
+    var xwidth = culng(specs(0))
+    var xheight = culng(specs(1))
+    var xcolors = culng(specs(2))
+    var xcpp = culng(specs(3))
 
     dim xcm(xcolors) as xpm_color
 
@@ -105,7 +105,7 @@ public function load( byref fn as File, byval t as target_e = TARGET_FBNEW ) as 
                 vx = trim(vx,"#")
                 vx = "FF" & vx
             end if
-            xcm(n).co = cuint("&h" & trim(trim(vx,"#")))
+            xcm(n).co = culng("&h" & trim(trim(vx,"#")))
         end if
         readit = ext.true
     next

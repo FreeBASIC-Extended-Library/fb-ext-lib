@@ -43,7 +43,7 @@ type Image
     ''h_ - the desired height of the image.
     ''def_color - the desired default color of the image. Defaults to RGBA(255,0,255,255)
     ''
-    declare constructor( byval w_ as uinteger, byval h_ as uinteger, byval def_color as uinteger = RGBA(255,0,255,255) )
+    declare constructor( byval w_ as ulong, byval h_ as ulong, byval def_color as ulong = RGBA(255,0,255,255) )
 
     ''sub: constructor
     ''Assigns an existing OpenGL compatible image buffer to this object.
@@ -53,7 +53,7 @@ type Image
     ''h_ - the height of the image
     ''d_ - the buffer containing the image
     ''
-    declare constructor( byval w_ as uinteger, byval h_ as uinteger, byval d_ as any ptr )
+    declare constructor( byval w_ as ulong, byval h_ as ulong, byval d_ as any ptr )
 
     ''sub: constructor
     ''Constructs an Image with an external FB.IMAGE. Takes over responsibility for freeing the fb.image's memory.
@@ -84,19 +84,19 @@ type Image
 
     ''function: height
     ''Returns the height of the image.
-    declare const function height( ) as ext.SizeType
+    declare const function height( ) as ulong
 
     ''function: width
     ''Returns the width of the image.
-    declare const function width( ) as ext.SizeType
+    declare const function width( ) as ulong
 
     ''function: pitch
     ''Returns the pitch of the image.
-    declare const function pitch( ) as ext.SizeType
+    declare const function pitch( ) as ulong
 
     ''function: bpp
     ''Returns the bits per pixel of the image.
-    declare const function bpp( ) as ext.SizeType
+    declare const function bpp( ) as ulong
 
     ''sub: Display
     ''Copies the image data to a buffer. Equivalent to fbgfx's put command.
@@ -194,7 +194,7 @@ type Image
     as bool m_isGL
     m_img as FB.IMAGE ptr
     m_gl as ulong ptr
-    as uinteger m_w, m_h
+    as ulong m_w, m_h
 
 end type
 

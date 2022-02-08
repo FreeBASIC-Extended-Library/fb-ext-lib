@@ -27,7 +27,7 @@
 
 namespace ext.gfx
 
-    constructor Image ( byval w_ as uinteger, byval h_ as uinteger, byval def_color as uinteger = RGBA(255,0,255,255) )
+    constructor Image ( byval w_ as ulong, byval h_ as ulong, byval def_color as ulong = RGBA(255,0,255,255) )
 
         m_w = w_
         m_h = h_
@@ -87,7 +87,7 @@ namespace ext.gfx
     m_isGL = false
     end constructor
 
-    constructor Image ( byval w_ as uinteger, byval h_ as uinteger, byval d_ as any ptr )
+    constructor Image ( byval w_ as ulong, byval h_ as ulong, byval d_ as any ptr )
         m_w = w_
         m_h = h_
         m_gl = d_
@@ -221,7 +221,7 @@ namespace ext.gfx
 
     end sub
 
-    function Image.height( ) as ext.SizeType
+    function Image.height( ) as ulong
 
         if m_isGL = false then
             return iif(m_img,m_img->height,0)
@@ -231,7 +231,7 @@ namespace ext.gfx
 
     end function
 
-    function Image.width( ) as ext.SizeType
+    function Image.width( ) as ulong
 
         if m_isGL = false then
             return iif(m_img,m_img->width,0)
@@ -241,7 +241,7 @@ namespace ext.gfx
 
     end function
 
-    function Image.pitch( ) as ext.SizeType
+    function Image.pitch( ) as ulong
         if m_isGL = false then
             return iif(m_img,m_img->pitch,0)
         else
@@ -250,7 +250,7 @@ namespace ext.gfx
 
     end function
 
-    function Image.bpp( ) as ext.SizeType
+    function Image.bpp( ) as ulong
 
         if m_isGL = false then
             return iif(m_img,m_img->bpp,0)
