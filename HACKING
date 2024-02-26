@@ -1,0 +1,78 @@
+## Building the libraries from source
+
+To build and install the library, you must have a GNU Make-compatible program.
+
+Windows users can use MSYS, which can be found here https://www.msys.org
+
+Linux users typically have GNU Make-compatible program already on the system.
+Also, development packages of some external libraries may be needed to build
+the FreeBASIC Extended Library on Linux (see [Dependencies] below).
+
+To build the libraries, enter the root dir--the one containing this file--and
+type the following commands,
+
+	make
+	make MT=1
+
+This will build two static libraries: a single- and a multi- threaded version.
+The multi-threaded version of the library need not be built if the library is
+not going to be used in a multi-threaded application.
+
+To install the libraries, enter the root dir and type,
+
+	make install
+
+Linux users may need to run the command with root privilages. This will install
+the libraries and header files in the default FreeBASIC installation directory.
+If you wish to install to a different directory, type,
+
+	make install INSTALLDIR=path
+
+If your Linux build is set up as standalone you will need to install using this
+command:
+
+	make install INSTALLDIR=/prefix STANDALONE=1
+
+In either case, the libraries will be installed under lib/<target>, where
+<target> is one of win32, win64 or linux, and the header files will be placed in
+inc/ext.
+
+NOTE: path must be an absolute path. By default msys mounts drive C: at /c, so
+the directory C:\mydir must be specified as /c/mydir.
+
+Other options available to the makefile are:
+
+	NDEBUG - use NDEBUG=1 to build the non-debug version of the library
+	VERBOSE - VERBOSE=0 produces little output, VERBOSE=2 produces extra
+		output, the default is VERBOSE=1.
+	TARGET - not required on Linux or Windows, use TARGET=dos on DOS.
+	PROFILE - use PROFILE=1 to add profiling information to the library.
+	EXX - use EXX=1 to add null pointer and out of bounds checking.
+	OPT - use OPT="other fbc options" to add options to the compilers
+		command line.
+	USE_MYSQL - Build the MySQL Database Driver, requires mysql/mysql.bi in include path.
+	USE_POSTGRES - Build the Postgres Database Driver, requires postgres header in path.
+	BITS - use BITS=32 or BITS=64 to override the default target
+
+### Building the examples
+
+After the libraries are built, you may wish to build the example programs
+included in the package. Enter the root directory and type,
+
+	make examples
+
+This will build the example programs under <root>/examples.
+
+## Uninstalling the libraries
+
+To uninstall the FreeBASIC Extended Library, enter the root directory and type,
+
+	make uninstall
+
+If you installed the library in a different location using the INSTALLDIR
+make option, then you must use the same option here, like,
+
+	make uninstall INSTALLDIR=path
+
+This will remove all of the installed files, but none of the directories
+created under <path>.
