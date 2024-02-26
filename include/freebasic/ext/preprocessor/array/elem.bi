@@ -1,7 +1,7 @@
 '' Title: ext/preprocessor/array/elem.bi
 ''
 '' About: License
-''  Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
+''  Copyright (c) 2007-2024, FreeBASIC Extended Library Development Group
 ''  Copyright (c) 2002, Paul Mensonides
 ''
 ''  Distributed under the Boost Software License, Version 1.0. See
@@ -10,7 +10,7 @@
 ''
 ''  Distributed under the FreeBASIC Extended Library Group license. See
 ''  accompanying file LICENSE.txt or copy at
-''  http://code.google.com/p/fb-extended-lib/wiki/License
+''  https://github.com/FreeBASIC-Extended-Library/fb-ext-lib/blob/master/COPYING
 
 # pragma once
 # ifndef FBEXT_INCLUDED_PP_ARRAY_ELEM_BI__

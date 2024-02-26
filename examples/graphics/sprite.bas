@@ -1,11 +1,11 @@
 ''File: sprite.bas
 ''Description: Demonstration of ext.gfx.Sprite object.
 ''
-''Copyright (c) 2007-2014 FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2024 FreeBASIC Extended Library Development Group
 ''
 ''Distributed under the FreeBASIC Extended Library Group license. (See
 ''accompanying file LICENSE.txt or copy at
-''http://code.google.com/p/fb-extended-lib/wiki/License)
+''https://github.com/FreeBASIC-Extended-Library/fb-ext-lib/blob/master/COPYING)
 
 #define FBEXT_NO_EXTERNAL_LIBS 1 'we don't need image support for this
 # include once "ext/graphics/sprite.bi"

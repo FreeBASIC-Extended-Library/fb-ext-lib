@@ -1,4 +1,4 @@
-''Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2024, FreeBASIC Extended Library Development Group
 ''GIFLIB Copyright: (C) 1997 Eric S. Raymond <esr@thyrsus.com>
 ''All rights reserved.
 ''

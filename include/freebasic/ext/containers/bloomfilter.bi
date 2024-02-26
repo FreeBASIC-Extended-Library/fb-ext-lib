@@ -5,7 +5,7 @@
 ''
 ''Distributed under the FreeBASIC Extended Library Group license. See
 ''accompanying file LICENSE.txt or copy at
-''http://code.google.com/p/fb-extended-lib/wiki/License
+''https://github.com/FreeBASIC-Extended-Library/fb-ext-lib/blob/master/COPYING
 
 #ifndef __FB_EXT_BLOOMFILTER__
 #define __FB_EXT_BLOOMFILTER__ -1

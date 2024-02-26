@@ -5,7 +5,7 @@
 ''very capable. For basic usage absolutely no configuration is needed,
 ''just start using the DEBUG, INFO, WARN or FATAL logging macros.
 ''
-''For an example showing how to use this module see https://code.google.com/p/fb-extended-lib/source/browse/examples/logging/log.bas
+''For an example showing how to use this module see https://github.com/FreeBASIC-Extended-Library/fb-ext-lib/blob/master/examples/logging/log.bas
 ''or check your examples/logging directory.
 ''
 ''When using this module in a multithreaded environment all logging
@@ -17,11 +17,11 @@
 ''localtime.
 ''
 ''About: Code License
-''Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2024, FreeBASIC Extended Library Development Group
 ''
 ''Distributed under the FreeBASIC Extended Library Group license. See
 ''accompanying file LICENSE.txt or copy at
-''http://code.google.com/p/fb-extended-lib/wiki/License
+''https://github.com/FreeBASIC-Extended-Library/fb-ext-lib/blob/master/COPYING
 
 # pragma once
 #ifndef __EXT_LOG_BI__

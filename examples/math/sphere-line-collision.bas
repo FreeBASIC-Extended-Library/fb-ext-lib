@@ -2,11 +2,11 @@
 ''Description: Demonstration of 2d circle to line collision
 '' detection and response using the ext.math.vector*d library.
 ''
-''Copyright (c) 2007-2014 FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2024 FreeBASIC Extended Library Development Group
 ''
 ''Distributed under the FreeBASIC Extended Library Group license. (See
 ''accompanying file LICENSE.txt or copy at
-''http://code.google.com/p/fb-extended-lib/wiki/License)
+''https://github.com/FreeBASIC-Extended-Library/fb-ext-lib/blob/master/COPYING)
 
 # include once "ext/math.bi"
 # include once "fbgfx.bi"

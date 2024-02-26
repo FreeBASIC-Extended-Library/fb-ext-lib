@@ -1,9 +1,9 @@
 '' About: License
-'' Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
+'' Copyright (c) 2007-2024, FreeBASIC Extended Library Development Group
 ''
 ''Distributed under the FreeBASIC Extended Library Group license. See
 ''accompanying file LICENSE.txt or copy at
-''http://code.google.com/p/fb-extended-lib/wiki/License
+''https://github.com/FreeBASIC-Extended-Library/fb-ext-lib/blob/master/COPYING
 
 #ifdef FBEXT_NO_EXTERNAL_LIBS
     #define FBEXT_NO_LIBZ -1
@@ -74,7 +74,7 @@ namespace ext
 
     '' Constant: FBEXT_PATCH_VERSION
     ''The patch (x.x.0) version of the library.
-    const FBEXT_PATCH_VERSION = 1
+    const FBEXT_PATCH_VERSION = 2
 
     '' Constant: FBEXT_VERSION
     ''Integer representation of the library version.
@@ -168,7 +168,7 @@ namespace ext
     ''Type: SizeType
     ''Globally used type when defining the Size of an object.
     ''
-    type SizeType as uinteger
+    type SizeType as ulong
 
     '' Macro: FBEXT_IS_UNSIGNED
     '' Determines if a type is an intrinsic unsigned integral type.

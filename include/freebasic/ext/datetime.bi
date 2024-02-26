@@ -1,13 +1,13 @@
 ''Title: datetime.bi
 ''
 ''About: Code License
-''Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2024, FreeBASIC Extended Library Development Group
 ''
 ''Contains code contributed and Copyright (c) 2007, mr_cha0s: ruben.coder@gmail.com
 ''
 ''Distributed under the FreeBASIC Extended Library Group license. See
 ''accompanying file LICENSE.txt or copy at
-''http://code.google.com/p/fb-extended-lib/wiki/License
+''https://github.com/FreeBASIC-Extended-Library/fb-ext-lib/blob/master/COPYING
 
 #include once "ext/detail/common.bi"
 

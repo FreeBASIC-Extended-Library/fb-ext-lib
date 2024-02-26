@@ -1,11 +1,11 @@
 ''Title: math/pow2.bi
 ''
 ''About: License
-''Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2024, FreeBASIC Extended Library Development Group
 ''
 ''Distributed under the FreeBASIC Extended Library Group license. See
 ''accompanying file LICENSE.txt or copy at
-''http://code.google.com/p/fb-extended-lib/wiki/License
+''https://github.com/FreeBASIC-Extended-Library/fb-ext-lib/blob/master/COPYING
 
 # ifndef FBEXT_MATH_POW2_BI__
 # define FBEXT_MATH_POW2_BI__ -1

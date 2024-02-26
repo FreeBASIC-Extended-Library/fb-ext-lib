@@ -1,4 +1,4 @@
-''Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2024, FreeBASIC Extended Library Development Group
 ''Copyright (C) 2005, 2007 Olivier Gay <olivier.gay@a3.epfl.ch>
 ''
 ''All rights reserved.

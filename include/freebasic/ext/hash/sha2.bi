@@ -1,13 +1,13 @@
 ''Title: hash/sha2.bi
 ''
 ''About: License
-''Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2024, FreeBASIC Extended Library Development Group
 ''
 ''Copyright (C) 2005, 2007 Olivier Gay <olivier.gay@a3.epfl.ch>
 ''
 ''Distributed under the FreeBASIC Extended Library Group license. See
 ''accompanying file LICENSE.txt or copy at
-''http://code.google.com/p/fb-extended-lib/wiki/License
+''https://github.com/FreeBASIC-Extended-Library/fb-ext-lib/blob/master/COPYING
 
 #ifndef EXT_HASHES_SHA2_BI__
 #define EXT_HASHES_SHA2_BI__ -1

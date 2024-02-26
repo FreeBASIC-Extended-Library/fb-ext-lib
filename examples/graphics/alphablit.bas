@@ -1,11 +1,11 @@
 ''File: alphablit.bas
 ''Description: Demonstration of ext.gfx.AlphaBlit function.
 ''
-''Copyright (c) 2007-2014-2012 FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2024-2012 FreeBASIC Extended Library Development Group
 ''
 ''Distributed under the FreeBASIC Extended Library Group license. (See
 ''accompanying file LICENSE.txt or copy at
-''http://code.google.com/p/fb-extended-lib/wiki/License)
+''https://github.com/FreeBASIC-Extended-Library/fb-ext-lib/blob/master/COPYING)
 
 # include once "ext/graphics/image.bi"
 # include once "ext/graphics/manip.bi"

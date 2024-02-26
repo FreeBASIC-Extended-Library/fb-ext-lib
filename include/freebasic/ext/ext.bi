@@ -1,9 +1,5 @@
 ''Title: Home
 ''
-''About: Getting Live Help
-'' E-Mail - freebasic-extended-library-discussion@googlegroups.com
-'' IRC - #freebasic-ext on FreeNode or http://webchat.freenode.net/?randomnick=1&channels=freebasic-ext
-''
 ''
 ''About: ext.bi
 ''  All code should include only the headers it actually uses. Including
@@ -55,7 +51,7 @@
 '' Classes marked Threadsafe will operate correctly when your code is compiled with the option -mt.
 ''
 ''About: Reporting Bugs
-''Please report all bugs to the Issue tracker at http://code.google.com/p/fb-extended-lib/issues/list
+''Please report all bugs to the Issue tracker at https://github.com/FreeBASIC-Extended-Library/fb-ext-lib/issues
 ''only after you have followed these steps:
 '' * You can reproduce the bug.
 '' * You are following the documentation.
@@ -71,8 +67,8 @@
 ''Please read http://freecode.com/articles/how-to-report-bugs-effectively before reporting issues.
 ''
 ''About: License
-''Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
-''http://code.google.com/p/fb-extended-lib
+''Copyright (c) 2007-2024, FreeBASIC Extended Library Development Group
+''https://github.com/FreeBASIC-Extended-Library/fb-ext-lib/
 ''
 ''All rights reserved.
 ''

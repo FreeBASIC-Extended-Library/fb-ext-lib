@@ -5,17 +5,17 @@
 ''You can find more information about unit testing in general at http://en.wikipedia.org/wiki/Unit_testing
 ''
 ''The best example of how to use this framework is to see how
-''ext uses it. All of the tests are located in directories at https://code.google.com/p/fb-extended-lib/source/browse/tests/.
+''ext uses it. All of the tests are located in directories at https://github.com/FreeBASIC-Extended-Library/fb-ext-lib/blob/master/tests/.
 ''The main.bas in the root directory is a just a simple main function that runs the tests.
 ''
 ''About: Code License
 ''Contains code contributed and Copyright (c) 2006-2008 Luis Lavena, Multimedia systems
 ''
-''Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
+''Copyright (c) 2007-2024, FreeBASIC Extended Library Development Group
 ''
 ''Distributed under the FreeBASIC Extended Library Group license. See
 ''accompanying file LICENSE.txt or copy at
-''http://code.google.com/p/fb-extended-lib/wiki/License
+''https://github.com/FreeBASIC-Extended-Library/fb-ext-lib/blob/master/COPYING
 ''
 # pragma once
 #ifndef __EXT_TESTS_BI__

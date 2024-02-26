@@ -1,11 +1,11 @@
 '' Title: ext/json.bi
 ''
 '' About: License
-''  Copyright (c) 2007-2014, FreeBASIC Extended Library Development Group
+''  Copyright (c) 2007-2024, FreeBASIC Extended Library Development Group
 ''
 ''  Distributed under the FreeBASIC Extended Library Group license. See
 ''  accompanying file LICENSE.txt or copy at
-''  http://code.google.com/p/fb-extended-lib/wiki/License
+''  https://github.com/FreeBASIC-Extended-Library/fb-ext-lib/blob/master/COPYING
 
 #ifndef __FB_EXT_JSON__
 #define __FB_EXT_JSON__ -1
