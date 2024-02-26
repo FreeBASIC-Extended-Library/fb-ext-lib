@@ -53,7 +53,7 @@ ifeq ($(ARCH), x86)
 	ifeq ($(BITS),64)
 		export FBC_CFLAGS := -c -w all -enullptr $(if $(MT),-mt) -asm intel -arch x86-64
 	else
-		export FBC_CFLAGS := -c -w all -enullptr $(if $(MT),-mt) -arch 586
+		export FBC_CFLAGS := -c -w all -enullptr $(if $(MT),-mt) -arch 686
 	endif
 else
 	export FBC_CFLAGS := -c -w all -enullptr $(if $(MT),-mt) -asm att
@@ -118,8 +118,8 @@ $(1)/%.mt.o: $(1)/%.bas
 
 .PHONY: clean-$(1)
 clean-$(1):
-	$(RM) -f $(call AutoBuildObjects,$(1))
-	$(RM) -f $(call AutoBuildLibFile,$(1))
+	-$(RM) -f $(call AutoBuildObjects,$(1))
+	-$(RM) -f $(call AutoBuildLibFile,$(1))
 
 endef
 

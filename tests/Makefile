@@ -5,14 +5,14 @@ ifeq ($(ARCH), x86)
 	ifeq ($(BITS),64)
 		FBC_CFLAGS += -arch x86-64
 	else
-		FBC_CFLAGS += -arch 586
+		FBC_CFLAGS += -arch 686
 	endif
 endif
 
 TESTS_MAIN := main$(EXE_EXT)
 
 
-TESTS_DIRS := database preprocessor algorithms strings containers math sort php hash memory xml conversion misc file json
+TESTS_DIRS := algorithms containers conversion database file hash json math memory misc php preprocessor sort strings xml
 
 
 TESTS_SRCS := $(foreach dir,$(TESTS_DIRS),$(wildcard $(dir)/*.bas))
@@ -34,5 +34,5 @@ $(TESTS_MAIN) : $(TESTS_OBJS) main.o
 
 .PHONY : clean
 clean :
-	$(RM) -f $(TESTS_MAIN) main.o
-	$(RM) -f $(TESTS_OBJS)
+	-$(RM) -f $(TESTS_MAIN) main.o
+	-$(RM) -f $(TESTS_OBJS)
