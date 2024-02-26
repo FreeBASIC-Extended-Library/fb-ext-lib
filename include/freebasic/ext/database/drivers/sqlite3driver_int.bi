@@ -12,7 +12,7 @@
 #define FBEXT_DATABASE_SQLITE_INT__ 1
 
 #ifndef EXT_USE_SQLITEDLL
-    #inclib "ext-sqlite-3.6.23"
+    #inclib "ext-sqlite-3.45.1"
 #else
     #inclib "sqlite3"
 #endif
