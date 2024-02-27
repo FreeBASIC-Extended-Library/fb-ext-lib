@@ -537,7 +537,7 @@ sub sha256_update( byval ctx as sha256_ctx ptr, byval message as const ubyte ptr
     end if
 
     new_len = len_ - rem_len
-    block_nb = new_len / SHA256_BLOCK_SIZE
+    block_nb = new_len \ SHA256_BLOCK_SIZE
 
     shifted_message = message + rem_len
 
