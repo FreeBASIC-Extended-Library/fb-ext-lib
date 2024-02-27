@@ -20,10 +20,6 @@ private sub test_hmacsha256
     var empty = lcase(ext.hashes.hmac.sha256("",""))
     var test = lcase(ext.hashes.hmac.sha256("key", HMAC_TEST_STRING))
 
-    ?
-    ? empty
-    ? test
-
     EXT_ASSERT_TRUE("b613679a0814d9ec772f95d778c35fc5ff1697c493715653c6c712144292c5ad" = empty)
     EXT_ASSERT_TRUE("f7bc83f430538424b13298e6aa6fb143ef4d59a14946175997479dbc2d1a3cd8" = test)
 
