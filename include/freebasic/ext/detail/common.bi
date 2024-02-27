@@ -168,7 +168,7 @@ namespace ext
     ''Type: SizeType
     ''Globally used type when defining the Size of an object.
     ''
-    type SizeType as ulong
+    type SizeType as uinteger
 
     '' Macro: FBEXT_IS_UNSIGNED
     '' Determines if a type is an intrinsic unsigned integral type.
