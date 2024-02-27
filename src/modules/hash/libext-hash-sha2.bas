@@ -666,7 +666,7 @@ sub sha512_update( byval ctx as sha512_ctx ptr, byval message as const ubyte ptr
     end if
 
     new_len = len_ - rem_len
-    block_nb = new_len / SHA512_BLOCK_SIZE
+    block_nb = new_len \ SHA512_BLOCK_SIZE
 
     shifted_message = message + rem_len
 
@@ -736,7 +736,7 @@ sub sha384_update( byval ctx as sha384_ctx ptr, byval message as const ubyte ptr
     end if
 
     new_len = len_ - rem_len
-    block_nb = new_len / SHA384_BLOCK_SIZE
+    block_nb = new_len \ SHA384_BLOCK_SIZE
 
     shifted_message = message + rem_len
 
@@ -802,7 +802,7 @@ sub sha224_update( byval ctx as sha224_ctx ptr, byval message as const ubyte ptr
     end if
 
     new_len = len_ - rem_len
-    block_nb = new_len / SHA224_BLOCK_SIZE
+    block_nb = new_len \ SHA224_BLOCK_SIZE
 
     shifted_message = message + rem_len
 
