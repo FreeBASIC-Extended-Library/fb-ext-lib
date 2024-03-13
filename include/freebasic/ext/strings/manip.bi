@@ -41,7 +41,7 @@ namespace ext.strings
     ''
     '' Returns:
     ''  string containing the repeated ascii_code
-    declare function Repeat overload (byval ascii_code as integer, byval n as integer) as string
+    declare function Repeat overload (byval ascii_code as long, byval n as integer) as string
 
     '' Function: Repeat
     ''  Returns a string of length *n * len(subject)* consisting of consecutive

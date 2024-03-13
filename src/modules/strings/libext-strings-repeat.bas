@@ -26,7 +26,7 @@
 namespace ext.strings
 
 	'' :::::
-	function repeat (byval ascii_code as integer, byval n as integer) as string
+	function repeat (byval ascii_code as long, byval n as integer) as string
 
 		if 0 = n then return ""
 
