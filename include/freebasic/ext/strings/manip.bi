@@ -21,15 +21,15 @@ namespace ext.strings
     '' Parameters:
     ''  ins - the string you wish to have inserted.
     ''  into - the string it will be inserted into.
-    ''  at - the string index (0 based) for the string to be inserted.
+    ''  at - the string index (0 based) for the string to be inserted. Negative values will be interpreted from the end of the string.
     ''
     '' Returns:
     ''  A newly constructed string with ins inserted in into at position at.
     ''
     '' Example:
-    ''  insert( " love ", "Iyou.", 1 ) = "I love you."
+    ''  InsertInto( " love ", "Iyou.", 1 ) = "I love you."
     ''
-    declare function InsertInto( byref ins as const string, byref into as const string, byval at as uinteger ) as string
+    declare function InsertInto( byref ins as const string, byref into as const string, byval at as integer ) as string
 
     '' Function: Repeat
     ''  Returns a string of length *n* consisting of as many characters with

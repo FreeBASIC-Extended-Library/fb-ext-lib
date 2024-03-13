@@ -24,20 +24,24 @@
 
 namespace ext.strings
 
-function InsertInto( byref ins as const string, byref into as const string, byval at as uinteger ) as string
+function InsertInto( byref ins as const string, byref into as const string, byval at as integer ) as string
 
     var newlen = len(ins) + len(into)
     var retstr = space(newlen)
     var newat = 0
-    if at > len(into)-1 then
-        newat = len(into)-1
+    if (at > len(into) - 1) then
+        newat = len(into) - 1
     else
-        newat = at
+        if (at < 0) then
+            newat = len(into) + at
+        else
+            newat = at
+        end if
     end if
 
-    if newat = 0 then
+    if newat <= 0 then
         retstr = ins & into
-    elseif at = len(into)-1 then
+    elseif newat = len(into)-1 then
         retstr = into & ins
     else
         memcpy( @retstr[0], @into[0], newat )
