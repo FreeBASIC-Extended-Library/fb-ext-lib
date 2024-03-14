@@ -1,5 +1,5 @@
 # Community
-[Join us on Discord](https://discord.gg/fbq4amWest)
+[Join us on Discord](https://discord.gg/fbq4amWest) in the #freebasic-ext channel.
 
 # About
 The FreeBASIC Extended Library is a set of general purpose and game oriented
