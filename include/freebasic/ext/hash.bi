@@ -13,6 +13,7 @@
 # include once "ext/hash/adler32.bi"
 # include once "ext/hash/md5.bi"
 # include once "ext/hash/sha2.bi"
+# include once "ext/hash/sha3.bi"
 
 #if not __FB_MT__
 	#inclib "ext-hash"

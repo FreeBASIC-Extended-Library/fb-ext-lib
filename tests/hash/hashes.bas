@@ -135,6 +135,11 @@ namespace ext.tests.hashes
 	ext_assert_STRING_EQUAL( "ddaf35a193617abacc417349ae20413112e6fa4e89a97ea20a9eeee64b55d39a2192992a274fc1a836ba3c23a3feebbd454d4423643ce80e2a9ac94fa54ca49f", ext.hashes.sha2( "abc", ext.hashes.SHA512 ) )
 	end sub
 
+	sub test_sha3
+		? ext.hashes.sha3("", ext.hashes.SHA3_256)
+		ext_assert_STRING_EQUAL("", ext.hashes.sha3("", ext.hashes.SHA3_256))
+	end sub
+
 	private sub register constructor
 		ext.tests.addSuite("ext-hashes")
 		ext.tests.addTest("test_adler32", @test_adler32)
@@ -143,6 +148,7 @@ namespace ext.tests.hashes
 		ext.tests.addTest("test_joaat64", @test_joaat64)
 		ext.tests.addTest("test_md5", @test_md5)
 		ext.tests.addTest("test_sha2", @test_sha2)
+		ext.tests.addTest("test_sha3", @test_sha3)
 	end sub
 
 end namespace
