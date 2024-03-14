@@ -1,3 +1,7 @@
+# Community
+[Join us on Discord](https://discord.gg/fbq4amWest)
+
+# About
 The FreeBASIC Extended Library is a set of general purpose and game oriented
 libraries aimed to supply the community with high quailty functions and data
 structures not provided by the stock FreeBASIC compiler and under a permissive 
