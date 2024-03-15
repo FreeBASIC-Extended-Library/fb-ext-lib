@@ -16,4 +16,6 @@ namespace ext.hashes.hmac
 
     declare function sha256 ( byref key as const string, byref msg as const string ) as string
 
+    declare function sha3_256 ( byref key as const string, byref msg as const string ) as string
+
 end namespace

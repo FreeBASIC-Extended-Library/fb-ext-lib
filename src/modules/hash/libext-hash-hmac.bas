@@ -89,4 +89,12 @@ namespace ext.hashes.hmac
         return dohmac(@callsha2,key,msg)
     end function
 
+    function callsha3( byval m as any ptr, byval l as uinteger ) as string
+        return ext.hashes.sha3(m, l, ext.hashes.SHA3_256)
+    end function
+    
+    function sha3_256( byref key as const string, byref msg as const string ) as string
+        return dohmac(@callsha3,key,msg)
+    end function
+
 end namespace
