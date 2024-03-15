@@ -72,17 +72,13 @@ type sha3_ctx
     as sha3_keylen bitSize
 end type
 
-
-declare sub sha3_init( byval ctx as sha3_ctx ptr, byval bitSize as sha3_keylen = SHA3_256)
-declare sub sha3_256_init( byval ctx as sha3_ctx ptr )
-declare sub sha3_384_init( byval ctx as sha3_ctx ptr )
-declare sub sha3_512_init( byval ctx as sha3_ctx ptr )
+declare sub sha3_context_init( byval ctx as sha3_ctx ptr, byval bitSize as sha3_keylen = SHA3_256, byval useKeccak as bool = false )
 
 declare sub sha3_update( byval ctx as sha3_ctx ptr, byval message as const ubyte ptr, _
 							byval mlen as uinteger )
 
-declare sub sha3_final( byval ctx as sha3_ctx ptr, byval digest as zstring ptr )
-declare sub sha3_deinit( byval ctx as sha3_ctx ptr )
+declare sub sha3_finalize( byval ctx as sha3_ctx ptr, byval digest as zstring ptr )
+declare sub sha3_context_destroy( byval ctx as sha3_ctx ptr )
 
 end namespace
 

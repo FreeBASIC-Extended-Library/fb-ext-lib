@@ -136,8 +136,9 @@ namespace ext.tests.hashes
 	end sub
 
 	sub test_sha3
+		const SHA3_EMPTY_256 = "a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a"
 		? ext.hashes.sha3("", ext.hashes.SHA3_256)
-		ext_assert_STRING_EQUAL("", ext.hashes.sha3("", ext.hashes.SHA3_256))
+		ext_assert_STRING_EQUAL(SHA3_EMPTY_256, ext.hashes.sha3("", ext.hashes.SHA3_256))
 	end sub
 
 	private sub register constructor

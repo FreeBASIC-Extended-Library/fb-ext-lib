@@ -27,6 +27,7 @@
 #include once "ext/hash/sha3.bi"
 #include once "ext/error.bi"
 #include once "ext/math/detail/common.bi"
+#include once "ext/debug.bi"
 
 #define SHA3_ROTL64(x, y) (((x) shl (y)) OR ((x) shr ((sizeof(ulongint)*8) - (y))))
 
@@ -57,15 +58,7 @@ function sha3 ( byref x as ext.File, byval keylen as sha3_keylen = SHA3_256, byv
         read_size = blocksize
     end if
 
-
-    select case keylen
-    case SHA3_256
-        sha3_256_init(st)
-    case SHA3_384
-        sha3_384_init(st)
-    case SHA3_512
-        sha3_512_init(st)
-    end select
+    sha3_context_init(st, keylen)
 
     dim buffer as ubyte ptr
     buffer = new ubyte[read_size]
@@ -108,17 +101,16 @@ function sha3 ( byref x as ext.File, byval keylen as sha3_keylen = SHA3_256, byv
         retstr = space(SHA3_512_DIGEST_SIZE)
     end select
 
-    sha3_final( st, retstr )
+    sha3_finalize( st, retstr )
 
-    sha3_deinit( st )
+    sha3_context_destroy( st )
     
     delete st
 
     var real_retstr = ""
 
     for n as integer = 0 to len(retstr) - 1
-        var remp = lcase(hex(retstr[n]))
-        if len(remp) = 1 then remp = "0" & remp
+        var remp = lcase(hex(retstr[n], 2))
         real_retstr = real_retstr & remp
     next
 
@@ -133,14 +125,7 @@ function sha3 ( byval x as any ptr, byval nbytes as uinteger, byval keylen as sh
 
     dim as sha3_ctx ptr st = new sha3_ctx
 
-    select case keylen
-    case SHA3_256
-        sha3_256_init(st)
-    case SHA3_384
-        sha3_384_init(st)
-    case SHA3_512
-        sha3_512_init(st)
-    end select
+    sha3_context_init(st, keylen)
 
     sha3_update (st, cast( ubyte ptr, x ), nbytes )
     
@@ -155,17 +140,16 @@ function sha3 ( byval x as any ptr, byval nbytes as uinteger, byval keylen as sh
         retstr = space(SHA3_512_DIGEST_SIZE)
     end select
 
-    sha3_final( st, retstr )
+    sha3_finalize( st, retstr )
 
-    sha3_deinit( st )
+    sha3_context_destroy( st )
 
     delete st
 
     var real_retstr = ""
 
     for n as integer = 0 to len(retstr) - 1
-        var remp = lcase(hex(retstr[n]))
-        if len(remp) = 1 then remp = "0" & remp
+        var remp = lcase(hex(retstr[n], 2))
         real_retstr = real_retstr & remp
     next
 
@@ -173,7 +157,10 @@ function sha3 ( byval x as any ptr, byval nbytes as uinteger, byval keylen as sh
 
 end function
 
-dim shared keccakf_rndc(24) as ulongint = _
+#define SHA3_USE_KECCAK_FLAG &h80000000ul
+#define SHA3_CW(x) ((x) AND (NOT SHA3_USE_KECCAK_FLAG))
+
+dim shared keccakf_rndc(0 to 23) as ulongint = _
 { _
     (&h0000000000000001ULL), (&h0000000000008082ULL), _
     (&h800000000000808aULL), (&h8000000080008000ULL), _
@@ -189,44 +176,83 @@ dim shared keccakf_rndc(24) as ulongint = _
     (&h0000000080000001ULL), (&h8000000080008008ULL) _
 }
 
-dim shared keccakf_rotc(24) as ubyte = _
+dim shared keccakf_rotc(0 to 23) as ulong = _
 { _
     1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 2, 14, 27, 41, 56, 8, 25, 43, 62, _
     18, 39, 61, 20, 44 _
 }
 
-dim shared keccakf_piln(24) as ubyte = _
+dim shared keccakf_piln(0 to 23) as ulong = _
 { _
     10, 7, 11, 17, 18, 3, 5, 16, 8, 21, 24, 4, 15, 23, 19, 13, 12, 2, 20, _
     14, 22, 9, 6, 1 _
 }
 
-sub sha3_init( byval ctx as sha3_ctx ptr, byval bitSize as sha3_keylen = SHA3_256)
-    ctx->bitSize = bitSize
-    ctx->s = new ulongint[25]
-    ctx->sb = cast(ubyte ptr, ctx->s)
-    ctx->capacityWords = 2 * (bitSize) \ (8 * sizeof(ulongint))
+sub keccakf(byval s as ulongint ptr)
+    'print_buffer("Data to Absorb", s, 25 * sizeof(ulongint), 16)
+    dim as ulongint t
+    dim as ulongint bc(0 to 4)
+    
+    for round as integer = 0 to 23
+        ' Theta
+        for i as integer = 0 to 4
+            bc(i) = s[i] XOR s[i + 5] XOR s[i + 10] XOR s[i + 15] XOR s[i + 20]
+        next i
+
+        for i as integer = 0 to 4
+            t = bc((i + 4) mod 5) XOR SHA3_ROTL64(bc((i + 1) MOD 5), 1)
+            for j as integer = 0 to 24 step 5
+                s[j + i] XOR= t
+            next j
+        next i
+        'print_buffer("Theta #" & round, s, 25 * sizeof(ulongint), 16)
+
+        ' Rho Pi
+        t = s[1]
+        for i as integer = 0 to 23
+            var j = keccakf_piln(i)
+            bc(0) = s[j]
+            s[j] = SHA3_ROTL64(t, keccakf_rotc(i))
+            t = bc(0)
+        next i
+        'print_buffer("Rho Pi #" & round, s, 25 * sizeof(ulongint), 16)
+
+        ' Chi
+        for j as integer = 0 to 24 step 5
+            for i as integer = 0 to 4
+                bc(i) = s[j + i]
+            next i
+            for i as integer = 0 to 4
+                s[j + i] XOR= (NOT(bc((i + 1) MOD 5)) AND bc((i + 2) MOD 5))
+            next i
+        next j
+        'print_buffer("Chi #" & round, s, 25 * sizeof(ulongint), 16)
+
+        ' Iota
+        s[0] XOR= keccakf_rndc(round)
+        'print_buffer("Iota #" & round, s, 25 * sizeof(ulongint), 16)
+    next round
 end sub
 
-sub sha3_deinit( byval ctx as sha3_ctx ptr )
+sub sha3_context_init( byval ctx as sha3_ctx ptr, byval bitSize as sha3_keylen = SHA3_256, byval useKeccak as bool = false )
+    ctx->bitSize = bitSize
+    ctx->s = new ulongint[SHA3_KECCAK_SPONGE_WORDS]
+    ctx->sb = cast(ubyte ptr, ctx->s)
+    ctx->capacityWords = 2 * (bitSize) \ (8 * sizeof(ulongint))
+    if (useKeccak) then
+        ctx->capacityWords OR= SHA3_USE_KECCAK_FLAG
+    end if
+    'print_buffer("Initial State", ctx->s, 25 * sizeof(ulongint), 16)
+end sub
+
+sub sha3_context_destroy( byval ctx as sha3_ctx ptr )
     if (ctx->s <> null) then
         delete[] (ctx->s)
     endif
 end sub
 
-sub sha3_256_init( byval ctx as sha3_ctx ptr )
-    sha3_init(ctx, SHA3_256)
-end sub
-
-sub sha3_384_init( byval ctx as sha3_ctx ptr )
-    sha3_init(ctx, SHA3_384)
-end sub
-
-sub sha3_512_init( byval ctx as sha3_ctx ptr )
-    sha3_init(ctx, SHA3_512)
-end sub
-
 sub sha3_update( byval ctx as sha3_ctx ptr, byval message as const ubyte ptr, byval mlen as uinteger )
+    'print_buffer("Before Update", ctx->s, 25 * sizeof(ulongint), 16)
     '0...7 -- how much is needed to have a word
     dim as uinteger old_tail = (8 - ctx->byteIndex) AND 7
     dim as uinteger words
@@ -235,7 +261,7 @@ sub sha3_update( byval ctx as sha3_ctx ptr, byval message as const ubyte ptr, by
     if (mlen < old_tail) then
         for n_ as longint = mlen to 0 step -1
             var n = cuint(n_)
-            ctx->saved OR= culngint(message[n] SHL (ctx->byteIndex * 8))
+            ctx->saved OR= culngint(message[n]) SHL (ctx->byteIndex * 8)
             ctx->byteIndex += 1
         next n_
         return
@@ -253,6 +279,11 @@ sub sha3_update( byval ctx as sha3_ctx ptr, byval message as const ubyte ptr, by
         ctx->s[ctx->wordIndex] XOR= ctx->saved
         ctx->byteIndex = 0
         ctx->saved = 0
+        ctx->wordIndex += 1
+        if ((ctx->wordIndex) = (SHA3_KECCAK_SPONGE_WORDS - SHA3_CW(ctx->capacityWords))) then
+            keccakf(ctx->s)
+            ctx->wordIndex = 0
+        end if
     end if
 
     'now work in full words directly from input
@@ -271,70 +302,64 @@ sub sha3_update( byval ctx as sha3_ctx ptr, byval message as const ubyte ptr, by
                 (culngint(message[7]) SHL 8 * 7) 
 
             ctx->s[ctx->wordIndex] XOR= t
+            if ((ctx->wordIndex + 1) = (SHA3_KECCAK_SPONGE_WORDS - SHA3_CW(ctx->capacityWords))) then
+                keccakf(ctx->s)
+                ctx->wordIndex = 0
+            end if
 
             message += sizeof(ulongint)
         next i
     end if
+
 
     while (tail > 0)
         ctx->saved OR= culngint(*message) SHL (ctx->byteIndex * 8)
         message += 1
         ctx->byteIndex += 1
     wend
+
+    'print_buffer("After Update", ctx->s, 25 * sizeof(ulongint), 16)
+
 end sub
 
-sub keccakf(byval s as ulongint ptr)
-    dim as ulongint t
-    dim as ulongint bc(5)
-
-    const KECCAK_ROUNDS = 24
-    for round as integer = 0 to (KECCAK_ROUNDS - 1)
-        ' Theta
-        for i as integer = 0 to 4
-            bc(i) = s[i] XOR s[i + 5] XOR s[i + 10] XOR s[i + 15] XOR s[i + 20]
-        next i
-
-        for i as integer = 0 to 4
-            t = bc((i + 4) mod 5) XOR SHA3_ROTL64(bc((i + 1) MOD 5), 1)
-            for j as integer = 0 to 24 step 5
-                s[j + i] XOR= t
-            next j
-        next i
-
-        ' Rho Pi
-        t = s[1]
-        for i as integer = 0 to 23
-            var j = keccakf_piln(i)
-            bc(0) = s[j]
-            s[j] = SHA3_ROTL64(t, keccakf_rotc(i))
-            t = bc(0)
-        next i
-
-        ' Chi
-        for j as integer = 0 to 24 step 5
-            for i as integer = 0 to 4
-                bc(i) = s[j + i]
-            next i
-            for i as integer = 0 to 4
-                s[j + i] XOR= (NOT(bc((i + 1) MOD 5)) AND bc((i + 2) MOD 5))
-            next i
-        next j
-
-        ' Iota
-        s[0] XOR= keccakf_rndc(round)
-    next round
-end sub
-
-sub sha3_final( byval ctx as sha3_ctx ptr, byval digest as zstring ptr )
-    dim as ulongint t = shl64(((&h02ull OR shl64(1, 2))), ((ctx->byteIndex) * 8))
+sub sha3_finalize( byval ctx as sha3_ctx ptr, byval digest as zstring ptr )
+    /' Append 2-bit suffix 01, per SHA-3 spec. Instead of 1 for padding we
+     * use 1<<2 below. The 0x02 below corresponds to the suffix 01.
+     * Overall, we feed 0, then 1, and finally 1 to start padding. Without
+     * M || 01, we would simply use 1 to start padding. '/
+    dim as ulongint t 
+    if (ctx->capacityWords AND SHA3_USE_KECCAK_FLAG) then
+        'KECCAK version
+        t = 1ull shl (culngint(ctx->byteIndex * 8))
+    else
+        'SHA3 version
+        t = (&h2ull OR (1ull shl 2ull)) shl culngint(ctx->byteIndex * 8)
+    end if
     
     ctx->s[ctx->wordIndex] XOR= (ctx->saved XOR t)
-    ctx->s[25 - (ctx->capacityWords - 1)] XOR= &h8000000000000000ULL
+    ctx->s[SHA3_KECCAK_SPONGE_WORDS - SHA3_CW(ctx->capacityWords) - 1] XOR= &h8000000000000000ULL
     keccakf(ctx->s)
 
-    for n as integer = 0 to (cast(integer, ctx->bitSize) / 8)
-        digest[n] = asc(hex(ctx->sb[n]))
-    next n
+    #ifdef __FB_BIGENDIAN__
+        for i as integer = 0 to (SHA3_KECCAK_SPONGE_WORDS - 1)
+            dim as ulong t1, t2
+            t1 = culng(ctx->s[i])
+            t2 = culng(((ctx->s[i] shr 16) shr 16))
+            ctx->sb[i * 8 + 0] = cubyte(t1)
+            ctx->sb[i * 8 + 1] = cubyte(t1 shr 8)
+            ctx->sb[i * 8 + 2] = cubyte(t1 shr 16)
+            ctx->sb[i * 8 + 3] = cubyte(t1 shr 24)
+            ctx->sb[i * 8 + 4] = cubyte(t2)
+            ctx->sb[i * 8 + 5] = cubyte(t2 shr 8)
+            ctx->sb[i * 8 + 6] = cubyte(t2 shr 16)
+            ctx->sb[i * 8 + 7] = cubyte(t2 shr 24)
+        next i
+    #endif
+
+    'print_buffer("Hash: (first 32 bytes)", ctx->sb, 32, 8)
+
+    memcpy(digest, ctx->sb, (cast(integer, ctx->bitSize) / 8))
+    
 end sub
 
 end namespace
