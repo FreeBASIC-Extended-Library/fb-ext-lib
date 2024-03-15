@@ -23,6 +23,29 @@
 
 #include once "ext/misc.bi"
 
+namespace ext
+
+    sub print_buffer(byref header as const string, byval buf as any ptr, byval blen as SizeType, byval perRow as ulong)
+        ?
+        ? header
+        var curRowCount = 0
+        for n as SizeType = 0 to (blen - 1)
+            ? hex(cast(ubyte ptr, buf)[n], 2);
+            curRowCount += 1
+            if (curRowCount < perRow) then
+                ? " ";
+            else
+                curRowCount = 0
+                ?
+            end if
+        next n
+        if (curRowCount < perRow) then
+            ?
+        end if
+
+    end sub
+end namespace
+
 namespace ext.misc
 
     constructor FILE_ITER( byref path as string )

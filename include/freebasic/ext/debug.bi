@@ -11,6 +11,9 @@
 #ifndef FBEXT_DEBUG_BI__
 #define FBEXT_DEBUG_BI__ -1
 
+#include once "ext/detail/common.bi"
+#include once "ext/misc.bi"
+
 # if not __FB_DEBUG__
 	# define FBEXT_DPRINT(x)
 
@@ -46,5 +49,11 @@
 	#endmacro
 
 # endif
+
+namespace ext
+
+	declare sub print_buffer(byref header as const string, byval buf as any ptr, byval blen as SizeType, byval perRow as ulong)
+
+end namespace
 
 #endif 'FBEXT_DEBUG
