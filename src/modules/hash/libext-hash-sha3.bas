@@ -1,6 +1,6 @@
-'https://github.com/brainhub/SHA3IUF
 ''Copyright (c) 2007-2024, FreeBASIC Extended Library Development Group
 ''Copyright (C) 2015 Andrey Jivsov <crypto@brainhub.org>
+'' https://github.com/brainhub/SHA3IUF
 ''
 ''All rights reserved.
 ''
@@ -296,7 +296,7 @@ sub keccakf(byval s as ulongint ptr)
 
         for i as integer = 0 to 4
             t = bc((i + 4) mod 5) XOR SHA3_ROTL64(bc((i + 1) MOD 5), 1)
-            for j as integer = 0 to 24
+            for j as integer = 0 to 24 step 5
                 s[j + i] XOR= t
             next j
         next i
