@@ -11,6 +11,9 @@
 #ifndef FBEXT_DEBUG_BI__
 #define FBEXT_DEBUG_BI__ -1
 
+#include once "ext/detail/common.bi"
+#include once "ext/misc.bi"
+
 # if not __FB_DEBUG__
 	# define FBEXT_DPRINT(x)
 
@@ -46,5 +49,22 @@
 	#endmacro
 
 # endif
+
+''Namespace: ext
+namespace ext
+
+	''Function: print_buffer
+	''This function is useful for pretty printing bytes of data from a memory buffer in a 
+	''structured way.
+	''
+	''Parameters:
+	''header - this string will print before the data
+	''buf - the memory buffer to print the bytes of
+	''blen - the length of the buffer in bytes
+	''perRow - how many bytes will appear on each line
+	''
+	declare sub print_buffer(byref header as const string, byval buf as any ptr, byval blen as SizeType, byval perRow as ulong)
+
+end namespace
 
 #endif 'FBEXT_DEBUG

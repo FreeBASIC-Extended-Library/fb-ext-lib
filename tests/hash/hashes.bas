@@ -1,5 +1,6 @@
 # include once "ext/tests.bi"
 # include once "ext/hash.bi"
+# include once "crt/string.bi"
 
 namespace ext.tests.hashes
 
@@ -135,6 +136,31 @@ namespace ext.tests.hashes
 	ext_assert_STRING_EQUAL( "ddaf35a193617abacc417349ae20413112e6fa4e89a97ea20a9eeee64b55d39a2192992a274fc1a836ba3c23a3feebbd454d4423643ce80e2a9ac94fa54ca49f", ext.hashes.sha2( "abc", ext.hashes.SHA512 ) )
 	end sub
 
+	sub test_sha3
+		const SHA3_EMPTY_256 = "a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a"
+		const SHA3_ABC_256 = "3a985da74fe225b2045c172d6bd390bd855f086e3e9d525b46bfe24511431532"
+		const SHA3_ABC_384 = "ec01498288516fc926459f58e2c6ad8df9b473cb0fc08c2596da7cf0e49be4b298d88cea927ac7f539f1edf228376d25"
+		const SHA3_ABC_512 = "b751850b1a57168a5693cd924b6b096e08f621827444f70d884f5d0240d2712e10e116e9192af3c91a7ec57647e3934057340b4cf408d5a56592f8274eec53f0"
+		const SHA3_A3x200_256 = "79f38adec5c20307a98ef76e8324afbfd46cfd81b22e3973c65fa1bd9de31787"
+		const SHA3_A3x200_384 = "1881de2ca7e41ef95dc4732b8f5f002b189cc1e42b74168ed1732649ce1dbcdd76197a31fd55ee989f2d7050dd473e8f"
+		const SHA3_A3x200_512 = "e76dfad22084a8b1467fcf2ffa58361bec7628edf5f3fdc0e4805dc48caeeca81b7c13c30adf52a3659584739a2df46be589c51ca1a4a8416df6545a1ce8ba00"
+
+		const A3 = &ha3
+		dim as ubyte ptr buf = new ubyte[200]
+		memset(buf, A3, 200)
+
+		ext_assert_STRING_EQUAL(SHA3_EMPTY_256, ext.hashes.sha3("", ext.hashes.SHA3_256))
+		
+		ext_assert_STRING_EQUAL(SHA3_ABC_256, ext.hashes.sha3("abc", ext.hashes.SHA3_256))
+		ext_assert_STRING_EQUAL(SHA3_ABC_384, ext.hashes.sha3("abc", ext.hashes.SHA3_384))
+		ext_assert_STRING_EQUAL(SHA3_ABC_512, ext.hashes.sha3("abc", ext.hashes.SHA3_512))
+
+		ext_assert_STRING_EQUAL(SHA3_A3x200_256, ext.hashes.sha3(buf, 200, ext.hashes.SHA3_256))
+		ext_assert_STRING_EQUAL(SHA3_A3x200_384, ext.hashes.sha3(buf, 200, ext.hashes.SHA3_384))
+		ext_assert_STRING_EQUAL(SHA3_A3x200_512, ext.hashes.sha3(buf, 200, ext.hashes.SHA3_512))
+		delete[] buf
+	end sub
+
 	private sub register constructor
 		ext.tests.addSuite("ext-hashes")
 		ext.tests.addTest("test_adler32", @test_adler32)
@@ -143,6 +169,7 @@ namespace ext.tests.hashes
 		ext.tests.addTest("test_joaat64", @test_joaat64)
 		ext.tests.addTest("test_md5", @test_md5)
 		ext.tests.addTest("test_sha2", @test_sha2)
+		ext.tests.addTest("test_sha3", @test_sha3)
 	end sub
 
 end namespace
