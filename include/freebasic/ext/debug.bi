@@ -50,8 +50,19 @@
 
 # endif
 
+''Namespace: ext
 namespace ext
 
+	''Function: print_buffer
+	''This function is useful for pretty printing bytes of data from a memory buffer in a 
+	''structured way.
+	''
+	''Parameters:
+	''header - this string will print before the data
+	''buf - the memory buffer to print the bytes of
+	''blen - the length of the buffer in bytes
+	''perRow - how many bytes will appear on each line
+	''
 	declare sub print_buffer(byref header as const string, byval buf as any ptr, byval blen as SizeType, byval perRow as ulong)
 
 end namespace

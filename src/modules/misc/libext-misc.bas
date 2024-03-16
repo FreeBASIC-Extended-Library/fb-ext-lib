@@ -28,6 +28,10 @@ namespace ext
     sub print_buffer(byref header as const string, byval buf as any ptr, byval blen as SizeType, byval perRow as ulong)
         ?
         ? header
+        if (buf = null OR blen = 0) then
+            ? "NULL"
+            return
+        end if
         var curRowCount = 0
         for n as SizeType = 0 to (blen - 1)
             ? hex(cast(ubyte ptr, buf)[n], 2);
