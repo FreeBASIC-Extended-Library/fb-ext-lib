@@ -27,7 +27,6 @@
 #include once "ext/hash/sha3.bi"
 #include once "ext/error.bi"
 #include once "ext/math/detail/common.bi"
-#include once "ext/debug.bi"
 
 #define SHA3_ROTL64(x, y) (((x) shl (y)) OR ((x) shr ((sizeof(ulongint)*8) - (y))))
 
@@ -120,7 +119,6 @@ end function
 
 '':::
 function sha3 ( byval x as any ptr, byval nbytes as uinteger, byval keylen as sha3_keylen = SHA3_256 ) as string
-
     if keylen <> 256 AND keylen <> 384 AND keylen <> 512 then return "Invalid key length"
 
     dim as sha3_ctx ptr st = new sha3_ctx
@@ -189,7 +187,6 @@ dim shared keccakf_piln(0 to 23) as ulong = _
 }
 
 sub keccakf(byval s as ulongint ptr)
-    'print_buffer("Data to Absorb", s, 25 * sizeof(ulongint), 16)
     dim as ulongint t
     dim as ulongint bc(0 to 4)
     
@@ -205,7 +202,6 @@ sub keccakf(byval s as ulongint ptr)
                 s[j + i] XOR= t
             next j
         next i
-        'print_buffer("Theta #" & round, s, 25 * sizeof(ulongint), 16)
 
         ' Rho Pi
         t = s[1]
@@ -215,7 +211,6 @@ sub keccakf(byval s as ulongint ptr)
             s[j] = SHA3_ROTL64(t, keccakf_rotc(i))
             t = bc(0)
         next i
-        'print_buffer("Rho Pi #" & round, s, 25 * sizeof(ulongint), 16)
 
         ' Chi
         for j as integer = 0 to 24 step 5
@@ -226,11 +221,9 @@ sub keccakf(byval s as ulongint ptr)
                 s[j + i] XOR= (NOT(bc((i + 1) MOD 5)) AND bc((i + 2) MOD 5))
             next i
         next j
-        'print_buffer("Chi #" & round, s, 25 * sizeof(ulongint), 16)
 
         ' Iota
         s[0] XOR= keccakf_rndc(round)
-        'print_buffer("Iota #" & round, s, 25 * sizeof(ulongint), 16)
     next round
 end sub
 
@@ -242,7 +235,6 @@ sub sha3_context_init( byval ctx as sha3_ctx ptr, byval bitSize as sha3_keylen =
     if (useKeccak) then
         ctx->capacityWords OR= SHA3_USE_KECCAK_FLAG
     end if
-    'print_buffer("Initial State", ctx->s, 25 * sizeof(ulongint), 16)
 end sub
 
 sub sha3_context_destroy( byval ctx as sha3_ctx ptr )
@@ -252,7 +244,6 @@ sub sha3_context_destroy( byval ctx as sha3_ctx ptr )
 end sub
 
 sub sha3_update( byval ctx as sha3_ctx ptr, byval message as const ubyte ptr, byval mlen as uinteger )
-    'print_buffer("Before Update", ctx->s, 25 * sizeof(ulongint), 16)
     '0...7 -- how much is needed to have a word
     dim as uinteger old_tail = (8 - ctx->byteIndex) AND 7
     dim as uinteger words
@@ -264,6 +255,7 @@ sub sha3_update( byval ctx as sha3_ctx ptr, byval message as const ubyte ptr, by
             ctx->saved OR= culngint(message[n]) SHL (ctx->byteIndex * 8)
             ctx->byteIndex += 1
         next n_
+        
         return
     end if
 
@@ -287,11 +279,11 @@ sub sha3_update( byval ctx as sha3_ctx ptr, byval message as const ubyte ptr, by
     end if
 
     'now work in full words directly from input
-    words = mlen / sizeof(ulongint)
+    words = mlen \ sizeof(ulongint)
     tail = mlen - words * sizeof(ulongint)
 
     if (words > 0) then
-        for i as uinteger = 0 to words
+        for i as uinteger = 0 to (words - 1)
             dim t as ulongint = culngint(message[0]) OR _
                 (culngint(message[1]) SHL 8 * 1) OR _
                 (culngint(message[2]) SHL 8 * 2) OR _
@@ -302,7 +294,8 @@ sub sha3_update( byval ctx as sha3_ctx ptr, byval message as const ubyte ptr, by
                 (culngint(message[7]) SHL 8 * 7) 
 
             ctx->s[ctx->wordIndex] XOR= t
-            if ((ctx->wordIndex + 1) = (SHA3_KECCAK_SPONGE_WORDS - SHA3_CW(ctx->capacityWords))) then
+            ctx->wordIndex += 1
+            if (ctx->wordIndex = (SHA3_KECCAK_SPONGE_WORDS - SHA3_CW(ctx->capacityWords))) then
                 keccakf(ctx->s)
                 ctx->wordIndex = 0
             end if
@@ -311,15 +304,13 @@ sub sha3_update( byval ctx as sha3_ctx ptr, byval message as const ubyte ptr, by
         next i
     end if
 
-
     while (tail > 0)
         ctx->saved OR= culngint(*message) SHL (ctx->byteIndex * 8)
         message += 1
         ctx->byteIndex += 1
+        tail -= 1
     wend
-
-    'print_buffer("After Update", ctx->s, 25 * sizeof(ulongint), 16)
-
+    
 end sub
 
 sub sha3_finalize( byval ctx as sha3_ctx ptr, byval digest as zstring ptr )
@@ -355,8 +346,6 @@ sub sha3_finalize( byval ctx as sha3_ctx ptr, byval digest as zstring ptr )
             ctx->sb[i * 8 + 7] = cubyte(t2 shr 24)
         next i
     #endif
-
-    'print_buffer("Hash: (first 32 bytes)", ctx->sb, 32, 8)
 
     memcpy(digest, ctx->sb, (cast(integer, ctx->bitSize) / 8))
     
