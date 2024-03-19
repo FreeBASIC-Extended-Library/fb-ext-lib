@@ -74,6 +74,8 @@ namespace ext
             case 13 : errtext = "Termination request signal"
             case 14 : errtext = "Abnormal termination signal"
             case 15 : errtext = "Quit request signal"
+            case 16 : errtext = "Return without Gosub"
+            case 17 : errtext = "End of File"
             case else :
                 errtext = "Unknown error"
                 var es = ""

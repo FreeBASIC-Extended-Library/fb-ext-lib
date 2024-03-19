@@ -79,6 +79,8 @@ namespace ext
         ERR_TERMINATION_REQUEST
         ERR_ABNORMAL_TERMINATION
         ERR_QUIT_REQUEST
+        ERR_RETURN_WITHOUT_GOSUB
+        ERR_END_OF_FILE
     end enum
 
     ''Function: GetErrorText
