@@ -268,18 +268,25 @@ function JSONobject.addChild( byref k as const string, byval v as JSONvalue ptr 
 
 end function
 
+function JSONobject.hasChild( byref k as const string, byref child_index as uinteger = 0 ) as bool
+    if m_children > 0 then
+        for n as uinteger = 0 to m_children - 1
+            if m_child[n]->key = k then
+                child_index = n
+                return true
+            end if
+        next n
+    end if
+    
+    return false
+end function
+
 sub JSONobject.removeChild( byref k as const string )
 
     if m_children > 0 then
         var rem_id = -1u
-        for n as uinteger = 0 to m_children -1
-            if m_child[n]->key = k then
-                rem_id = n
-                exit for
-            end if
-        next
 
-        if rem_id <> -1u then
+        if hasChild(k, rem_id) then
 
             dim new_child as JSONpair ptr ptr
             new_child = callocate( sizeof(JSONpair ptr) * m_children - 1 )
@@ -633,12 +640,12 @@ function JSONobject.loadString( byref jstr as const string ) as JSONobject ptr
 end function
 
 function JSONobject.child overload ( byref c as const string ) as JSONvalue ptr
-    dim as JSONpair ptr ret = null
-    for n as uinteger = 0 to m_children -1
-        ret = m_child[n]
-        if ret->key = c then exit for
-    next
-    return ret->value
+    dim as uinteger index
+    if (hasChild(c, index)) then
+        return m_child[index]->value
+    end if
+
+    return null
 end function
 
 function JSONobject.child overload ( byval c as uinteger ) as JSONpair ptr

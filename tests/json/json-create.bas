@@ -5,17 +5,26 @@ namespace ext.tests.json_
 
     private sub test_create
 
+    dim x as uinteger
     dim j as ext.json.JSONobject
 
     j.addChild("one",new ext.json.JSONvalue(1))
+    
+    ext_assert_TRUE(j.hasChild("one", x))
+    ext_assert_TRUE(x = 0)
+    
     j.addChild("test",new ext.json.JSONvalue(true))
+    ext_assert_TRUE(j.hasChild("test", x))
+    ext_assert_TRUE(x = 1)
 
     dim as string test
     test = j
 
     ext_assert_TRUE( test = !"{ \"one\" : 1, \"test\" : true }")
     'and test removing
+    
     j.removeChild("test")
+    ext_assert_FALSE(j.hasChild("test"))
     ext_assert_TRUE( j.children = 1 )
 
     end sub

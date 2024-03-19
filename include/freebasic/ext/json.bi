@@ -170,6 +170,17 @@ namespace ext.json
         ''v, for chaining
         declare function addChild( byref k as const string, byval v as JSONvalue ptr ) as JSONvalue ptr
 
+        ''Function: hasChild
+        ''Test if the object has the specified child
+        ''
+        ''Parameters:
+        ''k - the key to find
+        ''child_index - if provided this will contain the index of the child if the return value is true, not written to on false
+        ''
+        ''Returns:
+        ''True if the child exists, false otherwise
+        declare function hasChild( byref k as const string, byref child_index as uinteger = 0 ) as bool
+
         ''Sub: removeChild
         ''Remove the specified child from the object.
         ''
