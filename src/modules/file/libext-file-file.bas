@@ -211,15 +211,8 @@ namespace ext
             var lineending = !"\n"
         #endif
 
-        for i as uinteger = 0 to n-1
-            var r = t->fsput(t,0,@d[i],1)
-            if r <> 1 then return
-        next
-
-        'if t->fsput(t,0,d,n) <> n then return
-        for i as integer = 0 to len(lineending)-1
-            t->fsput(t,0,cast(ubyte ptr,@lineending[n]),1)
-        next
+        t->fsput(t, 0, d, n)
+        t->fsput(t, 0, @lineending[0], len(lineending))
 
     end sub
 

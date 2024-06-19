@@ -20,6 +20,7 @@
 '' NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 '' SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+# include once "ext/algorithms/detail/common.bi"
 #include once "ext/file/detail/common.bi"
 
 namespace ext
@@ -94,12 +95,7 @@ namespace ext
             end if
         end if
         if (x->l + n) <= x->dlen then
-            for m as ubyte = 0 to n-1
-                p[m] = 0
-            next
-            for i as uinteger = 0 to n - 1
-                p[i] = x->d[x->l+i]
-            next
+            memcpy(p, @x->d[x->l], n)
             x->l = x->l + n
         else
             return 0
@@ -121,10 +117,8 @@ namespace ext
         end if
 
         if (x->l + n) <= x->dlen then
-            for i as uinteger = 0 to n - 1
-                x->d[x->l+i] = p[i]
-                x->l += 1
-            next
+            memcpy(@x->d[x->l], p, n)
+            x->l += n
         else
             return 0
         end if

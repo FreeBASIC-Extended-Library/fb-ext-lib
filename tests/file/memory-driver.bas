@@ -65,7 +65,7 @@ private sub test_memory_driver_put
         dat2[n] = n
     next
 
-    ext_assert_TRUE( verify(dat,dat2) )
+    ext_assert_TRUE( verify(dat, dat2) )
 
     delete[] dat
     delete[] dat2
@@ -82,7 +82,9 @@ private sub test_memory_driver_string
     x->seek = 0
     ext_assert_TRUE( x->loc = 0 )
     var ts = x->readLine()
-    ext_assert_TRUE( test_string = ts )
+    
+    ext_assert_STRING_EQUAL( test_string, ts)
+    
     delete x
     delete dat
 
