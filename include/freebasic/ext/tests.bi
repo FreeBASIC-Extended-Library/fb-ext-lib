@@ -160,19 +160,19 @@ end namespace
 '# EQU, NEQ (strings)
 ''macro: ext_assert_string_equal
 #define ext_assert_string_equal(__expected__, __actual__) _
-        ext.tests.customAssertion((str(__actual__) = str(__expected__)), __FILE__, __LINE__, ("expected {" #__expected__ "} but was {" #__actual__ "}"))
+        ext.tests.customAssertion((str(__actual__) = str(__expected__)), __FILE__, __LINE__, ("expected {" & __expected__ & "} but was {"& __actual__ &"}"))
 
 ''macro: ext_assert_string_equal_error
 #define ext_assert_string_equal_error(__expected__, __actual__) _
-        if (ext.tests.customAssertion((str(__actual__) = str(__expected__)), __FILE__, __LINE__, ("expected {" #__expected__ "} but was {" #__actual__ "}"), true) = false) then exit sub
+        if (ext.tests.customAssertion((str(__actual__) = str(__expected__)), __FILE__, __LINE__, ("expected {" & __expected__ & "} but was {" & __actual__ & "}"), true) = false) then exit sub
 
 ''macro: ext_assert_string_not_equal
 #define ext_assert_string_not_equal(__expected__, __actual__) _
-        ext.tests.customAssertion((str(__actual__) <> str(__expected__)), __FILE__, __LINE__, ("{" #__actual__ "} expected to be != to {" #__expected__ "}"))
+        ext.tests.customAssertion((str(__actual__) <> str(__expected__)), __FILE__, __LINE__, ("{" & __actual__ & "} expected to be != to {" & __expected__ & "}"))
 
 ''macro: ext_assert_string_not_equal_error
 #define ext_assert_string_not_equal_error(__expected__, __actual__) _
-        if (ext.tests.customAssertion((str(__actual__) <> str(__expected__)), __FILE__, __LINE__, ("{" #__actual__ "} expected to be != to {" #__expected__ "}"), true) = false) then exit sub
+        if (ext.tests.customAssertion((str(__actual__) <> str(__expected__)), __FILE__, __LINE__, ("{" & __actual__ & "} expected to be != to {" & __expected__ & "}"), true) = false) then exit sub
 
 ''macro: ext_assert_pass
 #define ext_assert_pass(__message__) _
