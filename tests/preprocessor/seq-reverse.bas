@@ -9,7 +9,7 @@ namespace ext.tests.preprocessor
 	
 		# define SEQ ((a)(b)(c)(d))
 		
-		ext_assert_TRUE( "(d)(c)(b)(a)" = FBEXT_PP_STRINGIZE(FBEXT_PP_SEQ_REVERSE(SEQ)) )
+		ext_assert_STRING_EQUAL( "(d)(c)(b)(a)",  FBEXT_PP_STRINGIZE(FBEXT_PP_SEQ_REVERSE(SEQ)) )
 	
 	end sub
 	

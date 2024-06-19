@@ -10,7 +10,7 @@ namespace ext.tests.preprocessor
 		# define SEQ (a)(b)(c)(d)
 		# define OP(state, elem) state##elem
 		
-		ext_assert_TRUE( "xabcd" = FBEXT_PP_STRINGIZE(FBEXT_PP_SEQ_FOLDLEFT(OP, x, SEQ)) )
+		ext_assert_STRING_EQUAL( "xabcd", FBEXT_PP_STRINGIZE(FBEXT_PP_SEQ_FOLDLEFT(OP, x, SEQ)) )
 	
 	end sub
 	
