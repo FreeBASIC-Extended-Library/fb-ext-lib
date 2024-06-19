@@ -16,9 +16,9 @@ namespace ext.gfx.png
     '' :::::
     function load _
         ( _
-            byref hFile as ext.File, _
+            byref hFile as File, _
             byval t   as target_e = TARGET_FBNEW _
-        ) as ext.gfx.Image ptr
+        ) as Image ptr
 
         dim as any ptr img
         dim as ubyte ptr fbuf

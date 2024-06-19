@@ -61,9 +61,9 @@ end type
 ''
 declare function load _
     ( _
-        byref hFile as ext.File, _
+        byref hFile as File, _
         byval target   as target_e = TARGET_FBNEW _
-    ) as ext.gfx.Image ptr
+    ) as Image ptr
 
 ''Function: save
 ''Saves a png image from a memory buffer.

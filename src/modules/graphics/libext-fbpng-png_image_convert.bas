@@ -510,16 +510,16 @@ end sub
         end scope
 
         if (target = TARGET_OPENGL) then
-            function = new ext.gfx.Image(png_image.width,png_image.height,cast(any ptr,out_img))
+            function = new Image(png_image.width,png_image.height,cast(any ptr,out_img))
 
         elseif target = TARGET_FBNEW andalso scrn_bitdepth = 32 then
-            function = new ext.gfx.Image(cast(fb.image ptr,out_img))
+            function = new Image(cast(fb.image ptr,out_img))
         else
             dim new_img as fb.Image ptr = any
             ImageConvert_(cast( fb.image ptr,out_img), new_img, scrn_bitdepth)
             imagedestroy( out_img )
 
-            function = new ext.gfx.Image(new_img)
+            function = new Image(new_img)
         end if
 
     end function

@@ -31,7 +31,7 @@ namespace ext.gfx.png
     #define DEBUGPRINT(x) FBEXT_DPRINT(x)
 #endif
 
-type bool_e as ext.bool
+type bool_e as bool
 
 type OLD_HEADER field = 1
     bpp   : 3  as ushort
